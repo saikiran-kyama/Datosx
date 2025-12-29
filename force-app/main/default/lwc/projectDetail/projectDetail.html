@@ -1,0 +1,1714 @@
+<template>
+    <!-- Highlights Panel -->
+    <div class="highlights slds-clearfix slds-page-header slds-page-header_record-home">
+        <div class="slds-grid primaryFieldRow">
+            <div class="slds-grid slds-col slds-has-flexi-truncate">
+                <!-- <div class="slds-media slds-no-space">
+                    <div class="highlights-icon-container slds-avatar slds-m-right_small icon" style="background-color: #df6184">
+                        <img alt="Project" src="https://app-business-9844--techmpar.sandbox.my.site.com/img/icon/t4v35/custom/custom13_120.png">
+                    </div>
+                </div> -->
+                <div class="slds-media__body">
+                    <h1>
+                        <div class="entityNameTitle slds-line-height--reset">Project ID: {project.projectId}</div>
+                        <span
+                            class="slds-page-header__title slds-m-right--small slds-align-middle slds-line-clamp clip-text">{project.projectId}</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center horizontal actionsContainer">
+                <!-- <lightning-button class="slds-m-right_x-small" variant="neutral" label="Project Scoping Questionnaire Form"></lightning-button>
+                <lightning-button class="slds-m-right_x-small" variant="neutral" label="Protocol Questionnaire Form"></lightning-button>
+                <lightning-button class="slds-m-right_x-small" variant="neutral" label="Printable View"></lightning-button> -->
+                <lightning-button variant="neutral" label="Back" icon-name="utility:back"
+                    onclick={handleBackClick}></lightning-button>
+            </div>
+        </div>
+        <div class="secondaryFields" role="presentation">
+            <div class="slds-grid slds-page-header__detail-row equal-space"
+                style="width: 107%;     background-color: #fffce4;">
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Project Name</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {project.projectName}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Project Status</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {project.status}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Sponsor Name</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {project.sponsorName}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">HS Name</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">Health System
+                        A</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Start Date</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">2025-10-01
+                    </p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Due Date</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">2026-03-31
+                    </p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">ETA</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">Q1 2026</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Completion</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">42%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="uiTabset--base uiTabset--default uiTabset">
+        <div role="tablist" class="uiTabBar">
+            <ul role="presentation" class="tabs__nav">
+                <li role="presentation" class="record-home-details record-home-tab tabs__item active uiTabItem">
+                    <a aria-selected="true" role="tab" tabindex="0" title="Details" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Details" onclick={handleTabClick}>
+                        <span class="title">Overview</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-requirements record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Requirements" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Requirements" onclick={handleTabClick}>
+                        <span class="title">Requirements</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-hs-matches record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="HS Matches &amp; Messaging"
+                        class="tabHeader" href="javascript:void(0);" data-tab="HS-Matches" onclick={handleTabClick}>
+                        <span class="title">HS Matches &amp; Messaging</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-protocol record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Protocol" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Protocol" onclick={handleTabClick}>
+                        <span class="title">TASKS</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-protocol record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Protocol" class="tabHeader"
+                        href="javascript:void(0);" data-tab="estimation" onclick={handleTabClick}>
+                        <span class="title">Estimation</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-messaging record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Messaging" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Messaging" onclick={handleTabClick}>
+                        <span class="title">Messaging</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-documents record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Documents" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Documents" onclick={handleTabClick}>
+                        <span class="title">Documents</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-legal record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Legal" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Legal" onclick={handleTabClick}>
+                        <span class="title">Legal</span>
+                    </a>
+                </li>
+                <!-- <li role="presentation" class="record-home-related record-home-tab tabs__item uiTabItem">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Related" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Related" onclick={handleTabClick}>
+                        <span class="title">Related</span>
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+        <template if:true={isDetails}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-details record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="slds-grid slds-grid_pull-padded">
+                            <!-- Overview: three panels -->
+                            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                                <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
+                                    <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
+                                        Project Details</div>
+                                    <div style="padding:10px;     margin-top: -10px;">
+                                        <table style="width:100%;border-collapse:collapse;">
+                                            <thead>
+                                                <!-- <tr>
+                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
+                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
+                                                </tr> -->
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project ID</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.projectId}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="projectId"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project Status</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.status}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="projectStatus"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project Name</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.projectName}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="projectName"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Publish Project</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span><input type="checkbox" disabled
+                                                                checked={project.publishProject} /></span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="publishProject"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        HS Matching Completed</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span><input type="checkbox" disabled
+                                                                checked={project.hsMatchingCompleted} /></span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="hsMatchingCompleted"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Sponsor Company Account</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.sponsorName}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="sponsorName"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project Description</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.description}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="description"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project Document Url</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.documentUrl}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="documentUrl"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        datosX primary contact</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.primaryContact}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="primaryContact"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Study Two-pager</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.twoPager}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="twoPager"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Owner</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>{project.ownerName}</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-field="ownerName"
+                                                            data-section="overview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                                <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
+                                    <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
+                                        Project Scoping Questionnaire</div>
+                                    <div style="padding:10px;     background: rgb(230, 247, 255);">
+                                        <table
+                                            style="width:100%;border-collapse:collapse;background:#e6f7ff;     margin-top: -10px;">
+                                            <thead>
+                                                <!-- <tr>
+                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
+                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
+                                                </tr> -->
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Trial Details</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Phase II clinical trial evaluating retinal
+                                                            biomarkers</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="trialDetails"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Planned Site Count</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>12</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="plannedSiteCount"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Primary study objective</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Evaluate safety and efficacy of retinal AI
+                                                            assessment</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="primaryObjective"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Information Type</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Clinical Imaging</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="informationType"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Study Objectives (Secondary/Tertiary)</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Secondary: biomarker correlation; Tertiary: longitudinal
+                                                            progression</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="secondaryObjectives"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Statistical Analysis Required?</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span><input type="checkbox" disabled checked /></span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="statisticalAnalysis"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Study Population Criteria</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Adults 50-85 with early Alzheimer's diagnosis</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="populationCriteria"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Expected Timeline</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Q3 2026 - Q2 2027</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="expectedTimeline"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Study Exclusions</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Concurrent severe ocular disease or uncontrolled
+                                                            diabetes</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="studyExclusions"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Is Health System Chosen?</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span><input type="checkbox" disabled /></span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="healthSystemChosen"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Participant Enrollment Target</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>200</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="scoping"
+                                                            data-field="enrollmentTarget"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Submitted by</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
+                                                        <span>Aleksandra Fornal</span>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                                <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
+                                    <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
+                                        Document/Agreement Status</div>
+                                    <div style="padding:10px;background:#fffce4;">
+                                        <table style="width:100%;border-collapse:collapse;    margin-top: -10px;">
+                                            <thead>
+                                                <!-- <tr>
+                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
+                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
+                                                </tr> -->
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Project Planning Overview</td>
+                                                    <td class="value-cell">
+                                                        <span>Initial planning completed; milestones and resource
+                                                            allocation defined.</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="documents"
+                                                            data-field="planningOverview"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="
+    padding:8px 0;
+    border-top:1px solid #eee;
+    color:#333;
+    font-weight:600;
+">
+                                                        <span style="margin-right:10px;     display: block;">Project
+                                                            Scoping</span>
+                                                        <span>Two-pager</span>
+                                                    </td>
+
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>Datosx Approved</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="documents"
+                                                            data-field="twoPager"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="
+    padding:8px 0;
+    border-top:1px solid #eee;
+    color:#333;
+    font-weight:600;
+">
+                                                        <span style="margin-right:10px;     display: block;">Project
+                                                            Scoping</span>
+                                                        <span>Two-pager Document</span>
+                                                    </td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span style="color:#01b7f2">View Document</span>
+                                                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            variant="bare" alternative-text="Edit"
+                                                            onclick={handleInlineEdit} data-section="documents"
+                                                            data-field="twoPager"></lightning-button-icon>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Created By</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                        Last Modified By</td>
+                                                    <td class="value-cell"
+                                                        style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                        <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isEstimation}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-estimation record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small estimation-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="protocol-container estimation-layout">
+                            <div class="protocol-left">
+                                <div class="milestone-box">
+                                    <div class="milestone-heading">Estimation</div>
+                                    <div class="step-list" onclick={handleEstimationStepClick}>
+                                        <template for:each={estimationSteps} for:item="step">
+                                            <div key={step.id} data-estimation={step.id} class={step.className}>
+                                                <div class="step-info">
+                                                    <div class="step-title">{step.title}</div>
+                                                </div>
+                                                <div class="step-value-block">
+                                                    <div class="step-cost-line">
+                                                        <span class="step-value-amount">{step.totalCost}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="overall-progress-badge estimation-overall">
+                                        <span class="overall-label">Grand Total</span>
+                                        <div class="overall-total-values">
+                                            <span class="overall-value">{estimationGrandTotal.totalCost}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="protocol-right estimation-right" style="margin-left: -151px;">
+                                <template if:true={isInvoiceScheduleSelected}>
+                                    <div class="invoice-section">
+                                        <div class="invoice-header">
+                                            <div class="invoice-title">{estimationInvoice.title}</div>
+                                            <button
+                                                style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;">
+                                                <span
+                                                    style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                                                <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
+                                            </button>
+                                        </div>
+                                        <table class="invoice-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="col-actions">Actions</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">Milestone</th>
+                                                    <th scope="col">% of Total</th>
+                                                    <th scope="col">Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={estimationInvoice.rows} for:item="row">
+                                                    <tr key={row.id}>
+                                                        <td class="estimation-actions-cell">
+                                                            <lightning-button-icon icon-name="utility:edit"
+                                                                alternative-text="Edit" title="Edit" variant="bare"
+                                                                data-section="invoice" data-row-id={row.id}
+                                                                onclick={handleEstimationEdit}></lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                alternative-text="Delete" title="Delete" variant="bare"
+                                                                data-section="invoice" data-row-id={row.id}
+                                                                onclick={handleEstimationDelete}></lightning-button-icon>
+                                                        </td>
+                                                        <td class="estimation-desc-cell">{row.description}</td>
+                                                        <td>{row.milestone}</td>
+                                                        <td>{row.percent}</td>
+                                                        <td>{row.amount}</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                        <template for:each={estimationInvoice.footnotes} for:item="note">
+                                            <p key={note} class="invoice-footnote">{note}</p>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template if:false={isInvoiceScheduleSelected}>
+                                    <template if:true={currentEstimationSection}>
+                                        <div class="protocol-grid-header">
+                                            <div class="header-left">
+                                                <h4><strong>{currentEstimationSection.title}</strong></h4>
+                                            </div>
+                                            <div class="header-right">
+                                                <button class="btn-add" data-section={currentEstimationSection.id}
+                                                    onclick={handleEstimationAdd} title="Add item"
+                                                    style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;">
+                                                    <span
+                                                        style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                                                    <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="estimation-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="col-actions">Actions</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">
+                                                        <div class="two-line-heading">
+                                                            <span>datosX Cost</span>
+                                                            <small>Per Unit</small>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <div class="two-line-heading">
+                                                            <span>Price Per Unit</span>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col">Unit</th>
+                                                    <th scope="col">QTY</th>
+                                                    <th scope="col">
+                                                        <div class="two-line-heading">
+                                                            <span>Cost (unadjusted)</span>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col">COST</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={currentEstimationRows} for:item="row">
+                                                    <tr key={row.id}>
+                                                        <td class="estimation-actions-cell">
+                                                            <lightning-button-icon icon-name="utility:edit"
+                                                                alternative-text="Edit" title="Edit" variant="bare"
+                                                                data-section={currentEstimationSection.id}
+                                                                data-row-id={row.id}
+                                                                onclick={handleEstimationEdit}></lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                alternative-text="Delete" title="Delete" variant="bare"
+                                                                data-section={currentEstimationSection.id}
+                                                                data-row-id={row.id}
+                                                                onclick={handleEstimationDelete}></lightning-button-icon>
+                                                        </td>
+                                                        <td class="estimation-desc-cell">{row.item}</td>
+                                                        <td>{row.dxCostPerUnit}</td>
+                                                        <td>{row.pricePerUnit}</td>
+                                                        <td>{row.unit}</td>
+                                                        <td>{row.qty}</td>
+                                                        <td>{row.costUnadjusted}</td>
+                                                        <td>{row.totalCost}</td>
+                                                    </tr>
+                                                </template>
+                                                <tr class="estimation-subtotal">
+                                                    <td colspan="6">SUBTOTAL</td>
+                                                    <td>{currentEstimationSubtotal.costUnadjusted}</td>
+                                                    <td>{currentEstimationSubtotal.totalCost}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <p class="estimation-note">{estimationNote}</p>
+                                    </template>
+                                    <template if:false={currentEstimationSection}>
+                                        <div class="estimation-empty">No estimation data available.</div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isRequirements}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-requirements record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="slds-grid slds-grid_pull-padded">
+                            <!-- Requirements: render a grid card for each static capability group (4 total) -->
+                            <template for:each={displayCapabilityGroups} for:item="group" for:index="idx">
+                                <div key={group.id} class="slds-col slds-size_1-of-4 slds-p-horizontal_small">
+                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
+                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
+                                            {group.title}</div>
+                                        <div class={group.bodyClass}>
+                                            <table style="width:100%;border-collapse:collapse;    margin-top: -10px;">
+                                                <thead>
+                                                    <tr>
+                                                        <!-- <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
+                                                        <th style="text-align:center;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={group.items} for:item="item">
+                                                        <tr key={item.id}>
+                                                            <td
+                                                                style="padding:8px 0;border-top:1px solid #eee;color:#333;">
+                                                                {item.label}</td>
+                                                            <td
+                                                                style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;text-align:center;">
+                                                                <input type="checkbox" checked={item.projectNeeds} />
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+        <!-- Row 1: Project ID, Sponsor Company Account -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Project ID</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.projectId}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Sponsor Company Account</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.sponsorName}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 2: Project Name, Project Status -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Project Name</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.projectName}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Project Status</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.status}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 3: Project Description, Study Two-pager -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Project Description</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.description}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Study Two-pager</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.twoPager}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 4: Empty, datosX primary contact -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2"></div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">datosX primary contact</label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.ownerName}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+        <!-- Other Information Section -->
+        <!-- <div class="test-id__section slds-section has-header slds-is-open slds-m-vertical_none">
+                                    <h3 class="test-id__section-header-container slds-section__title">
+                                        <button class="test-id__section-header-button slds-section__title-action slds-button" aria-expanded="true">
+                                            <span class="test-id__section-header-icon slds-icon_container slds-m-right_x-small">
+                                                <lightning-icon icon-name="utility:chevrondown" size="x-small"></lightning-icon>
+                                            <div style="padding:10px;">
+                                        
+                                                <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;">
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Field</div>
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">Value</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Project ID</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.projectId}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Project Status</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.status}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Project Name</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.projectName}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Publish Project</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;align-items:center;display:flex;"><input type="checkbox" disabled checked={project.publishProject} /></div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">HS Matching Completed</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;display:flex;align-items:center;"><input type="checkbox" disabled checked={project.hsMatchingCompleted} /></div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Sponsor Company Account</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.sponsorName}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Project Description</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.description}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Project Document Url</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.documentUrl}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">datosX primary contact</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.primaryContact}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Study Two-pager</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.twoPager}</div>
+
+                                                    <div style="color:#333;font-weight:600;padding:8px 0;border-top:1px solid #eee;">Owner</div>
+                                                    <div style="color:#333;padding:8px 0;border-top:1px solid #eee;border-left:1px solid #eee;padding-left:12px;">{project.ownerName}</div>
+                                                </div>
+                                            </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Primary study objective</label>
+                                                            <lightning-helptext content="Primary study objective information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.primaryObjective}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Information Type</label>
+                                                            <lightning-helptext content="Information Type information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.informationType}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 3: Study Objectives (Secondary/Tertiary), Statistical Analysis Required? -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Study Objectives (Secondary/Tertiary)</label>
+                                                            <lightning-helptext content="Study Objectives (Secondary/Tertiary) information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.secondaryObjectives}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Statistical Analysis Required?</label>
+                                                            <lightning-helptext content="Statistical Analysis Required? information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.statisticalAnalysis}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 4: Study Population Criteria, Expected Timeline -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Study Population Criteria</label>
+                                                            <lightning-helptext content="Study Population Criteria information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.populationCriteria}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Expected Timeline</label>
+                                                            <lightning-helptext content="Expected Timeline information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.expectedTimeline}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 5: Study Exclusions, Is Health System Chosen? -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Study Exclusions</label>
+                                                            <lightning-helptext content="Study Exclusions information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.studyExclusions}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Is Health System Chosen?</label>
+                                                            <lightning-helptext content="Is Health System Chosen? information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.healthSystemChosen}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+        <!-- Row 6: Participant Enrollment Target, Submitted by -->
+        <!-- <div class="slds-form__row">
+                                                <div class="slds-grid slds-gutters slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Participant Enrollment Target</label>
+                                                            <lightning-helptext content="Participant Enrollment Target information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.enrollmentTarget}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                                            <label class="slds-form-element__label">Submitted by</label>
+                                                            <lightning-helptext content="Submitted by information"></lightning-helptext>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-form-element__static">{project.submittedBy}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section> -->
+        <!-- Conditional tab content: Documents -->
+        <template if:true={isDocuments}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-documents record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <c-documents-view project={project}></c-documents-view>
+                    </div>
+                </div>
+            </section>
+        </template>
+        <!-- HS Matches & Messaging tab content -->
+        <template if:true={isHSMatches}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-hs-matches record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small hs-matches-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="hs-matches-wrapper">
+                            <div class="hs-three-columns">
+                                <div class="hs-left-panel">
+                                    <!-- Left panel intentionally left minimal (Top matches can render here) -->
+                                    <div class="hs-panel-card">
+                                        <div class="hs-panel-header">
+                                            <h5 class="fw-bold mb-0">Top 10 HS Matches</h5>
+                                        </div>
+                                        <div class="hs-panel-body">
+                                            <template for:each={hsMatches} for:item="hs">
+                                                <div key={hs.id} class={hs.itemClass} onclick={handleHSSelect}
+                                                    data-id={hs.id}>
+                                                    <div class="d-flex align-items-center">
+                                                        <a class="avatar me-2 flex-shrink-0">
+                                                            <img src={hs.avatar} alt={hs.name} class="rounded-circle">
+                                                        </a>
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="fs-14 mb-1 text-truncate">{hs.name}</h6>
+                                                            <p class="mb-0 fs-13 text-truncate">Relevance Score</p>
+                                                        </div>
+                                                    </div>
+                                                    <span
+                                                        class="badge fw-medium bg-success flex-shrink-0">{hs.matchPercentage}%</span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-middle-panel">
+                                    <div class="hs-panel-card">
+                                        <div class="hs-panel-header">
+                                            <h5 class="fw-bold mb-0">Capabilities: {selectedHSName}</h5>
+                                        </div>
+                                        <div class="hs-panel-body capabilities-scroll">
+                                            <!-- New expandable grid layout: each group renders as a single summary row
+                                                             with a toggle in the first column. When opened the group's items
+                                                             are shown as rows beneath the group (uses existing group.isOpen
+                                                             and toggleDropdown handler). -->
+                                            <div class="table-wrapper capability-table-wrapper">
+                                                <table
+                                                    class="slds-table slds-table_bordered slds-table_cell-buffer capability-table">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col" style="width: 250px;">
+                                                                <div class="slds-truncate">Capabilty</div>
+                                                            </th>
+                                                            <!-- <th scope="col">
+                                                                <div class="slds-truncate">Capability</div>
+                                                            </th> -->
+                                                            <th scope="col" style="width: 105px;">
+                                                                <div class="slds-truncate">Project Needs</div>
+                                                            </th>
+                                                            <th scope="col" style="width: 120px;">
+                                                                <div class="slds-truncate">HS Capabilities</div>
+                                                            </th>
+                                                            <th scope="col" style="width: 59px;">
+                                                                <div class="slds-truncate">Weight</div>
+                                                            </th>
+                                                            <th scope="col" style="    text-align: center;">
+                                                                <div class="slds-truncate">Score</div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={capabilityGroups} for:item="group">
+                                                            <!-- Summary row for group -->
+                                                            <tr key={group.id} class="capability-group-row">
+                                                                <td>
+                                                                    <button class="group-toggle btn-reset"
+                                                                        aria-expanded={group.isOpen} data-id={group.id}
+                                                                        onclick={toggleDropdown}>
+                                                                        <template if:true={group.isOpen}><span
+                                                                                class="toggle-icon">▾</span></template>
+                                                                        <template if:false={group.isOpen}><span
+                                                                                class="toggle-icon">▸</span></template>
+                                                                        <span class="group-title">{group.title}</span>
+                                                                    </button>
+                                                                </td>
+                                                                <!-- <td></td> -->
+                                                                <td style="text-align: center;">
+                                                                    {group.projectNeedsCount}</td>
+                                                                <td style="text-align: center;">{group.hsCount}</td>
+                                                                <td style="text-align: center;">{group.weight}</td>
+                                                                <td style="text-align: center;">{group.score}</td>
+
+                                                            </tr>
+
+                                                            <!-- Expanded rows for group's items -->
+                                                            <template if:true={group.isOpen}>
+                                                                <template for:each={group.items} for:item="item">
+                                                                    <tr key={item.id} class="capability-item-row">
+                                                                        <!-- <td></td> -->
+                                                                        <td>{item.label}</td>
+                                                                        <td class="col-checkbox"
+                                                                            style="text-align: center;">
+                                                                            <input type="checkbox"
+                                                                                checked={item.projectNeeds}
+                                                                                class={item.projectNeeds}
+                                                                                data-both={item.projectNeeds}
+                                                                                data-hs={item.hs} />
+                                                                        </td>
+                                                                        <td class="col-checkbox"
+                                                                            style="text-align: center;">
+                                                                            <input type="checkbox" checked={item.hs}
+                                                                                class={item.hs}
+                                                                                data-both={item.projectNeeds}
+                                                                                data-hs={item.hs} />
+                                                                        </td>
+                                                                        <td style="text-align: center;">{item.weight}
+                                                                        </td>
+                                                                        <td style="text-align: center;">{item.score}
+                                                                        </td>
+                                                                    </tr>
+                                                                </template>
+                                                            </template>
+                                                        </template>
+                                                        <!-- Static total row -->
+                                                        <tr class="capability-total-row slds-text-title_bold">
+                                                            <td><strong style="font-size: 20px;">Total</strong></td>
+                                                            <td style="text-align: center;">{totalProjectNeeds}</td>
+                                                            <td style="text-align: center;">{totalHS}</td>
+
+                                                            <td style="text-align: center;">{totalWeightPercent}</td>
+                                                            <td style="text-align: center;">{totalScorePercent}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Messaging (like Angular DX Messages) -->
+                                <div class="hs-right-panel">
+                                    <div class="hs-panel-card chat-card">
+                                        <!-- <div class="chat-header">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h5 class="fw-bold mb-0">Chat</h5>
+
+                                            </div>
+                                            
+                                        </div> -->
+                                        <div class="hs-panel-header">
+                                            <h5 class="fw-bold mb-0">Chat</h5>
+                                        </div>
+                                        <!-- <div style="margin-bottom: 11px;">
+                                            <div class="chat-tabs-buttons">
+                                                <button class={hsTabClass} onclick={selectHSTab}>HS</button>
+                                                <button class={sponsorTabClass} onclick={selectSponsorTab}>Sponsor</button>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="chat-body">
+                                            <template for:each={currentMessages} for:item="msg">
+                                                <div key={msg.id} class={msg.chatClass}>
+                                                    <template if:true={msg.isReceived}>
+                                                        <div class="d-flex align-items-start">
+                                                            <span class="avatar me-2 flex-shrink-0">
+                                                                <img src={msg.avatar} alt="user">
+                                                            </span>
+                                                            <div>
+                                                                <div class="d-flex align-items-center mb-1">
+                                                                    <h6 class="fs-14 mb-0">{msg.sender}</h6>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="message-box receive-message">
+                                                                        <p class="mb-0 fs-16">{msg.text}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                    <template if:true={msg.isSent}>
+                                                        <div class="d-flex align-items-start justify-content-end">
+                                                            <div>
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-end mb-1">
+                                                                    <h6 class="fs-14 fw-semibold mb-0">You</h6>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="message-box sent-message"
+                                                                        style="background-color: #D9FDD3;">
+                                                                        <p class="mb-0 fs-16">{msg.text}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="avatar ms-2 flex-shrink-0">
+                                                                <img src={msg.avatar} alt="user">
+                                                            </span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </div>
+
+                                        <div class="chat-footer">
+                                            <div class="flex-fill">
+                                                <input type="text" style="width: 225px;" class="form-control border-0"
+                                                    placeholder="Type Something..." value={messageInput}
+                                                    onchange={handleMessageInput} />
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <button class="btn btn-send" onclick={sendMessage}>
+                                                    Send
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Messaging tab content -->
+        <template if:true={isMessaging}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-messaging record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small messaging-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="messaging-container" style="display:flex;flex-direction:column;gap:1.5rem;min-height:660px;background:#f3f2f1;padding:1.5rem;border-radius:20px;border:1px solid #d0d0d0;">
+                            <div class="outlook-toolbar" style="display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;">
+                                <div style="display:flex;gap:0.5rem;">
+                                    <button class={sponsorsTabClass} data-tab="sponsors" onclick={handleMessagingTabClick} style="border-radius:999px;padding:0.45rem 1.25rem;">Sponsors ({sponsorsCount})</button>
+                                    <button class={healthSystemsTabClass} data-tab="healthSystems" onclick={handleMessagingTabClick} style="border-radius:999px;padding:0.45rem 1.25rem;">Health Systems ({healthSystemsCount})</button>
+                                </div>
+                                <div style="display:flex;gap:0.5rem;align-items:center;flex:1;min-width:260px;">
+                                    <input type="text" class="messaging-search-input" placeholder="Search" style="flex:1;border-radius:999px;padding:0.5rem 1.25rem;border:1px solid #c8c6c4;background:#fff;" />
+                                    <button style="background:#0078d4;color:white;border:none;padding:0.45rem 1.25rem;border-radius:6px;">Filter</button>
+                                </div>
+                            </div>
+                            <div class="outlook-header" style="background:#ffffff;border-radius:14px;border:1px solid #d2d0ce;padding:0.75rem 1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;">
+                                <div style="display:flex;gap:0.5rem;align-items:center;">
+                                    <button style="background:#0078d4;color:white;border:none;padding:0.55rem 1.4rem;border-radius:6px;font-weight:600;">New mail</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Delete</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Archive</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Report</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Move to</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Reply all</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Read / Unread</button>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Flag / Unflag</button>
+                                </div>
+                                <div style="display:flex;gap:0.75rem;align-items:center;">
+                                    <div style="display:flex;flex-direction:column;text-align:right;">
+                                        <span style="font-size:0.85rem;color:#5a5a5a;">navin@optionmatrix.com</span>
+                                        <span style="font-size:0.8rem;color:#8a8886;">Focused Inbox</span>
+                                    </div>
+                                    <button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Undo</button>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="outlook-main" style="display:grid;grid-template-columns:220px 360px 1fr;gap:1rem;flex:1;min-height:0;">
+                                <aside class="outlook-folders" style="background:#faf9f8;border:1px solid #d2d0ce;border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:1rem;">
+                                    <div>
+                                        <h5 style="margin:0 0 0.75rem;font-size:0.85rem;font-weight:600;color:#605e5c;">Favorites</h5>
+                                        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.35rem;font-size:0.93rem;color:#201f1e;">
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;border-radius:6px;background:#e3f2fd;color:#0f6cbd;font-weight:600;">
+                                                <span>Inbox</span>
+                                                <span>{visibleMessagingContacts.length}</span>
+                                            </li>
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+                                                <span>Sent Items</span>
+                                                <span>48</span>
+                                            </li>
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+                                                <span>Drafts</span>
+                                                <span>3</span>
+                                            </li>
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+                                                <span>Deleted Items</span>
+                                                <span>16</span>
+                                            </li>
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+                                                <span>Junk Email</span>
+                                                <span>30</span>
+                                            </li>
+                                            <li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+                                                <span>Archive</span>
+                                                <span>5</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 style="margin:1rem 0 0.4rem;font-size:0.85rem;font-weight:600;color:#605e5c;">Folders</h5>
+                                        <div style="display:flex;flex-direction:column;gap:0.3rem;font-size:0.9rem;color:#201f1e;">
+                                            <span>Conversation History</span>
+                                            <span>Notes</span>
+                                            <span>Go to Groups</span>
+                                        </div>
+                                    </div>
+                                </aside>
+
+                                <section class="outlook-message-list" style="background:#fff;border:1px solid #d2d0ce;border-radius:12px;display:flex;flex-direction:column;min-height:0;">
+                                    <div style="display:flex;justify-content:space-between;border-bottom:1px solid #edebe9;padding:0.65rem 1rem;align-items:center;">
+                                        <div style="display:flex;gap:1rem;align-items:center;">
+                                            <button style="background:none;border:none;color:#0f6cbd;font-weight:600;font-size:0.95rem;position:relative;padding:0;">
+                                                Focused
+                                                <span style="position:absolute;left:0;bottom:-8px;width:100%;height:2px;background:#0f6cbd;display:block;"></span>
+                                            </button>
+                                            <button style="background:none;border:none;color:#605e5c;font-size:0.95rem;">Other</button>
+                                        </div>
+                                        <span style="color:#8a8886;font-size:0.8rem;">Sort | Filter</span>
+                                    </div>
+                                    <div class="messaging-contacts-list" style="flex:1;overflow:auto;padding:0;">
+                                        <template for:each={visibleMessagingContacts} for:item="contact">
+                                            <article key={contact.id} data-id={contact.id} onclick={handleMessagingContactClick}
+                                                class={contact.itemClass} style="position:relative;display:flex;gap:0.75rem;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid #edebe9;cursor:pointer;background:#ffffff;">
+                                                <template if:true={contact.active}>
+                                                    <span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#0078d4;border-top-right-radius:4px;border-bottom-right-radius:4px;"></span>
+                                                </template>
+                                                <span class="avatar" style="width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid #ffffff;box-shadow:0 0 0 1px #edebe9;">
+                                                    <img src={contact.avatar} alt={contact.name} style="width:100%;height:100%;object-fit:cover;" />
+                                                </span>
+                                                <div style="flex:1;min-width:0;">
+                                                    <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                                                        <h6 class="messaging-contact-item-name" style="margin:0;font-size:0.95rem;font-weight:600;color:#323130;">{contact.name}</h6>
+                                                        <span style="font-size:0.75rem;color:#8a8886;">Wed 2:39 AM</span>
+                                                    </div>
+                                                    <p style="margin:0;color:#605e5c;font-size:0.82rem;">Arrive at your goals faster with new learning resources.</p>
+                                                    <p style="margin:0.15rem 0 0;color:#a19f9d;font-size:0.78rem;">Get from where you are to where you&apos;re going.</p>
+                                                </div>
+                                                <template if:true={contact.unread}>
+                                                    <span class="messaging-unread-badge" style="background:#107c10;color:white;border-radius:50%;min-width:24px;height:24px;font-size:0.7rem;">{contact.unread}</span>
+                                                </template>
+                                            </article>
+                                        </template>
+                                    </div>
+                                </section>
+
+                                <section class="outlook-detail" style="background:#f5f6f8;border:1px solid #d2d0ce;border-radius:12px;display:flex;flex-direction:column;min-height:0;">
+                                    <div style="background:#ffffff;border-top-left-radius:12px;border-top-right-radius:12px;border-bottom:1px solid #edebe9;padding:1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+                                        <div>
+                                            <h2 style="margin:0;font-size:1.2rem;color:#252423;">Project Intake Confirmation — <template if:true={selectedContact}>{selectedContact.name}</template><template if:false={selectedContact}>datosX Partner</template></h2>
+                                        </div>
+                                        <div style="display:flex;gap:0.65rem;align-items:center;color:#5c2d91;">
+                                            <lightning-icon icon-name="utility:reply" variant="bare" size="small"></lightning-icon>
+                                            <lightning-icon icon-name="utility:reply_all" variant="bare" size="small"></lightning-icon>
+                                            <lightning-icon icon-name="utility:forward" variant="bare" size="small"></lightning-icon>
+                                            <lightning-icon icon-name="utility:table" variant="bare" size="small"></lightning-icon>
+                                        </div>
+                                    </div>
+                                    <div style="padding:17px;overflow:auto;flex:1;">
+                                        <div style="background:#ffffff;border-radius:16px;border:1px solid #edebe9;padding:1.5rem;box-shadow:0 4px 12px rgba(28,26,25,0.05);max-width:734px;margin:0 auto;">
+                                            <template if:true={selectedContact}>
+                                                <div style="display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:1.25rem;">
+                                                    <div style="display:flex;gap:0.85rem;align-items:center;">
+                                                        <span class="avatar" style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#cfe4ff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#17427c;">
+                                                            <img src={selectedContact.avatar} alt={selectedContact.name} style="width:100%;height:100%;object-fit:cover;" />
+                                                        </span>
+                                                        <div>
+                                                            <p style="margin:0;color:#252423;font-weight:600;">{selectedContact.name}</p>
+                                                            <p style="margin:0;color:#605e5c;font-size:0.85rem;">intake.notifications@datosx.com</p>
+                                                            <p style="margin:0.35rem 0 0;color:#8a8886;font-size:0.8rem;">To: You</p>
+                                                        </div>
+                                                    </div>
+                                                    <span style="color:#8a8886;font-size:0.8rem;">Thu 11/20/2025 09:14 AM</span>
+                                                </div>
+                                            </template>
+                                            <template if:false={selectedContact}>
+                                                <p style="color:#605e5c;font-weight:600;margin-bottom:1.5rem;">Select a sponsor or health system to preview its latest email.</p>
+                                            </template>
+                                            <div style="color:#2f2f2f;font-size:0.95rem;line-height:1.6;margin-bottom:1.5rem;">
+                                                <p>Hello team,</p>
+                                                <p>We received your most recent project intake package for the "Cerebro DX" collaboration and have started the internal alignment process. Our operations pod is validating site readiness details, enrollment targets, and the requested data provisioning cadence.</p>
+                                                <p>Expect a follow-up summary with confirmed milestones within 2 business days. Let us know if there are updates to sponsor expectations or health system availability so we can reflect that in the kickoff deck.</p>
+                                                <p>Regards,<br />datosX Intake Desk</p>
+                                            </div>
+                                            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+                                                <button style="border:1px solid #0078d4;background:#ffffff;color:#0078d4;padding:0.45rem 1.25rem;border-radius:8px;font-weight:600;">Appreciate the quick update.</button>
+                                                <button style="border:1px solid #0078d4;background:#ffffff;color:#0078d4;padding:0.45rem 1.25rem;border-radius:8px;font-weight:600;">Please confirm target go-live.</button>
+                                            </div>
+                                            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                                                <button style="display:flex;align-items:center;gap:0.4rem;border:1px solid #d2d0ce;background:#ffffff;border-radius:8px;padding:0.45rem 1.25rem;font-weight:600;color:#5c2d91;">
+                                                    <lightning-icon icon-name="utility:reply" size="x-small" alternative-text="Reply"></lightning-icon>
+                                                    Reply
+                                                </button>
+                                                <button style="display:flex;align-items:center;gap:0.4rem;border:1px solid #d2d0ce;background:#ffffff;border-radius:8px;padding:0.45rem 1.25rem;font-weight:600;color:#0f6cbd;">
+                                                    <lightning-icon icon-name="utility:forward" size="x-small" alternative-text="Forward"></lightning-icon>
+                                                    Forward
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Protocol tab content -->
+        <template if:true={isProtocol}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-protocol record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small protocol-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="protocol-container">
+                            <!-- Left: Milestone & Steps -->
+                            <div class="protocol-left">
+                                <div class="milestone-box">
+                                    <div class="milestone-heading">Milestone</div>
+                                    <!-- Overall Progress Badge -->
+
+                                    <div class="step-list" onclick={handleProtocolStepClick}>
+                                        <template for:each={protocolSteps} for:item="step">
+                                            <div key={step.name} data-step={step.name} class={step.className}>
+                                                <div class="step-title">{step.name}</div>
+                                                <div class="milestone-badge">{step.progress}%</div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="overall-progress-badge">
+                                        <span class="overall-label">Overall Progress:</span>
+                                        <span class="overall-value">{overallProgress}%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Grid that changes per selected step -->
+                            <div class="protocol-right" style="margin-left: -151px;">
+                                <div class="protocol-grid-header">
+                                    <div class="header-left">
+                                        <h4><strong>{selectedProtocolStep}</strong></h4>
+                                    </div>
+                                    <div class="header-right">
+                                        <label class="completed-label">
+                                            <span> Show Completed</span>
+                                            <input type="checkbox" />
+
+                                        </label>
+                                        <button class="btn-add" onclick={openAddActivityPopup} title="Add Activity"
+                                            style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;">
+                                            <span
+                                                style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                                            <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="protocol-grid-table-activities">
+                                    <table class="activities-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Actions</th>
+                                                <th style="width:60px;">Select</th>
+                                                <th>Activity</th>
+                                                <th>Plan Start</th>
+                                                <th>Plan Finish</th>
+                                                <th>Actual Start</th>
+
+                                                <th>Actual Finish</th>
+                                                <th>ETA</th>
+                                                <th style="width:160px;">Progress</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={currentProtocolRows} for:item="row">
+                                                <tr key={row.id} class="activity-row">
+                                                    <td class="td-action">
+                                                        <div class="slds-button-group" role="group">
+                                                            <lightning-button-icon icon-name="utility:edit"
+                                                                variant="bare" alternative-text="Edit" title="Edit"
+                                                                data-id={row.id} onclick={handleEdit}
+                                                                class="slds-m-right_x-small icon-edit">
+                                                            </lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                variant="bare" alternative-text="Delete" title="Delete"
+                                                                data-id={row.id} onclick={handleDelete}
+                                                                class="icon-delete" style="color: #c23934 !important;"
+                                                                icon-class="icon-delete-svg">
+                                                            </lightning-button-icon>
+                                                        </div>
+                                                    </td>
+                                                    <td class="td-select">
+                                                        <input type="checkbox" checked={row.checked}
+                                                            data-activity-id={row.id}
+                                                            onchange={handleActivityCheckboxChange} />
+                                                    </td>
+                                                    <td class="td-activity">{row.activity}</td>
+                                                    <td class="td-plan-date">{row.planDate}</td>
+                                                    <td class="td-plan-finish">{row.planFinish}</td>
+                                                    <td class="td-actual-date">{row.actualDate}</td>
+
+                                                    <td class="td-actual-finish">{row.actualFinish}</td>
+                                                    <td class="td-eta">{row.actualFinish}</td>
+                                                    <td class="td-progress">
+                                                        <div class="progress-container">
+                                                            <div class="progress-bar-outer">
+                                                                <div class="progress-bar-inner"
+                                                                    data-progress={row.progress}></div>
+                                                            </div>
+                                                            <div class="progress-label">{row.progress}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Add Activity Modal -->
+                            <template if:true={isAddActivityOpen}>
+                                <div class="modal-overlay" onclick={handleModalOverlayClick}>
+                                    <div class="modal-card" role="dialog" onclick={stopPropagation}>
+                                        <div class="modal-header">
+                                            <h3>Add Activity</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-row">
+                                                <label>Milestone</label>
+                                                <lightning-combobox options={milestoneOptions} value={addFormMilestone}
+                                                    onchange={handleAddFormMilestoneChange}></lightning-combobox>
+                                            </div>
+                                            <div class="form-row">
+                                                <label>Description</label>
+                                                <lightning-textarea placeholder="Enter description"
+                                                    value={addFormDescription}
+                                                    onchange={handleAddFormDescriptionChange}></lightning-textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light" onclick={closeAddActivityPopup}>Close</button>
+                                            <button class="btn btn-primary" onclick={saveAddActivity}>Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Legal tab content -->
+        <template if:true={isLegal}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-legal record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small legal-card">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div class="protocol-container">
+                            <!-- Left: Agreement Types -->
+                            <div class="protocol-left">
+                                <div class="milestone-box" style="width: 228px;">
+                                    <div class="milestone-heading">Agreement Types</div>
+                                    <div class="step-list" onclick={handleLegalStepClick}>
+                                        <template for:each={legalStepsObjs} for:item="lstep">
+                                            <div key={lstep.name} data-legal={lstep.name} class={lstep.className}>
+                                                <div class="step-title">{lstep.name}</div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Grid for selected Agreement Type -->
+                            <div class="protocol-right">
+                                <div class="protocol-grid-header">
+                                    <h4><strong>{selectedLegalStep}</strong></h4>
+                                </div>
+                                <div class="protocol-grid-table">
+                                    <table class="protocol-table legal-table" role="grid">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="col-actions">Actions</th>
+                                                <th scope="col">Version</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Initiated By</th>
+                                                <th scope="col">HS</th>
+                                                <th scope="col">Sponsor</th>
+                                                <th scope="col">DX</th>
+                                                <th scope="col">Execute</th>
+                                                <th scope="col">Due Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={currentLegalRows} for:item="lrow">
+                                                <tr key={lrow.id}>
+                                                    <td class="col-actions">
+                                                        <div class="slds-button-group" role="group">
+                                                            <lightning-button-icon icon-name="utility:edit"
+                                                                variant="bare" alternative-text="Edit" title="Edit"
+                                                                data-id={lrow.id} onclick={handleLegalEdit}
+                                                                class="slds-m-right_x-small icon-edit"></lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                variant="bare" alternative-text="Delete" title="Delete"
+                                                                data-id={lrow.id} onclick={handleLegalDelete}
+                                                                class="icon-delete" style="color: #c23934 !important;"
+                                                                icon-class="icon-delete-svg"></lightning-button-icon>
+                                                        </div>
+                                                    </td>
+                                                    <td>{lrow.version}</td>
+                                                    <td>{lrow.status}</td>
+                                                    <td>{lrow.initiatedBy}</td>
+                                                    <td>
+                                                        <lightning-avatar src={lrow.hsAvatar}
+                                                            alternative-text={lrow.hsName} size="small"
+                                                            style="margin-right:8px;"></lightning-avatar>
+
+                                                        <span class="col-label">{lrow.hsName}</span>
+                                                    </td>
+                                                    <td>
+                                                        <lightning-avatar src={lrow.sponsorAvatar}
+                                                            alternative-text={lrow.sponsorName} size="small"
+                                                            style="margin-right:8px;    "></lightning-avatar>
+                                                        <span class="col-label">{lrow.sponsorName}</span>
+                                                    </td>
+                                                    <td>
+                                                        <lightning-avatar src={lrow.dxAvatar}
+                                                            alternative-text={lrow.dxName} size="small"
+                                                            style="margin-right:8px;"></lightning-avatar>
+                                                        <span class="col-label">{lrow.dxName}</span>
+                                                    </td>
+                                                    <td class="execute-col">
+                                                        <button class="execute-btn" data-id={lrow.id} title="Execute"
+                                                            onclick={handleExecuteClick}>
+                                                            <lightning-icon icon-name="utility:chevronright"
+                                                                alternative-text="Execute"
+                                                                size="x-small"></lightning-icon>
+                                                        </button>
+                                                    </td>
+                                                    <td style="text-align:left">{lrow.dueDate}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </div>
+
+    <!-- Global Execute Confirmation Modal (always present so it opens regardless of active tab) -->
+    <template if:true={isExecuteOpen}>
+        <div class="modal-overlay" onclick={handleExecuteOverlayClick}>
+            <div class="modal-card" role="dialog" onclick={stopPropagation} style="width: 339px;">
+                <div class="modal-header">
+                    <h3>Execute</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to execute?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeExecutePopup}>No</button>
+                    <button class="btn btn-primary" onclick={confirmExecute}>Yes</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</template>

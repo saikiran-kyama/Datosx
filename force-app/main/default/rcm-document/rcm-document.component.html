@@ -1,0 +1,627 @@
+
+<div class="nav-container mt-4" [ngClass]="{'nav-open': isNavOpen, 'nav-closed': !isNavOpen}">
+
+
+    <!-- Toggle Button with Hamburger Icon -->
+    <button (click)="toggleNav()" class="toggle-button">
+        <mat-icon class="toggle-icon">menu</mat-icon>
+    </button>
+
+
+
+    <!-- Navigation Links -->
+    <nav class="nav-links" *ngIf="isNavOpen">
+        <h3>Doc Types</h3>
+        <!-- 'Post' list -->
+        <ul *ngIf="showPost">
+            <li *ngFor="let item of items" routerLinkActive="active" [ngClass]="{'clicked-item': item === selectedItem}"
+                (click)="selectItem(item)">
+                <a style="margin-top: 10px;">{{ item }}</a>
+            </li>
+        </ul>
+
+        <!-- 'Pre' list -->
+        <ul *ngIf="!showPost">
+            <li *ngFor="let item of itemss" routerLinkActive="active"
+                [ngClass]="{'clicked-item': item === selectedItems}" (click)="selectItems(item)">
+                <a style="margin-top: 10px;">{{ item }}</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div [ngClass]="{'full-width': !isNavOpen}" class="col-sm-10">
+
+    <div *ngIf="isNavOpen" style="display: flex; align-items: center;margin-left: 10%; transform: translate(10px, -46px);">
+        <!-- Image Container -->
+        <div class="col-sm-2" style="  cursor: pointer" (click)="toggleCard()">
+            <img src="../../../../assets/rbg.png" class="top-left-image"
+                style="width: 35px; height: 35px; margin-top: -18%; margin-left: 40px" />
+        </div>
+    
+    
+        <mat-card class="col-sm-10 pull-right" style="
+                height: 35px;
+                background-color: black;
+                margin-top: -2.5%;
+                margin-left: -15px;
+                margin-right: -10px;
+              " *ngIf="showCard">
+            <div fxLayout="row" fxLayoutAlign="start center"
+                style="gap: 30px; padding: 0 10px; display: flex; align-items: center">
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px; gap: 30px">Referrals</span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">120,000</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table')">
+                        {{ showTable ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+    
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Visits </span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">105,991</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table1')">
+                        {{ showTable1 ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Claims </span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">65,001</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table2')">
+                        {{ showTable2 ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Paid</span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">45,962</span>
+                </div>
+    
+                <div style="display: flex; align-items: center; gap: 7px">
+    
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 7px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="referralsFilter($event)">
+                        filter_list
+                    </mat-icon>
+                </div>
+    
+            </div>
+        </mat-card>
+    
+    </div>
+
+    <div *ngIf="!isNavOpen" style="display: flex; align-items: center;margin-left: 10%; transform: translate(10px, -46px);">
+        <!-- Image Container -->
+        <div class="col-sm-2" style="  cursor: pointer" (click)="toggleCard()">
+            <img src="../../../../assets/rbg.png" class="top-left-image"
+                style="width: 35px; height: 35px; margin-top: -10%; margin-left: 40px" />
+        </div>
+    
+    
+        <mat-card class="col-sm-10 pull-right" style="
+                height: 35px;
+                background-color: black;
+                margin-top: -2.5%;
+                margin-left: -15px;
+                margin-right: -10px;
+              " *ngIf="showCard">
+            <div fxLayout="row" fxLayoutAlign="start center"
+                style="gap: 30px; padding: 0 10px; display: flex; align-items: center">
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px; gap: 30px">Referrals</span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">120,000</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table')">
+                        {{ showTable ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+    
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Visits </span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">105,991</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table1')">
+                        {{ showTable1 ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Claims </span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">65,001</span>
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 10px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="toggleTable('table2')">
+                        {{ showTable2 ? "expand_less" : "add" }}
+                    </mat-icon>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <span style="color: white; line-height: 35px">Paid</span>
+                    <span style="
+                      color: white;
+                      line-height: 35px;
+                      gap: 30px;
+                      margin-right: 10px;
+                    ">45,962</span>
+                </div>
+    
+                <div style="display: flex; align-items: center; gap: 7px">
+    
+                    <mat-icon style="
+                      cursor: pointer;
+                      margin-right: 7px;
+                      background-color: lightgray;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 35px;
+                      height: 35px;
+                      padding: 18px 15px 12px 15px;
+                    " (click)="referralsFilter($event)">
+                        filter_list
+                    </mat-icon>
+                </div>
+    
+            </div>
+        </mat-card>
+    
+    </div>
+    
+    
+    <div *ngIf="showTable" @slideIn style="margin-left: 23.8%" class="dropdown-content">
+        <div id="grid-table-container" class="table-responsive">
+            <h4>Gap Analysis - Referral vs. Visits</h4>
+            <table matSort class="table table-bordered table-hover">
+                <tbody>
+                    <tr *ngFor="let user of dataSource; let i = index;let last = last">
+                        <td [ngStyle]="{
+                        'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9'
+                      }">
+                            {{ user.workList }}
+                        </td>
+                        <td [ngStyle]="{
+                            'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9',
+                            'color': last ? 'black' : 'blue'
+                          }" [routerLink]="last ? null : ['/rcm-login/referrals']" [style.cursor]="last ? 'default' : 'pointer'">
+                          {{ user.volume }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div *ngIf="showTable1" @slideIn style="margin-left: 45%" class="dropdown-content">
+        <div id="grid-table-container" class="table-responsive">
+            <h4>Gap Analysis - Visits vs. Claims</h4>
+            <table matSort class="table table-bordered table-hover">
+                <tbody>
+                    <tr *ngFor="let user of dataSource1; let i = index;let last = last">
+                        <td [ngStyle]="{
+                        'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9'
+                      }">
+                            {{ user.workList }}
+                        </td>
+                        <td [ngStyle]="{
+                            'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9',
+                            'color': last ? 'black' : 'blue'
+                          }" [routerLink]="last ? null : ['/rcm-login/referrals']" [style.cursor]="last ? 'default' : 'pointer'">
+                          {{ user.volume }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div *ngIf="showTable2" @slideIn style="margin-left: 65.5%" class="dropdown-content">
+        <div id="grid-table-container" class="table-responsive">
+            <h4>Gap Analysis - Claims vs. Paid</h4>
+            <table matSort class="table table-bordered table-hover">
+                <tbody>
+                    <tr *ngFor="let user of dataSource2; let i = index;let last = last">
+                        <td [ngStyle]="{
+                        'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9'
+                      }">
+                            {{ user.workList }}
+                        </td>
+                        <td [ngStyle]="{
+                            'background-color': i % 2 === 0 ? 'lightgray' : '#f1f8e9',
+                            'color': last ? 'black' : 'blue'
+                          }" [routerLink]="last ? null : ['/rcm-login/referrals']" [style.cursor]="last ? 'default' : 'pointer'">
+                          {{ user.volume }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+
+    <div class="row">
+        <div class="col-sm-12 mt-5" fxLayout="row wrap" #resizedDiv>
+            <div class="w-100 flex-p" style="margin-top: -10px; margin-bottom: 10px;">
+                <button mat-raised-button class="pull-right margin-right-10 abode" (click)="filterToggle = !filterToggle"
+                    style="background-color: black; color:white;">
+                    <mat-icon>filter_list</mat-icon> Filter
+                </button>
+                <button mat-raised-button class="pull-right margin-right-10 abode"
+                    style="background-color: black; color:white; margin-left: 5px;" (click)="isCardView = !isCardView">
+                    <mat-icon>{{ isCardView ? 'view_module' : 'view_list' }}</mat-icon>
+                    {{ isCardView ? 'Grid View' : 'Card View' }}
+                </button>
+                <!-- <div class="switchToggle pull-right" style="margin-right:10px!important;">
+                    <input type="checkbox" id="switch" />
+                    <label class="mt-4" style="background-color: #3e98d3;" for="switch">Toggle</label>
+                </div> -->
+
+                <mat-select class="form-control pull-right" [value]="1" placeholder="Select Category"
+                    style="width: 200px;margin-right:10px;">
+                    <mat-option [value]="1">All</mat-option>
+                    <mat-option [value]="3">Medical</mat-option>
+                    <mat-option [value]="2">Billing</mat-option>
+                    <mat-option [value]="5">Imaging</mat-option>
+                </mat-select>
+                <label class="pull-right mt-2" style="width: 80px;margin-right:20px;">Category :</label>
+
+                <!-- Only show buttons when navigation is open -->
+                <div>
+                    <button mat-raised-button class="margin-right-10 btn-hover" color="primary"
+                        [ngStyle]="{'background-color': showPost ? '#3f51b5' : '', 'color': showPost ? 'white' : ''}"
+                        (click)="showPost = true">Post Visit (7060)
+                    </button>
+
+                    <button mat-raised-button class="margin-right-10 btn-hover" color="primary"
+                        [ngStyle]="{'background-color': !showPost ? '#3f51b5' : '', 'color': !showPost ? 'white' : ''}"
+                        (click)="showPost = false">Pre Visit (9029)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter UI -->
+        <div fxLayout="row wrap" class="col-sm-12" *ngIf="filterToggle">
+            <form>
+                <mat-card class="filter">
+                    <mat-card-content>
+                        <!-- From Year -->
+
+                        <div class="col-sm-4 row">
+                            <div class="col-sm-4 mt-2">
+                                <b>Date Type :</b>
+                            </div>
+                            <div class="col-sm-8" style="margin-left: -20px;">
+                                <input type="date" class="form-control bac" placeholder="Select Year">
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4 row">
+                            <div class="col-sm-4 mt-2">
+                                <b>From Date :</b>
+                            </div>
+                            <div class="col-sm-8" style="margin-left: -20px;">
+                                <input type="date" class="form-control bac" placeholder="Select Year">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 row">
+                            <div class="col-sm-4 mt-2">
+                                <b>To Date :</b>
+                            </div>
+                            <div class="col-sm-8" style="margin-left: -20px;">
+                                <input type="date" class="form-control bac" placeholder="Select Year">
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="col-sm-4 mt-3 row">
+                            <div class="col-sm-4 mt-2">
+                                <b>Keyword :</b>
+                            </div>
+                            <div class="col-sm-8" style="margin-left: -20px;">
+                                <input type="text" class="form-control bac" placeholder="Search By Keyword">
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 row mt-3">
+                            <div class="col-sm-4 mt-2">
+                                <b>Context:</b>
+                            </div>
+                            <div class="col-sm-8" style="margin-left: -20px;">
+                                <mat-select class="form-control bac" placeholder="Select Provider">
+                                    <mat-option value="Patient">Patient</mat-option>
+                                    <mat-option value="Cases">Cases</mat-option>
+                                    <mat-option value="Claims">Claims</mat-option>
+                                    <mat-option value="Visits">Visits</mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <!-- <div class="col-sm-4 mt-3" style="margin-left: -44px;">
+                            <button mat-raised-button style="background-color: black; color: white;" class="pull-right">
+                                <mat-icon>clear</mat-icon> Clear
+                            </button>
+                            <button mat-raised-button style="background-color: blue; color: white;"
+                                class="pull-right margin-right-10">
+                                <mat-icon>search</mat-icon> Search
+                            </button>
+                        </div> -->
+
+
+                        <div class="col-sm-4 mt-3" style="margin-left: 41px;">
+                            <div class="row">
+                              <div class="col-sm-9 offset-sm-3">
+                                <a (click)="filterToggle = !filterToggle" matTooltip="Close" class="pull-right"
+                                  style="font-size: 20px; cursor: pointer; margin-left: 5px">
+                                  <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                  
+                                <i class="material-icons pull-right" matTooltip="Clear"
+                                  style="font-size: 25px; cursor: pointer; margin-left: 5px">
+                                  settings_backup_restore
+                                </i>
+                  
+                                <i class="fa fa-save pull-right" matTooltip="Save" (click)="saveFilters()" style="
+                                                  font-size: 20px;
+                                                  cursor: pointer;
+                                                  margin-left: 5px;
+                                                  color: green;
+                                                " aria-hidden="true">
+                                </i>
+                  
+                                <i class="fa fa-search pull-right" matTooltip="Search" style="
+                                                  font-size: 20px;
+                                                  cursor: pointer;
+                                                  margin-left: 5px;
+                                                  color: blue;
+                                                " aria-hidden="true">
+                                </i>
+                              </div>
+                            </div>
+                          </div>
+
+                    </mat-card-content>
+                </mat-card>
+            </form>
+        </div>
+
+        <!-- Card Code -->
+        <div class="col-sm-12" *ngIf="isCardView">
+
+            <div class="row" style="margin-top: 20px;">
+
+                <!-- Tasks (inProgress, completed, complaint) -->
+                <div class="col-sm-3" *ngFor="let task of allTasks">
+                    <mat-card class="progress-card" [ngStyle]="{'background-color': task.cardColor}">
+                        <div class="col-sm-12 pull-right">
+                            <mat-icon (click)="opencasedialog()" class="pull-right edit-icons edit-btn" matTooltip="Edit">edit</mat-icon>
+                            <mat-icon class="pull-right delete-icons delete-btn" matTooltip="Delete">delete</mat-icon>
+    
+                            
+                            <!-- <mat-icon class="pull-right eye-icons edit-btn"  
+                                      [ngClass]="{'red-eye': task.isMasked, 'blue-eye': !task.isMasked}" 
+                                      >
+                                remove_red_eye
+                            </mat-icon> -->
+    
+    
+                        </div>
+                        <div style="cursor:pointer">
+                            <mat-icon style="font-size: 7.125rem !important;height: 7.125rem !important;
+                                width: 7.125rem !important;" [ngStyle]="{'color': task.color}">
+                                {{ task.icon }}
+                            </mat-icon>
+                            <div class="progress-details">
+                                <div class="progress-name">{{ task.name }}</div>
+                                <div class="progress-providername" [ngStyle]="{'color': task.providernameColor}">
+                                    {{ task.providername }}
+                                </div>
+                                <div class="progress-status" style="cursor: pointer; white-space: nowrap;"
+                                    matTooltip="Uploaded by Corey Williams on {{ task.dueDate }}">
+                                    Corey Williams | {{ task.dueDate }}
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Grid Code -->
+        <div class="col-sm-12 mt-2" *ngIf="!isCardView">
+            <div fxLayout="row wrap">
+                <div class="w-100">
+                    <div fxLayout="row wrap" style="margin-top:-3px;">
+                        <div class="table-responsive w-100 flex-p" id="grid-table-container">
+                            <table matSort id="example2" class="table table-bordered table-hover">
+                                <thead class="tbl-head">
+                                    <tr>
+                                        <th>Document Type</th>
+                                        <th>Document Title</th>
+                                        <th class="text-center">Patient ID</th>
+                                        <th class="text-center">Referral ID</th>
+                                        <th class="text-center">Visit ID</th>
+                                        <th class="text-center">Claim ID</th>
+                                        <th class="text-center">Case ID</th>
+                                        <th class="text-center">Location ID</th>
+                                        <th class="text-center">Provider ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Location Name</th>
+                                        <th>Provider Name</th>
+                                        <th class="text-center">Download</th>
+                                        <th>Uploaded Date</th>
+                                        <th>Uploaded By</th>
+                                        <th>Remarks</th>
+                                        <!-- <th class="text-center">Actions</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of values1">
+                                        <td>{{item.documentType}}</td>
+                                        <td>{{item.documentTitle}}</td>
+                                        <td class="text-center" (click)="open(item);" style="color: cornflowerblue;">
+                                            {{item.patientId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/referrals-dashboard']"
+                                            style="color: cornflowerblue; cursor: pointer;">{{item.referralId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/visits-dashboard']"
+                                            style=" color: cornflowerblue; cursor: pointer;">{{item.visitId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/inner-claims']"
+                                            style="color: cornflowerblue; cursor: pointer;">{{item.claimId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/inner-cases']"
+                                            style="color: cornflowerblue; cursor: pointer;">{{item.caseId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/inner-locations']"
+                                            style="color: cornflowerblue; cursor: pointer;">{{item.locationId}}
+                                        </td>
+                                        <td class="text-center" [routerLink]="['/rcm-login/inner-providers']"
+                                            style="color: cornflowerblue; cursor: pointer;">{{item.providerId}}
+                                        </td>
+                                        <td>{{item.patientName}}</td>
+                                        <td>{{item.locationName}}</td>
+                                        <td>{{item.providerName}}</td>
+                                        <td class="text-center">
+                                            <mat-icon style="color: blue; cursor: pointer;">download</mat-icon>
+                                        </td>
+                                        <td>{{item.uploadedDate}}</td>
+                                        <td>{{item.uploadedBy}}</td>
+                                        <td class="text-center">
+                                            <span matTooltip="{{item.remarks}}" matTooltipPosition="above">
+                                                <mat-icon style="cursor: pointer; color: blue;">info</mat-icon>
+                                            </span>
+                                        </td>
+                                        <!-- <td class="text-center editDel">
+                                            <a style="cursor: pointer;" matTooltip="Edit">
+                                                <i class="fa fa-edit" style="color: cornflowerblue"></i>
+                                            </a>
+                                            <a style="cursor: pointer;" matTooltip="Delete">
+                                                <i class="fa fa-trash red"></i>
+                                            </a>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="margin-left: 90%;">
+                            <button class="mine" mat-fab (click)="scrollGrid('left')">
+                                <mat-icon style="color: #37474f">fast_rewind</mat-icon>
+                            </button>
+                            <button class="mine" mat-fab (click)="scrollGrid('right')">
+                                <mat-icon style="color: #37474f">fast_forward</mat-icon>
+                            </button>
+                        </div>
+                        <mat-paginator class="col-sm-12" [length]="totalSize" [pageIndex]="currentPage" [pageSize]=""
+                            [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

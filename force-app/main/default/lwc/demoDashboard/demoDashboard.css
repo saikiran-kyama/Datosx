@@ -1,0 +1,15 @@
+.demo-dashboard .chart-container {
+    min-height: 320px;
+}
+
+.demo-dashboard .donut-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.demo-dashboard .donut-legend-item {
+    font-size: 0.85rem;
+    color: #2b2b2b;
+}

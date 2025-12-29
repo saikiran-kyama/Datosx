@@ -1,0 +1,15 @@
+.dx-header{display:flex;align-items:center;gap:16px;padding:10px 18px;border-bottom:1px solid #e6edf8;background:linear-gradient(180deg,#fff,#fbfdff)}
+.dx-brand{font-weight:700;color:#0f62fe;font-size:18px}
+.dx-nav ul{list-style:none;display:flex;gap:18px;margin:0;padding:0}
+.dx-nav li{cursor:pointer;padding:8px 6px;color:#16325c;border-bottom:3px solid transparent}
+.dx-nav li.active{color:#0f62fe;border-bottom-color:#0f62fe}
+.dx-actions{margin-left:auto}
+.dx-logout{background:transparent;border:1px solid #e6edf8;padding:6px 10px;border-radius:4px;cursor:pointer}
+
+.login-form{width:360px;background:#fff;border-radius:8px;padding:12px}
+.login-form label{display:block;font-size:13px;color:#66788a;margin-top:8px}
+.login-form input{width:100%;padding:8px;border:1px solid #e6edf8;border-radius:4px;margin-top:6px}
+.dx-btn{margin-top:12px;background:#0f62fe;color:#fff;padding:8px 12px;border:none;border-radius:4px;cursor:pointer}
+.login-error{color:#b00020;background:rgba(176,0,32,0.06);border:1px solid rgba(176,0,32,0.12);padding:8px 10px;border-radius:4px;margin-top:8px;font-size:13px}
+.login-form.shake{animation:dx-shake 360ms ease-in-out}
+@keyframes dx-shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}

@@ -1,0 +1,379 @@
+<template>
+    <lightning-card>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading projects" size="medium"></lightning-spinner>
+        </template>
+
+        <template if:false={showDetail}>
+            <!-- Search Bar and Filter Button -->
+            <div class="slds-m-around_small slds-grid slds-grid_align-end" style="gap: 0.5rem;">
+                <div class="slds-col">
+                    <lightning-input type="search" value={searchKey} onchange={handleSearchChange} placeholder="Search"
+                        class="search-bar">
+                    </lightning-input>
+                </div>
+
+                
+
+                <div class="slds-col slds-align-bottom">
+                    <button class="btn-filter-toggle"
+                        style="background-color: black; color: white; border-radius: 4px; padding: 6px 14px;"
+                        onclick={toggleFilters}>
+                        <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>Filter
+                    </button>
+                </div>
+                <div class="slds-col slds-align-bottom">
+                    <button class="btn-filter-toggle"
+                        style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;"
+                        onclick={openAddProjectModal}>
+                        <span
+                            style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                        <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- FILTER PANEL -->
+            <template if:true={showFilters}>
+                <div class="custom-filter-panel">
+                    <div class="filter-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4>Filter</h4>
+                            <a onclick={clearAllFilters}>Clear All</a>
+                        </div>
+                    </div>
+                    <div class="filter-body">
+                        <div class="filter-grid">
+
+                            <!-- Status Filter -->
+                            <div class="filter-item">
+                                <div class="filter-item-header">
+                                    <label class="form-label">Project Status</label>
+                                </div>
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                        <span>{statusDisplayText}</span>
+                                        <span class="chevron">▼</span>
+                                    </button>
+                                    <div class={statusDropdownClass}>
+                                        <ul class="dropdown-options">
+                                            <template for:each={statusOptions} for:item="opt">
+                                                <li key={opt.value}>
+                                                    <label>
+                                                        <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                            onchange={handleStatusCheckboxChange}>
+                                                        {opt.label}
+                                                    </label>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Industry Filter (multi-select) -->
+                            <div class="filter-item">
+                                <div class="filter-item-header">
+                                    <label class="form-label">Industry</label>
+                                </div>
+                                <div class="dropdown-container">
+                                    <button class="dropdown-btn" onclick={toggleSponsorDropdown}>
+                                        <span>{sponsorDisplayText}</span>
+                                        <span class="chevron">▼</span>
+                                    </button>
+                                    <div class={sponsorDropdownClass}>
+                                        <ul class="dropdown-options">
+                                            <template for:each={industryOptions} for:item="opt">
+                                                <li key={opt.value}>
+                                                    <label>
+                                                        <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                            onchange={handleSponsorCheckboxChange}>
+                                                        {opt.label}
+                                                    </label>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                    
+
+                        </div>
+                    </div>
+
+                    <div class="filter-footer">
+                        <div class="footer-actions">
+                            <a class="btn-close" onclick={closeFilter}>Close</a>
+                            <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <!-- Table Wrapper -->
+        <template if:false={showDetail}>
+            <div class="table-wrapper">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate">Actions</div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="projectId" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Project ID</span>
+                                    <span class={sortClassProjectId} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="status" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Status</span>
+                                    <span class={sortClassStatus} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="projectName" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Project Name</span>
+                                    <span class={sortClassProjectName} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="startDate" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Start Date</span>
+                                    <span class={sortClassStartDate} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="endDate" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>End Date</span>
+                                    <span class={sortClassEndDate} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="industry" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Industry</span>
+                                    <span class={sortClassIndustry} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="contact" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Contact Person</span>
+                                    <span class={sortClassContact} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="email" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Email</span>
+                                    <span class={sortClassEmail} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="phone" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Phone</span>
+                                    <span class={sortClassPhone} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Last Updated</span>
+                                    <span class={sortClassLastUpdated} aria-hidden="true"></span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={pagedData} for:item="row">
+                            <tr key={row.id}>
+
+                                <td>
+                                    <div class="slds-button-group" role="group">
+                                        <lightning-button-icon icon-name="utility:edit" variant="bare"
+                                            alternative-text="Edit" title="Edit" data-id={row.id} onclick={handleEdit}
+                                            class="slds-m-right_x-small icon-edit">
+                                        </lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:delete" variant="bare"
+                                            alternative-text="Delete" title="Delete" data-id={row.id}
+                                            onclick={handleDelete} class="icon-delete"
+                                            style="color: #c23934 !important;" icon-class="icon-delete-svg">
+                                        </lightning-button-icon>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="link-like" data-id={row.id} onclick={openDetail}
+                                        style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer">
+                                        <div class="slds-truncate hyper">{row.projectId}</div>
+                                    </button>
+                                </td>
+                                <td>
+                                    <span class={row.statusClass}>
+                                        {row.status}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="link-like" data-id={row.id} onclick={openDetail}
+                                        style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer">
+                                        <div class="slds-truncate hyper">{row.projectName}</div>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.startDate}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.endDate}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.industry}</div>
+                                </td>
+                                <td>
+                                    <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                        <lightning-avatar src={row.contactPhoto} alternative-text={row.contact}
+                                            initials={row.contactInitials} size="small"></lightning-avatar>
+                                        <div class="contact-name slds-truncate">{row.contact}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.email}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.phone}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.lastUpdated}</div>
+                                </td>
+
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+        </template>
+
+        <!-- Paginator component reused -->
+        <template if:false={showDetail}>
+            <c-paginator total-size={totalSize} page-size={pageSize} page-index={pageIndex}
+                page-size-options={pageSizeOptions} onpagechange={handlePage}></c-paginator>
+        </template>
+
+        <!-- Detail view rendered inside Projects App Page -->
+        <template if:true={showDetail}>
+            <c-project-detail project={selectedProject} onback={handleBack}></c-project-detail>
+        </template>
+
+    </lightning-card>
+
+    <template if:true={isAddProjectModalOpen}>
+        <div class="modal-overlay" onclick={handleAddProjectOverlayClick}>
+            <div class="modal-card modal-card--xl" onclick={stopAddProjectModalPropagation}>
+                <div class="modal-header intake-modal-header">
+                    <div>
+                        <h3>New Project Intake</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeAddProjectModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body intake-modal-body" style="overflow: hidden;">
+                    <div class="intake-layout">
+                        <div class="intake-content">
+                            <template if:true={isAddTabDetails}>
+                                <div class="intake-section">
+                                    <div class="intake-two-column">
+                                        <div class="left-col">
+                                            <div class={statusFieldClass}>
+                                                <div class="slds-form-element">
+                                                    <label class="slds-form-element__label">Project Status <abbr class="slds-required" title="required">*</abbr></label>
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-combobox name="status" options={addModalStatusOptions}
+                                                            value={newProjectForm.status} placeholder="--None--"
+                                                            onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                    </div>
+                                                    <template if:true={statusFieldError}>
+                                                        <div class="slds-form-element__help" role="alert">{fieldErrors.status}</div>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <div class={projectNameFieldClass}>
+                                                <label>Project Name <abbr class="slds-required" title="required">*</abbr></label>
+                                                <lightning-input name="projectName" value={newProjectForm.projectName}
+                                                    onchange={handleAddProjectInputChange}
+                                                    placeholder="Enter project name"></lightning-input>
+                                                <template if:true={projectNameFieldError}>
+                                                    <div class="slds-form-error" role="alert">{fieldErrors.projectName}</div>
+                                                </template>
+                                            </div>
+
+                                            <div class={startDateFieldClass}>
+                                                <label>Start Date <abbr class="slds-required" title="required">*</abbr></label>
+                                                <lightning-input type="date" name="startDate" value={newProjectForm.startDate}
+                                                    onchange={handleAddProjectInputChange}></lightning-input>
+                                                <template if:true={startDateFieldError}>
+                                                    <div class="slds-form-error" role="alert">{fieldErrors.startDate}</div>
+                                                </template>
+                                            </div>
+
+                                            <div class="intake-field">
+                                                <label>End Date</label>
+                                                <div class={endDateFieldClass}>
+                                                    <lightning-input type="date" name="endDate" value={newProjectForm.endDate}
+                                                        onchange={handleAddProjectInputChange}></lightning-input>
+                                                    <template if:true={endDateFieldError}>
+                                                        <div class="slds-form-error" role="alert">{fieldErrors.endDate}</div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="right-col">
+                                            <div class={industryFieldClass}>
+                                                <div class="slds-form-element">
+                                                    <label class="slds-form-element__label">Industry <abbr class="slds-required" title="required">*</abbr></label>
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-combobox name="industry" options={addIndustryOptions}
+                                                            value={newProjectForm.industry} placeholder="--None--"
+                                                            onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                    </div>
+                                                    <template if:true={industryFieldError}>
+                                                        <div class="slds-form-element__help" role="alert">{fieldErrors.industry}</div>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <div class="intake-field">
+                                                <label>Contact Person</label>
+                                                <lightning-input name="contact" value={newProjectForm.contact}
+                                                    onchange={handleAddProjectInputChange} placeholder="Contact name"></lightning-input>
+                                            </div>
+
+                                            <div class="intake-field">
+                                                <label>Email</label>
+                                                <lightning-input type="email" name="email" value={newProjectForm.email}
+                                                    onchange={handleAddProjectInputChange} placeholder="email@example.com"></lightning-input>
+                                            </div>
+
+                                            <div class="intake-field">
+                                                <label>Phone</label>
+                                                <lightning-input name="phone" value={newProjectForm.phone}
+                                                    onchange={handleAddProjectInputChange} placeholder="Phone number"></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Only details section retained for Add modal -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer intake-modal-footer">
+                    <button class="btn btn-light" onclick={closeAddProjectModal}>Close</button>
+                    <button class="btn btn-primary"
+                        onclick={handleAddProjectSaveNext}>{addProjectSaveButtonLabel}</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,50 @@
+<template>
+    <c-header onlogin={handleLogin} onlogout={handleLogout} onnavigate={handleNavigate}></c-header>
+
+    <div class="site-container">
+        <div class="content">
+            <template if:true={isAuthenticated}>
+                <template if:true={isOverview}>
+                    <h2>Overview</h2>
+                    <p>Welcome to the Overview.</p>
+                </template>
+                <template if:true={isCapabilities}>
+                    <h2>Capabilities</h2>
+                    <p>Capabilities content.</p>
+                </template>
+                <template if:true={isMatches}>
+                    <h2>Matches</h2>
+                    <p>Matches content.</p>
+                </template>
+                <template if:true={isProjects}>
+                    <h2>Projects</h2>
+                    <p>Projects content.</p>
+                </template>
+                <template if:true={isMessaging}>
+                    <h2>Messaging</h2>
+                    <p>Messaging content.</p>
+                </template>
+                <template if:true={isDocuments}>
+                    <h2>Documents</h2>
+                    <p>Documents content.</p>
+                </template>
+                <template if:true={isLegal}>
+                    <h2>Legal</h2>
+                    <p>Legal information.</p>
+                </template>
+                <template if:true={isEnquires}>
+                    <h2>Enquires</h2>
+                    <p>Enquires content.</p>
+                </template>
+            </template>
+            <template if:false={isAuthenticated}>
+                <div class="welcome">
+                    <h2>Please sign in</h2>
+                    <p>Use the header login to sign in as healthsystem or sponsor.</p>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <c-footer></c-footer>
+</template>

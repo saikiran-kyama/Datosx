@@ -1,0 +1,350 @@
+<template>
+    <div class="documents-container">
+        <div class="documents-layout">
+            <aside class="documents-sidebar">
+                <div class="docs-sidebar-box">
+                    <div class="milestone-heading">Documents Category</div>
+                    <div class="doc-sidebar-steps">
+                        <template for:each={sidebarSections} for:item="section">
+                            <div key={section.id} class="doc-sidebar-section">
+                                <button class="doc-sidebar-toggle" data-id={section.id} onclick={toggleSidebarSection}
+                                    aria-expanded={section.isOpen}>
+                                    <span class="toggle-icon" aria-hidden="true">
+                                        <template if:true={section.isOpen}>▾</template>
+                                        <template if:false={section.isOpen}>▸</template>
+                                    </span>
+                                    <span class="doc-sidebar-label">{section.label}</span>
+                                </button>
+                                <template if:true={section.isOpen}>
+                                    <ul class="doc-sidebar-list">
+                                        <template for:each={section.options} for:item="opt">
+                                            <li key={opt.id} class="doc-sidebar-item">
+                                                <button class="doc-sidebar-option" data-section={section.id} data-optionid={opt.id} data-selected={opt.selected} onclick={handleSidebarOptionClick}>{opt.label}</button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="documents-main">
+                <!-- Top Controls -->
+                <div class="controls-bar">
+                    <div class="left-controls">
+                        <lightning-button 
+                            label="Pre Study (47)" 
+                            variant={postVisitVariant}
+                            onclick={handlePostVisit}
+                            class="visit-button">
+                        </lightning-button>
+                        <lightning-button 
+                            label="Post Study (20)" 
+                            variant={preVisitVariant}
+                            onclick={handlePreVisit}
+                            class="visit-button">
+                        </lightning-button>
+                    </div>
+                    
+                    <div class="right-controls">
+
+                            <lightning-input style="margin-bottom: 18px;" type="search" value={searchKey} onchange={handleSearchChange} placeholder="Search"
+                            class="search-bar">
+                        </lightning-input>
+                        
+                        <lightning-button 
+                            label={viewButtonLabel}
+                            icon-name={viewButtonIcon}
+                            onclick={toggleView}
+                            variant="brand"
+                            class="control-button">
+                        </lightning-button>
+                        
+                        <button class="btn-filter-toggle control-button" onclick={toggleFilter} title="Filter">
+                            <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>
+                            <span style="margin-left:6px;">Filter</span>
+                        </button>
+                        
+                        <button class="btn-add control-button" onclick={openAddDocumentPopup} title="Add Document"
+                            style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative; margin-left: 8px;">
+                            <span style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                            <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Section (projects-style) -->
+                <template if:true={showFilter}>
+                    <div class="custom-filter-panel">
+                        <div class="filter-header">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <h4>Filter</h4>
+                                <a onclick={clearAllFilters}>Clear All</a>
+                            </div>
+                        </div>
+                        <div class="filter-body">
+                            <div class="filter-grid">
+
+                                <!-- Keyword -->
+                                <!-- <div class="filter-item">
+                                    <div class="filter-item-header">
+                                        <label class="form-label">Keyword</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input name="keyword" class="filter-input" type="text" placeholder="Enter keyword" value={filterKeyword} onchange={handleFilterChange} />
+                                    </div>
+                                </div> -->
+
+                                <!-- From Date -->
+                                <div class="filter-item">
+                                    <div class="filter-item-header">
+                                        <label class="form-label">From Date</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input name="fromDate" class="filter-input" type="date" value={filterFromDate} onchange={handleFilterChange} />
+                                    </div>
+                                </div>
+
+                                <!-- To Date -->
+                                <div class="filter-item">
+                                    <div class="filter-item-header">
+                                        <label class="form-label">To Date</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                    </div>
+                                </div>
+                                
+                                <!-- Document Category (multi-select dropdown like Document Type) -->
+                                <div class="filter-item">
+                                    <div class="filter-item-header">
+                                        <label class="form-label">Document Category</label>
+                                    </div>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleDocCategoryDropdown} aria-haspopup="true" aria-expanded={docCategoryDropdownOpen} style="height: 39px;">
+                                            <span>{filterDocumentCategoryDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={docCategoryDropdownClass}>
+                                            <ul class="dropdown-options">
+                                                <template for:each={documentCategoryOptions} for:item="opt">
+                                                    <li key={opt.value}>
+                                                        <label class="dropdown-checkbox">
+                                                            <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleDocCategoryCheckboxChange} />
+                                                            <span class="dropdown-label">{opt.label}</span>
+                                                        </label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Document Type (custom dropdown to match projects style) -->
+                                <div class="filter-item">
+                                    <div class="filter-item-header">
+                                        <label class="form-label">Document Type</label>
+                                    </div>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleDocTypeDropdown} aria-haspopup="true" aria-expanded={docTypeDropdownOpen} style="height: 39px;">
+                                            <span>{filterDocumentTypeDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={docTypeDropdownClass}>
+                                            <ul class="dropdown-options">
+                                                <template for:each={documentTypeOptions} for:item="opt">
+                                                    <li key={opt.value}>
+                                                        <label class="dropdown-checkbox">
+                                                            <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleDocTypeCheckboxChange} />
+                                                            <span class="dropdown-label">{opt.label}</span>
+                                                        </label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="filter-footer">
+                            <div class="footer-actions">
+                                <a class="btn-close" onclick={toggleFilter}>Close</a>
+                                <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Card View -->
+                <template if:true={isCardView}>
+                    <div class="card-view-container">
+                        <template for:each={documents} for:item="doc">
+                            <div key={doc.id} class="document-card">
+                                <div class="card-header">
+                                    <lightning-button-icon 
+                                        icon-name="utility:edit" 
+                                        variant="bare"
+                                        alternative-text="Edit"
+                                        class="action-icon edit-icon">
+                                    </lightning-button-icon>
+                                    <lightning-button-icon 
+                                        icon-name="utility:delete" 
+                                        variant="bare"
+                                        alternative-text="Delete"
+                                        class="action-icon delete-icon">
+                                    </lightning-button-icon>
+                                </div>
+                                <lightning-icon 
+                                    icon-name="doctype:pdf" 
+                                    size="large" 
+                                    class="document-icon">
+                                </lightning-icon>
+                                <div class="card-content">
+                                    <div class="document-name">{doc.documentType}</div>
+                                    <div class="document-provider">{doc.documentTitle}</div>
+                                    <div class="document-date">{doc.uploadedBy} | {doc.uploadedDate}</div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Grid View -->
+                <template if:false={isCardView}>
+                    <div class="grid-view-container">
+                        <div class="table-container">
+                            <table class="document-table">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Document Title</th>
+                                        <th class="text-center" style="text-align: center;">HS</th>
+                                        <th class="text-center" style="text-align: center;">Sponsor</th>
+                                        <th>Task ID</th>
+                                        <!-- <th>Claim ID</th>
+                                        <th>Case ID</th>
+                                        <th>Location ID</th>
+                                        <th>Provider ID</th> -->
+                                        <!-- <th>Patient Name</th>
+                                        <th>Location Name</th>
+                                        <th>Provider Name</th> -->
+                                        <th class="text-center download-cell" >Download</th>
+                                        <th>Uploaded Date</th>
+                                        <th>Uploaded By</th>
+                                        <th class="text-center download-cell">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documents} for:item="doc">
+                                        <tr key={doc.id}>
+                                            <td>
+                                        <div class="slds-button-group" role="group">
+                                            <lightning-button-icon icon-name="utility:edit" variant="bare"
+                                                alternative-text="Edit" title="Edit" data-id={doc.id} onclick={handleEdit}
+                                                class="slds-m-right_x-small icon-edit">
+                                            </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:delete" variant="bare"
+                                                    alternative-text="Delete" title="Delete" data-id={doc.id} onclick={handleDelete}
+                                                    class="icon-delete" style="color: #c23934 !important;" icon-class="icon-delete-svg">
+                                                </lightning-button-icon>
+                                        </div>
+                                    </td>
+                                            <td>{doc.documentTitle}</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" data-id={doc.id} checked={doc.hsChecked} onchange={handleHSCheckboxChange} />
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" data-id={doc.id} checked={doc.sponsorChecked} onchange={handleSponsorCheckboxChange} />
+                                            </td>
+                                            <td class="link-cell">{doc.taskId}</td>
+                                            <!-- <td class="link-cell">{doc.claimId}</td>
+                                            <td class="link-cell">{doc.caseId}</td>
+                                            <td class="link-cell">{doc.locationId}</td>
+                                            <td class="link-cell">{doc.providerId}</td> -->
+                                            <!-- <td>{doc.patientName}</td>
+                                            <td>{doc.locationName}</td> style="padding-left: 8px !important;"> text-center download-cell
+                                            <td>{doc.providerName}</td> --> 
+                                            <td class="text-center download-cell" >
+                                                <button class="btn-download" title="Download" aria-label="Download">
+                                                    <lightning-icon icon-name="utility:download" size="x-small"></lightning-icon>
+                                                </button>
+                                            </td>
+                                            <td>{doc.uploadedDate}</td>
+                                            <td>{doc.uploadedBy}</td>
+                                            <td class="">
+                                                <button class="btn-download" title={doc.remarks} aria-label="Remarks">
+                                                    <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <div class="scroll-buttons">
+                            <lightning-button-icon 
+                                icon-name="utility:back" 
+                                variant="neutral"
+                                alternative-text="Scroll Left"
+                                onclick={scrollLeft}>
+                            </lightning-button-icon>
+                            <lightning-button-icon 
+                                icon-name="utility:forward" 
+                                variant="neutral"
+                                alternative-text="Scroll Right"
+                                onclick={scrollRight}>
+                            </lightning-button-icon>
+                        </div> -->
+                    </div>
+                </template>
+
+                <!-- Add Document Modal -->
+                <template if:true={isAddDocumentOpen}>
+                    <div class="modal-overlay" onclick={handleModalOverlayClick}>
+                        <div class="modal-card" role="dialog" onclick={stopPropagation}>
+                            <div class="modal-header">
+                                <h3>Add Document</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <label>Doc Category</label>
+                                    <select onchange={handleAddFormDocCategoryChange}>
+                                        <option value="">Select Category</option>
+                                        <template for:each={documentCategoryOptions} for:item="cat">
+                                            <option key={cat.value} value={cat.value} selected={cat.selected}>{cat.label}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Doc Type</label>
+                                    <select onchange={handleAddFormDocTypeChange}>
+                                        <option value="">Select Type</option>
+                                        <template for:each={documentTypeOptionsForAdd} for:item="type">
+                                            <option key={type.value} value={type.value} selected={type.selected}>{type.label}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label>Doc Title</label>
+                                    <input type="text" placeholder="Enter document title" value={addFormDocTitle} onchange={handleAddFormDocTitleChange} />
+                                </div>
+                                <div class="form-row">
+                                    <label>Upload Document</label>
+                                    <input type="file" onchange={handleFileUpload} />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-light" onclick={closeAddDocumentPopup}>Close</button>
+                                <button class="btn btn-primary" onclick={saveAddDocument}>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </section>
+        </div>
+    </div>
+</template>

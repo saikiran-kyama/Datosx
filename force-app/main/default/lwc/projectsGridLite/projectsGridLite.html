@@ -1,0 +1,83 @@
+<template>
+    <div class="grid-header">
+        <h2>Projects</h2>
+    </div>
+    <div class="table-container">
+        <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Project ID</th>
+                <th>Status</th>
+                <th>Project Name</th>
+                <th>HS Name</th>
+                <th>Sponsor Name</th>
+                <th>Start Date</th>
+                <th>ETA</th>
+                <th>End Date</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={rows} for:item="row">
+                <tr key={row.id}>
+                    <td>
+                        <button class="slds-button slds-button_icon" title="Edit" data-id={row.id} data-action="edit" onclick={handleAction}>
+                            <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                        </button>
+                    </td>
+                    <td>{row.id}</td>
+                    <td>{row.status}</td>
+                    <td>{row.name}</td>
+                    <td>{row.hsName}</td>
+                    <td>{row.sponsorName}</td>
+                    <td>{row.start}</td>
+                    <td>{row.eta}</td>
+                    <td>{row.end}</td>
+                    <td>{row.updated}</td>
+                </tr>
+            </template>
+        </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Modal (Projects) -->
+    <template if:true={isModalOpen}>
+        <div class="modal-overlay" onclick={handleModalOverlayClick}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>Edit Project</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="intake-form-grid">
+                        <div class="intake-field">
+                            <label>Status</label>
+                            <lightning-combobox name="Status__c" options={statusOptions} value={modalForm.Status__c} onchange={handleModalInputChange} placeholder="--None--"></lightning-combobox>
+                        </div>
+                        <div class="intake-field">
+                            <label>Start Date</label>
+                            <lightning-input type="date" name="Start_Date__c" value={modalForm.Start_Date__c} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>ETA</label>
+                            <lightning-input type="date" name="ETA__c" value={modalForm.ETA__c} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>End Date</label>
+                            <lightning-input type="date" name="End_Date__c" value={modalForm.End_Date__c} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveModal}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

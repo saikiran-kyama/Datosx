@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "c/*": ["force-app/main/default/lwc/*"]
+    },
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "module": "esnext",
+    "moduleResolution": "node"
+  },
+  "typeAcquisition": {
+    "include": ["lwc"]
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

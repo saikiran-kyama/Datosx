@@ -1,0 +1,466 @@
+<template>
+    <template if:true={isLoaded}>
+        <div class="topbar">
+            <div class="profile-heading">{profileHeading}</div>
+            <div class="user-area">
+                <button class="user-btn" title="User menu" onclick={toggleUserMenu}>{userName}</button>
+                <div class={userMenuClass} onclick={stopModalPropagation}>
+                    <div class="user-menu-actions">
+                        <button class="btn btn-light" onclick={logout}>Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class={projectsTabClass} data-tab="Projects" onclick={handleTabClick}>Projects</button>
+            <button class={myProfileTabClass} data-tab="MyProfile" onclick={handleTabClick}>My Profile</button>
+            <template if:true={isHealth}>
+                <button class={possibilitiesTabClass} data-tab="Possibilities" onclick={handleTabClick}>Possibilities</button>
+            </template>
+            <template if:true={isSponsor}>
+                <button class={enquiriesTabClass} data-tab="Enquiries" onclick={handleTabClick}>Enquiries</button>
+            </template>
+        </div>
+
+        <!-- Projects -->
+        <template if:true={showProjects}>
+            <div class="grid-header">
+                <h2>Projects</h2>
+            </div>
+            <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Project ID</th>
+                            <th>Status</th>
+                            <th>Project Name</th>
+                            <th>Project Details</th>
+                            <th>{partnerHeader}</th>
+                            <th>Start Date</th>
+                            <th>ETA</th>
+                            <th>End Date</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={projects} for:item="p">
+                            <tr key={p.id}>
+                                <td>
+                                    <button class="slds-button slds-button_icon" title="Edit" data-id={p.id} data-action="edit" onclick={handleAction}>
+                                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                    </button>
+                                </td>
+                                <td>{p.id}</td>
+                                <td>{p.status}</td>
+                                <td>{p.name}</td>
+                                <td>{p.details}</td>
+                                <td>{p.partner}</td>
+                                <td>{p.start}</td>
+                                <td>{p.eta}</td>
+                                <td>{p.end}</td>
+                                <td>{p.updated}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <!-- My Profile -->
+        <template if:true={showMyProfile}>
+            <div class="grid-header">
+                <h2>My Profile</h2>
+            </div>
+
+            <!-- Health System Profile -->
+            <template if:true={isHealth}>
+                <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>HS ID</th>
+                            <th>HS Name</th>
+                            <th>Username</th>
+                            <th>Specialities</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Contact Person</th>
+                            <th>Email ID</th>
+                            <th>Phone No.</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button class="slds-button slds-button_icon" title="Edit" data-action="editProfile" onclick={handleProfileAction}>
+                                    <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                </button>
+                            </td>
+                            <td>{profile.id}</td>
+                            <td>{profile.name}</td>
+                            <td>{profile.username}</td>
+                            <td>
+                                <button class="count-btn" onclick={openProfileSpecialities}>{profileSpecialitiesCount}</button>
+                            </td>
+                            <td>{profile.city}</td>
+                            <td>{profile.state}</td>
+                            <td>{profile.contactPerson}</td>
+                            <td>{profile.email}</td>
+                            <td>{profile.phone}</td>
+                            <td>{profile.updated}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </template>
+
+            <!-- Sponsor Profile -->
+            <template if:true={isSponsor}>
+                <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Sponsor ID</th>
+                            <th>Sponsor Name</th>
+                            <!-- <th>First Name</th>
+                            <th>Last Name</th> -->
+                            <th>Username</th>
+                            <th>Contact Person</th>
+                            <th>Email ID</th>
+                            <th>Phone No.</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button class="slds-button slds-button_icon" title="Edit" data-action="editProfile" onclick={handleProfileAction}>
+                                    <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                </button>
+                            </td>
+                            <td>{profile.id}</td>
+                            <td>{profile.name}</td>
+                            <!-- <td>{profile.firstName}</td>
+                            <td>{profile.lastName}</td> -->
+                            <td>{profile.username}</td>
+                            <td>{profile.contactPerson}</td>
+                            <td>{profile.email}</td>
+                            <td>{profile.phone}</td>
+                            <td>{profile.updated}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </template>
+
+        </template>
+
+        <!-- Possibilities (Health System) -->
+        <template if:true={showPossibilities}>
+            <div class="grid-header">
+                <h2>Possibilities</h2>
+            </div>
+            <div class="table-container">
+            <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Sponsor Name</th>
+                        <th>Enquiry ID</th>
+                                                    <th>Possibility Status</th>
+
+                        <th>Project Name</th>
+                        <th>Project Details</th>
+                        <th>Req. Specialities</th>
+                        <th>Matching Specialities</th>
+                        <th>Matching %</th>
+                        <th>Interested</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={possibilitiesForRender} for:item="row">
+                        <tr key={row.enquiryId}>
+                            <td>{row.sponsor}</td>
+                            <td>{row.enquiryId}</td>
+                            <td>{row.status}</td>
+
+                            <td>{row.product}</td>
+                            <td>{row.details}</td>
+                            <td>
+                                <button class="count-btn" data-id={row.enquiryId} onclick={openPossibilityReqList}>{row.reqCount}</button>
+                            </td>
+                            <td>
+                                <button class="count-btn" data-id={row.enquiryId} onclick={openPossibilityMatchingList}>{row.matchingCount}</button>
+                            </td>
+                            <td>{row.matchingPct}%</td>
+                            <td class="center-cell">
+                                <input type="checkbox" data-id={row.enquiryId} checked={row.interestedChecked} onclick={openConfirmInterest} />
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </div>
+        </template>
+
+        <!-- Enquiries (Sponsor) -->
+        <template if:true={showEnquiries}>
+            <div class="grid-header">
+                <h2>Enquiries</h2>
+                <button class="add" data-type="enquiry" onclick={openAdd}>Add</button>
+            </div>
+            <div class="table-container">
+            <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>Enquiry ID</th>
+                        <th>Enquiry Status</th>
+                        <th>Project Name</th>
+                        <th>Project Details</th>
+                        <th>Req. Specialities</th>
+                        <th>Interested HS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={enquiries} for:item="e">
+                        <tr key={e.id}>
+                            <td>
+                                <button class="slds-button slds-button_icon" title="Edit" data-id={e.id} data-action="edit" onclick={handleAction}>
+                                    <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                </button>
+                                <button class="slds-button slds-button_icon" title="Delete" data-id={e.id} data-action="delete" onclick={handleAction}>
+                                    <lightning-icon class="delete-icon" icon-name="utility:delete" alternative-text="Delete" size="x-small"></lightning-icon>
+                                </button>
+                            </td>
+                            <td>{e.id}</td>
+                            <td>{e.status}</td>
+                            <td>{e.product}</td>
+                            <td>{e.details}</td>
+                            <td>
+                                <button class="count-btn" data-id={e.id} onclick={openReqList}>{e.req.length}</button>
+                            </td>
+                            <td>
+                                <button class="count-btn" data-id={e.id} onclick={openInterestedList}>{e.interested.length}</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </div>
+        </template>
+
+    </template>
+
+    <template if:false={isLoaded}>
+        <div>Loading...</div>
+    </template>
+
+    <!-- Add / Edit Modal -->
+    <template if:true={modalVisible}>
+        <div class="modal-overlay" onclick={closeModal}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div><h3>{modalTitle}</h3></div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <template if:true={isProjectModal}>
+                        <template if:true={isSponsor}>
+                            <lightning-combobox label="Status" data-field="status" options={statusOptions} value={modalData.status} onchange={handleInputChange}></lightning-combobox>
+                            <lightning-input label="Project Name" data-field="name" value={modalData.name} onchange={handleInputChange}></lightning-input>
+                            <lightning-textarea label="Project Details" data-field="details" value={modalData.details} onchange={handleInputChange}></lightning-textarea>
+                            <lightning-input label="Start Date" type="date" data-field="start" value={modalData.start} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="ETA" type="date" data-field="eta" value={modalData.eta} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="End Date" type="date" data-field="end" value={modalData.end} onchange={handleInputChange}></lightning-input>
+                        </template>
+                        <template if:true={isHealth}>
+                            <lightning-combobox label="Status" data-field="status" options={statusOptions} value={modalData.status} onchange={handleInputChange}></lightning-combobox>
+                            <lightning-input label="Project Name" data-field="name" value={modalData.name} onchange={handleInputChange}></lightning-input>
+                            <lightning-textarea label="Project Details" data-field="details" value={modalData.details} onchange={handleInputChange}></lightning-textarea>
+                            <lightning-input label={partnerHeader} data-field="partner" value={modalData.partner} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Start Date" type="date" data-field="start" value={modalData.start} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="ETA" type="date" data-field="eta" value={modalData.eta} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="End Date" type="date" data-field="end" value={modalData.end} onchange={handleInputChange}></lightning-input>
+                        </template>
+                    </template>
+
+                    <template if:true={isProfileModal}>
+                        <template if:true={isHealth}>
+                            <lightning-input label="HS Name" data-field="name" value={modalData.name} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Username" data-field="username" value={modalData.username} onchange={handleInputChange}></lightning-input>
+
+                            <!-- State before City, both single-select comboboxes -->
+                            <lightning-combobox label="State" data-field="state" options={stateOptions} value={modalData.state} onchange={handleInputChange}></lightning-combobox>
+                            <lightning-combobox label="City" data-field="city" options={cityOptions} value={modalData.city} onchange={handleInputChange}></lightning-combobox>
+
+                            <!-- Specialities as custom multiselect checkbox-dropdown -->
+                            <div class="dropdown-container">
+                                <label>Specialities</label>
+                                <button class="dropdown-btn" onclick={toggleSpecialitiesDropdown} title="Select Specialities">
+                                    <span>{specialitiesDisplayText}</span>
+                                    <span class="chevron">▼</span>
+                                </button>
+                                <div class={specialitiesDropdownClass} role="listbox">
+                                    <ul class="dropdown-options">
+                                        <template for:each={specialityOptions} for:item="opt">
+                                            <li key={opt.value}>
+                                                <label>
+                                                    <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleSpecialityCheckboxChange} />
+                                                    {opt.label}
+                                                </label>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <div class="dropdown-actions">
+                                        <button type="button" onclick={selectAllSpecialities}>Select All</button>
+                                        <button type="button" onclick={clearAllSpecialities}>Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <lightning-input label="Contact Person" data-field="contactPerson" value={modalData.contactPerson} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Email ID" data-field="email" type="email" value={modalData.email} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Phone No." data-field="phone" value={modalData.phone} onchange={handleInputChange}></lightning-input>
+                        </template>
+                        <template if:true={isSponsor}>
+                            <lightning-input label="Sponsor Name" data-field="name" value={modalData.name} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Contact Person" data-field="contactPerson" value={modalData.contactPerson} onchange={handleInputChange}></lightning-input>
+                                                        <lightning-input label="Username" data-field="email" type="email" value={modalData.email} onchange={handleInputChange}></lightning-input>
+
+                            <lightning-input label="Email ID" data-field="email" type="email" value={modalData.email} onchange={handleInputChange}></lightning-input>
+                            <lightning-input label="Phone No." data-field="phone" value={modalData.phone} onchange={handleInputChange}></lightning-input>
+                        </template>
+                    </template>
+
+                    <template if:true={isPossibilityModal}>
+                        <lightning-input label="ID" data-field="id" value={modalData.id} onchange={handleInputChange}></lightning-input>
+                        <lightning-input label="Sponsor Name" data-field="sponsor" value={modalData.sponsor} onchange={handleInputChange}></lightning-input>
+                        <lightning-input label="Product Name" data-field="product" value={modalData.product} onchange={handleInputChange}></lightning-input>
+                        <lightning-textarea label="Product Details" data-field="details" value={modalData.details} onchange={handleInputChange}></lightning-textarea>
+                        <lightning-input label="Req. Specialities" data-field="req" value={modalData.req} onchange={handleInputChange}></lightning-input>
+                        <lightning-input label="Matching Specialities" data-field="matching" value={modalData.matching} onchange={handleInputChange}></lightning-input>
+                        <lightning-input label="Interested" data-field="interested" value={modalData.interested} onchange={handleInputChange}></lightning-input>
+                    </template>
+                    <template if:true={isEnquiryModal}>
+                        <lightning-input label="Project Name" data-field="product" value={modalData.product} onchange={handleInputChange}></lightning-input>
+                        <lightning-textarea label="Project Details" data-field="details" value={modalData.details} onchange={handleInputChange}></lightning-textarea>
+
+                        <template if:true={isEnquiryEditMode}>
+                            <lightning-combobox label="Status" data-field="status" options={enquiryStatusOptions} value={modalData.status} onchange={handleInputChange}></lightning-combobox>
+                        </template>
+
+                        <!-- Req. Specialities as custom multiselect checkbox-dropdown -->
+                        <div class="dropdown-container">
+                            <label>Req. Specialities</label>
+                            <button class="dropdown-btn" onclick={toggleReqDropdown} title="Select Specialities">
+                                <span>{reqDisplayText}</span>
+                                <span class="chevron">▼</span>
+                            </button>
+                            <div class={reqDropdownClass} role="listbox">
+                                <ul class="dropdown-options">
+                                    <template for:each={reqOptions} for:item="opt">
+                                        <li key={opt.value}>
+                                            <label>
+                                                <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleReqCheckboxChange} />
+                                                {opt.label}
+                                            </label>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <div class="dropdown-actions">
+                                    <button type="button" onclick={selectAllReq}>Select All</button>
+                                    <button type="button" onclick={clearAllReq}>Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveModal}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- List Viewer Modal -->
+    <template if:true={isListModalOpen}>
+        <div class="modal-overlay" onclick={closeListModal}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div><h3>{listModalTitle}</h3></div>
+                </div>
+                <div class="modal-body">
+                    <template if:true={isReqList}>
+                        <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead><tr><th>Value</th></tr></thead>
+                            <tbody>
+                                <template for:each={listModalItems} for:item="it">
+                                    <tr key={it}><td>{it}</td></tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+
+                    <template if:true={isInterestedList}>
+                        <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered interested-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:56px;">Select</th>
+                                    <th>HS Name</th>
+                                    <th style="width:120px;">Matching</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={listModalItems} for:item="it" for:index="idx">
+                                    <tr key={it.name}>
+                                        <td class="center-cell">
+                                            <input type="checkbox" data-index={idx} checked={it.selected} onchange={toggleListItemSelected} />
+                                        </td>
+                                        <td>{it.name}</td>
+                                        <td>{it.matching}</td>
+                                    </tr>
+                                    </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <template if:true={isInterestedList}>
+                        <button class="btn btn-light" onclick={closeListModal}>Close</button>
+                        <button class="btn btn-primary" onclick={confirmInterestedSelection}>Confirm</button>
+                    </template>
+                    
+                    <template if:false={isInterestedList}>
+                        <button class="btn btn-light" onclick={closeListModal}>Close</button>
+                    </template>
+                </div>
+            </div>
+        </div>
+                                
+    </template>
+
+    <!-- Confirm Interested Modal -->
+    <template if:true={confirmInterestModalOpen}>
+        <div class="modal-overlay" onclick={closeConfirmInterest}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div><h3>Confirm Interest</h3></div>
+                </div>
+                <div class="modal-body">
+                    <p>Do you confirm to show interest?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeConfirmInterest}>No</button>
+                    <button class="btn btn-primary" onclick={confirmInterestYes}>Yes</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

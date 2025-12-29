@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DatosX Platform</title>
+    <!-- Prevent CSP issues by ensuring relative paths -->
+    <base href="./">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <!-- Main App Container -->
+    <div id="app">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h1>DatosX Platform</h1>
+                        <p>Sign in to continue</p>
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Account Type</label>
+                            <select id="username" required>
+                                <option value="">Select Account Type</option>
+                                <option value="healthsystem">Health System</option>
+                                <option value="sponsor">Sponsor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter password" required>
+                        </div>
+                        <div id="loginError" class="error-message" style="display:none;"></div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                    <div class="login-footer">
+                        <p>Demo Credentials:</p>
+                        <small>Health System: datosx@2025</small><br>
+                        <small>Sponsor: datosx@2025</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h2 id="dashboardTitle">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <span id="userDisplay" class="user-display"></span>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </header>
+
+            <!-- Navigation -->
+            <nav class="dashboard-nav">
+                <ul id="navItems"></ul>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="dashboard-content">
+                <div id="contentArea">
+                    <!-- Dynamic content loaded here -->
+                    <div class="content-placeholder">
+                        <h3>Welcome!</h3>
+                        <p>Select a menu item to get started.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>

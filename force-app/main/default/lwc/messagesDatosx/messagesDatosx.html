@@ -1,0 +1,177 @@
+<template>
+	<section role="tabpanel" aria-expanded="true"
+		class="record-home-messaging record-home-tab tabs__content active uiTab">
+		<div class=" slds-m-top_small messaging-card">
+			<div class="slds-card__body slds-card__body_inner">
+				<div class="messaging-container" style="display:flex;flex-direction:column;gap:1.5rem;min-height:660px;background:#f3f2f1;padding:1.5rem;border-radius:20px;">
+					<div class="outlook-header" style="background:#ffffff;border-radius:14px;border:1px solid #d2d0ce;padding:0.75rem 1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;">
+						<div style="display:flex;gap:0.5rem;align-items:center;">
+							<button style="background:#0078d4;color:white;border:none;padding:0.55rem 1.4rem;border-radius:6px;font-weight:600;">New mail</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Delete</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Archive</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Report</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Move to</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Reply all</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Read / Unread</button>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Flag / Unflag</button>
+						</div>
+						<div style="display:flex;gap:0.75rem;align-items:center;">
+							<div style="display:flex;flex-direction:column;text-align:right;">
+								<span style="font-size:0.85rem;color:#5a5a5a;">nikhildzade@outlook.com</span>
+								<span style="font-size:0.8rem;color:#8a8886;">Focused Inbox</span>
+							</div>
+							<button style="background:white;border:1px solid #c8c6c4;padding:0.45rem 0.9rem;border-radius:6px;color:#323130;">Undo</button>
+						</div>
+					</div>
+
+					<div class="outlook-toolbar" style="display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;">
+						<div class="messaging-tabs" style="display:flex;gap:0.5rem;">
+							<button class={sponsorsTabClass} data-tab="sponsors" onclick={handleMessagingTabClick} style="border-radius:999px;padding:0.45rem 1.25rem;">Sponsors ({sponsorsCount})</button>
+							<button class={healthSystemsTabClass} data-tab="healthSystems" onclick={handleMessagingTabClick} style="border-radius:999px;padding:0.45rem 1.25rem;">Health Systems ({healthSystemsCount})</button>
+						</div>
+						<div style="display:flex;gap:0.5rem;align-items:center;flex:1;min-width:260px;">
+							<input type="text" class="messaging-search-input" placeholder="Search" style="flex:1;border-radius:999px;padding:0.5rem 1.25rem;border:1px solid #c8c6c4;background:#fff;" />
+							<button style="background:#0078d4;color:white;border:none;padding:0.45rem 1.25rem;border-radius:6px;">Filter</button>
+						</div>
+					</div>
+
+					<div class="outlook-main" style="display:grid;grid-template-columns:220px 360px 1fr;gap:1rem;flex:1;min-height:0;">
+						<aside class="outlook-folders" style="background:#faf9f8;border:1px solid #d2d0ce;border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:1rem;">
+							<div>
+								<h5 style="margin:0 0 0.75rem;font-size:0.85rem;font-weight:600;color:#605e5c;">Favorites</h5>
+								<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.35rem;font-size:0.93rem;color:#201f1e;">
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;border-radius:6px;background:#e3f2fd;color:#0f6cbd;font-weight:600;">
+										<span>Inbox</span>
+										<span>{visibleMessagingContacts.length}</span>
+									</li>
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+										<span>Sent Items</span>
+										<span>48</span>
+									</li>
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+										<span>Drafts</span>
+										<span>3</span>
+									</li>
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+										<span>Deleted Items</span>
+										<span>16</span>
+									</li>
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+										<span>Junk Email</span>
+										<span>30</span>
+									</li>
+									<li style="display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.45rem;">
+										<span>Archive</span>
+										<span>5</span>
+									</li>
+								</ul>
+							</div>
+							<div>
+								<h5 style="margin:1rem 0 0.4rem;font-size:0.85rem;font-weight:600;color:#605e5c;">Folders</h5>
+								<div style="display:flex;flex-direction:column;gap:0.3rem;font-size:0.9rem;color:#201f1e;">
+									<span>Conversation History</span>
+									<span>Notes</span>
+									<span>Go to Groups</span>
+								</div>
+							</div>
+						</aside>
+
+						<section class="outlook-message-list" style="background:#fff;border:1px solid #d2d0ce;border-radius:12px;display:flex;flex-direction:column;min-height:0;">
+							<div style="display:flex;justify-content:space-between;border-bottom:1px solid #edebe9;padding:0.65rem 1rem;align-items:center;">
+								<div style="display:flex;gap:1rem;align-items:center;">
+									<button style="background:none;border:none;color:#0f6cbd;font-weight:600;font-size:0.95rem;position:relative;padding:0;">
+										Focused
+										<span style="position:absolute;left:0;bottom:-8px;width:100%;height:2px;background:#0f6cbd;display:block;"></span>
+									</button>
+									<button style="background:none;border:none;color:#605e5c;font-size:0.95rem;">Other</button>
+								</div>
+								<span style="color:#8a8886;font-size:0.8rem;">Sort | Filter</span>
+							</div>
+							<div class="messaging-contacts-list" style="flex:1;overflow:auto;padding:0;">
+								<template for:each={visibleMessagingContacts} for:item="contact">
+									<article key={contact.id} data-id={contact.id} onclick={handleMessagingContactClick}
+										class={contact.itemClass} style="position:relative;display:flex;gap:0.75rem;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid #edebe9;cursor:pointer;background:#ffffff;">
+										<template if:true={contact.active}>
+											<span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#0078d4;border-top-right-radius:4px;border-bottom-right-radius:4px;"></span>
+										</template>
+										<span class="avatar" style="width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid #ffffff;box-shadow:0 0 0 1px #edebe9;">
+											<img src={contact.avatar} alt={contact.name} style="width:100%;height:100%;object-fit:cover;" />
+										</span>
+										<div style="flex:1;min-width:0;">
+											<div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+												<h6 class="messaging-contact-item-name" style="margin:0;font-size:0.95rem;font-weight:600;color:#323130;">{contact.name}</h6>
+												<span style="font-size:0.75rem;color:#8a8886;">Wed 2:39 AM</span>
+											</div>
+											<p style="margin:0;color:#605e5c;font-size:0.82rem;">Arrive at your goals faster with new learning resources.</p>
+											<p style="margin:0.15rem 0 0;color:#a19f9d;font-size:0.78rem;">Get from where you are to where you&apos;re going.</p>
+										</div>
+										<template if:true={contact.unread}>
+											<span class="messaging-unread-badge" style="background:#107c10;color:white;border-radius:50%;min-width:24px;height:24px;font-size:0.7rem;">{contact.unread}</span>
+										</template>
+									</article>
+								</template>
+							</div>
+						</section>
+
+						<section class="outlook-detail" style="background:#f5f6f8;border:1px solid #d2d0ce;border-radius:12px;display:flex;flex-direction:column;min-height:0;">
+							<div style="background:#ffffff;border-top-left-radius:12px;border-top-right-radius:12px;border-bottom:1px solid #edebe9;padding:1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+								<div>
+									<h2 style="margin:0;font-size:1.2rem;color:#252423;">Project Intake Confirmation — <template if:true={selectedContact}>{selectedContact.name}</template><template if:false={selectedContact}>datosX Partner</template></h2>
+									<p style="margin:0.3rem 0 0;color:#605e5c;font-size:0.88rem;">All intake details captured · Please review and reply if anything needs clarification.</p>
+								</div>
+								<div style="display:flex;gap:0.65rem;align-items:center;color:#5c2d91;">
+									<lightning-icon icon-name="utility:reply" variant="bare" size="small"></lightning-icon>
+									<lightning-icon icon-name="utility:reply_all" variant="bare" size="small"></lightning-icon>
+									<lightning-icon icon-name="utility:forward" variant="bare" size="small"></lightning-icon>
+									<lightning-icon icon-name="utility:table" variant="bare" size="small"></lightning-icon>
+								</div>
+							</div>
+							<div style="padding:1.5rem;overflow:auto;flex:1;">
+								<div style="background:#ffffff;border-radius:16px;border:1px solid #edebe9;padding:1.5rem;box-shadow:0 4px 12px rgba(28,26,25,0.05);max-width:660px;margin:0 auto;">
+									<template if:true={selectedContact}>
+										<div style="display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:1.25rem;">
+											<div style="display:flex;gap:0.85rem;align-items:center;">
+												<span class="avatar" style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#cfe4ff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#17427c;">
+													<img src={selectedContact.avatar} alt={selectedContact.name} style="width:100%;height:100%;object-fit:cover;" />
+												</span>
+												<div>
+													<p style="margin:0;color:#252423;font-weight:600;">{selectedContact.name}</p>
+													<p style="margin:0;color:#605e5c;font-size:0.85rem;">intake.notifications@datosx.com</p>
+													<p style="margin:0.35rem 0 0;color:#8a8886;font-size:0.8rem;">To: You</p>
+												</div>
+											</div>
+											<span style="color:#8a8886;font-size:0.8rem;">Thu 11/20/2025 09:14 AM</span>
+										</div>
+									</template>
+									<template if:false={selectedContact}>
+										<p style="color:#605e5c;font-weight:600;margin-bottom:1.5rem;">Select a sponsor or health system to preview its latest email.</p>
+									</template>
+									<div style="color:#2f2f2f;font-size:0.95rem;line-height:1.6;margin-bottom:1.5rem;">
+										<p>Hello team,</p>
+										<p>We received your most recent project intake package for the "Cerebro DX" collaboration and have started the internal alignment process. Our operations pod is validating site readiness details, enrollment targets, and the requested data provisioning cadence.</p>
+										<p>Expect a follow-up summary with confirmed milestones within 2 business days. Let us know if there are updates to sponsor expectations or health system availability so we can reflect that in the kickoff deck.</p>
+										<p>Regards,<br />datosX Intake Desk</p>
+									</div>
+									<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+										<button style="border:1px solid #0078d4;background:#ffffff;color:#0078d4;padding:0.45rem 1.25rem;border-radius:8px;font-weight:600;">Appreciate the quick update.</button>
+										<button style="border:1px solid #0078d4;background:#ffffff;color:#0078d4;padding:0.45rem 1.25rem;border-radius:8px;font-weight:600;">Please confirm target go-live.</button>
+									</div>
+									<div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+										<button style="display:flex;align-items:center;gap:0.4rem;border:1px solid #d2d0ce;background:#ffffff;border-radius:8px;padding:0.45rem 1.25rem;font-weight:600;color:#5c2d91;">
+											<lightning-icon icon-name="utility:reply" size="x-small" alternative-text="Reply"></lightning-icon>
+											Reply
+										</button>
+										<button style="display:flex;align-items:center;gap:0.4rem;border:1px solid #d2d0ce;background:#ffffff;border-radius:8px;padding:0.45rem 1.25rem;font-weight:600;color:#0f6cbd;">
+											<lightning-icon icon-name="utility:forward" size="x-small" alternative-text="Forward"></lightning-icon>
+											Forward
+										</button>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</template>

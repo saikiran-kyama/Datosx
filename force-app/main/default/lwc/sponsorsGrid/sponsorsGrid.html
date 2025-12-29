@@ -1,0 +1,160 @@
+<template>
+    <div class="grid-header">
+        <h2>Sponsors</h2>
+        <div>
+            <button class="add" onclick={openAddModal}>Add</button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Sponsor ID</th>
+                 <th>Sponsor Name</th>
+                <th>Status</th>
+                <!-- removed Profile / License / Role per request -->
+                <th>Alias</th>
+                        <!-- <th>First Name</th>
+                        <th>Last Name</th> -->
+               
+                <th>Username</th>
+                <th>Projects</th>
+                <th>Enquiries</th>
+                <th>Contact Person</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={rows} for:item="row">
+                <tr key={row.id}>
+                    <td>
+                        <button class="slds-button slds-button_icon" title="Edit" data-id={row.id} data-action="edit" onclick={handleAction}>
+                            <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                        </button>
+                        <!-- <button class="slds-button slds-button_icon" title="Delete" data-id={row.id} data-action="delete" onclick={handleAction}>
+                            <lightning-icon class="delete-icon" icon-name="utility:delete" alternative-text="Delete" size="x-small"></lightning-icon>
+                        </button> -->
+                    </td>
+                    <td>{row.id}</td>
+                     <td>{row.name}</td>
+                    <td>{row.status}</td>
+                    <td>{row.alias}</td>
+                    <!-- <td>{row.firstName}</td>
+                    <td>{row.lastName}</td> -->
+                   
+                    <td>{row.username}</td>
+                    <td>{row.projects}</td>
+                    <td>{row.enquiries}</td>
+                    <td>{row.contact}</td>
+                    <td>{row.email}</td>
+                    <td>{row.phone}</td>
+                    <td>{row.updated}</td>
+                </tr>
+            </template>
+        </tbody>
+        </table>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <template if:true={isModalOpen}>
+        <div class="modal-overlay" onclick={handleModalOverlayClick}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>{modalTitle}</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="intake-form-grid">
+                        <div class="intake-field">
+                            <label>Sponsor Name <span class="required">*</span></label>
+                            <lightning-input name="name" value={modalForm.name} onchange={handleModalInputChange} placeholder="Sponsor Name"></lightning-input>
+                        </div>
+
+                        <div class="intake-field">
+                            <label>Alias <span class="required">*</span></label>
+                            <lightning-input name="alias" value={modalForm.alias} onchange={handleModalInputChange} placeholder="Alias"></lightning-input>
+                        </div>
+
+                        <template if:true={isEditMode}>
+                        <div class="intake-field">
+                            
+                                <label>Status</label>
+                                <lightning-combobox name="status" options={statusOptions} value={modalForm.status} onchange={handleModalInputChange} placeholder="--None--"></lightning-combobox>
+                        
+                        </div>
+                        </template>
+
+                        <div class="intake-field">
+                            <label>State</label>
+                            <lightning-combobox name="state" options={modalStateOptions} value={modalForm.state} onchange={handleModalInputChange} placeholder="--None--"></lightning-combobox>
+                        </div>
+
+                        <div class="intake-field">
+                            <label>City</label>
+                            <lightning-combobox name="city" options={modalCityOptions} value={modalForm.city} onchange={handleModalInputChange} placeholder="--None--"></lightning-combobox>
+                        </div>
+
+                        <!-- <div class="intake-field span-2">
+                            <label>Specialities</label>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" onclick={toggleSpecialityDropdown} title="Select Specialities">
+                                    <span>{specialityDisplayText}</span>
+                                    <span class="chevron">▼</span>
+                                </button>
+                                <div class={specialityDropdownClass} role="listbox">
+                                    <ul class="dropdown-options">
+                                        <template for:each={specialityOptions} for:item="opt">
+                                            <li key={opt.value}>
+                                                <label>
+                                                    <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleSpecialityCheckboxChange} />
+                                                    {opt.label}
+                                                </label>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <div class="dropdown-actions">
+                                        <button type="button" onclick={selectAllSpecialities}>Select All</button>
+                                        <button type="button" onclick={clearAllSpecialities}>Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!-- Projects and Enquiries are internal counters; removed from modal -->
+
+                        <div class="intake-field">
+                            <label>Contact Person</label>
+                            <lightning-input name="contact" value={modalForm.contact} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+
+                        <div class="intake-field">
+                            <label>Username <span class="required">*</span></label>
+                            <lightning-input name="username" value={modalForm.username} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+
+                        <div class="intake-field">
+                            <label>Email <span class="required">*</span></label>
+                            <lightning-input name="email" type="email" value={modalForm.email} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+
+                        <div class="intake-field">
+                            <label>Phone</label>
+                            <lightning-input name="phone" value={modalForm.phone} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveModal}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

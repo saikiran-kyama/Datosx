@@ -1,0 +1,167 @@
+<template>
+    <section class="hs-matches-section">
+        <div class="slds-card slds-m-top_small hs-matches-card">
+            <div class="slds-card__body slds-card__body_inner">
+                <div class="hs-matches-wrapper">
+                    <div class="hs-three-columns">
+                        <div class="hs-left-panel">
+                            <div class="hs-panel-card">
+                                <div class="hs-panel-header">
+                                    <h5 class="fw-bold mb-0">Top 10 Matches</h5>
+                                </div>
+                                <div class="hs-panel-body">
+                                    <template for:each={hsMatches} for:item="hs">
+                                        <div key={hs.id} class={hs.itemClass} onclick={handleHSSelect} data-id={hs.id}>
+                                            <div class="d-flex align-items-center">
+                                                <span class="avatar me-2 flex-shrink-0">
+                                                    <img src={hs.avatar} alt={hs.name} class="rounded-circle" />
+                                                </span>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="fs-14 mb-1 text-truncate">{hs.name}</h6>
+                                                    <p class="mb-0 fs-13 text-truncate">Relevance Score</p>
+                                                </div>
+                                            </div>
+                                            <span class="badge fw-medium bg-success flex-shrink-0">{hs.matchPercentage}%</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+        	            <div class="hs-middle-panel">
+                            <div class="hs-panel-card">
+                                <div class="hs-panel-header">
+                                    <h5 class="fw-bold mb-0">Capabilities: {selectedHSName}</h5>
+                                </div>
+                                <div class="hs-panel-body capabilities-scroll">
+                                    <div class="table-wrapper capability-table-wrapper">
+                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer capability-table">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th scope="col" style="width: 250px;">
+                                                        <div class="slds-truncate">Capability</div>
+                                                    </th>
+                                                    <th scope="col" style="width: 105px;">
+                                                        <div class="slds-truncate">Project Needs</div>
+                                                    </th>
+                                                    <th scope="col" style="width: 120px;">
+                                                        <div class="slds-truncate">HS Capabilities</div>
+                                                    </th>
+                                                    <th scope="col" style="width: 59px;">
+                                                        <div class="slds-truncate">Weight</div>
+                                                    </th>
+                                                    <th scope="col" style="text-align:center;">
+                                                        <div class="slds-truncate">Score</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={capabilityGroups} for:item="group">
+                                                    <tr key={group.id} class="capability-group-row">
+                                                        <td>
+                                                            <button class="group-toggle btn-reset" aria-expanded={group.isOpen} data-id={group.id} onclick={toggleDropdown}>
+                                                                <template if:true={group.isOpen}>
+                                                                    <span class="toggle-icon">▾</span>
+                                                                </template>
+                                                                <template if:false={group.isOpen}>
+                                                                    <span class="toggle-icon">▸</span>
+                                                                </template>
+                                                                <span class="group-title">{group.title}</span>
+                                                            </button>
+                                                        </td>
+                                                        <td style="text-align:center;">{group.projectNeedsCount}</td>
+                                                        <td style="text-align:center;">{group.hsCount}</td>
+                                                        <td style="text-align:center;">{group.weight}</td>
+                                                        <td style="text-align:center;">{group.score}</td>
+                                                    </tr>
+                                                    <template if:true={group.isOpen}>
+                                                        <template for:each={group.items} for:item="item">
+                                                            <tr key={item.id} class="capability-item-row">
+                                                                <td>{item.label}</td>
+                                                                <td class="col-checkbox" style="text-align:center;">
+                                                                    <input type="checkbox" checked={item.projectNeeds} class={item.projectNeeds} data-both={item.projectNeeds} data-hs={item.hs} />
+                                                                </td>
+                                                                <td class="col-checkbox" style="text-align:center;">
+                                                                    <input type="checkbox" checked={item.hs} class={item.hs} data-both={item.projectNeeds} data-hs={item.hs} />
+                                                                </td>
+                                                                <td style="text-align:center;">{item.weight}</td>
+                                                                <td style="text-align:center;">{item.score}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </template>
+                                                </template>
+                                                <tr class="capability-total-row slds-text-title_bold">
+                                                    <td><strong style="font-size:20px;">Total</strong></td>
+                                                    <td style="text-align:center;">{totalProjectNeeds}</td>
+                                                    <td style="text-align:center;">{totalHS}</td>
+                                                    <td style="text-align:center;">{totalWeightPercent}</td>
+                                                    <td style="text-align:center;">{totalScorePercent}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hs-right-panel">
+                            <div class="hs-panel-card chat-card">
+                                <div class="hs-panel-header">
+                                    <h5 class="fw-bold mb-0">Chat</h5>
+                                </div>
+                                <div class="chat-body">
+                                    <template for:each={currentMessages} for:item="msg">
+                                        <div key={msg.id} class={msg.chatClass}>
+                                            <template if:true={msg.isReceived}>
+                                                <div class="d-flex align-items-start">
+                                                    <span class="avatar me-2 flex-shrink-0">
+                                                        <img src={msg.avatar} alt={msg.sender} />
+                                                    </span>
+                                                    <div>
+                                                        <div class="d-flex align-items-center mb-1">
+                                                            <h6 class="fs-14 mb-0">{msg.sender}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="message-box receive-message">
+                                                                <p class="mb-0 fs-16">{msg.text}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template if:true={msg.isSent}>
+                                                <div class="d-flex align-items-start justify-content-end">
+                                                    <div>
+                                                        <div class="d-flex align-items-center justify-content-end mb-1">
+                                                            <h6 class="fs-14 fw-semibold mb-0">You</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="message-box sent-message">
+                                                                <p class="mb-0 fs-16">{msg.text}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="avatar ms-2 flex-shrink-0">
+                                                        <img src={msg.avatar} alt="user" />
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="chat-footer">
+                                    <div class="flex-fill">
+                                        <input type="text" class="form-control border-0" placeholder="Type Something..." value={messageInput} onchange={handleMessageInput} />
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button class="btn btn-send" onclick={sendMessage}>Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

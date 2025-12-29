@@ -1,0 +1,40 @@
+.data-table { width: 100%; }
+.grid-header { margin-bottom: 8px; }
+.table-container { overflow-x: auto; }
+.data-table th, .data-table td { white-space: nowrap; }
+
+.grid-header { display: flex; align-items: center; justify-content: space-between; }
+.grid-header .add { background:#0070d2; color:#fff; border:none; padding:6px 10px; border-radius:4px; }
+
+/* Modal styles (simple) */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:50; }
+.modal-card { margin-top: 85px; background:#fff; width:720px; max-width:95%; border-radius:6px; box-shadow:0 6px 18px rgba(0,0,0,0.2); display:flex; flex-direction:column; max-height: calc(100vh - 120px); }
+.modal-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; flex: 0 0 auto; }
+.modal-body { padding:16px; overflow:auto; flex: 1 1 auto; }
+.modal-footer { padding:12px 16px; border-top:1px solid #eee; display:flex; justify-content:flex-end; gap:8px; flex: 0 0 auto; }
+
+.intake-form-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:12px; }
+.intake-field label { display:block; margin-bottom:6px; font-weight:600; }
+
+.delete-icon { color: #c23934; }
+
+/* Button styles used in modal footer */
+.btn { font-weight:600; padding:8px 12px; border-radius:4px; cursor:pointer; border:1px solid transparent; }
+.btn-light { background:#f3f6f9; color:#16325c; border-color:#d8dde6; }
+.btn-light:hover { background:#e9eef6; }
+.btn-primary { background:#0070d2; color:#fff; border-color:#005fb2; }
+.btn-primary:hover { background:#0061b5; }
+
+/* Dropdown (filter-style) for multi-select specialities - copied from healthSystemsGrid for visual parity */
+.dropdown-container { position: relative; }
+.dropdown-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 8px 10px; background: #fff; border: 1px solid #ced4da; border-radius: 6px; font-size: 13px; color: #111b34; cursor: pointer; }
+.dropdown-btn .chevron { margin-left: 8px; }
+.dropdown-menu { position: absolute; top: 100%; left: 0; width: 100%; max-height: 220px; overflow-y: auto; background: #fff; border: 1px solid #ced4da; border-radius: 6px; box-shadow: 0 6px 18px rgba(8,14,39,0.12); z-index: 2000; margin-top: 6px; padding: 8px; display: none; }
+.dropdown-menu.show { display: block; }
+.dropdown-options { list-style: none; padding: 0; margin: 0 0 8px 0; max-height: 150px; overflow-y: auto; }
+.dropdown-options li { margin-bottom: 6px; }
+.dropdown-options label { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 6px; border-radius: 4px; }
+.dropdown-options label:hover { background: #f8f9fa; }
+.dropdown-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.dropdown-actions button { padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; background: #fff; cursor: pointer; }
+.dropdown-actions button:hover { background: #f4f6fb; }

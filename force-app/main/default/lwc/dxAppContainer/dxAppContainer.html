@@ -1,0 +1,27 @@
+<template>
+    <div class="dx-app-container">
+        <template if:false={isLoaded}>
+            <div class="loading-container">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                <p class="loading-text">Loading DatosX Platform...</p>
+            </div>
+        </template>
+        <iframe
+            if:true={showIframe}
+            src={iframeSrc}
+            class="dx-iframe"
+            title="DatosX Application"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+            onload={handleIframeLoad}
+            onerror={handleIframeError}>
+        </iframe>
+        <template if:true={hasError}>
+            <div class="error-container">
+                <lightning-icon icon-name="utility:error" size="large" variant="error"></lightning-icon>
+                <h3>Unable to Load Application</h3>
+                <p>{errorMessage}</p>
+                <lightning-button label="Retry" onclick={handleRetry}></lightning-button>
+            </div>
+        </template>
+    </div>
+</template>

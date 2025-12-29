@@ -1,0 +1,14 @@
+<template>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Login</h2>
+
+            <lightning-input label="Username" value={username} onchange={handleInput}></lightning-input>
+            <lightning-input label="Password" type="password" value={password} onchange={handleInput}></lightning-input>
+
+            <lightning-button label="Login" variant="brand" onclick={login}></lightning-button>
+
+            <p if:true={errorMsg} class="error">{errorMsg}</p>
+        </div>
+    </div>
+</template>

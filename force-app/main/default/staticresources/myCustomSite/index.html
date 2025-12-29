@@ -1,0 +1,43 @@
+<!-- Trimmed HTML for injection inside LWC. No <html>, <head> or <body> tags. -->
+
+<!-- Login view (shown when not authenticated) -->
+<section class="login-view" aria-hidden="false">
+  <div class="login-card">
+    <div class="login-brand">DX</div>
+    <h1>Sign in</h1>
+    <form id="dx-login-form">
+      <label for="dx-username">Username</label>
+      <input id="dx-username" name="username" type="text" autocomplete="username" required />
+
+      <label for="dx-password">Password</label>
+      <input id="dx-password" name="password" type="password" autocomplete="current-password" required />
+
+      <button type="submit" class="dx-btn">Sign in</button>
+    </form>
+
+    <!-- Inline error area for login failures -->
+    <div id="dx-login-error" class="login-error" role="alert" aria-live="assertive" hidden></div>
+
+    <div class="login-note">Test accounts: <strong>healthsystem</strong> / datosx@2025 and <strong>sponsor</strong> / datosx@2025</div>
+  </div>
+</section>
+
+<!-- Site view (hidden until authenticated) -->
+<section class="site-view" aria-hidden="true">
+  <nav class="dx-navbar">
+    <div class="dx-brand">
+      <div class="dx-logo">DX</div>
+    </div>
+    <ul id="dx-nav" class="dx-nav" role="menubar" aria-label="Primary navigation"></ul>
+    <div class="dx-actions">
+      <button id="dx-logout" class="dx-logout" title="Logout">Logout</button>
+    </div>
+  </nav>
+
+  <main class="dx-main">
+    <div id="dx-content" class="dx-content">
+      <h2>Overview</h2>
+      <p>Welcome. Please select a section from the navigation.</p>
+    </div>
+  </main>
+</section>

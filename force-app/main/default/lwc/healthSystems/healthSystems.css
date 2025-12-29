@@ -1,0 +1,484 @@
+/* Isolate Bootstrap styles - prevent global style bleed */
+.custom-filter-panel * {
+    box-sizing: border-box;
+}
+
+/* Custom Filter Panel Styles */
+.custom-filter-panel {
+    position: static;
+    z-index: 1;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    width: calc(100% - 32px);
+    max-width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0;
+    margin: 0 16px 16px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.custom-filter-panel .filter-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.custom-filter-panel .filter-header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+.custom-filter-panel .filter-header a {
+    font-size: 13px;
+    color: #dc3545;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.custom-filter-panel .filter-body {
+    padding: 14px;
+}
+
+.custom-filter-panel .filter-footer {
+    padding: 10px 14px;
+    background: #f8f9fa;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top: 1px solid #e9ecef;
+}
+
+.custom-filter-panel .form-label {
+    color: #2a2a85;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.custom-filter-panel .link-primary {
+    color: #0d6efd;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-filter-panel .link-primary:hover {
+    text-decoration: underline;
+}
+
+/* Grid System - simplified */
+.custom-filter-panel .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.custom-filter-panel .filter-item {
+    min-width: 0;
+}
+
+.custom-filter-panel .filter-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+/* Dropdown Button */
+.custom-filter-panel .dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 6px 10px;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #495057;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s;
+}
+
+.custom-filter-panel .dropdown-btn:hover {
+    border-color: #0d6efd;
+}
+
+.custom-filter-panel .dropdown-btn .chevron {
+    margin-left: auto;
+    font-size: 10px;
+}
+
+/* Dropdown Menu */
+.custom-filter-panel .dropdown-container {
+    position: relative;
+}
+
+.custom-filter-panel .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    margin-top: 2px;
+    padding: 8px;
+    display: none;
+}
+
+.custom-filter-panel .dropdown-menu.show {
+    display: block;
+}
+
+.custom-filter-panel .dropdown-search {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.custom-filter-panel .dropdown-options {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.custom-filter-panel .dropdown-options li {
+    margin-bottom: 4px;
+}
+
+.custom-filter-panel .dropdown-options label {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+    border-radius: 3px;
+}
+
+.custom-filter-panel .dropdown-options label:hover {
+    background: #f8f9fa;
+}
+
+.custom-filter-panel .dropdown-options input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.custom-filter-panel .dropdown-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.custom-filter-panel .dropdown-actions button {
+    flex: 1;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.custom-filter-panel .dropdown-actions button:hover {
+    background: #f8f9fa;
+}
+
+.custom-filter-panel .dropdown-actions .btn-select {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.custom-filter-panel .dropdown-actions .btn-select:hover {
+    background: #0b5ed7;
+}
+
+/* Footer Buttons */
+.custom-filter-panel .footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.custom-filter-panel .footer-actions button,
+.custom-filter-panel .footer-actions a {
+    padding: 6px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.custom-filter-panel .footer-actions .btn-close {
+    background: #fff;
+    color: #333;
+}
+
+.custom-filter-panel .footer-actions .btn-close:hover {
+    background: #f8f9fa;
+}
+
+.custom-filter-panel .footer-actions .btn-filter {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.custom-filter-panel .footer-actions .btn-filter:hover {
+    background: #0b5ed7;
+}
+
+/* Filter Toggle Button */
+.btn-filter-toggle {
+    padding: 6px 14px !important;
+    background: white !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #333 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+.btn-filter-toggle:hover {
+    background: #f8f9fa !important;
+    border-color: #adb5bd !important;
+}
+
+/* Grid button: swap icons (rows -> grid) on hover */
+.btn-grid {
+    padding: 8px 12px !important;
+    background: #000 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35) !important;
+}
+
+.btn-grid:hover {
+    transform: translateY(-1px);
+}
+
+/* Target the inner icon and make it white */
+.grid-svg,
+.grid-svg svg,
+.grid-svg lightning-primitive-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Add margin to search bar for spacing */
+.search-bar {
+    min-width: 220px;
+    /* margin-right: 1rem; */
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+lightning-datatable {
+    min-width: 1300px;
+}
+
+/* Action Button Icons */
+.icon-edit lightning-primitive-icon {
+    fill: #0d6efd !important;
+}
+
+.icon-delete lightning-primitive-icon {
+    fill: #6c757d !important;
+}
+
+/* Force delete icon to render red for the button's svg */
+.icon-delete-svg,
+.icon-delete-svg svg,
+.icon-delete-svg lightning-primitive-icon {
+    fill: #c23934 !important;
+    color: #c23934 !important;
+    stroke: #c23934 !important;
+}
+
+.icon-edit:hover lightning-primitive-icon {
+    fill: #0b5ed7 !important;
+}
+
+.icon-delete:hover lightning-primitive-icon {
+    fill: #dc3545 !important;
+}
+
+.white-icon {
+    fill: white !important;
+    color: white !important;
+}
+
+.white-icon lightning-primitive-icon {
+    fill: white !important;
+}
+
+.badge-soft-success {
+    background-color: #e6f4ea; /* Softer green background */
+    color: #2e7d32; /* Darker green text for better contrast */
+    border: 1px solid #81c784; /* Green border */
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.badge-soft-info {
+    background-color: #e3f2fd; /* Softer blue background */
+    color: #1565c0; /* Darker blue text for better contrast */
+    border: 1px solid #64b5f6; /* Blue border */
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Center aligned cells that should look like links */
+.center-link-cell {
+    text-align: center;
+    color: #0176d3; /* hyperlink color */
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Ensure the value within slds-truncate stays centered */
+.center-link-cell.slds-truncate {
+    display: block;
+}
+
+.paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    gap: 10px;
+}
+
+.paginator button {
+    padding: 4px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+}
+
+.paginator button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Sortable table headers */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.sortable-header:hover {
+    background-color: #f3f3f3;
+}
+
+.sortable-header:hover .header-content::after {
+    content: '↕';
+    font-size: 12px;
+    color: #999;
+    margin-left: 4px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sorting-arrow-asc::after {
+    content: '↑';
+    font-size: 12px;
+    color: #080707;
+    margin-left: 4px;
+}
+
+.sorting-arrow-desc::after {
+    content: '↓';
+    font-size: 12px;
+    color: #080707;
+    margin-left: 4px;
+}
+
+/* Hide hover arrow when actively sorted */
+.sortable-header:hover .sorting-arrow-asc::after,
+.sortable-header:hover .sorting-arrow-desc::after {
+    content: '↑';
+    color: #080707;
+}
+
+.sortable-header:hover .sorting-arrow-desc::after {
+    content: '↓';
+    color: #080707;
+}
+
+/* Contact cell avatar and name styles */
+.contact-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+}
+
+.contact-avatar-initials {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e9eef8;
+    color: #0b5ed7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.contact-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hyper { color: #0d6efd; cursor: pointer; text-decoration: none; }
+.delete-btn::part(icon) {
+    fill: #c23934 !important;
+    color: #c23934 !important;
+}

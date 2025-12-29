@@ -1,0 +1,161 @@
+<template>
+    <div class="master-container">
+        <div class="tabs">
+            <button class={tabClassState} data-tab="state" onclick={selectTab}>State</button>
+            <button class={tabClassCity} data-tab="city" onclick={selectTab}>City</button>
+            <button class={tabClassSpeciality} data-tab="speciality" onclick={selectTab}>Speciality</button>
+        </div>
+
+        <div class="grid-block" if:true={showState}>
+            <div class="grid-header">
+                <h2>States</h2>
+                <button class="add" data-type="state" onclick={openAddModal}>Add</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>State Name</th>
+                            <th>State Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={states} for:item="s">
+                            <tr key={s.code}>
+                                <td>
+                                    <button class="slds-button slds-button_icon" title="Edit" data-code={s.code} data-action="edit" onclick={handleAction}>
+                                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                    </button>
+                                    <button class="slds-button slds-button_icon" title="Delete" data-code={s.code} data-action="delete" onclick={handleAction}>
+                                        <lightning-icon class="delete-icon" icon-name="utility:delete" alternative-text="Delete" size="x-small"></lightning-icon>
+                                    </button>
+                                </td>
+                                <td>{s.name}</td>
+                                <td>{s.code}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid-block" if:true={showCity}>
+            <div class="grid-header">
+                <h2>Cities</h2>
+                <button class="add" data-type="city" onclick={openAddModal}>Add</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>City Name</th>
+                            <th>State Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={cities} for:item="c">
+                            <tr key={c.id}>
+                                <td>
+                                    <button class="slds-button slds-button_icon" title="Edit" data-id={c.id} data-action="edit" onclick={handleAction}>
+                                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                    </button>
+                                    <button class="slds-button slds-button_icon" title="Delete" data-id={c.id} data-action="delete" onclick={handleAction}>
+                                        <lightning-icon class="delete-icon" icon-name="utility:delete" alternative-text="Delete" size="x-small"></lightning-icon>
+                                    </button>
+                                </td>
+                                <td>{c.name}</td>
+                                <td>{c.stateName}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid-block" if:true={showSpeciality}>
+            <div class="grid-header">
+                <h2>Specialities</h2>
+                <button class="add" data-type="speciality" onclick={openAddModal}>Add</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Actions</th>
+                            <th>Specialities</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={specialities} for:item="sp">
+                            <tr key={sp.id}>
+                                <td>
+                                    <button class="slds-button slds-button_icon" title="Edit" data-id={sp.id} data-action="edit" onclick={handleAction}>
+                                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                                    </button>
+                                    <button class="slds-button slds-button_icon" title="Delete" data-id={sp.id} data-action="delete" onclick={handleAction}>
+                                        <lightning-icon class="delete-icon" icon-name="utility:delete" alternative-text="Delete" size="x-small"></lightning-icon>
+                                    </button>
+                                </td>
+                                <td>{sp.name}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <!-- Unified Add / Edit Modal -->
+    <template if:true={isModalOpen}>
+        <div class="modal-overlay" onclick={handleModalOverlayClick}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>{modalTitle}</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="intake-form-grid">
+                        <template if:true={isStateModal}>
+                            <div class="intake-field">
+                                <label>State Name</label>
+                                <lightning-input name="name" value={modalForm.name} onchange={handleModalInputChange}></lightning-input>
+                            </div>
+                            <div class="intake-field">
+                                <label>State Code</label>
+                                <lightning-input name="code" value={modalForm.code} onchange={handleModalInputChange}></lightning-input>
+                            </div>
+                        </template>
+
+                        <template if:true={isCityModal}>
+                            <div class="intake-field">
+                                <label>City Name</label>
+                                <lightning-input name="name" value={modalForm.name} onchange={handleModalInputChange}></lightning-input>
+                            </div>
+                            <div class="intake-field">
+                                <label>State</label>
+                                <lightning-combobox name="stateName" options={stateOptions} value={modalForm.stateName} onchange={handleModalInputChange}></lightning-combobox>
+                            </div>
+                        </template>
+
+                        <template if:true={isSpecialityModal}>
+                            <div class="intake-field span-2">
+                                <label>Speciality Name</label>
+                                <lightning-input name="name" value={modalForm.name} onchange={handleModalInputChange}></lightning-input>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveModal}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+    </div>
+</template>

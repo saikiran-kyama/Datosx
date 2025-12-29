@@ -1,0 +1,28 @@
+<template>
+	<div class="slds-var-p-around_medium demo-dashboard">
+		<div class="slds-m-bottom_large">
+			<lightning-card title="Monthly Project Trend">
+				<div class="chart-container" data-id="apexChart"></div>
+			</lightning-card>
+		</div>
+
+		<div class="slds-grid slds-wrap slds-gutters slds-m-bottom_large">
+			<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-p-bottom_small">
+				<lightning-card title="Projects By Status">
+					<div class="chart-container" data-id="container10"></div>
+				</lightning-card>
+			</div>
+
+			<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-p-bottom_small">
+				<lightning-card title="Projects By Industry">
+					<div class="chart-container" data-id="apexDonut"></div>
+					<div class="donut-legend" data-id="donutLegend" style=" display: flex;
+    justify-content: center; 
+    align-items: center;  
+    margin-left: 95px;
+    margin-bottom: 28px;"></div>
+				</lightning-card>
+			</div>
+		</div>
+	</div>
+</template>

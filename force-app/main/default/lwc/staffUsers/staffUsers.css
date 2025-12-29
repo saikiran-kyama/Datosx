@@ -1,0 +1,12 @@
+.slds-p-around_medium {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 520px;
+}
+
+.slds-m-top_medium {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}

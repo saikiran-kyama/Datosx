@@ -1,0 +1,113 @@
+<template>
+    <div class="grid-header">
+        <h2>Staff Users</h2>
+        <div>
+            <button class="add" onclick={openAddModal}>Add</button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                    <tr>
+                    <th>Actions</th>
+                    <th>Status</th>
+                    <th>Profile</th>
+                    <th>License</th>
+                    <th>Role</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Alias</th>
+                    <th>Username</th>
+                    <th>Phone No.</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rows} for:item="row">
+                    <tr key={row.id}>
+                        <td>
+                            <button class="slds-button slds-button_icon" title="Edit" data-id={row.id} data-action="edit" onclick={handleAction}>
+                                <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="x-small"></lightning-icon>
+                            </button>
+                        </td>
+                        <td>{row.status}</td>
+                        <td>{row.profileName}</td>
+                        <td>{row.licenseName}</td>
+                        <td>{row.roleName}</td>
+                        <td>{row.firstName}</td>
+                        <td>{row.lastName}</td>
+                        <td>{row.email}</td>
+                        <td>{row.alias}</td>
+                        <td>{row.username}</td>
+                        <td>{row.phone}</td>
+                        <td>{row.updated}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <template if:true={isModalOpen}>
+        <div class="modal-overlay" onclick={handleModalOverlayClick}>
+            <div class="modal-card" onclick={stopModalPropagation}>
+                    <div class="modal-header">
+                        <div>
+                            <h3>{modalTitle}</h3>
+                        </div>
+                    </div>
+                <div class="modal-body">
+                    <div class="intake-form-grid">
+                        <template if:true={isEditMode}>
+                            <div class="intake-field">
+                                <label>Status</label>
+                                <lightning-combobox name="status" options={statusOptions} value={modalForm.status} onchange={handleModalInputChange}></lightning-combobox>
+                            </div>
+                        </template>
+                        <div class="intake-field">
+                            <label>Profile <span class="required">*</span></label>
+                            <lightning-combobox name="profileId" options={profileOptions} value={modalForm.profileId} onchange={handleModalInputChange}></lightning-combobox>
+                        </div>
+                        <div class="intake-field">
+                            <label>User License <span class="required">*</span></label>
+                            <lightning-combobox name="licenseId" options={licenseOptions} value={modalForm.licenseId} onchange={handleModalInputChange}></lightning-combobox>
+                        </div>
+                        <div class="intake-field">
+                            <label>Role <span class="required">*</span></label>
+                            <lightning-combobox name="roleId" options={roleOptions} value={modalForm.roleId} onchange={handleModalInputChange}></lightning-combobox>
+                        </div>
+                        <div class="intake-field">
+                            <label>First Name</label>
+                            <lightning-input name="firstName" value={modalForm.firstName} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>Last Name <span class="required">*</span></label>
+                            <lightning-input name="lastName" value={modalForm.lastName} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>Email <span class="required">*</span></label>
+                            <lightning-input name="email" type="email" value={modalForm.email} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>Alias <span class="required">*</span></label>
+                            <lightning-input name="alias" value={modalForm.alias} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>Username <span class="required">*</span></label>
+                            <lightning-input name="username" value={modalForm.username} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                        <div class="intake-field">
+                            <label>Phone</label>
+                            <lightning-input name="phone" value={modalForm.phone} onchange={handleModalInputChange}></lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveModal}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

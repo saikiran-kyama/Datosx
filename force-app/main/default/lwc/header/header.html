@@ -1,0 +1,33 @@
+<template>
+    <header class="dx-header">
+        <div class="dx-brand">DX</div>
+
+        <template if:true={isAuthenticated}>
+            <nav class="dx-nav" role="menubar">
+                <ul>
+                    <template for:each={navItems} for:item="item">
+                        <li key={item.id} data-page={item.id} class={item.class} data-key={item.id} onclick={onNavClick}>{item.label}</li>
+                    </template>
+                </ul>
+            </nav>
+            <div class="dx-actions">
+                <button class="dx-logout" onclick={onLogout}>Logout</button>
+            </div>
+        </template>
+
+        <template if:false={isAuthenticated}>
+            <div class="login-form">
+                <form onsubmit={onSubmit}>
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" required />
+
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" required />
+
+                    <button type="submit" class="dx-btn">Sign in</button>
+                </form>
+                <div class="login-error" data-id="loginError" hidden></div>
+            </div>
+        </template>
+    </header>
+</template>
