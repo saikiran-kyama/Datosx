@@ -1559,3 +1559,308 @@
 
 /* If the column still appears too narrow, consider increasing the select width or reducing padding */
 .td-select { width: 64px; }
+
+/* OVERVIEW WRAPPER - Add padding left and right */
+.custom-overview-wrapper {
+    padding: 1.5rem 2rem;
+    background: #f8fafc;
+}
+
+/* ROW CONTAINER */
+.custom-tables-row {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* SECTION LABEL (Table headings) */
+.custom-section-label {
+    margin-top: 5px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    margin-left: 15px;
+    border-bottom: 2px solid #3b82f6;
+    display: inline-block;
+}
+
+/* EACH TABLE COLUMN - Custom widths for different tables */
+.custom-table-container {
+    min-width: 0;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* First table (Trial Preparation) - more width with 3 columns */
+.custom-table-container:nth-child(1) {
+    flex: 3;
+}
+
+/* Second table (Trial Execution) - medium width with 2 columns */
+.custom-table-container:nth-child(2) {
+    flex: 2;
+}
+
+/* Third table (Trial Close) - less width with 1 column */
+.custom-table-container:nth-child(3) {
+    flex: 1;
+    max-width: 320px;
+}
+
+/* COLUMN HEADERS */
+.custom-columns-header {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.custom-column-header {
+    flex: 1;
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e3a5f 100%);
+    color: #ffffff;
+    padding: 14px 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-column-header:last-child {
+    border-right: none;
+}
+
+/* CARDS GRID */
+.custom-cards-grid {
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    background: #f8fafc;
+}
+
+/* Grid column variants */
+.custom-cards-grid-1 {
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    background: #f8fafc;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.custom-cards-grid-2 {
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    background: #f8fafc;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.custom-cards-grid-3 {
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    background: #f8fafc;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* CARD BASE STYLES - Button-like appearance */
+.custom-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 40px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.custom-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Circle Base - Smaller circles with white tick */
+.status-circle {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Check icon - white for all circles */
+.check-icon {
+    width: 10px;
+    height: 10px;
+    fill: #ffffff;
+}
+
+/* Status Circle - Complete (Green with white tick) */
+.status-circle-complete {
+    background: #22c55e;
+    border-color: #16a34a;
+}
+
+/* Status Circle - In Progress (Blue with white tick) */
+.status-circle-progress {
+    background: #3b82f6;
+    border-color: #2563eb;
+}
+
+/* Status Circle - Pending (Gray with white tick) */
+.status-circle-pending {
+    background: #9ca3af;
+    border-color: #6b7280;
+}
+
+/* Card Number */
+.card-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+    white-space: nowrap;
+}
+
+/* Status Badge Styles */
+.status-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 8px;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.status-badge-complete {
+    
+    color: #166534;
+}
+
+.status-badge-progress {
+    
+    color: #1e40af;
+}
+
+.status-badge-pending {
+    
+    color: #64748b;
+}
+
+/* Card Color Variants - Button-like styling */
+.custom-card-complete {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border-color: #bbf7d0;
+}
+
+.custom-card-complete:hover {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border-color: #86efac;
+}
+
+.custom-card-progress {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-color: #bfdbfe;
+}
+
+.custom-card-progress:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-color: #93c5fd;
+}
+
+.custom-card-pending {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-color: #e2e8f0;
+}
+
+.custom-card-pending:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-color: #cbd5e1;
+}
+
+/* Hidden/Placeholder Card */
+.card-placeholder {
+    visibility: hidden;
+    min-height: 40px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+}
+
+/* Tooltip styling for cards */
+.custom-card[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%);
+    background-color: rgba(15, 23, 42, 0.95);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: normal;
+    width: 250px;
+    max-width: 85vw;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: left;
+    z-index: 1000;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.custom-card[title]:hover::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 4px);
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(15, 23, 42, 0.95);
+    z-index: 1001;
+    pointer-events: none;
+}
+
+/* Keep position relative for tooltips */
+.custom-card {
+    position: relative;
+}
+
+/* OPTIONAL: STACK ON SMALL SCREENS */
+@media (max-width: 1024px) {
+    .custom-tables-row {
+        flex-direction: column;
+    }
+    
+    .custom-table-container:nth-child(3) {
+        max-width: none;
+    }
+    
+    .custom-table-container:nth-child(1),
+    .custom-table-container:nth-child(2),
+    .custom-table-container:nth-child(3) {
+        flex: 1;
+    }
+}

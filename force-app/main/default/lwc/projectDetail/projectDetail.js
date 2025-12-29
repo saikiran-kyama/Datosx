@@ -1,8 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import AVATARS from '@salesforce/resourceUrl/avatars';
 
 export default class ProjectDetail extends LightningElement {
     @api project;
-    currentTab = 'Details';
+    currentTab = 'Overview';
+    
+    // Study tab image
+    studyImage = `${AVATARS}/pageUnderConstruction.jpeg`;
     // Protocol UI state
     selectedProtocolStep = '';
     // used to ensure we scroll the selected step into view only once per render
@@ -215,6 +219,10 @@ export default class ProjectDetail extends LightningElement {
     }
 
 
+    get isOverview() {
+        return this.currentTab === 'Overview';
+    }
+
     get isDetails() {
         return this.currentTab === 'Details';
     }
@@ -245,6 +253,10 @@ export default class ProjectDetail extends LightningElement {
 
     get isMessaging() {
         return this.currentTab === 'Messaging';
+    }
+
+    get isStudy() {
+        return this.currentTab === 'Study';
     }
 
     hsMatches = [
@@ -1800,4 +1812,245 @@ export default class ProjectDetail extends LightningElement {
       });
       return sum.toFixed(2) + '%';
     }
+
+
+
+    // Tooltip data for Trial Preparation table
+    trialPrepTooltips = {
+        column1: [
+            'Align with Sponsor on study objectives, timelines, and KPIs.',
+            'Develop Study Execution Plan and tracking tools (weekly reports, dashboards).',
+            'Finalize datosX and HS research team roles/responsibilities.',
+            'Confirm with Operations all contracts (Sponsor CTA, HS MSA, vendor agreements) are executed.',
+            'Conduct Internal Kick-off Meeting (datosX Ops, Trial Lead, Leadership).',
+            'Conduct Trial Kick-off Meeting (Sponsor + HS).',
+            'Schedule IRB / Trial Preparation Meeting Series.',
+            'Collaborate with HS to prepare and submit IRB application.',
+            'Ensure all required IRB documents are finalized (protocol, ICF, CRF, recruitment materials, PI CV, etc.).',
+            'Track IRB review process and coordinate modification responses.',
+            'Additional coordination activities as needed.'
+        ],
+        column2: [
+            'Set up data collection workflow and finalize EDC setup.',
+            'Validate CRF versions (paper/electronic) and confirm regulatory compliance (HIPAA, 21 CFR Part 11).',
+            'Provide or arrange EDC system training for HS research team.',
+            'Develop Data Monitoring and Source Data Verification (SDV) Plans.',
+            'Define data entry timelines, query process, and AE/SAE tracking procedures.',
+            'Define SDV visit schedule and data points for verification.',
+            'Finalize Data Analysis Plan (responsible party, interim/final analyses, anonymization process).',
+            'Develop Patient Screening and Recruitment Plan.',
+            'Review and approve recruitment materials before IRB submission.',
+            'Support HS in outreach coordination and community engagement.',
+            'Define participant visit schedule and site logistics.',
+            'Confirm required supplies, equipment, and tools for site readiness.',
+            'Create and circulate Site Readiness Checklist.',
+            'Complete pre-study documentation and verification.'
+        ],
+        column3: [
+            'Conduct site readiness visit(s) and finalize Site Readiness Checklist.',
+            'Organize and/or deliver site training sessions (virtual/on-site).',
+            'Verify recruitment materials and equipment are on-site and properly placed.',
+            'Confirm IRB approval receipt.',
+            'Re-confirm all agreements (Sponsor, HS, datosX, vendors) are executed.',
+            'Confirm ClinicalTrials.gov registration completion.',
+            'Finalize Go/No-Go decision with Sponsor and HS.',
+            'Confirm official FPFV date.',
+            'Final readiness verification.'
+        ]
+    };
+
+    // Tooltip data for Trial Execution table
+    trialExecutionTooltips = {
+        column1: [
+            'Provide weekly Sponsor updates on enrolment, site status, milestones.',
+            'Identify and address recruitment or operational challenges promptly.',
+            'Support HS research teams with issue resolution and data-entry troubleshooting.',
+            'Maintain cross-functional coordination with Sponsor, HS, and datosX teams.',
+            'Track meeting action items and ensure follow-up completion.'
+        ],
+        column2: [
+            'Conduct ongoing remote EDC data review for completeness and consistency.',
+            'Monitor AE/SAE reporting and protocol deviations.',
+            'Generate and track data queries; ensure timely resolution.',
+            'Develop and document a Source Data Verification (SDV) plan prior to on-site visits.',
+            'Conduct on-site SDV visits as planned (initial, mid-study, closeout).',
+            'Verify informed consent documentation and patient eligibility.',
+            'Identify and correct data discrepancies.',
+            'Provide corrective feedback to site teams.',
+            'Produce Data Quality Reports summarizing trends and findings.',
+            'Ensure corrective actions are implemented and documented.',
+            'Coordinate final SDV completion and data lock with HS and Sponsor.',
+            'Support Sponsor\'s data team in final analysis preparation.'
+        ]
+    };
+
+    // Tooltip data for Trial Close table
+    trialCloseTooltips = {
+        column1: [
+            'Coordinate with data vendor/biostatistics team for analysis as per plan.',
+            'Review preliminary findings; ensure clarity and consistency.',
+            'Resolve any post-lock data issues with Sponsor and vendor.',
+            'Organize and lead Final Readout Meeting with Sponsor.',
+            'Align stakeholders on interpretation of results and key lessons.',
+            'Document learnings for internal review.',
+            'Support manuscript coordination (if applicable).',
+            'Compile data summaries, study documents, and regulatory materials.',
+            'Ensure secure long-term archiving of all study data, reports, and documents.',
+            'Confirm data retention compliance (5–15 years, as required).',
+            'Conduct internal study debrief with datosX teams.',
+            'Deliver final closeout report to Sponsor.'
+        ]
+    };
+
+    tableConfig = [
+        {
+            label: 'Trial Preparation',
+            prefix: 'TR',
+            columns: 3,
+            rows: 14, // Maximum rows based on column2 which has 14 items
+            className: 'custom-trial-prep',
+            headers: ['3–6 Months Before FPFV', '2–3 Months Before FPFV', '1 Month Before FPFV'],
+            hasTooltips: true
+        },
+        {
+            label: 'Trial Execution',
+            prefix: 'TE',
+            columns: 2,
+            rows: 12, // Maximum rows based on column2 which has 12 items
+            className: 'custom-trial-exec',
+            headers: ['Project Oversight & Management', 'Data Monitoring & SDV'],
+            hasTooltips: true
+        },
+        {
+            label: 'Trial Close',
+            prefix: 'TC',
+            columns: 1,
+            rows: 12,
+            className: 'custom-trial-close',
+            headers: ['Activities'],
+            hasTooltips: true
+        }
+    ];
+
+    get generatedTables() {
+        // Helper function to get random status
+        const getRandomStatus = () => {
+            const statuses = ['complete', 'progress', 'pending'];
+            const weights = [0.4, 0.3, 0.3]; // 40% complete, 30% in progress, 30% pending
+            const random = Math.random();
+            let cumulative = 0;
+            for (let i = 0; i < statuses.length; i++) {
+                cumulative += weights[i];
+                if (random < cumulative) return statuses[i];
+            }
+            return 'pending';
+        };
+
+        // Status text mapping
+        const statusTextMap = {
+            complete: 'Completed',
+            progress: 'In Progress',
+            pending: 'Pending'
+        };
+
+        return this.tableConfig.map((table, tableIndex) => {
+            const data = [];
+            let counter = 100001;
+
+            // Define column-specific row counts based on table type
+            let columnRowCounts;
+            let tooltipSource;
+            
+            if (table.label === 'Trial Preparation') {
+                columnRowCounts = [11, 14, 9];
+                tooltipSource = this.trialPrepTooltips;
+            } else if (table.label === 'Trial Execution') {
+                columnRowCounts = [5, 12];
+                tooltipSource = this.trialExecutionTooltips;
+            } else if (table.label === 'Trial Close') {
+                columnRowCounts = [12];
+                tooltipSource = this.trialCloseTooltips;
+            } else {
+                columnRowCounts = Array(table.columns).fill(table.rows);
+                tooltipSource = null;
+            }
+
+            const maxRows = Math.max(...columnRowCounts);
+
+            // Create column arrays to store cells for each column
+            const columns = [];
+            for (let c = 0; c < table.columns; c++) {
+                const rowCount = columnRowCounts[c];
+                const columnCells = [];
+                for (let r = 0; r < rowCount; r++) {
+                    const cellValue = `${table.prefix}-${counter++}`;
+                    const tooltip = (table.hasTooltips && tooltipSource) 
+                        ? tooltipSource[`column${c + 1}`][r] || ''
+                        : '';
+                    
+                    const status = getRandomStatus();
+                    
+                    columnCells.push({
+                        value: cellValue,
+                        tooltip: tooltip,
+                        hasData: true,
+                        cellKey: `${table.prefix}-${c}-${r}`,
+                        // Card-based properties
+                        cardClass: `custom-card custom-card-${status}`,
+                        statusCircleClass: `status-circle status-circle-${status}`,
+                        statusBadgeClass: `status-badge status-badge-${status}`,
+                        statusText: statusTextMap[status],
+                        isComplete: status === 'complete'
+                    });
+                }
+                columns.push(columnCells);
+            }
+
+            // Convert columns to row format for template (grid-based layout)
+            for (let r = 0; r < maxRows; r++) {
+                const rowCells = [];
+                for (let c = 0; c < table.columns; c++) {
+                    if (r < columns[c].length) {
+                        rowCells.push(columns[c][r]);
+                    } else {
+                        // Push a hidden cell placeholder
+                        rowCells.push({ 
+                            value: `empty-${c}-${r}`, 
+                            tooltip: '', 
+                            hasData: false,
+                            cellKey: `${table.prefix}-empty-${c}-${r}`,
+                            cardClass: 'card-placeholder',
+                            statusCircleClass: '',
+                            statusText: '',
+                            isComplete: false
+                        });
+                    }
+                }
+                
+                // Only add row if at least one cell has data
+                if (rowCells.some(cell => cell.hasData)) {
+                    data.push({
+                        rowKey: `${table.prefix}-row-${r}`,
+                        cells: rowCells
+                    });
+                }
+            }
+
+            // Generate grid class based on column count
+            const gridClassName = `custom-cards-grid-${table.columns}`;
+
+            return {
+                ...table,
+                data,
+                key: tableIndex,
+                gridClassName
+            };
+        });
+    }
+
+
+
+
+
+
 }
