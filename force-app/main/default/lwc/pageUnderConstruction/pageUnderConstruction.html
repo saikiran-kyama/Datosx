@@ -1,15 +1,225 @@
 <template>
+    <div class="master-data-container">
+        <!-- Left Navigation Panel -->
+        <div class="master-nav-panel">
+            <!-- <div class="nav-header">
+                <lightning-icon icon-name="utility:database" size="small" class="nav-icon"></lightning-icon>
+                <span class="nav-title">Master Data</span>
+            </div> -->
+            <div class="nav-list">
+                <template for:each={masterNavItems} for:item="item">
+                    <div key={item.key} 
+                         data-key={item.key} 
+                         class={item.className}
+                         onclick={handleNavClick}>
+                        <lightning-icon icon-name={item.icon} size="x-small" class="nav-item-icon"></lightning-icon>
+                        <span class="nav-item-label">{item.label}</span>
+                        <lightning-icon icon-name="utility:chevronright" size="xx-small" class="nav-chevron"></lightning-icon>
+                    </div>
+                </template>
+            </div>
+        </div>
 
-    <!-- Page Under Construction -->
-     <lightning-card>
-        <div class="page-under-construction" style="text-align: center;">
-            <div class="page-under-construction-content">
-                
-                <div class="page-under-construction-image">
-                    <img src={avatars} alt="Under Construction" style="max-width: 52%;" />
+        <!-- Right Content Panel -->
+        <div class="master-content-panel">
+            <!-- Header with Title and Actions -->
+            <div class="content-header">
+                <!-- <div class="header-left">
+                    <h2 class="content-title">{selectedMasterLabel}</h2>
+                    <span class="record-count">{filteredRows.length} Records</span>
+                </div> -->
+                <div class="header-right">
+                    <!-- Search Box -->
+                    <div class="search-box">
+                        <lightning-input 
+                            type="search" 
+                            placeholder="Search..." 
+                            value={searchKeyword}
+                            onchange={handleSearchChange}
+                            class="search-input"
+                            variant="label-hidden">
+                        </lightning-input>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-action btn-upload" onclick={handleUploadCSV} title="Upload CSV">
+                            <lightning-icon icon-name="utility:upload" size="x-small" class="btn-icon"></lightning-icon>
+                            <span>Upload</span>
+                        </button>
+                        <button class="btn-action btn-download" onclick={handleDownloadCSV} title="Download CSV">
+                            <lightning-icon icon-name="utility:download" size="x-small" class="btn-icon"></lightning-icon>
+                            <span>Download</span>
+                        </button>
+                        <button class="btn-action btn-add" onclick={handleAddNew} title="Add New">
+                            <lightning-icon icon-name="utility:add" size="x-small" class="btn-icon"></lightning-icon>
+                            <span>Add New</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-wrapper">
+                <table class="master-data-table">
+                    <thead>
+                        <tr>
+                            <th class="th-actions">Actions</th>
+                            <th class="th-status">Status</th>
+                            <template for:each={currentColumns} for:item="col">
+                                <th key={col.key} class={col.headerClass}>{col.label}</th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template if:true={hasRows}>
+                            <template for:each={paginatedRows} for:item="row">
+                                <tr key={row.id} class="data-row">
+                                    <td class="td-actions">
+                                        <div class="action-icons">
+                                            <lightning-button-icon 
+                                                icon-name="utility:edit" 
+                                                variant="bare" 
+                                                alternative-text="Edit" 
+                                                title="Edit"
+                                                data-id={row.id}
+                                                onclick={handleEditRow}
+                                                class="icon-edit">
+                                            </lightning-button-icon>
+                                            <lightning-button-icon 
+                                                icon-name="utility:delete" 
+                                                variant="bare" 
+                                                alternative-text="Delete" 
+                                                title="Delete"
+                                                data-id={row.id}
+                                                onclick={handleDeleteRow}
+                                                class="icon-delete">
+                                            </lightning-button-icon>
+                                        </div>
+                                    </td>
+                                    <td class="td-status">
+                                        <span class={row.statusClass}>{row.status}</span>
+                                    </td>
+                                    <template for:each={row.displayValues} for:item="val">
+                                        <td key={val.key} class="td-data">{val.value}</td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </template>
+                        <template if:false={hasRows}>
+                            <tr>
+                                <td colspan="10" class="no-data-cell">
+                                    <div class="no-data-message">
+                                        <lightning-icon icon-name="utility:info" size="small"></lightning-icon>
+                                        <span>No records found</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Showing {startRecord} to {endRecord} of {totalRecords} records
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" onclick={handleFirstPage} disabled={isFirstPage} title="First">
+                        <lightning-icon icon-name="utility:jump_to_left" size="x-small"></lightning-icon>
+                    </button>
+                    <button class="page-btn" onclick={handlePrevPage} disabled={isFirstPage} title="Previous">
+                        <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                    </button>
+                    <span class="page-indicator">Page {currentPage} of {totalPages}</span>
+                    <button class="page-btn" onclick={handleNextPage} disabled={isLastPage} title="Next">
+                        <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                    </button>
+                    <button class="page-btn" onclick={handleLastPage} disabled={isLastPage} title="Last">
+                        <lightning-icon icon-name="utility:jump_to_right" size="x-small"></lightning-icon>
+                    </button>
+                    <select class="page-size-select" onchange={handlePageSizeChange}>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
                 </div>
             </div>
         </div>
-    </lightning-card>
-    
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" 
+                            title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                    </button>
+                    <h2 class="slds-modal__title">{modalTitle}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <template for:each={currentFormFields} for:item="field">
+                            <div key={field.key} class="form-field">
+                                <label class="form-label">{field.label} 
+                                    <template if:true={field.required}><span class="required">*</span></template>
+                                </label>
+                                <template if:true={field.isText}>
+                                    <lightning-input 
+                                        type="text"
+                                        value={field.value}
+                                        data-field={field.key}
+                                        onchange={handleFormFieldChange}
+                                        placeholder={field.placeholder}>
+                                    </lightning-input>
+                                </template>
+                                <template if:true={field.isCombobox}>
+                                    <lightning-combobox
+                                        options={field.options}
+                                        value={field.value}
+                                        data-field={field.key}
+                                        onchange={handleFormFieldChange}
+                                        placeholder={field.placeholder}>
+                                    </lightning-combobox>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Delete Confirmation Modal -->
+    <template if:true={isDeleteModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" 
+                            title="Close" onclick={closeDeleteModal}>
+                        <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center">
+                    <lightning-icon icon-name="utility:warning" size="large" class="warning-icon"></lightning-icon>
+                    <h2 class="delete-title">Confirm Delete</h2>
+                    <p class="delete-message">Are you sure you want to delete this record? This action cannot be undone.</p>
+                </div>
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Cancel</button>
+                    <button class="slds-button slds-button_destructive" onclick={confirmDelete}>Delete</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 </template>
+

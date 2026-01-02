@@ -37,6 +37,99 @@ export default class ProjectDetail extends LightningElement {
     estimationSteps = [];
     selectedEstimationSectionId = '';
     invoiceStepId = 'invoiceSchedule';
+    
+    // Notes tab state
+    filterToggle = false;
+    selectedTags = [];
+    message = '';
+    selectedPatientType = '';
+    showMore = false;
+    isNavOpen = true;
+    isAscending = true;
+    displayedColumns = ['date', 'postedBy', 'message', 'context', 'tags'];
+    chatMessages = [];
+    totalSize = 0;
+    currentPage = 0;
+    eventTypes = ['Emergency', 'Expedite', 'Delayed', 'Sub Acute', 'Commercial', 'High Risk', 'Pregnant', 'Minor', 'Teenager', 'Cancer', 'Diabetic', 'Hyper Tension', 'Disabled'];
+    filteredPatientTypes = [];
+    contextOptions = [
+        { label: 'Emergency', value: 'emergency' },
+        { label: 'Expedite', value: 'expedite' },
+        { label: 'Delayed', value: 'delayed' },
+        { label: 'Sub Acute', value: 'subacute' },
+        { label: 'Commercial', value: 'commercial' },
+        { label: 'High Risk', value: 'highrisk' },
+        { label: 'Pregnant', value: 'pregnant' },
+        { label: 'Minor', value: 'minor' },
+        { label: 'Teenager', value: 'teenager' },
+        { label: 'Cancer', value: 'cancer' },
+        { label: 'Diabetic', value: 'diabetic' },
+        { label: 'Hyper Tension', value: 'hypertension' },
+        { label: 'Disabled', value: 'disabled' }
+    ];
+    tagOptions = [
+        { label: 'Emergency', value: 'emergency' },
+        { label: 'Expedite', value: 'expedite' },
+        { label: 'Delayed', value: 'delayed' },
+        { label: 'Sub Acute', value: 'subacute' },
+        { label: 'Commercial', value: 'commercial' },
+        { label: 'High Risk', value: 'highrisk' },
+        { label: 'Pregnant', value: 'pregnant' },
+        { label: 'Minor', value: 'minor' },
+        { label: 'Teenager', value: 'teenager' },
+        { label: 'Cancer', value: 'cancer' },
+        { label: 'Diabetic', value: 'diabetic' },
+        { label: 'Hyper Tension', value: 'hypertension' },
+        { label: 'Disabled', value: 'disabled' }
+    ];
+    
+    notesColumns = [
+        {
+            label: 'Date',
+            fieldName: 'date',
+            type: 'date',
+            typeAttributes: {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            },
+            cellAttributes: { alignment: 'left' }
+        },
+        {
+            label: 'Posted By',
+            fieldName: 'postedBy',
+            type: 'text',
+            cellAttributes: { alignment: 'left' }
+        },
+        {
+            label: 'Message',
+            fieldName: 'message',
+            type: 'text',
+            wrapText: true,
+            cellAttributes: { alignment: 'left' }
+        },
+        {
+            label: 'Context',
+            fieldName: 'context',
+            type: 'text',
+            cellAttributes: { alignment: 'left' }
+        },
+        {
+            label: 'Tags',
+            fieldName: 'tagsDisplay',
+            type: 'text',
+            cellAttributes: { alignment: 'left' }
+        }
+    ];
+
+    savedSearchOptions = [
+        { label: 'Pending Verification', value: 'pending_verification' },
+        { label: 'SCH & Pending AUTH', value: 'sch_pending_auth' },
+        { label: 'Referrals this week', value: 'referrals_week' },
+        { label: 'Authorized this week', value: 'authorized_week' }
+    ];
     // list of milestone names (new 7-stage structure)
     milestoneNames = [
         'Trial Preparation',
@@ -257,6 +350,19 @@ export default class ProjectDetail extends LightningElement {
 
     get isStudy() {
         return this.currentTab === 'Study';
+    }
+
+    get isNotes() {
+        return this.currentTab === 'Related';
+    }
+
+    // Getters for conditional values in Notes section
+    get showMoreButtonLabel() {
+        return this.showMore ? 'Less' : 'More';
+    }
+
+    get sortIconName() {
+        return this.isAscending ? 'utility:arrowup' : 'utility:arrowdown';
     }
 
     hsMatches = [
@@ -1658,6 +1764,9 @@ export default class ProjectDetail extends LightningElement {
 
         // Initialize Estimation steps panel
         this.initializeEstimationSteps();
+        
+        // Initialize Notes tab data
+        this.initializeNotesData();
     }
 
       initializeEstimationSteps() {
@@ -2045,6 +2154,166 @@ export default class ProjectDetail extends LightningElement {
                 key: tableIndex,
                 gridClassName
             };
+        });
+    }
+
+    // Notes tab initialization and methods
+    initializeNotesData() {
+        this.chatMessages = [
+            {
+                id: 1,
+                date: new Date('2024-12-29T10:30:00'),
+                postedBy: 'Dr. Smith',
+                message: 'Patient is responding well to treatment. Blood pressure has stabilized.',
+                context: 'Medical Review',
+                tags: ['emergency', 'hypertension'],
+                tagsDisplay: 'emergency, hypertension',
+                hsVisible: true,
+                cvpVisible: false,
+                hsCheckboxId: 'hs-checkbox-1',
+                cvpCheckboxId: 'cvp-checkbox-1',
+                hasDocument: true
+            },
+            {
+                id: 2,
+                date: new Date('2024-12-28T15:45:00'),
+                postedBy: 'Nurse Johnson',
+                message: 'Follow-up appointment scheduled for next week. Patient education provided.',
+                context: 'Patient Care',
+                tags: ['expedite'],
+                tagsDisplay: 'expedite',
+                hsVisible: false,
+                cvpVisible: true,
+                hsCheckboxId: 'hs-checkbox-2',
+                cvpCheckboxId: 'cvp-checkbox-2',
+                hasDocument: false
+            },
+            {
+                id: 3,
+                date: new Date('2024-12-27T09:15:00'),
+                postedBy: 'Dr. Wilson',
+                message: 'Initial assessment completed. Recommending additional tests.',
+                context: 'Diagnosis',
+                tags: ['delayed', 'diabetic'],
+                tagsDisplay: 'delayed, diabetic',
+                hsVisible: true,
+                cvpVisible: true,
+                hsCheckboxId: 'hs-checkbox-3',
+                cvpCheckboxId: 'cvp-checkbox-3',
+                hasDocument: true
+            }
+        ];
+        this.totalSize = this.chatMessages.length;
+    }
+
+    // Notes event handlers
+    handleTagChange(event) {
+        this.selectedTags = event.detail.value;
+    }
+
+    handleMessageChange(event) {
+        this.message = event.target.value;
+    }
+
+    handleToggleShowMore() {
+        this.showMore = !this.showMore;
+    }
+
+    toggleSort(event) {
+        event.stopPropagation();
+        this.isAscending = !this.isAscending;
+    }
+
+    onSortOptionSelected(option) {
+        console.log('Sort by:', option);
+        // Implement sorting logic here
+    }
+
+    toggleFilter() {
+        this.filterToggle = !this.filterToggle;
+    }
+
+    handlePatientTypeChange(event) {
+        this.selectedPatientType = event.detail.value;
+    }
+
+    addMessage() {
+        if (!this.message.trim()) {
+            return;
+        }
+
+        const newMessage = {
+            id: this.chatMessages.length + 1,
+            date: new Date(),
+            postedBy: 'Current User',
+            message: this.message,
+            context: 'User Input',
+            tags: [...this.selectedTags],
+            tagsDisplay: this.selectedTags.join(', '),
+            hsVisible: false,
+            cvpVisible: false,
+            hsCheckboxId: `hs-checkbox-${this.chatMessages.length + 1}`,
+            cvpCheckboxId: `cvp-checkbox-${this.chatMessages.length + 1}`,
+            hasDocument: false
+        };
+
+        this.chatMessages = [...this.chatMessages, newMessage];
+        this.totalSize = this.chatMessages.length;
+        
+        // Clear form
+        this.message = '';
+        this.selectedTags = [];
+    }
+
+    // Document view handler
+    handleViewDocument(event) {
+        const documentId = event.target.dataset.id;
+        console.log('View document for message ID:', documentId);
+        // Implement document viewing logic here
+    }
+
+    openfileupload() {
+        // Implement file upload logic
+        console.log('File upload triggered');
+    }
+
+    saveFilters() {
+        console.log('Filters saved');
+    }
+
+    getTagButtonStyle(tag) {
+        const colors = {
+            'emergency': 'background-color: red; color: white;',
+            'expedite': 'background-color: green; color: white;',
+            'delayed': 'background-color: #b1ca40; color: white;',
+            'hypertension': 'background-color: #ff9800; color: white;',
+            'diabetic': 'background-color: #9c27b0; color: white;'
+        };
+        return colors[tag] || 'background-color: #b1ca40; color: white;';
+    }
+
+    // Visibility change handlers
+    handleHSVisibilityChange(event) {
+        const messageId = parseInt(event.target.dataset.id);
+        const isChecked = event.target.checked;
+        
+        this.chatMessages = this.chatMessages.map(msg => {
+            if (msg.id === messageId) {
+                return { ...msg, hsVisible: isChecked };
+            }
+            return msg;
+        });
+    }
+
+    handleCVPVisibilityChange(event) {
+        const messageId = parseInt(event.target.dataset.id);
+        const isChecked = event.target.checked;
+        
+        this.chatMessages = this.chatMessages.map(msg => {
+            if (msg.id === messageId) {
+                return { ...msg, cvpVisible: isChecked };
+            }
+            return msg;
         });
     }
 
