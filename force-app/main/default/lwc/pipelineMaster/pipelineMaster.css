@@ -1,0 +1,270 @@
+.pipeline-container {
+    padding: 1rem;
+    background-color: #f3f3f3;
+    min-height: 100vh;
+}
+
+/* Horizontal Tabs Styling - Outside Container */
+.tabs-wrapper {
+    background-color: transparent;
+    margin-bottom: 0;
+}
+
+.horizontal-tabs-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.tab-item {
+    display: inline-block;
+}
+
+.tab-link {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: #706e6b;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    position: relative;
+    background-color: white;
+    border: 1px solid #dddbda;
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom: none;
+}
+
+.tab-link:hover {
+    color: #0176d3;
+    background-color: #f8f9fa;
+}
+
+.tab-item.active .tab-link {
+    color: #0176d3;
+    font-weight: 700;
+    background-color: white;
+    border-bottom: 3px solid #0176d3;
+    padding-bottom: calc(0.75rem - 2px);
+}
+
+.content-wrapper {
+    background-color: white;
+    border-radius: 0 0.25rem 0.25rem 0.25rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.slds-card {
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons-separated {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.action-buttons-separated lightning-button {
+    
+    border-radius: 0.25rem;
+}
+
+.action-btn {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.filter-section {
+    background-color: #fafaf9;
+    border-top: 1px solid #dddbda;
+    border-bottom: 1px solid #dddbda;
+    padding: 1rem;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+    width: 100%;
+}
+
+.table-container table {
+    min-width: max-content;
+}
+
+.slds-table th,
+.slds-table td {
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.slds-table th:first-child,
+.slds-table td:first-child {
+    min-width: 120px;
+}
+
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sortable-header:hover {
+    background-color: #f3f3f3;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.sort-icon {
+    margin-left: 0.25rem;
+    font-size: 0.875rem;
+    color: #0176d3;
+}
+
+.action-buttons-cell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Style delete icon red */
+.delete-icon {
+    --slds-c-icon-color-foreground-default: #c23934 !important;
+    --slds-c-button-text-color: #c23934 !important;
+}
+
+.delete-icon:hover {
+    --slds-c-icon-color-foreground-default: #a61e1a !important;
+    --slds-c-button-text-color: #a61e1a !important;
+}
+
+/* Style edit icon blue */
+.edit-icon {
+    --slds-c-icon-color-foreground-default: #0176d3 !important;
+    --slds-c-button-text-color: #0176d3 !important;
+}
+
+.edit-icon:hover {
+    --slds-c-icon-color-foreground-default: #014486 !important;
+    --slds-c-button-text-color: #014486 !important;
+}
+
+.pagination-footer-right {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    border-top: 1px solid #dddbda;
+    padding: 0.75rem 1rem;
+    z-index: 100;
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pagination-container-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.slds-table_fixed-layout {
+    table-layout: fixed;
+}
+
+.slds-table th,
+.slds-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ensure status borders are visible and not clipped by table cell overflow */
+td.status-cell {
+    overflow: visible;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+}
+
+.slds-table tbody tr {
+    min-height: 48px;
+}
+
+.slds-table tbody td {
+    vertical-align: middle;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.status-badge {
+    position: relative;
+    z-index: 2;
+    background-clip: padding-box;
+}
+
+/* Profile Avatar */
+.name-with-avatar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #0176d3;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 1px solid;
+}
+
+.status-partner {
+    color: #2e844a;
+    background-color: transparent;
+    border-color: #2e844a;
+}
+
+.status-prospect {
+    color: #0176d3;
+    background-color: transparent;
+    border-color: #0176d3;
+}
+
+.status-active {
+    color: #0176d3;
+    background-color: transparent;
+    border-color: #0176d3;
+}
+
+.status-inactive {
+    color: #c23934;
+    background-color: transparent;
+    border-color: #c23934;
+}
+
+.status-completed {
+    color: #706e6b;
+    background-color: transparent;
+    border-color: #706e6b;
+}

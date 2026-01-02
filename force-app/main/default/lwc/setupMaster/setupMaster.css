@@ -255,15 +255,15 @@
 }
 
 .btn-add {
-    background: #ffffff;
-    color: #7c3aed;
+    background: #0078D4;
+    color: #ffffff;
     border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
 .btn-add:hover {
-    background: #f5f3ff;
+    background: #005a9e;
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(124, 58, 237, 0.25);
+    box-shadow: 0 3px 8px rgba(0, 120, 212, 0.35);
 }
 
 /* ========================================
@@ -630,4 +630,3 @@
         min-width: 100%;
     }
 }
-
