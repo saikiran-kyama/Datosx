@@ -13,12 +13,8 @@ export default class ProjectTasks extends LightningElement {
 
     milestoneNames = [
         'Trial Preparation',
-        'Project Oversight & Management',
-        'Data Monitoring & SDV',
-        'Final Data Analysis',
-        'Sponsor Final Readout',
-        'Publication & Archiving',
-        'Final Wrap-Up'
+        'Trial Execution',
+        'Trial Close'
     ];
 
     milestoneActivities = {
@@ -55,14 +51,15 @@ export default class ProjectTasks extends LightningElement {
             { id: 'tp30', text: 'Finalize Go/No-Go decision with Sponsor and HS.', checked: false, section: '1 Month Before FPFV' },
             { id: 'tp31', text: 'Confirm official FPFV date.', checked: false, section: '1 Month Before FPFV' }
         ],
-        'Project Oversight & Management': [
+        'Trial Execution': [
+            // project oversight activities
             { id: 'pom1', text: 'Provide weekly Sponsor updates on enrollment, site status, milestones.', checked: false, section: 'Trial Execution' },
             { id: 'pom2', text: 'Identify and address recruitment or operational challenges promptly.', checked: false, section: 'Trial Execution' },
             { id: 'pom3', text: 'Support HS research teams with issue resolution and data-entry troubleshooting.', checked: false, section: 'Trial Execution' },
             { id: 'pom4', text: 'Maintain cross-functional coordination with Sponsor, HS, and datosX teams.', checked: false, section: 'Trial Execution' },
-            { id: 'pom5', text: 'Track meeting action items and ensure follow-up completion.', checked: false, section: 'Trial Execution' }
-        ],
-        'Data Monitoring & SDV': [
+            { id: 'pom5', text: 'Track meeting action items and ensure follow-up completion.', checked: false, section: 'Trial Execution' },
+
+            // data monitoring & SDV activities
             { id: 'dm1', text: 'Conduct ongoing remote EDC data review for completeness and consistency.', checked: false, section: 'Trial Execution' },
             { id: 'dm2', text: 'Monitor AE/SAE reporting and protocol deviations.', checked: false, section: 'Trial Execution' },
             { id: 'dm3', text: 'Generate and track data queries; ensure timely resolution.', checked: false, section: 'Trial Execution' },
@@ -76,23 +73,24 @@ export default class ProjectTasks extends LightningElement {
             { id: 'dm11', text: 'Coordinate final SDV completion and data lock with HS and Sponsor.', checked: false, section: 'Trial Execution' },
             { id: 'dm12', text: "Support Sponsor's data team in final analysis preparation.", checked: false, section: 'Trial Execution' }
         ],
-        'Final Data Analysis': [
+        'Trial Close': [
+            // final data analysis
             { id: 'fda1', text: 'Coordinate with data vendor/biostatistics team for analysis as per plan.', checked: false, section: 'Trial Close' },
             { id: 'fda2', text: 'Review preliminary findings; ensure clarity and consistency.', checked: false, section: 'Trial Close' },
-            { id: 'fda3', text: 'Resolve any post-lock data issues with Sponsor and vendor.', checked: false, section: 'Trial Close' }
-        ],
-        'Sponsor Final Readout': [
+            { id: 'fda3', text: 'Resolve any post-lock data issues with Sponsor and vendor.', checked: false, section: 'Trial Close' },
+
+            // sponsor final readout
             { id: 'sfr1', text: 'Organize and lead Final Readout Meeting with Sponsor.', checked: false, section: 'Trial Close' },
             { id: 'sfr2', text: 'Align stakeholders on interpretation of results and key lessons.', checked: false, section: 'Trial Close' },
-            { id: 'sfr3', text: 'Document learnings for internal review.', checked: false, section: 'Trial Close' }
-        ],
-        'Publication & Archiving': [
+            { id: 'sfr3', text: 'Document learnings for internal review.', checked: false, section: 'Trial Close' },
+
+            // publication & archiving
             { id: 'pa1', text: 'Support manuscript coordination (if applicable).', checked: false, section: 'Trial Close' },
             { id: 'pa2', text: 'Compile data summaries, study documents, and regulatory materials.', checked: false, section: 'Trial Close' },
             { id: 'pa3', text: 'Ensure secure long-term archiving of all study data, reports, and documents.', checked: false, section: 'Trial Close' },
-            { id: 'pa4', text: 'Confirm data retention compliance (5–15 years, as required).', checked: false, section: 'Trial Close' }
-        ],
-        'Final Wrap-Up': [
+            { id: 'pa4', text: 'Confirm data retention compliance (5–15 years, as required).', checked: false, section: 'Trial Close' },
+
+            // final wrap-up
             { id: 'fw1', text: 'Conduct internal study debrief with datosX teams.', checked: false, section: 'Trial Close' },
             { id: 'fw2', text: 'Deliver final closeout report to Sponsor.', checked: false, section: 'Trial Close' }
         ]

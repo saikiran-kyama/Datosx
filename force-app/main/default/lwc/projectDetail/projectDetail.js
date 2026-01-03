@@ -1688,7 +1688,7 @@ export default class ProjectDetail extends LightningElement {
             columns: 2,
             rows: 12, // Maximum rows based on column2 which has 12 items
             className: 'custom-trial-exec',
-            headers: ['Project Oversight & Management', 'Data Monitoring & SDV'],
+          headers: ['Trial Execution', ''],
             hasTooltips: true
         },
         {
