@@ -1,8 +1,16 @@
 <template>
     <div class="pipeline-container">
-        
+        <!-- Enquiry Inner Screen View -->
+        <template if:true={showEnquiryInnerScreen}>
+            <c-enquirey-inner-screen 
+                enquiry-id={currentEnquiryId}
+                onback={handleBackToList}>
+            </c-enquirey-inner-screen>
+        </template>
 
-        <!-- Horizontal Tabs - Outside table container -->
+        <!-- Main Pipeline Master View -->
+        <template if:false={showEnquiryInnerScreen}>
+            <!-- Horizontal Tabs - Outside table container -->
         <div class="tabs-wrapper slds-m-top_medium">
             <ul class="horizontal-tabs-list" role="tablist">
                 <li class={healthSystemsClass} role="presentation">
@@ -300,30 +308,30 @@
 
                         <!-- Enquiries Table -->
                         <template if:true={isEnquiries}>
-                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer table-rounded">
                                 <thead>
                                     <tr class="slds-line-height_reset">
                                         <th scope="col" style="width: 120px;">
                                             <div class="slds-truncate">Actions</div>
                                         </th>
-                                        <th scope="col" class="sortable-header" data-field="id" onclick={handleSort}>
+                                        <th scope="col" class="sortable-header" data-field="enquiryId" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
                                                 <span>Enquiry ID</span>
                                             </div>
                                         </th>
-                                        <th scope="col" class="sortable-header" data-field="sponsorName" onclick={handleSort}>
+                                        <th scope="col" class="sortable-header" data-field="enquiryName" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Sponsor Name</span>
+                                                <span>Enquiry Name</span>
                                             </div>
                                         </th>
                                         <th scope="col" class="sortable-header" data-field="status" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Status</span>
+                                                <span>Enquiry Status</span>
                                             </div>
                                         </th>
-                                        <th scope="col" class="sortable-header" data-field="projectScoping" onclick={handleSort}>
+                                        <th scope="col" class="sortable-header" data-field="sponsorName" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Project Scoping Doc</span>
+                                                <span>Sponsor</span>
                                             </div>
                                         </th>
                                         <th scope="col" class="sortable-header" data-field="requirements" onclick={handleSort}>
@@ -336,34 +344,34 @@
                                                 <span>HS Matches</span>
                                             </div>
                                         </th>
-                                        <th scope="col" class="sortable-header" data-field="projectName" onclick={handleSort}>
+                                        <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Project Name</span>
+                                                <span>Last Updated</span>
                                             </div>
                                         </th>
-                                        <th scope="col" class="sortable-header" data-field="trialDetails" onclick={handleSort}>
+                                        <th scope="col" class="sortable-header" data-field="state" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Trial Details</span>
+                                                <span>State</span>
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="sortable-header" data-field="city" onclick={handleSort}>
+                                            <div class="slds-truncate header-content">
+                                                <span>City</span>
                                             </div>
                                         </th>
                                         <th scope="col" class="sortable-header" data-field="contact" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Contact Person</span>
+                                                <span>Contact</span>
                                             </div>
                                         </th>
                                         <th scope="col" class="sortable-header" data-field="email" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
-                                                <span>Email ID</span>
+                                                <span>Email</span>
                                             </div>
                                         </th>
                                         <th scope="col" class="sortable-header" data-field="phone" onclick={handleSort}>
                                             <div class="slds-truncate header-content">
                                                 <span>Phone</span>
-                                            </div>
-                                        </th>
-                                        <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
-                                            <div class="slds-truncate header-content">
-                                                <span>Last Updated</span>
                                             </div>
                                         </th>
                                     </tr>
@@ -391,33 +399,50 @@
                                                     </lightning-button-icon>
                                                 </div>
                                             </td>
-                                            <td><div class="slds-truncate">{record.id}</div></td>
+                                            <td>
+                                                <div class="slds-truncate">
+                                                    <a href="javascript:void(0);" 
+                                                       style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
+                                                       data-id={record.id}
+                                                       onclick={handleEnquiryClick}>{record.enquiryId}</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">
+                                                    <a href="javascript:void(0);" 
+                                                       style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
+                                                       data-id={record.id}
+                                                       onclick={handleEnquiryClick}>{record.enquiryName}</a>
+                                                </div>
+                                            </td>
+                                            <td class="status-cell">
+                                                <span style={record.statusStyle}>{record.status}</span>
+                                            </td>
                                             <td>
                                                 <div class="slds-truncate name-with-avatar">
                                                     <span class="profile-avatar">{record.sponsorInitial}</span>
                                                     <span>{record.sponsorName}</span>
                                                 </div>
                                             </td>
-                                            <td class="status-cell">
-                                                <span style={record.statusStyle}>{record.status}</span>
+                                            <td style="text-align: center;">
+                                                <div class="slds-truncate">
+                                                    <a href="javascript:void(0);" 
+                                                       style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
+                                                       data-id={record.id}
+                                                       onclick={handleRequirementsClick}>{record.requirements}</a>
+                                                </div>
                                             </td>
                                             <td style="text-align: center;">
-                                                <a href="javascript:void(0);" style="color: #0176d3; text-decoration: underline; font-weight: 500;">{record.projectScoping}</a>
+                                                <div class="slds-truncate">
+                                                    <a href="javascript:void(0);" 
+                                                       style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
+                                                       data-id={record.id}
+                                                       onclick={handleHSMatchesClick}>{record.hsMatches}</a>
+                                                </div>
                                             </td>
-                                            <td style="text-align: center;">
-                                                <a href="javascript:void(0);" 
-                                                   style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
-                                                   data-id={record.id}
-                                                   onclick={handleRequirementsClick}>{record.requirements}</a>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <a href="javascript:void(0);" 
-                                                   style="color: #0176d3; font-weight: 600; text-decoration: underline; cursor: pointer;"
-                                                   data-id={record.id}
-                                                   onclick={handleHSMatchesClick}>{record.hsMatches}</a>
-                                            </td>
-                                            <td><div class="slds-truncate">{record.projectName}</div></td>
-                                            <td><div class="slds-truncate">{record.trialDetails}</div></td>
+                                            <td><div class="slds-truncate">{record.lastUpdated}</div></td>
+                                            <td><div class="slds-truncate">{record.state}</div></td>
+                                            <td><div class="slds-truncate">{record.city}</div></td>
                                             <td>
                                                 <div class="slds-truncate name-with-avatar">
                                                     <span class="profile-avatar">{record.contactInitial}</span>
@@ -426,7 +451,6 @@
                                             </td>
                                             <td><div class="slds-truncate">{record.email}</div></td>
                                             <td><div class="slds-truncate">{record.phone}</div></td>
-                                            <td><div class="slds-truncate">{record.lastUpdated}</div></td>
                                         </tr>
                                     </template>
                                 </tbody>
@@ -595,9 +619,9 @@
                 </div>
             </div>
         </div>
-    </div>
+        </template>
 
-    <!-- Requirements Modal -->
+        <!-- Requirements Modal -->
     <template if:true={showRequirementsModal}>
         <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="requirements-modal-heading" class="slds-modal slds-fade-in-open slds-modal_large">
             <div class="slds-modal__container">
@@ -821,4 +845,5 @@
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
+    </div>
 </template>

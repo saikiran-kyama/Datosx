@@ -1,0 +1,52 @@
+<template>
+    <div class="enquiry-inner-container">
+        <!-- Header with Back Button -->
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning-button-icon 
+                                icon-name="utility:back" 
+                                alternative-text="Back" 
+                                title="Back to List"
+                                onclick={handleBack}
+                                variant="bare"
+                                size="large">
+                            </lightning-button-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Enquiry Details">Enquiry Details</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">Enquiry ID: {enquiryId}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="slds-card slds-m-top_medium">
+            <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <span>Enquiry Information</span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div class="slds-p-around_medium">
+                    <p>This is the inner screen for Enquiry: <strong>{enquiryId}</strong></p>
+                    <p class="slds-m-top_small">Add your enquiry details and functionality here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

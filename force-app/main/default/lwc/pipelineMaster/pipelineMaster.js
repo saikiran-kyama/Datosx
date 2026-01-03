@@ -9,6 +9,10 @@ export default class PipelineMaster extends LightningElement {
     @track pageSizeOptions = [5, 10, 25, 50, 100];
     @track showFilters = false;
     
+    // Enquiry Inner Screen Navigation
+    @track showEnquiryInnerScreen = false;
+    @track currentEnquiryId = '';
+    
     // Requirements Modal State
     @track showRequirementsModal = false;
     @track selectedEnquiryId = '';
@@ -210,8 +214,26 @@ export default class PipelineMaster extends LightningElement {
     ];
 
     @track enquiriesData = [
-        { id: 'ENQ001', sponsorName: 'PharmaCorp Inc', status: 'Active', projectScoping: 'view', requirements: 5, hsMatches: 12, projectName: 'Clinical Trial Alpha', trialDetails: 'Phase III Study', contact: 'Mike Johnson', email: 'mike@pharmacorp.com', phone: '555-0201', lastUpdated: '2025-12-25' },
-        { id: 'ENQ002', sponsorName: 'BioTech Solutions', status: 'Completed', projectScoping: 'view', requirements: 8, hsMatches: 7, projectName: 'Research Beta', trialDetails: 'Phase II Study', contact: 'Sarah Williams', email: 'sarah@biotech.com', phone: '555-0202', lastUpdated: '2025-12-28' }
+        { id: 'ENQ001', enquiryId: 'New1455', enquiryName: 'CDS Project', status: 'Study ongoing', completion: 76, sponsorName: 'Sample Sponsor', requirements: 5, hsMatches: 12, lastUpdated: '2025-11-15', state: 'California', city: 'San Francisco', contact: 'Dr. John Smith', email: 'john.smith@stmary.com', phone: '+1-415-555-0100' },
+        { id: 'ENQ002', enquiryId: 'PX-1002', enquiryName: 'Beta Trial', status: 'Deep Dive Call', completion: 45, sponsorName: 'BioHealth Ltd', requirements: 8, hsMatches: 7, lastUpdated: '2025-11-10', state: 'Texas', city: 'Houston', contact: 'Dr. Lisa Chen', email: 'lisa.chen@greenvalley.com', phone: '+1-713-555-0200' },
+        { id: 'ENQ003', enquiryId: 'PX-1003', enquiryName: 'Gamma Research', status: 'Protocol Draft 1 creation', completion: 62, sponsorName: 'MedSolutions', requirements: 6, hsMatches: 9, lastUpdated: '2025-11-08', state: 'New York', city: 'New York', contact: 'Dr. Michael Kim', email: 'michael.kim@northside.com', phone: '+1-212-555-0300' },
+        { id: 'ENQ004', enquiryId: 'PX-1004', enquiryName: 'Delta Study', status: 'Study Ongoing', completion: 88, sponsorName: 'Global Trials', requirements: 7, hsMatches: 15, lastUpdated: '2025-11-12', state: 'Illinois', city: 'Chicago', contact: 'Dr. Raj Patel', email: 'raj.patel@stmary.com', phone: '+1-312-555-0400' },
+        { id: 'ENQ005', enquiryId: 'PX-1005', enquiryName: 'Epsilon Pilot', status: 'Project On Hold', completion: 30, sponsorName: 'Acme Pharma', requirements: 4, hsMatches: 5, lastUpdated: '2025-10-25', state: 'Florida', city: 'Miami', contact: 'Dr. Sarah Lee', email: 'sarah.lee@greenvalley.com', phone: '+1-305-555-0500' },
+        { id: 'ENQ006', enquiryId: 'PX-1006', enquiryName: 'Zeta Analysis', status: 'Initial Review', completion: 20, sponsorName: 'NextGen Pharma', requirements: 3, hsMatches: 4, lastUpdated: '2025-11-05', state: 'Texas', city: 'Dallas', contact: 'Dr. Kevin Brown', email: 'kevin.brown@houstonhealth.com', phone: '+1-214-555-1000' },
+        { id: 'ENQ007', enquiryId: 'PX-1007', enquiryName: 'Theta Clinical Study', status: 'Feasibility Check', completion: 52, sponsorName: 'Alpha Bio', requirements: 5, hsMatches: 8, lastUpdated: '2025-10-30', state: 'Florida', city: 'Orlando', contact: 'Dr. Emily Clark', email: 'emily.clark@orlandohealth.com', phone: '+1-407-555-2000' },
+        { id: 'ENQ008', enquiryId: 'PX-1008', enquiryName: 'Omega Trial', status: 'Study Ongoing', completion: 74, sponsorName: 'TriCore Labs', requirements: 6, hsMatches: 11, lastUpdated: '2025-11-14', state: 'California', city: 'San Diego', contact: 'Dr. Peter Adams', email: 'peter.adams@sandiegohealth.com', phone: '+1-619-555-3000' },
+        { id: 'ENQ009', enquiryId: 'PX-1009', enquiryName: 'Sigma Research', status: 'Protocol Review', completion: 60, sponsorName: 'BioVantage', requirements: 7, hsMatches: 10, lastUpdated: '2025-11-09', state: 'Illinois', city: 'Chicago', contact: 'Dr. Anna White', email: 'anna.white@cggeneral.com', phone: '+1-312-555-4000' },
+        { id: 'ENQ010', enquiryId: 'PX-1010', enquiryName: 'Lambda Study', status: 'Kickoff Meeting', completion: 10, sponsorName: 'OptimaBio', requirements: 2, hsMatches: 3, lastUpdated: '2025-11-01', state: 'Texas', city: 'Austin', contact: 'Dr. Jake Donovan', email: 'jake.donovan@houstonhealth.com', phone: '+1-512-555-5000' },
+        { id: 'ENQ011', enquiryId: 'PX-1011', enquiryName: 'Kappa Trial', status: 'Deep Dive Call', completion: 48, sponsorName: 'HealthWave', requirements: 5, hsMatches: 7, lastUpdated: '2025-11-11', state: 'New York', city: 'Buffalo', contact: 'Dr. Laura Jones', email: 'laura.jones@nmc.com', phone: '+1-716-555-6000' },
+        { id: 'ENQ012', enquiryId: 'PX-1012', enquiryName: 'Mu Clinical Study', status: 'Study Ongoing', completion: 70, sponsorName: 'BioMedX', requirements: 8, hsMatches: 13, lastUpdated: '2025-11-13', state: 'Florida', city: 'Tampa', contact: 'Dr. Henry Ford', email: 'henry.ford@miamimed.com', phone: '+1-813-555-7000' },
+        { id: 'ENQ013', enquiryId: 'PX-1013', enquiryName: 'Nu Discovery', status: 'Protocol Draft 1 Creation', completion: 57, sponsorName: 'LifeCure', requirements: 6, hsMatches: 9, lastUpdated: '2025-11-06', state: 'California', city: 'Los Angeles', contact: 'Dr. Samuel Green', email: 'sam.green@stmary.com', phone: '+1-213-555-7100' },
+        { id: 'ENQ014', enquiryId: 'PX-1014', enquiryName: 'Xi Research', status: 'Project On Hold', completion: 22, sponsorName: 'BioAxis', requirements: 3, hsMatches: 4, lastUpdated: '2025-11-02', state: 'Texas', city: 'San Antonio', contact: 'Dr. Karen Wells', email: 'karen.wells@houstonhealth.com', phone: '+1-210-555-7200' },
+        { id: 'ENQ015', enquiryId: 'PX-1015', enquiryName: 'Omicron Trial', status: 'Feasibility Check', completion: 40, sponsorName: 'MedCore', requirements: 4, hsMatches: 6, lastUpdated: '2025-10-28', state: 'Florida', city: 'Jacksonville', contact: 'Dr. Olivia Reed', email: 'olivia.reed@orlandohealth.com', phone: '+1-904-555-7300' },
+        { id: 'ENQ016', enquiryId: 'PX-1016', enquiryName: 'Rho Clinical', status: 'Kickoff Meeting', completion: 12, sponsorName: 'NextStep Labs', requirements: 2, hsMatches: 3, lastUpdated: '2025-11-04', state: 'New York', city: 'Albany', contact: 'Dr. Robert Miller', email: 'rob.miller@nmc.com', phone: '+1-518-555-7400' },
+        { id: 'ENQ017', enquiryId: 'PX-1017', enquiryName: 'Tau Study', status: 'Study Ongoing', completion: 65, sponsorName: 'GenMed', requirements: 7, hsMatches: 11, lastUpdated: '2025-11-07', state: 'California', city: 'Sacramento', contact: 'Dr. Daniel Carter', email: 'daniel.carter@stmary.com', phone: '+1-916-555-7500' },
+        { id: 'ENQ018', enquiryId: 'PX-1018', enquiryName: 'Chi Research', status: 'Protocol Review', completion: 55, sponsorName: 'BioNova', requirements: 6, hsMatches: 8, lastUpdated: '2025-10-31', state: 'Illinois', city: 'Springfield', contact: 'Dr. Megan Scott', email: 'megan.scott@cggeneral.com', phone: '+1-217-555-7600' },
+        { id: 'ENQ019', enquiryId: 'PX-1019', enquiryName: 'Psi Pilot', status: 'Initial Review', completion: 18, sponsorName: 'MedPrime', requirements: 3, hsMatches: 4, lastUpdated: '2025-10-29', state: 'Florida', city: 'St. Petersburg', contact: 'Dr. Nina Harris', email: 'nina.harris@orlandohealth.com', phone: '+1-727-555-7700' },
+        { id: 'ENQ020', enquiryId: 'PX-1020', enquiryName: 'Omega-2 Trial', status: 'Study Ongoing', completion: 80, sponsorName: 'NextGen Bio', requirements: 8, hsMatches: 14, lastUpdated: '2025-11-14', state: 'Texas', city: 'Houston', contact: 'Dr. Paul Rivera', email: 'paul.rivera@houstonhealth.com', phone: '+1-713-555-7800' }
     ];
 
     @track projectsData = [
@@ -469,6 +491,20 @@ export default class PipelineMaster extends LightningElement {
     handleCloseRequirementsModal() {
         this.showRequirementsModal = false;
         this.selectedEnquiryId = '';
+    }
+
+    // Enquiry Navigation Handler
+    handleEnquiryClick(event) {
+        const enquiryId = event.currentTarget.dataset.id;
+        console.log('Navigating to enquiry:', enquiryId);
+        this.currentEnquiryId = enquiryId;
+        this.showEnquiryInnerScreen = true;
+    }
+
+    // Back from Enquiry Inner Screen
+    handleBackToList() {
+        this.showEnquiryInnerScreen = false;
+        this.currentEnquiryId = '';
     }
 
     handleRequirementGroupClick(event) {
