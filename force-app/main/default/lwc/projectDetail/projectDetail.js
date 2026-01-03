@@ -7,14 +7,6 @@ export default class ProjectDetail extends LightningElement {
     
     // Study tab image
     studyImage = `${AVATARS}/pageUnderConstruction.jpeg`;
-    // Protocol UI state
-    selectedProtocolStep = '';
-    // used to ensure we scroll the selected step into view only once per render
-    hasScrolledToSelectedStep = false;
-    // Add Activity modal state
-    isAddActivityOpen = false;
-    addFormMilestone = '';
-    addFormDescription = '';
     // HS Matches state
     selectedHSId = 'hs1';
     selectedHSName = 'Mayo Clinic';
@@ -130,99 +122,6 @@ export default class ProjectDetail extends LightningElement {
         { label: 'Referrals this week', value: 'referrals_week' },
         { label: 'Authorized this week', value: 'authorized_week' }
     ];
-    // list of milestone names (new 7-stage structure)
-    milestoneNames = [
-        'Trial Preparation',
-        'Project Oversight & Management',
-        'Data Monitoring & SDV',
-        'Final Data Analysis',
-        'Sponsor Final Readout',
-        'Publication & Archiving',
-        'Final Wrap-Up'
-    ];
-    protocolSteps = [];
-
-    // protocolData will be built dynamically for each milestone (now contains activity items with checkboxes)
-    protocolData = {};
-
-    // Activity definitions for each milestone stage
-    milestoneActivities = {
-        'Trial Preparation': [
-            { id: 'tp1', text: 'Align with Sponsor on study objectives, timelines, and KPIs.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp2', text: 'Develop Study Execution Plan and tracking tools (weekly reports, dashboards).', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp3', text: 'Finalize datosX and HS research team roles/responsibilities.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp4', text: 'Confirm with Operations all contracts (Sponsor CTA, HS MSA, vendor agreements) are executed.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp5', text: 'Conduct Internal Kick-off Meeting (datosX Ops, Trial Lead, Leadership).', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp6', text: 'Conduct Trial Kick-off Meeting (Sponsor + HS).', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp7', text: 'Schedule IRB / Trial Preparation Meeting Series.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp8', text: 'Collaborate with HS to prepare and submit IRB application.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp9', text: 'Ensure all required IRB documents are finalized (protocol, ICF, CRF, recruitment materials, PI CV, etc.).', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp10', text: 'Track IRB review process and coordinate modification responses.', checked: false, section: '3–6 Months Before FPFV' },
-            { id: 'tp11', text: 'Set up data collection workflow and finalize EDC setup.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp12', text: 'Validate CRF versions (paper/electronic) and confirm regulatory compliance (HIPAA, 21 CFR Part 11).', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp13', text: 'Provide or arrange EDC system training for HS research team.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp14', text: 'Develop Data Monitoring and Source Data Verification (SDV) Plans.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp15', text: 'Define data entry timelines, query process, and AE/SAE tracking procedures.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp16', text: 'Define SDV visit schedule and data points for verification.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp17', text: 'Finalize Data Analysis Plan (responsible party, interim/final analyses, anonymization process).', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp18', text: 'Develop Patient Screening and Recruitment Plan.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp19', text: 'Review and approve recruitment materials before IRB submission.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp20', text: 'Support HS in outreach coordination and community engagement.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp21', text: 'Define participant visit schedule and site logistics.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp22', text: 'Confirm required supplies, equipment, and tools for site readiness.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp23', text: 'Create and circulate Site Readiness Checklist.', checked: false, section: '2–3 Months Before FPFV' },
-            { id: 'tp24', text: 'Conduct site readiness visit(s) and finalize Site Readiness Checklist.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp25', text: 'Organize and/or deliver site training sessions (virtual/on-site).', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp26', text: 'Verify recruitment materials and equipment are on-site and properly placed.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp27', text: 'Confirm IRB approval receipt.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp28', text: 'Re-confirm all agreements (Sponsor, HS, datosX, vendors) are executed.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp29', text: 'Confirm ClinicalTrials.gov registration completion.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp30', text: 'Finalize Go/No-Go decision with Sponsor and HS.', checked: false, section: '1 Month Before FPFV' },
-            { id: 'tp31', text: 'Confirm official FPFV date.', checked: false, section: '1 Month Before FPFV' }
-        ],
-        'Project Oversight & Management': [
-            { id: 'pom1', text: 'Provide weekly Sponsor updates on enrollment, site status, milestones.', checked: false, section: 'Trial Execution' },
-            { id: 'pom2', text: 'Identify and address recruitment or operational challenges promptly.', checked: false, section: 'Trial Execution' },
-            { id: 'pom3', text: 'Support HS research teams with issue resolution and data-entry troubleshooting.', checked: false, section: 'Trial Execution' },
-            { id: 'pom4', text: 'Maintain cross-functional coordination with Sponsor, HS, and datosX teams.', checked: false, section: 'Trial Execution' },
-            { id: 'pom5', text: 'Track meeting action items and ensure follow-up completion.', checked: false, section: 'Trial Execution' }
-        ],
-        'Data Monitoring & SDV': [
-            { id: 'dm1', text: 'Conduct ongoing remote EDC data review for completeness and consistency.', checked: false, section: 'Trial Execution' },
-            { id: 'dm2', text: 'Monitor AE/SAE reporting and protocol deviations.', checked: false, section: 'Trial Execution' },
-            { id: 'dm3', text: 'Generate and track data queries; ensure timely resolution.', checked: false, section: 'Trial Execution' },
-            { id: 'dm4', text: 'Develop and document a Source Data Verification (SDV) plan prior to on-site visits.', checked: false, section: 'Trial Execution' },
-            { id: 'dm5', text: 'Conduct on-site SDV visits as planned (initial, mid-study, closeout).', checked: false, section: 'Trial Execution' },
-            { id: 'dm6', text: 'Verify informed consent documentation and patient eligibility.', checked: false, section: 'Trial Execution' },
-            { id: 'dm7', text: 'Identify and correct data discrepancies.', checked: false, section: 'Trial Execution' },
-            { id: 'dm8', text: 'Provide corrective feedback to site teams.', checked: false, section: 'Trial Execution' },
-            { id: 'dm9', text: 'Produce Data Quality Reports summarizing trends and findings.', checked: false, section: 'Trial Execution' },
-            { id: 'dm10', text: 'Ensure corrective actions are implemented and documented.', checked: false, section: 'Trial Execution' },
-            { id: 'dm11', text: 'Coordinate final SDV completion and data lock with HS and Sponsor.', checked: false, section: 'Trial Execution' },
-            { id: 'dm12', text: "Support Sponsor's data team in final analysis preparation.", checked: false, section: 'Trial Execution' }
-        ],
-        'Final Data Analysis': [
-            { id: 'fda1', text: 'Coordinate with data vendor/biostatistics team for analysis as per plan.', checked: false, section: 'Trial Close' },
-            { id: 'fda2', text: 'Review preliminary findings; ensure clarity and consistency.', checked: false, section: 'Trial Close' },
-            { id: 'fda3', text: 'Resolve any post-lock data issues with Sponsor and vendor.', checked: false, section: 'Trial Close' }
-        ],
-        'Sponsor Final Readout': [
-            { id: 'sfr1', text: 'Organize and lead Final Readout Meeting with Sponsor.', checked: false, section: 'Trial Close' },
-            { id: 'sfr2', text: 'Align stakeholders on interpretation of results and key lessons.', checked: false, section: 'Trial Close' },
-            { id: 'sfr3', text: 'Document learnings for internal review.', checked: false, section: 'Trial Close' }
-        ],
-        'Publication & Archiving': [
-            { id: 'pa1', text: 'Support manuscript coordination (if applicable).', checked: false, section: 'Trial Close' },
-            { id: 'pa2', text: 'Compile data summaries, study documents, and regulatory materials.', checked: false, section: 'Trial Close' },
-            { id: 'pa3', text: 'Ensure secure long-term archiving of all study data, reports, and documents.', checked: false, section: 'Trial Close' },
-            { id: 'pa4', text: 'Confirm data retention compliance (5–15 years, as required).', checked: false, section: 'Trial Close' }
-        ],
-        'Final Wrap-Up': [
-            { id: 'fw1', text: 'Conduct internal study debrief with datosX teams.', checked: false, section: 'Trial Close' },
-            { id: 'fw2', text: 'Deliver final closeout report to Sponsor.', checked: false, section: 'Trial Close' }
-        ]
-    };
-
       // Estimation summary data based on the provided reference image
       estimationSummary = {
         header: [
@@ -1013,11 +912,6 @@ export default class ProjectDetail extends LightningElement {
       });
     }
 
-    // Combobox options for milestone selection in Add Activity modal
-    get milestoneOptions() {
-      return (this.milestoneNames || []).map(m => ({ label: m, value: m }));
-    }
-
     // Messages data per HS and Sponsor
     messagesDataByHS = {
         hs1: {
@@ -1045,12 +939,6 @@ export default class ProjectDetail extends LightningElement {
             ]
         }
     };
-
-    // Returns the activities for the currently selected protocol step (for Protocol Grid)
-    get currentProtocolRows() {
-        if (!this.selectedProtocolStep) return [];
-        return this.protocolData[this.selectedProtocolStep] || [];
-    }
 
     // Returns the messages for the selected HS and tab (for HS Matches & Messaging)
     get currentMessages() {
@@ -1104,32 +992,6 @@ export default class ProjectDetail extends LightningElement {
             // ignore DOM errors
         }
 
-    }
-
-    // Protocol: select a step to update the right panel
-    handleProtocolStepClick(event) {
-        const btn = event.target.closest('[data-step]');
-        if (!btn) return;
-        const stepName = btn.dataset.step;
-        if (!stepName) return;
-        this.selectedProtocolStep = stepName;
-        // update classes on steps array for template binding
-        this.protocolSteps = this.protocolSteps.map(s => ({ ...s, className: s.name === stepName ? 'step-item active' : 'step-item' }));
-        // scroll the clicked step to the top of the scroll container
-        try {
-            const el = this.template.querySelector(`[data-step="${stepName}"]`);
-            const list = this.template.querySelector('.step-list');
-            if (el && list) {
-                // prefer scrolling the container so selected item sits at the top
-                const offset = el.offsetTop - list.offsetTop;
-                list.scrollTo({ top: offset, behavior: 'smooth' });
-                this.hasScrolledToSelectedStep = true;
-            }
-        } catch (e) {
-            // fallback: item.scrollIntoView
-            const el = this.template.querySelector(`[data-step="${stepName}"]`);
-            if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        }
     }
 
     // Legal: select an agreement type to update the right panel
@@ -1430,148 +1292,12 @@ export default class ProjectDetail extends LightningElement {
         console.log('Estimation Delete', sectionId, rowId);
       }
 
-    // Protocol Activity: handle checkbox change
-    handleActivityCheckboxChange(event) {
-        const activityId = event.target.dataset.activityId;
-        const checked = event.target.checked;
-        
-        if (!this.selectedProtocolStep || !activityId) return;
-        
-        // Update the checked state for this activity
-        const activities = this.protocolData[this.selectedProtocolStep] || [];
-        this.protocolData[this.selectedProtocolStep] = activities.map(act => {
-            if (act.id === activityId) {
-                return { ...act, checked: checked };
-            }
-            return act;
-        });
-        
-        // Force reactivity
-        this.protocolData = { ...this.protocolData };
-    }
-
-    // Protocol Activity: open add activity modal
-    openAddActivityPopup() {
-        this.isAddActivityOpen = true;
-        this.addFormMilestone = this.selectedProtocolStep || this.milestoneNames[0];
-        this.addFormDescription = '';
-    }
-
-    // Protocol Activity: close add activity modal
-    closeAddActivityPopup() {
-        this.isAddActivityOpen = false;
-        this.addFormMilestone = '';
-        this.addFormDescription = '';
-    }
-
-    // Protocol Activity: handle milestone change in add form
-    handleAddFormMilestoneChange(event) {
-      // lightning-combobox emits value in event.detail.value; fallback to target.value
-      const val = event && event.detail && event.detail.value !== undefined ? event.detail.value : (event.target && event.target.value);
-      this.addFormMilestone = val;
-    }
-
-    // Protocol Activity: handle description change in add form
-    handleAddFormDescriptionChange(event) {
-      // lightning-textarea emits value in event.detail.value; fallback to target.value
-      const val = event && event.detail && event.detail.value !== undefined ? event.detail.value : (event.target && event.target.value);
-      this.addFormDescription = val;
-    }
-
-    // Protocol Activity: save new activity
-    saveAddActivity() {
-        if (!this.addFormDescription || !this.addFormDescription.trim()) {
-            alert('Please enter a description');
-            return;
-        }
-        
-        const milestone = this.addFormMilestone;
-        if (!milestone) return;
-        
-        // Create new activity
-        const newActivity = {
-            id: 'custom_' + Date.now(),
-            activity: this.addFormDescription.trim(),
-            checked: false,
-            section: 'Custom',
-            lastUpdated: new Date().toISOString().split('T')[0]
-        };
-        
-        // Add to protocol data
-        if (!this.protocolData[milestone]) {
-            this.protocolData[milestone] = [];
-        }
-        this.protocolData[milestone].push(newActivity);
-        
-        // Force reactivity
-        this.protocolData = { ...this.protocolData };
-        
-        // Close modal
-        this.closeAddActivityPopup();
-    }
-
-    // Protocol Activity: handle edit
-    handleEdit(event) {
-        const activityId = event.currentTarget.dataset.id;
-        // TODO: Implement edit functionality
-        console.log('Edit activity:', activityId);
-    }
-
-    // Protocol Activity: handle delete
-    handleDelete(event) {
-        const activityId = event.currentTarget.dataset.id;
-        
-        if (!this.selectedProtocolStep || !activityId) return;
-        
-        if (!confirm('Are you sure you want to delete this activity?')) return;
-        
-        // Remove the activity
-        const activities = this.protocolData[this.selectedProtocolStep] || [];
-        this.protocolData[this.selectedProtocolStep] = activities.filter(act => act.id !== activityId);
-        
-        // Force reactivity
-        this.protocolData = { ...this.protocolData };
-    }
-
-    // Modal: handle overlay click to close
-    handleModalOverlayClick(event) {
-        // Only close if clicking directly on overlay (not on modal content)
-        if (event.target.classList.contains('modal-overlay')) {
-            this.closeAddActivityPopup();
-        }
-    }
-
     // Modal: stop propagation to prevent overlay click
     stopPropagation(event) {
         event.stopPropagation();
     }
 
     renderedCallback() {
-        // when the Protocol tab is first rendered (or when protocolSteps change),
-        // ensure the selected milestone is scrolled to the top of the list
-        if (this.isProtocol) {
-          // Only perform the auto-scroll once, but do NOT return early from
-          // renderedCallback — we still need the rest of the post-render
-          // behaviour (e.g. applying progress widths) to run on subsequent
-          // renders when the tab is re-activated.
-          if (!this.hasScrolledToSelectedStep) {
-            try {
-              const stepName = this.selectedProtocolStep;
-              if (stepName) {
-                const el = this.template.querySelector(`[data-step="${stepName}"]`);
-                const list = this.template.querySelector('.step-list');
-                if (el && list) {
-                  const offset = el.offsetTop - list.offsetTop;
-                  list.scrollTo({ top: offset, behavior: 'auto' });
-                  this.hasScrolledToSelectedStep = true;
-                }
-              }
-            } catch (e) {
-              // ignore errors silently
-            }
-          }
-        }
-
         // Diagnostic: log when Legal panel is present in DOM
         if (this.isLegal) {
             // eslint-disable-next-line no-console
@@ -1617,18 +1343,6 @@ export default class ProjectDetail extends LightningElement {
             // eslint-disable-next-line no-console
             console.warn('projectDetail: failed to attach scroll listeners', e);
         }
-
-            // Apply progress widths from data attributes for each rendered row
-            try {
-              const innerBars = this.template.querySelectorAll('.progress-bar-inner');
-              innerBars.forEach((el) => {
-                const p = el.getAttribute('data-progress') || '0%';
-                el.style.width = p;
-                // ensure gradient and height set via CSS class
-              });
-            } catch (e) {
-              // ignore DOM setting errors
-            }
     }
 
     disconnectedCallback() {
@@ -1651,51 +1365,6 @@ export default class ProjectDetail extends LightningElement {
     }
 
     connectedCallback() {
-        // initialize steps with progress percentages
-        const defaultMilestone = this.milestoneNames[0];
-        // Assign random progress percentages to each milestone (20-100)
-        this.protocolSteps = this.milestoneNames.map((name) => ({
-            name,
-            className: name === defaultMilestone ? 'step-item active' : 'step-item',
-            progress: Math.floor(Math.random() * 81) + 20 // 20-100%
-        }));
-        this.selectedProtocolStep = defaultMilestone;
-        // initialize add form milestone to the selected one
-        this.addFormMilestone = this.selectedProtocolStep;
-        // Build protocolData from milestoneActivities
-        this.protocolData = {};
-        this.milestoneNames.forEach((name) => {
-            const activities = this.milestoneActivities[name] || [];
-            // simple date pool for dummy last-updated values
-            const datePool = ['2025-11-12','2025-11-05','2025-10-28','2025-09-15','2025-08-30'];
-            this.protocolData[name] = activities.map((act, i) => {
-              const planDate = datePool[i % datePool.length];
-              const actualDate = datePool[(i + 1) % datePool.length];
-              const planFinish = '2025-12-31';
-              const actualFinish = (i % 7 === 0) ? '2026-01-15' : '';
-              const eta = 'Q1 2026';
-              const progressPct = Math.max(0, Math.min(100, Math.floor(Math.random() * 90) + 5));
-              // If actualFinish has a value we consider the activity complete => 100%
-              const progress = actualFinish ? '100%' : (progressPct + '%');
-              const progressStyle = `width: ${progress}; background: linear-gradient(90deg,#2e7ce4,#2e9be4); height: 10px;`;
-              return {
-                id: act.id,
-                activity: act.text,
-                // pre-check every 5th activity to have some checked boxes
-                checked: act.checked || (i % 5 === 0),
-                section: act.section,
-                lastUpdated: datePool[(i + name.length) % datePool.length],
-                planDate,
-                actualDate,
-                planFinish,
-                actualFinish,
-                eta,
-                progress,
-                progressStyle
-              };
-            });
-        });
-
         // Initialize HS Matches state
         this.selectedHSId = 'hs1';
         this.selectedHSName = 'Mayo Clinic';
@@ -1807,14 +1476,6 @@ export default class ProjectDetail extends LightningElement {
         return steps;
       }
 
-
-    // Calculate overall progress percentage across all milestones
-    get overallProgress() {
-        if (!this.protocolSteps || this.protocolSteps.length === 0) return 0;
-        // Example: average progress across all protocol steps
-        const total = this.protocolSteps.reduce((sum, step) => sum + (step.progress || 0), 0);
-        return Math.round(total / this.protocolSteps.length);
-    }
 
     get estimationHeaderFields() {
       const header = this.estimationSummary && this.estimationSummary.header ? this.estimationSummary.header : [];
