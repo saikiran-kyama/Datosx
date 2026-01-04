@@ -13,42 +13,10 @@ export default class PipelineMaster extends LightningElement {
     @track showEnquiryInnerScreen = false;
     @track currentEnquiryId = '';
     
-    // Requirements Modal State
-    @track showRequirementsModal = false;
-    @track selectedEnquiryId = '';
-    @track activeRequirementGroup = 'facilities';
-    
-    // HS Matches Modal State
-    @track showHSMatchesModal = false;
-    @track selectedHSMatchEnquiryId = '';
-    @track selectedHSId = 'hs1';
-    @track selectedHSName = 'Mayo Clinic';
+    // (Requirements and HS Matches features removed)
     
     // Select and HS Interested Checkboxes
-    @track selectCheckboxesData = [
-        { id: 'sel1', label: 'Option 1', checked: true },
-        { id: 'sel2', label: 'Option 2', checked: false },
-        { id: 'sel3', label: 'Option 3', checked: true },
-        { id: 'sel4', label: 'Option 4', checked: false },
-        { id: 'sel5', label: 'Option 5', checked: true }
-    ];
-    
-    @track hsInterestedCheckboxesData = [
-        { id: 'hsi1', label: 'Interest 1', checked: true },
-        { id: 'hsi2', label: 'Interest 2', checked: true },
-        { id: 'hsi3', label: 'Interest 3', checked: false },
-        { id: 'hsi4', label: 'Interest 4', checked: true },
-        { id: 'hsi5', label: 'Interest 5', checked: false }
-    ];
-    
-    // HS Matches List
-    @track hsMatchesListData = [
-        { id: 'hs1', name: 'Mayo Clinic', matchPercentage: 91 },
-        { id: 'hs2', name: 'Cleveland Clinic', matchPercentage: 88 },
-        { id: 'hs3', name: 'Johns Hopkins', matchPercentage: 84 },
-        { id: 'hs4', name: 'Mass General', matchPercentage: 79 },
-        { id: 'hs5', name: 'Stanford Health', matchPercentage: 75 }
-    ];
+    // (HS Matches UI removed)
     
     // Capability Groups Data
     @track staticCapabilityGroups = [
@@ -114,93 +82,7 @@ export default class PipelineMaster extends LightningElement {
         }
     ];
     
-    // Requirement Groups Data
-    @track requirementGroupsData = [
-        {
-            id: 'facilities',
-            title: 'Facilities Available',
-            items: [
-                { id: 'fa1', label: 'Academic Medical Center', checked: true },
-                { id: 'fa2', label: 'Ambulatory Surgical Center', checked: true },
-                { id: 'fa3', label: 'Center of Excellence', checked: true },
-                { id: 'fa4', label: 'Community Health Clinic', checked: true },
-                { id: 'fa5', label: 'Diagnostic Imaging Center', checked: true },
-                { id: 'fa6', label: 'Emergency Room / Urgent Care', checked: true },
-                { id: 'fa7', label: 'Hospice', checked: true },
-                { id: 'fa8', label: 'Nursing Home', checked: true },
-                { id: 'fa9', label: 'Outpatient Clinic', checked: true },
-                { id: 'fa10', label: 'Rehab Center', checked: true },
-                { id: 'fa11', label: 'Research Institution', checked: true },
-                { id: 'fa12', label: 'Other', checked: true }
-            ]
-        },
-        {
-            id: 'therapeuticArea',
-            title: 'Therapeutic Area of Focus',
-            items: [
-                { id: 'ta1', label: 'Allergy and Immunology', checked: true },
-                { id: 'ta2', label: 'Cardiovascular', checked: true },
-                { id: 'ta3', label: 'Chronic Diseases', checked: true },
-                { id: 'ta4', label: 'Dental', checked: true },
-                { id: 'ta5', label: 'Dermatology', checked: true },
-                { id: 'ta6', label: 'Diagnostic Radiology', checked: true },
-                { id: 'ta7', label: 'Emergency Department (ER / ED)', checked: true },
-                { id: 'ta8', label: 'Endocrinology (Diabetes, Thyroid)', checked: true },
-                { id: 'ta9', label: 'ENT / Otolaryngology (Ear, Nose, Throat)', checked: true },
-                { id: 'ta10', label: 'Gastroenterology', checked: true },
-                { id: 'ta11', label: 'Genetic Medicine', checked: true },
-                { id: 'ta12', label: 'Hematology', checked: true },
-                { id: 'ta13', label: 'Infectious Disease', checked: true },
-                { id: 'ta14', label: "Men's Health", checked: true },
-                { id: 'ta15', label: 'Musculoskeletal', checked: true },
-                { id: 'ta16', label: 'Nephrology', checked: true },
-                { id: 'ta17', label: 'Neuroscience', checked: true },
-                { id: 'ta18', label: 'Oncology', checked: true },
-                { id: 'ta19', label: 'Ophthalmology', checked: true },
-                { id: 'ta20', label: 'Pathology', checked: true },
-                { id: 'ta21', label: 'Pediatrics', checked: true },
-                { id: 'ta22', label: 'Physical medicine and rehab', checked: true },
-                { id: 'ta23', label: 'Population Health', checked: true },
-                { id: 'ta24', label: 'Preventative', checked: true },
-                { id: 'ta25', label: 'Primary Care', checked: true },
-                { id: 'ta26', label: 'Psychiatry', checked: true },
-                { id: 'ta27', label: 'Pulmonary', checked: true },
-                { id: 'ta28', label: 'Respiratory', checked: true },
-                { id: 'ta29', label: 'Rheumatology', checked: true },
-                { id: 'ta30', label: 'Surgery', checked: true },
-                { id: 'ta31', label: 'Urology', checked: true },
-                { id: 'ta32', label: "Women's Health", checked: true },
-                { id: 'ta33', label: 'Other', checked: true }
-            ]
-        },
-        {
-            id: 'innovationFormat',
-            title: 'Innovation format interest',
-            items: [
-                { id: 'if1', label: 'HCP efficacy', checked: true },
-                { id: 'if2', label: 'Mobile health app', checked: true },
-                { id: 'if3', label: 'AI algorithm', checked: true },
-                { id: 'if4', label: 'Wearable device', checked: true },
-                { id: 'if5', label: 'Web application', checked: true },
-                { id: 'if6', label: 'Digital diagnostics', checked: true },
-                { id: 'if7', label: 'Other', checked: true }
-            ]
-        },
-        {
-            id: 'innovationEndUser',
-            title: 'Innovation end user focus',
-            items: [
-                { id: 'eu1', label: 'Providers', checked: true },
-                { id: 'eu2', label: 'Patients/Consumers', checked: true },
-                { id: 'eu3', label: 'Health Systems', checked: true },
-                { id: 'eu4', label: 'Researchers', checked: true },
-                { id: 'eu5', label: 'Administrators', checked: true },
-                { id: 'eu6', label: 'Payers', checked: true },
-                { id: 'eu7', label: 'Pharma', checked: false },
-                { id: 'eu8', label: 'Other', checked: true }
-            ]
-        }
-    ];
+    // (Requirement groups removed)
 
     // Mock data - replace with actual Apex calls
     @track healthSystemsData = [
@@ -214,26 +96,26 @@ export default class PipelineMaster extends LightningElement {
     ];
 
     @track enquiriesData = [
-        { id: 'ENQ001', enquiryId: 'New1455', enquiryName: 'CDS Project', status: 'Study ongoing', completion: 76, sponsorName: 'Sample Sponsor', requirements: 5, hsMatches: 12, lastUpdated: '2025-11-15', state: 'California', city: 'San Francisco', contact: 'Dr. John Smith', email: 'john.smith@stmary.com', phone: '+1-415-555-0100' },
-        { id: 'ENQ002', enquiryId: 'PX-1002', enquiryName: 'Beta Trial', status: 'Deep Dive Call', completion: 45, sponsorName: 'BioHealth Ltd', requirements: 8, hsMatches: 7, lastUpdated: '2025-11-10', state: 'Texas', city: 'Houston', contact: 'Dr. Lisa Chen', email: 'lisa.chen@greenvalley.com', phone: '+1-713-555-0200' },
-        { id: 'ENQ003', enquiryId: 'PX-1003', enquiryName: 'Gamma Research', status: 'Protocol Draft 1 creation', completion: 62, sponsorName: 'MedSolutions', requirements: 6, hsMatches: 9, lastUpdated: '2025-11-08', state: 'New York', city: 'New York', contact: 'Dr. Michael Kim', email: 'michael.kim@northside.com', phone: '+1-212-555-0300' },
-        { id: 'ENQ004', enquiryId: 'PX-1004', enquiryName: 'Delta Study', status: 'Study Ongoing', completion: 88, sponsorName: 'Global Trials', requirements: 7, hsMatches: 15, lastUpdated: '2025-11-12', state: 'Illinois', city: 'Chicago', contact: 'Dr. Raj Patel', email: 'raj.patel@stmary.com', phone: '+1-312-555-0400' },
-        { id: 'ENQ005', enquiryId: 'PX-1005', enquiryName: 'Epsilon Pilot', status: 'Project On Hold', completion: 30, sponsorName: 'Acme Pharma', requirements: 4, hsMatches: 5, lastUpdated: '2025-10-25', state: 'Florida', city: 'Miami', contact: 'Dr. Sarah Lee', email: 'sarah.lee@greenvalley.com', phone: '+1-305-555-0500' },
-        { id: 'ENQ006', enquiryId: 'PX-1006', enquiryName: 'Zeta Analysis', status: 'Initial Review', completion: 20, sponsorName: 'NextGen Pharma', requirements: 3, hsMatches: 4, lastUpdated: '2025-11-05', state: 'Texas', city: 'Dallas', contact: 'Dr. Kevin Brown', email: 'kevin.brown@houstonhealth.com', phone: '+1-214-555-1000' },
-        { id: 'ENQ007', enquiryId: 'PX-1007', enquiryName: 'Theta Clinical Study', status: 'Feasibility Check', completion: 52, sponsorName: 'Alpha Bio', requirements: 5, hsMatches: 8, lastUpdated: '2025-10-30', state: 'Florida', city: 'Orlando', contact: 'Dr. Emily Clark', email: 'emily.clark@orlandohealth.com', phone: '+1-407-555-2000' },
-        { id: 'ENQ008', enquiryId: 'PX-1008', enquiryName: 'Omega Trial', status: 'Study Ongoing', completion: 74, sponsorName: 'TriCore Labs', requirements: 6, hsMatches: 11, lastUpdated: '2025-11-14', state: 'California', city: 'San Diego', contact: 'Dr. Peter Adams', email: 'peter.adams@sandiegohealth.com', phone: '+1-619-555-3000' },
-        { id: 'ENQ009', enquiryId: 'PX-1009', enquiryName: 'Sigma Research', status: 'Protocol Review', completion: 60, sponsorName: 'BioVantage', requirements: 7, hsMatches: 10, lastUpdated: '2025-11-09', state: 'Illinois', city: 'Chicago', contact: 'Dr. Anna White', email: 'anna.white@cggeneral.com', phone: '+1-312-555-4000' },
-        { id: 'ENQ010', enquiryId: 'PX-1010', enquiryName: 'Lambda Study', status: 'Kickoff Meeting', completion: 10, sponsorName: 'OptimaBio', requirements: 2, hsMatches: 3, lastUpdated: '2025-11-01', state: 'Texas', city: 'Austin', contact: 'Dr. Jake Donovan', email: 'jake.donovan@houstonhealth.com', phone: '+1-512-555-5000' },
-        { id: 'ENQ011', enquiryId: 'PX-1011', enquiryName: 'Kappa Trial', status: 'Deep Dive Call', completion: 48, sponsorName: 'HealthWave', requirements: 5, hsMatches: 7, lastUpdated: '2025-11-11', state: 'New York', city: 'Buffalo', contact: 'Dr. Laura Jones', email: 'laura.jones@nmc.com', phone: '+1-716-555-6000' },
-        { id: 'ENQ012', enquiryId: 'PX-1012', enquiryName: 'Mu Clinical Study', status: 'Study Ongoing', completion: 70, sponsorName: 'BioMedX', requirements: 8, hsMatches: 13, lastUpdated: '2025-11-13', state: 'Florida', city: 'Tampa', contact: 'Dr. Henry Ford', email: 'henry.ford@miamimed.com', phone: '+1-813-555-7000' },
-        { id: 'ENQ013', enquiryId: 'PX-1013', enquiryName: 'Nu Discovery', status: 'Protocol Draft 1 Creation', completion: 57, sponsorName: 'LifeCure', requirements: 6, hsMatches: 9, lastUpdated: '2025-11-06', state: 'California', city: 'Los Angeles', contact: 'Dr. Samuel Green', email: 'sam.green@stmary.com', phone: '+1-213-555-7100' },
-        { id: 'ENQ014', enquiryId: 'PX-1014', enquiryName: 'Xi Research', status: 'Project On Hold', completion: 22, sponsorName: 'BioAxis', requirements: 3, hsMatches: 4, lastUpdated: '2025-11-02', state: 'Texas', city: 'San Antonio', contact: 'Dr. Karen Wells', email: 'karen.wells@houstonhealth.com', phone: '+1-210-555-7200' },
-        { id: 'ENQ015', enquiryId: 'PX-1015', enquiryName: 'Omicron Trial', status: 'Feasibility Check', completion: 40, sponsorName: 'MedCore', requirements: 4, hsMatches: 6, lastUpdated: '2025-10-28', state: 'Florida', city: 'Jacksonville', contact: 'Dr. Olivia Reed', email: 'olivia.reed@orlandohealth.com', phone: '+1-904-555-7300' },
-        { id: 'ENQ016', enquiryId: 'PX-1016', enquiryName: 'Rho Clinical', status: 'Kickoff Meeting', completion: 12, sponsorName: 'NextStep Labs', requirements: 2, hsMatches: 3, lastUpdated: '2025-11-04', state: 'New York', city: 'Albany', contact: 'Dr. Robert Miller', email: 'rob.miller@nmc.com', phone: '+1-518-555-7400' },
-        { id: 'ENQ017', enquiryId: 'PX-1017', enquiryName: 'Tau Study', status: 'Study Ongoing', completion: 65, sponsorName: 'GenMed', requirements: 7, hsMatches: 11, lastUpdated: '2025-11-07', state: 'California', city: 'Sacramento', contact: 'Dr. Daniel Carter', email: 'daniel.carter@stmary.com', phone: '+1-916-555-7500' },
-        { id: 'ENQ018', enquiryId: 'PX-1018', enquiryName: 'Chi Research', status: 'Protocol Review', completion: 55, sponsorName: 'BioNova', requirements: 6, hsMatches: 8, lastUpdated: '2025-10-31', state: 'Illinois', city: 'Springfield', contact: 'Dr. Megan Scott', email: 'megan.scott@cggeneral.com', phone: '+1-217-555-7600' },
-        { id: 'ENQ019', enquiryId: 'PX-1019', enquiryName: 'Psi Pilot', status: 'Initial Review', completion: 18, sponsorName: 'MedPrime', requirements: 3, hsMatches: 4, lastUpdated: '2025-10-29', state: 'Florida', city: 'St. Petersburg', contact: 'Dr. Nina Harris', email: 'nina.harris@orlandohealth.com', phone: '+1-727-555-7700' },
-        { id: 'ENQ020', enquiryId: 'PX-1020', enquiryName: 'Omega-2 Trial', status: 'Study Ongoing', completion: 80, sponsorName: 'NextGen Bio', requirements: 8, hsMatches: 14, lastUpdated: '2025-11-14', state: 'Texas', city: 'Houston', contact: 'Dr. Paul Rivera', email: 'paul.rivera@houstonhealth.com', phone: '+1-713-555-7800' }
+        { id: 'ENQ001', enquiryId: 'New1455', enquiryName: 'CDS Project', status: 'Study ongoing', completion: 76, sponsorName: 'Sample Sponsor', lastUpdated: '2025-11-15', state: 'California', city: 'San Francisco', contact: 'Dr. John Smith', email: 'john.smith@stmary.com', phone: '+1-415-555-0100' },
+        { id: 'ENQ002', enquiryId: 'PX-1002', enquiryName: 'Beta Trial', status: 'Deep Dive Call', completion: 45, sponsorName: 'BioHealth Ltd', lastUpdated: '2025-11-10', state: 'Texas', city: 'Houston', contact: 'Dr. Lisa Chen', email: 'lisa.chen@greenvalley.com', phone: '+1-713-555-0200' },
+        { id: 'ENQ003', enquiryId: 'PX-1003', enquiryName: 'Gamma Research', status: 'Protocol Draft 1 creation', completion: 62, sponsorName: 'MedSolutions', lastUpdated: '2025-11-08', state: 'New York', city: 'New York', contact: 'Dr. Michael Kim', email: 'michael.kim@northside.com', phone: '+1-212-555-0300' },
+        { id: 'ENQ004', enquiryId: 'PX-1004', enquiryName: 'Delta Study', status: 'Study Ongoing', completion: 88, sponsorName: 'Global Trials', lastUpdated: '2025-11-12', state: 'Illinois', city: 'Chicago', contact: 'Dr. Raj Patel', email: 'raj.patel@stmary.com', phone: '+1-312-555-0400' },
+        { id: 'ENQ005', enquiryId: 'PX-1005', enquiryName: 'Epsilon Pilot', status: 'Project On Hold', completion: 30, sponsorName: 'Acme Pharma', lastUpdated: '2025-10-25', state: 'Florida', city: 'Miami', contact: 'Dr. Sarah Lee', email: 'sarah.lee@greenvalley.com', phone: '+1-305-555-0500' },
+        { id: 'ENQ006', enquiryId: 'PX-1006', enquiryName: 'Zeta Analysis', status: 'Initial Review', completion: 20, sponsorName: 'NextGen Pharma', lastUpdated: '2025-11-05', state: 'Texas', city: 'Dallas', contact: 'Dr. Kevin Brown', email: 'kevin.brown@houstonhealth.com', phone: '+1-214-555-1000' },
+        { id: 'ENQ007', enquiryId: 'PX-1007', enquiryName: 'Theta Clinical Study', status: 'Feasibility Check', completion: 52, sponsorName: 'Alpha Bio', lastUpdated: '2025-10-30', state: 'Florida', city: 'Orlando', contact: 'Dr. Emily Clark', email: 'emily.clark@orlandohealth.com', phone: '+1-407-555-2000' },
+        { id: 'ENQ008', enquiryId: 'PX-1008', enquiryName: 'Omega Trial', status: 'Study Ongoing', completion: 74, sponsorName: 'TriCore Labs', lastUpdated: '2025-11-14', state: 'California', city: 'San Diego', contact: 'Dr. Peter Adams', email: 'peter.adams@sandiegohealth.com', phone: '+1-619-555-3000' },
+        { id: 'ENQ009', enquiryId: 'PX-1009', enquiryName: 'Sigma Research', status: 'Protocol Review', completion: 60, sponsorName: 'BioVantage', lastUpdated: '2025-11-09', state: 'Illinois', city: 'Chicago', contact: 'Dr. Anna White', email: 'anna.white@cggeneral.com', phone: '+1-312-555-4000' },
+        { id: 'ENQ010', enquiryId: 'PX-1010', enquiryName: 'Lambda Study', status: 'Kickoff Meeting', completion: 10, sponsorName: 'OptimaBio', lastUpdated: '2025-11-01', state: 'Texas', city: 'Austin', contact: 'Dr. Jake Donovan', email: 'jake.donovan@houstonhealth.com', phone: '+1-512-555-5000' },
+        { id: 'ENQ011', enquiryId: 'PX-1011', enquiryName: 'Kappa Trial', status: 'Deep Dive Call', completion: 48, sponsorName: 'HealthWave', lastUpdated: '2025-11-11', state: 'New York', city: 'Buffalo', contact: 'Dr. Laura Jones', email: 'laura.jones@nmc.com', phone: '+1-716-555-6000' },
+        { id: 'ENQ012', enquiryId: 'PX-1012', enquiryName: 'Mu Clinical Study', status: 'Study Ongoing', completion: 70, sponsorName: 'BioMedX', lastUpdated: '2025-11-13', state: 'Florida', city: 'Tampa', contact: 'Dr. Henry Ford', email: 'henry.ford@miamimed.com', phone: '+1-813-555-7000' },
+        { id: 'ENQ013', enquiryId: 'PX-1013', enquiryName: 'Nu Discovery', status: 'Protocol Draft 1 Creation', completion: 57, sponsorName: 'LifeCure', lastUpdated: '2025-11-06', state: 'California', city: 'Los Angeles', contact: 'Dr. Samuel Green', email: 'sam.green@stmary.com', phone: '+1-213-555-7100' },
+        { id: 'ENQ014', enquiryId: 'PX-1014', enquiryName: 'Xi Research', status: 'Project On Hold', completion: 22, sponsorName: 'BioAxis', lastUpdated: '2025-11-02', state: 'Texas', city: 'San Antonio', contact: 'Dr. Karen Wells', email: 'karen.wells@houstonhealth.com', phone: '+1-210-555-7200' },
+        { id: 'ENQ015', enquiryId: 'PX-1015', enquiryName: 'Omicron Trial', status: 'Feasibility Check', completion: 40, sponsorName: 'MedCore', lastUpdated: '2025-10-28', state: 'Florida', city: 'Jacksonville', contact: 'Dr. Olivia Reed', email: 'olivia.reed@orlandohealth.com', phone: '+1-904-555-7300' },
+        { id: 'ENQ016', enquiryId: 'PX-1016', enquiryName: 'Rho Clinical', status: 'Kickoff Meeting', completion: 12, sponsorName: 'NextStep Labs', lastUpdated: '2025-11-04', state: 'New York', city: 'Albany', contact: 'Dr. Robert Miller', email: 'rob.miller@nmc.com', phone: '+1-518-555-7400' },
+        { id: 'ENQ017', enquiryId: 'PX-1017', enquiryName: 'Tau Study', status: 'Study Ongoing', completion: 65, sponsorName: 'GenMed', lastUpdated: '2025-11-07', state: 'California', city: 'Sacramento', contact: 'Dr. Daniel Carter', email: 'daniel.carter@stmary.com', phone: '+1-916-555-7500' },
+        { id: 'ENQ018', enquiryId: 'PX-1018', enquiryName: 'Chi Research', status: 'Protocol Review', completion: 55, sponsorName: 'BioNova', lastUpdated: '2025-10-31', state: 'Illinois', city: 'Springfield', contact: 'Dr. Megan Scott', email: 'megan.scott@cggeneral.com', phone: '+1-217-555-7600' },
+        { id: 'ENQ019', enquiryId: 'PX-1019', enquiryName: 'Psi Pilot', status: 'Initial Review', completion: 18, sponsorName: 'MedPrime', lastUpdated: '2025-10-29', state: 'Florida', city: 'St. Petersburg', contact: 'Dr. Nina Harris', email: 'nina.harris@orlandohealth.com', phone: '+1-727-555-7700' },
+        { id: 'ENQ020', enquiryId: 'PX-1020', enquiryName: 'Omega-2 Trial', status: 'Study Ongoing', completion: 80, sponsorName: 'NextGen Bio', lastUpdated: '2025-11-14', state: 'Texas', city: 'Houston', contact: 'Dr. Paul Rivera', email: 'paul.rivera@houstonhealth.com', phone: '+1-713-555-7800' }
     ];
 
     @track projectsData = [
@@ -265,20 +147,34 @@ export default class PipelineMaster extends LightningElement {
         const status = record.status || '';
         const s = status.toLowerCase();
         
-        // Compute inline style for status column (text color + border color)
-        let statusStyle = '';
+        // Compute the CSS class for known statuses (no inline styles)
+        let statusClass = 'status-badge status-default';
         if (s === 'partner') {
-            statusStyle = 'color: #2e844a; border: 1px solid #2e844a; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
+            statusClass = 'status-badge status-partner';
         } else if (s === 'prospect' || s === 'onboarding') {
-            statusStyle = 'color: #0176d3; border: 1px solid #0176d3; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
+            statusClass = 'status-badge status-prospect';
         } else if (s === 'active') {
-            statusStyle = 'color: #0176d3; border: 1px solid #0176d3; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
+            statusClass = 'status-badge status-active';
         } else if (s === 'inactive') {
-            statusStyle = 'color: #c23934; border: 1px solid #c23934; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
+            statusClass = 'status-badge status-inactive';
         } else if (s === 'completed') {
-            statusStyle = 'color: #706e6b; border: 1px solid #706e6b; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
-        } else {
-            statusStyle = 'color: #706e6b; border: 1px solid #706e6b; background-color: transparent; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;';
+            statusClass = 'status-badge status-completed';
+        } else if (s === 'study ongoing') {
+            statusClass = 'status-badge status-study-ongoing';
+        } else if (s.includes('deep dive')) {
+            statusClass = 'status-badge status-deep-dive';
+        } else if (s.includes('protocol draft') || s.includes('protocol draft 1') || s.includes('protocol draft 1 creation')) {
+            statusClass = 'status-badge status-protocol-draft';
+        } else if (s.includes('project on hold') || s.includes('on hold')) {
+            statusClass = 'status-badge status-on-hold';
+        } else if (s.includes('initial review')) {
+            statusClass = 'status-badge status-initial-review';
+        } else if (s.includes('feasibility check')) {
+            statusClass = 'status-badge status-feasibility';
+        } else if (s.includes('protocol review')) {
+            statusClass = 'status-badge status-protocol-review';
+        } else if (s.includes('kickoff meeting') || s.includes('kick-off') || s.includes('kickoff')) {
+            statusClass = 'status-badge status-kickoff';
         }
 
         return {
@@ -288,7 +184,7 @@ export default class PipelineMaster extends LightningElement {
             hsInitial: this.getInitials(record.healthSystemName),
             contactInitial: this.getInitials(record.contact),
             statusLower: s,
-            statusStyle
+            statusClass
         };
     }
 
@@ -458,40 +354,7 @@ export default class PipelineMaster extends LightningElement {
         // Implement delete functionality
     }
 
-    // Requirements Modal Getters
-    get requirementGroups() {
-        return this.requirementGroupsData.map(group => {
-            const selectedCount = group.items.filter(item => item.checked).length;
-            return {
-                ...group,
-                selectedCount: `${selectedCount}/${group.items.length}`,
-                navClass: this.activeRequirementGroup === group.id ? 'sidenav-item active' : 'sidenav-item'
-            };
-        });
-    }
-
-    get activeGroupTitle() {
-        const group = this.requirementGroupsData.find(g => g.id === this.activeRequirementGroup);
-        return group ? group.title : '';
-    }
-
-    get activeGroupItems() {
-        const group = this.requirementGroupsData.find(g => g.id === this.activeRequirementGroup);
-        return group ? group.items : [];
-    }
-
-    // Requirements Modal Handlers
-    handleRequirementsClick(event) {
-        const recordId = event.currentTarget.dataset.id;
-        this.selectedEnquiryId = recordId;
-        this.activeRequirementGroup = 'facilities';
-        this.showRequirementsModal = true;
-    }
-
-    handleCloseRequirementsModal() {
-        this.showRequirementsModal = false;
-        this.selectedEnquiryId = '';
-    }
+    // (Requirements modal removed)
 
     // Enquiry Navigation Handler
     handleEnquiryClick(event) {
@@ -507,93 +370,9 @@ export default class PipelineMaster extends LightningElement {
         this.currentEnquiryId = '';
     }
 
-    handleRequirementGroupClick(event) {
-        const groupId = event.currentTarget.dataset.groupId;
-        this.activeRequirementGroup = groupId;
-    }
+    // (Requirement group interactions removed)
 
-    handleItemCheck(event) {
-        const itemId = event.currentTarget.dataset.itemId;
-        const isChecked = event.target.checked;
-        
-        this.requirementGroupsData = this.requirementGroupsData.map(group => {
-            if (group.id === this.activeRequirementGroup) {
-                return {
-                    ...group,
-                    items: group.items.map(item => {
-                        if (item.id === itemId) {
-                            return { ...item, checked: isChecked };
-                        }
-                        return item;
-                    })
-                };
-            }
-            return group;
-        });
-    }
-
-    handleSelectAll() {
-        this.requirementGroupsData = this.requirementGroupsData.map(group => {
-            if (group.id === this.activeRequirementGroup) {
-                return {
-                    ...group,
-                    items: group.items.map(item => ({ ...item, checked: true }))
-                };
-            }
-            return group;
-        });
-    }
-
-    handleDeselectAll() {
-        this.requirementGroupsData = this.requirementGroupsData.map(group => {
-            if (group.id === this.activeRequirementGroup) {
-                return {
-                    ...group,
-                    items: group.items.map(item => ({ ...item, checked: false }))
-                };
-            }
-            return group;
-        });
-    }
-
-    handleSaveRequirements() {
-        // Calculate total selected requirements
-        const totalSelected = this.requirementGroupsData.reduce((total, group) => {
-            return total + group.items.filter(item => item.checked).length;
-        }, 0);
-        
-        console.log('Saving requirements for:', this.selectedEnquiryId);
-        console.log('Total selected:', totalSelected);
-        
-        // Update the enquiry record with the new requirements count
-        this.enquiriesData = this.enquiriesData.map(enquiry => {
-            if (enquiry.id === this.selectedEnquiryId) {
-                return { ...enquiry, requirements: totalSelected };
-            }
-            return enquiry;
-        });
-        
-        this.showRequirementsModal = false;
-        this.selectedEnquiryId = '';
-    }
-
-    // HS Matches Modal Getters
-    get selectCheckboxes() {
-        return this.selectCheckboxesData;
-    }
-
-    get hsInterestedCheckboxes() {
-        return this.hsInterestedCheckboxesData;
-    }
-
-    get hsMatchesList() {
-        return this.hsMatchesListData.map(hs => ({
-            ...hs,
-            initials: this.getInitials(hs.name),
-            itemClass: hs.id === this.selectedHSId ? 'hs-sidenav-item active' : 'hs-sidenav-item',
-            matchPercentageDisplay: Math.round(hs.matchPercentage) + '%'
-        }));
-    }
+    // (HS Matches getters removed)
 
     get capabilityGroups() {
         // Calculate total project needs across all groups
@@ -660,56 +439,6 @@ export default class PipelineMaster extends LightningElement {
         return scorePercent.toFixed(2) + '%';
     }
 
-    // HS Matches Modal Handlers
-    handleHSMatchesClick(event) {
-        const recordId = event.currentTarget.dataset.id;
-        this.selectedHSMatchEnquiryId = recordId;
-        // Default to first HS in the list
-        this.selectedHSId = this.hsMatchesListData[0].id;
-        this.selectedHSName = this.hsMatchesListData[0].name;
-        this.showHSMatchesModal = true;
-    }
-
-    handleCloseHSMatchesModal() {
-        this.showHSMatchesModal = false;
-        this.selectedHSMatchEnquiryId = '';
-    }
-
-    handleHSCheckboxChange(event) {
-        const itemId = event.currentTarget.dataset.itemId;
-        const column = event.currentTarget.dataset.column;
-        const isChecked = event.target.checked;
-        
-        if (column === 'select') {
-            this.selectCheckboxesData = this.selectCheckboxesData.map(item => {
-                if (item.id === itemId) {
-                    return { ...item, checked: isChecked };
-                }
-                return item;
-            });
-        } else if (column === 'hsInterested') {
-            this.hsInterestedCheckboxesData = this.hsInterestedCheckboxesData.map(item => {
-                if (item.id === itemId) {
-                    return { ...item, checked: isChecked };
-                }
-                return item;
-            });
-        }
-    }
-
-    handleHSSelect(event) {
-        const item = event.currentTarget.closest('[data-id]');
-        if (!item) return;
-        const hsId = item.dataset.id;
-        if (!hsId) return;
-        
-        this.selectedHSId = hsId;
-        const selectedHS = this.hsMatchesListData.find(hs => hs.id === hsId);
-        if (selectedHS) {
-            this.selectedHSName = selectedHS.name;
-        }
-    }
-
     toggleCapabilityDropdown(event) {
         const btn = event.currentTarget.closest('[data-id]');
         if (!btn) return;
@@ -722,25 +451,5 @@ export default class PipelineMaster extends LightningElement {
             }
             return g;
         });
-    }
-
-    handleSaveHSMatches() {
-        console.log('Saving HS Matches for:', this.selectedHSMatchEnquiryId);
-        this.showHSMatchesModal = false;
-        this.selectedHSMatchEnquiryId = '';
-    }
-
-    handleSendToHS() {
-        console.log('Send to HS clicked for:', this.selectedHSMatchEnquiryId);
-        // Implement send to HS functionality
-        this.showHSMatchesModal = false;
-        this.selectedHSMatchEnquiryId = '';
-    }
-
-    handleApprove() {
-        console.log('Approve clicked for:', this.selectedHSMatchEnquiryId);
-        // Implement approve functionality
-        this.showHSMatchesModal = false;
-        this.selectedHSMatchEnquiryId = '';
     }
 }
