@@ -8,47 +8,47 @@
 .status-study-ongoing {
     color: #0b6b35;
     border: 1px solid #0b6b35;
-    background-color: transparent;
+    background-color: #d4edda;
 }
 .status-deep-dive {
     color: #184b9a;
     border: 1px solid #184b9a;
-    background-color: transparent;
+    background-color: #cce5ff;
 }
 .status-protocol-draft {
     color: #8a4baf;
     border: 1px solid #8a4baf;
-    background-color: transparent;
+    background-color: #e8d5f2;
 }
 .status-on-hold {
     color: #c08b00;
     border: 1px solid #c08b00;
-    background-color: transparent;
+    background-color: #fff3cd;
 }
 .status-initial-review {
     color: #2d6b9a;
     border: 1px solid #2d6b9a;
-    background-color: transparent;
+    background-color: #d1ecf1;
 }
 .status-feasibility {
     color: #b36b00;
     border: 1px solid #b36b00;
-    background-color: transparent;
+    background-color: #ffe5cc;
 }
 .status-protocol-review {
     color: #6b3e8a;
     border: 1px solid #6b3e8a;
-    background-color: transparent;
+    background-color: #e4d5f0;
 }
 .status-kickoff {
     color: #1a73e8;
     border: 1px solid #1a73e8;
-    background-color: transparent;
+    background-color: #d2e3fc;
 }
 .status-default {
     color: #706e6b;
     border: 1px solid #706e6b;
-    background-color: transparent;
+    background-color: #e8e8e8;
 }
 
 /* Custom Filter Panel - Inherited from projects component */
@@ -358,31 +358,31 @@ td.status-cell {
 
 .status-partner {
     color: #2e844a;
-    background-color: transparent;
+    background-color: #d4edda;
     border-color: #2e844a;
 }
 
 .status-prospect {
     color: #0176d3;
-    background-color: transparent;
+    background-color: #d2e3fc;
     border-color: #0176d3;
 }
 
 .status-active {
     color: #0176d3;
-    background-color: transparent;
+    background-color: #d2e3fc;
     border-color: #0176d3;
 }
 
 .status-inactive {
     color: #c23934;
-    background-color: transparent;
+    background-color: #f8d7da;
     border-color: #c23934;
 }
 
 .status-completed {
     color: #706e6b;
-    background-color: transparent;
+    background-color: #e8e8e8;
     border-color: #706e6b;
 }
 

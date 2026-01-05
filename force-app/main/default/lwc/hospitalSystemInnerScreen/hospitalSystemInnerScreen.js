@@ -50,6 +50,238 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     chatMessages = [];
     totalSize = 0;
     currentPage = 0;
+
+    // Project detail view state
+    showProjectDetail = false;
+    selectedProject = null;
+
+    // Projects data for Project tab
+    projectsData = [
+        {
+            id: 'p1',
+            projectId: 'PRJ-001',
+            projectName: 'Clinical Trial Phase III',
+            status: 'Active',
+            statusClass: 'project-status-badge status-active',
+            completion: 75,
+            sponsorName: 'Pharma Corp',
+            sponsorInitials: 'PC',
+            sponsorPhoto: '',
+            healthSystemName: 'Mayo Clinic',
+            healthInitials: 'MC',
+            healthPhoto: '',
+            documents: 12,
+            notes: 8,
+            messages: 15,
+            lastUpdated: '2026-01-03',
+            state: 'MN',
+            city: 'Rochester',
+            contact: 'John Smith',
+            contactInitials: 'JS',
+            contactPhoto: '',
+            email: 'john.smith@mayo.edu',
+            phone: '555-0101'
+        },
+        {
+            id: 'p2',
+            projectId: 'PRJ-002',
+            projectName: 'Cardiovascular Study',
+            status: 'Planning',
+            statusClass: 'project-status-badge status-planning',
+            completion: 25,
+            sponsorName: 'MedTech Inc',
+            sponsorInitials: 'MT',
+            sponsorPhoto: '',
+            healthSystemName: 'Cleveland Clinic',
+            healthInitials: 'CC',
+            healthPhoto: '',
+            documents: 5,
+            notes: 3,
+            messages: 7,
+            lastUpdated: '2026-01-02',
+            state: 'OH',
+            city: 'Cleveland',
+            contact: 'Sarah Johnson',
+            contactInitials: 'SJ',
+            contactPhoto: '',
+            email: 'sarah.j@cleveland.org',
+            phone: '555-0202'
+        },
+        {
+            id: 'p3',
+            projectId: 'PRJ-003',
+            projectName: 'Diabetes Research',
+            status: 'Completed',
+            statusClass: 'project-status-badge status-completed',
+            completion: 100,
+            sponsorName: 'BioLife Sciences',
+            sponsorInitials: 'BL',
+            sponsorPhoto: '',
+            healthSystemName: 'Johns Hopkins',
+            healthInitials: 'JH',
+            healthPhoto: '',
+            documents: 25,
+            notes: 18,
+            messages: 42,
+            lastUpdated: '2025-12-28',
+            state: 'MD',
+            city: 'Baltimore',
+            contact: 'Michael Chen',
+            contactInitials: 'MC',
+            contactPhoto: '',
+            email: 'm.chen@jhmi.edu',
+            phone: '555-0303'
+        }
+    ];
+
+    // Possibilities data for Possibilities tab
+    possibilitiesData = [
+        {
+            id: 'enq1',
+            enquiryId: 'ENQ-2024-001',
+            sponsorName: 'Pharma Global Inc',
+            sponsorInitials: 'PG',
+            productName: 'CardioHealth Plus',
+            productDetails: 'Advanced cardiovascular health monitoring solution for clinical trials',
+            productScopingDoc: 'View',
+            requirements: 12,
+            matchingPercentage: 85,
+            interested: false
+        },
+        {
+            id: 'enq2',
+            enquiryId: 'ENQ-2024-002',
+            sponsorName: 'BioMed Solutions',
+            sponsorInitials: 'BS',
+            productName: 'NeuroTrack AI',
+            productDetails: 'AI-powered neurological disorder tracking and analysis platform',
+            productScopingDoc: 'View',
+            requirements: 18,
+            matchingPercentage: 92,
+            interested: false
+        },
+        {
+            id: 'enq3',
+            enquiryId: 'ENQ-2024-003',
+            sponsorName: 'MediCare Research',
+            sponsorInitials: 'MR',
+            productName: 'OncoMonitor Pro',
+            productDetails: 'Comprehensive oncology patient monitoring and data management system',
+            productScopingDoc: 'View',
+            requirements: 15,
+            matchingPercentage: 78,
+            interested: true
+        },
+        {
+            id: 'enq4',
+            enquiryId: 'ENQ-2024-004',
+            sponsorName: 'HealthTech Innovations',
+            sponsorInitials: 'HT',
+            productName: 'DiabetesWatch',
+            productDetails: 'Real-time diabetes management and glucose monitoring solution',
+            productScopingDoc: 'View',
+            requirements: 10,
+            matchingPercentage: 88,
+            interested: false
+        }
+    ];
+
+    // Confirmation modal state for Interested checkbox
+    isInterestedConfirmOpen = false;
+    selectedEnquiryId = null;
+
+    // Requirements modal state
+    isRequirementsModalOpen = false;
+    selectedRequirementTab = 'facilities';
+
+    // Requirements groups data
+    requirementGroups = [
+        {
+            id: 'facilities',
+            title: 'Facilities Available',
+            items: [
+                { id: 'fa1', label: 'Academic Medical Center', checked: true },
+                { id: 'fa2', label: 'Ambulatory Surgical Center', checked: true },
+                { id: 'fa3', label: 'Center of Excellence', checked: true },
+                { id: 'fa4', label: 'Community Health Clinic', checked: true },
+                { id: 'fa5', label: 'Diagnostic Imaging Center', checked: true },
+                { id: 'fa6', label: 'Emergency Room / Urgent Care', checked: true },
+                { id: 'fa7', label: 'Hospice', checked: true },
+                { id: 'fa8', label: 'Nursing Home', checked: true },
+                { id: 'fa9', label: 'Outpatient Clinic', checked: true },
+                { id: 'fa10', label: 'Rehab Center', checked: true },
+                { id: 'fa11', label: 'Research Institution', checked: true },
+                { id: 'fa12', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'therapeuticArea',
+            title: 'Therapeutic Area of Focus',
+            items: [
+                { id: 'ta1', label: 'Allergy and Immunology', checked: true },
+                { id: 'ta2', label: 'Cardiovascular', checked: true },
+                { id: 'ta3', label: 'Chronic Diseases', checked: true },
+                { id: 'ta4', label: 'Dental', checked: true },
+                { id: 'ta5', label: 'Dermatology', checked: true },
+                { id: 'ta6', label: 'Diagnostic Radiology', checked: true },
+                { id: 'ta7', label: 'Emergency Department (ER / ED)', checked: true },
+                { id: 'ta8', label: 'Endocrinology (Diabetes, Thyroid)', checked: true },
+                { id: 'ta9', label: 'ENT / Otolaryngology (Ear, Nose, Throat)', checked: true },
+                { id: 'ta10', label: 'Gastroenterology', checked: true },
+                { id: 'ta11', label: 'Genetic Medicine', checked: true },
+                { id: 'ta12', label: 'Hematology', checked: true },
+                { id: 'ta13', label: 'Infectious Disease', checked: true },
+                { id: 'ta14', label: "Men's Health", checked: true },
+                { id: 'ta15', label: 'Musculoskeletal', checked: true },
+                { id: 'ta16', label: 'Nephrology', checked: true },
+                { id: 'ta17', label: 'Neuroscience', checked: true },
+                { id: 'ta18', label: 'Oncology', checked: true },
+                { id: 'ta19', label: 'Ophthalmology', checked: true },
+                { id: 'ta20', label: 'Pathology', checked: true },
+                { id: 'ta21', label: 'Pediatrics', checked: true },
+                { id: 'ta22', label: 'Physical medicine and rehab', checked: true },
+                { id: 'ta23', label: 'Population Health', checked: true },
+                { id: 'ta24', label: 'Preventative', checked: true },
+                { id: 'ta25', label: 'Primary Care', checked: true },
+                { id: 'ta26', label: 'Psychiatry', checked: true },
+                { id: 'ta27', label: 'Pulmonary', checked: true },
+                { id: 'ta28', label: 'Respiratory', checked: true },
+                { id: 'ta29', label: 'Rheumatology', checked: true },
+                { id: 'ta30', label: 'Surgery', checked: true },
+                { id: 'ta31', label: 'Urology', checked: true },
+                { id: 'ta32', label: "Women's Health", checked: true },
+                { id: 'ta33', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'innovationFormat',
+            title: 'Innovation format interest',
+            items: [
+                { id: 'if1', label: 'HCP efficacy', checked: true },
+                { id: 'if2', label: 'Mobile health app', checked: true },
+                { id: 'if3', label: 'AI algorithm', checked: true },
+                { id: 'if4', label: 'Wearable device', checked: true },
+                { id: 'if5', label: 'Web application', checked: true },
+                { id: 'if6', label: 'Digital diagnostics', checked: true },
+                { id: 'if7', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'innovationEndUser',
+            title: 'Innovation end user focus',
+            items: [
+                { id: 'eu1', label: 'Providers', checked: true },
+                { id: 'eu2', label: 'Patients/Consumers', checked: true },
+                { id: 'eu3', label: 'Health Systems', checked: true },
+                { id: 'eu4', label: 'Researchers', checked: true },
+                { id: 'eu5', label: 'Administrators', checked: true },
+                { id: 'eu6', label: 'Payers', checked: true },
+                { id: 'eu7', label: 'Pharma', checked: false },
+                { id: 'eu8', label: 'Other', checked: true }
+            ]
+        }
+    ];
+
     eventTypes = ['Emergency', 'Expedite', 'Delayed', 'Sub Acute', 'Commercial', 'High Risk', 'Pregnant', 'Minor', 'Teenager', 'Cancer', 'Diabetic', 'Hyper Tension', 'Disabled'];
     filteredPatientTypes = [];
     contextOptions = [
@@ -311,6 +543,22 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         this.dispatchEvent(new CustomEvent('back'));
     }
 
+    // Project detail navigation
+    handleProjectClick(event) {
+        const projectId = event.currentTarget.dataset.id;
+        if (!projectId) return;
+        const project = this.projectsData.find(p => p.id === projectId);
+        if (project) {
+            this.selectedProject = project;
+            this.showProjectDetail = true;
+        }
+    }
+
+    handleBackFromProjectDetail() {
+        this.showProjectDetail = false;
+        this.selectedProject = null;
+    }
+
 
     // Overview removed; Details is default
 
@@ -334,6 +582,14 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         return this.currentTab === 'Related';
     }
 
+    get isProject() {
+        return this.currentTab === 'Project';
+    }
+
+    get isPossibilities() {
+        return this.currentTab === 'Possibilities';
+    }
+
     // Tab class getters to provide 'active' class when currentTab matches
     get detailsTabClass() {
       return this.currentTab === 'Details' ? 'record-home-details record-home-tab tabs__item active uiTabItem' : 'record-home-details record-home-tab tabs__item uiTabItem';
@@ -353,6 +609,14 @@ export default class HospitalSystemInnerScreen extends LightningElement {
 
     get relatedTabClass() {
       return this.currentTab === 'Related' ? 'record-home-related record-home-tab tabs__item active uiTabItem' : 'record-home-related record-home-tab tabs__item uiTabItem';
+    }
+
+    get projectTabClass() {
+      return this.currentTab === 'Project' ? 'record-home-project record-home-tab tabs__item active uiTabItem' : 'record-home-project record-home-tab tabs__item uiTabItem';
+    }
+
+    get possibilitiesTabClass() {
+      return this.currentTab === 'Possibilities' ? 'record-home-possibilities record-home-tab tabs__item active uiTabItem' : 'record-home-possibilities record-home-tab tabs__item uiTabItem';
     }
 
     // Getters for conditional values in Notes section
@@ -1194,6 +1458,122 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         this.legalData = { ...this.legalData };
       }
         this.closeExecutePopup();
+    }
+
+    // Possibilities: handle Interested checkbox change
+    handleInterestedChange(event) {
+        const enquiryId = event.currentTarget?.dataset?.id;
+        const isChecked = event.target.checked;
+        
+        if (isChecked) {
+            // Show confirmation modal when checking
+            this.selectedEnquiryId = enquiryId;
+            this.isInterestedConfirmOpen = true;
+            // Uncheck temporarily until confirmed
+            event.target.checked = false;
+        } else {
+            // Allow unchecking without confirmation
+            const idx = this.possibilitiesData.findIndex(p => p.id === enquiryId);
+            if (idx >= 0) {
+                this.possibilitiesData[idx] = { ...this.possibilitiesData[idx], interested: false };
+                this.possibilitiesData = [...this.possibilitiesData];
+            }
+        }
+    }
+
+    // Close Interested confirmation modal
+    closeInterestedPopup() {
+        this.isInterestedConfirmOpen = false;
+        this.selectedEnquiryId = null;
+    }
+
+    // Confirm Interested checkbox
+    confirmInterested() {
+        if (!this.selectedEnquiryId) {
+            this.closeInterestedPopup();
+            return;
+        }
+        // Update the interested status
+        const idx = this.possibilitiesData.findIndex(p => p.id === this.selectedEnquiryId);
+        if (idx >= 0) {
+            this.possibilitiesData[idx] = { ...this.possibilitiesData[idx], interested: true };
+            this.possibilitiesData = [...this.possibilitiesData];
+        }
+        this.closeInterestedPopup();
+    }
+
+    // Handle overlay click for Interested modal
+    handleInterestedOverlayClick(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            this.closeInterestedPopup();
+        }
+    }
+
+    // Get active requirement group based on selected tab
+    get activeRequirementGroup() {
+        return this.requirementGroups.find(g => g.id === this.selectedRequirementTab);
+    }
+
+    // Get items for the active requirement group
+    get activeRequirementItems() {
+        const group = this.activeRequirementGroup;
+        return group ? group.items : [];
+    }
+
+    // Handle Requirements click - open modal
+    handleRequirementsClick(event) {
+        const enquiryId = event.currentTarget?.dataset?.id;
+        this.selectedEnquiryId = enquiryId;
+        this.isRequirementsModalOpen = true;
+    }
+
+    // Close Requirements modal
+    closeRequirementsModal() {
+        this.isRequirementsModalOpen = false;
+    }
+
+    // Save requirements and close modal
+    saveRequirements() {
+        // TODO: Add save logic here if needed
+        // For now, just close the modal
+        this.closeRequirementsModal();
+    }
+
+    // Handle requirement tab click in modal
+    handleRequirementTabClick(event) {
+        const tabId = event.currentTarget?.dataset?.tab;
+        if (tabId) {
+            this.selectedRequirementTab = tabId;
+        }
+    }
+
+    // Handle overlay click for Requirements modal
+    handleRequirementsOverlayClick(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            this.closeRequirementsModal();
+        }
+    }
+
+    // Get class for requirement nav items
+    getRequirementNavClass(tabId) {
+        return this.selectedRequirementTab === tabId ? 'requirement-nav-item active' : 'requirement-nav-item';
+    }
+
+    // Getters for each requirement tab nav class
+    get facilitiesNavClass() {
+        return this.getRequirementNavClass('facilities');
+    }
+
+    get therapeuticAreaNavClass() {
+        return this.getRequirementNavClass('therapeuticArea');
+    }
+
+    get innovationFormatNavClass() {
+        return this.getRequirementNavClass('innovationFormat');
+    }
+
+    get innovationEndUserNavClass() {
+        return this.getRequirementNavClass('innovationEndUser');
     }
 
       // Legal: edit a legal row (placeholder for future edit modal)

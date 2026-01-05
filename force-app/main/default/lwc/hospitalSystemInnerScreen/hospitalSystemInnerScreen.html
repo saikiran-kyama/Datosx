@@ -93,14 +93,20 @@
                 </li>
 
 
+                <li role="presentation" class={projectTabClass} style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Project" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Project" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Project</span>
+                    </a>
+                </li>
 
 
-
-
-
-
-
-
+                <li role="presentation" class={possibilitiesTabClass} style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Possibilities" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Possibilities" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Possibilities</span>
+                    </a>
+                </li>
 
                 <li role="presentation" class={messagingTabClass} style="padding: 0; margin: 0;">
                     <a aria-selected="false" role="tab" tabindex="-1" title="Messaging" class="tabHeader"
@@ -121,6 +127,8 @@
                         <span class="title">Notes</span>
                     </a>
                 </li>
+                
+                
             </ul>
         </div>
 
@@ -132,140 +140,157 @@
                     class="record-home-details record-home-tab tabs__content active uiTab">
                     <div class="slds-card slds-m-top_small">
                         <div class="slds-card__body slds-card__body_inner">
-                            <div class="slds-grid slds-grid_pull-padded">
-                                <!-- Health System Details Panel -->
+                            <div class="slds-grid slds-grid_pull-padded profile-cards-container">
+                                <!-- HS Details Card -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Health System Details</div>
-                                        <div style="padding:10px; margin-top: -10px;">
-                                            <table style="width:100%;border-collapse:collapse;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Health System ID</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.hsId}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="hsId"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Health System Name</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.hsName}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="hsName"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Status</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.status}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="status"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            State</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.state}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="state"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            City</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.city}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="city"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Primary Contact</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.contact}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="contact"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Email</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.email}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="email"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Phone</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.phone}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="phone"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Last Updated</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.lastUpdated}</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Active Projects</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.projects}</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Matches</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{healthSystem.matches}</span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="profile-card">
+                                        <div class="profile-card-header">
+                                            <lightning-icon icon-name="standard:record" size="small" class="profile-card-icon"></lightning-icon>
+                                            <span class="profile-card-title">HS Details</span>
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Row 1: HS ID -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">HS ID</div>
+                                                <div class="profile-field-value">
+                                                    <span>{healthSystem.hsId}</span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="hsId" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Row 2: HS Name -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">HS Name</div>
+                                                <div class="profile-field-value">
+                                                    <span>{healthSystem.hsName}</span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="hsName" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Row 3: Status -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">Status</div>
+                                                <div class="profile-field-value">
+                                                    <span class="status-badge status-active">
+                                                        <lightning-icon icon-name="utility:success" size="xx-small" class="status-icon"></lightning-icon>
+                                                        {healthSystem.status}
+                                                    </span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="status" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Row 4: Annual Patient Volume -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">Annual Patient Volume</div>
+                                                <div class="profile-field-value">
+                                                    <span>120,000</span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="patientVolume" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Row 5: State -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">State</div>
+                                                <div class="profile-field-value">
+                                                    <span>{healthSystem.state}</span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="state" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Row 6: City -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">City</div>
+                                                <div class="profile-field-value">
+                                                    <span>{healthSystem.city}</span>
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="city" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Contact Details Card -->
+                                <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                                    <div class="profile-card">
+                                        <div class="profile-card-header">
+                                            <lightning-icon icon-name="standard:contact" size="small" class="profile-card-icon"></lightning-icon>
+                                            <span class="profile-card-title">Contact Details</span>
+                                            <button class="add-contact-btn" onclick={handleAddContact}>
+                                                <lightning-icon icon-name="utility:add" size="xx-small"></lightning-icon>
+                                                Add Contact
+                                            </button>
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Contact Person Info -->
+                                            <div class="contact-person-header">
+                                                <div class="contact-person-info">
+                                                    <span class="contact-person-name">{healthSystem.contact}</span>
+                                                    <span class="contact-person-role">Medical Director</span>
+                                                </div>
+                                                <div class="contact-person-actions">
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="contact" data-section="overview"></lightning-button-icon>
+                                                    <lightning-button-icon icon-name="utility:delete" size="x-small"
+                                                        variant="bare" alternative-text="Delete"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Contact Details -->
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:company" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>Medical Director</span>
+                                            </div>
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:email" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>{healthSystem.email}</span>
+                                            </div>
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:call" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>{healthSystem.phone}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- DX Team Card -->
+                                <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                                    <div class="profile-card">
+                                        <div class="profile-card-header">
+                                            <lightning-icon icon-name="standard:groups" size="small" class="profile-card-icon"></lightning-icon>
+                                            <span class="profile-card-title">DX Team</span>
+                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                variant="bare" alternative-text="Edit DX Team" onclick={handleEditDxTeam}
+                                                class="dx-team-edit-btn"></lightning-button-icon>
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Coordinator Name Label -->
+                                            <div class="dx-team-label">Coordinator Name</div>
+                                            <!-- Coordinator Profile -->
+                                            <div class="dx-team-profile">
+                                                <div class="dx-team-avatar">
+                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Coordinator Avatar" />
+                                                </div>
+                                                <div class="dx-team-info">
+                                                    <span class="dx-team-name">James Mitchell</span>
+                                                    <span class="dx-team-email">jmitchell@dxhealth.com</span>
+                                                </div>
+                                            </div>
+                                            <!-- Phone -->
+                                            <div class="dx-team-contact-row">
+                                                <lightning-icon icon-name="utility:call" size="xx-small" class="dx-team-icon"></lightning-icon>
+                                                <span>+1 415-555-0208</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
             
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px;">
@@ -1166,6 +1191,245 @@
                 </div>
             </section>
         </template>
+
+        <!-- Project Tab Content -->
+        <template if:true={isProject}>
+            <template if:false={showProjectDetail}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-project record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <!-- Projects Table -->
+                        <div class="table-wrapper">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">
+                                            <div class="slds-truncate">Actions</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project ID</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Completion</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Sponsor</div>
+                                        </th>
+                                        
+                                        <th scope="col">
+                                            <div class="slds-truncate">Documents</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Notes</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Messages</div>
+                                        </th>
+                                        
+                                        <th scope="col">
+                                            <div class="slds-truncate">State</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">City</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Contact</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Phone</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Last Updated</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={projectsData} for:item="row">
+                                        <tr key={row.id}>
+                                            <td>
+                                                <div class="slds-button-group" role="group">
+                                                    <lightning-button-icon icon-name="utility:edit" variant="bare"
+                                                        alternative-text="Edit" title="Edit" data-id={row.id}
+                                                        class="slds-m-right_x-small icon-edit">
+                                                    </lightning-button-icon>
+                                                    <lightning-button-icon icon-name="utility:delete" variant="bare"
+                                                        alternative-text="Delete" title="Delete" data-id={row.id}
+                                                        class="icon-delete"
+                                                        style="color: #c23934 !important;" icon-class="icon-delete-svg">
+                                                    </lightning-button-icon>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="link-like" data-id={row.id} onclick={handleProjectClick}
+                                                    style="background:none;border:none;padding:0;margin:0;color:#0176d3;cursor:pointer">
+                                                    <div class="slds-truncate hyper" style="color:blue">{row.projectId}</div>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="link-like" data-id={row.id} onclick={handleProjectClick}
+                                                    style="background:none;border:none;padding:0;margin:0;color:#0176d3;cursor:pointer">
+                                                    <div class="slds-truncate hyper">{row.projectName}</div>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <span class={row.statusClass}>
+                                                    {row.status}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" style="text-align: center;">{row.completion}%</div>
+                                            </td>
+                                            <td>
+                                                <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                                    <lightning-avatar src={row.sponsorPhoto} alternative-text={row.sponsorName}
+                                                        initials={row.sponsorInitials} size="small"></lightning-avatar>
+                                                    <div class="contact-name slds-truncate">{row.sponsorName}</div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.documents}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.notes}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.messages}</div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="slds-truncate">{row.state}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.city}</div>
+                                            </td>
+                                            <td>
+                                                <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                                    <lightning-avatar src={row.contactPhoto} alternative-text={row.contact}
+                                                        initials={row.contactInitials} size="small"></lightning-avatar>
+                                                    <div class="contact-name slds-truncate">{row.contact}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.email}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.phone}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.lastUpdated}</div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </template>
+
+            <!-- Project Detail View -->
+            <template if:true={showProjectDetail}>
+                <c-project-detail project={selectedProject} onback={handleBackFromProjectDetail}></c-project-detail>
+            </template>
+        </template>
+
+        <!-- Possibilities Tab Content -->
+        <template if:true={isPossibilities}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-possibilities record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <!-- Possibilities Table -->
+                        <div class="table-wrapper">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">
+                                            <div class="slds-truncate">Enquiry ID</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Sponsor Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Details</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Scoping Doc</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Requirements</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">% Matching</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Interested</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={possibilitiesData} for:item="row">
+                                        <tr key={row.id}>
+                                            <td>
+                                                <div class="slds-truncate">{row.enquiryId}</div>
+                                            </td>
+                                            <td>
+                                                <div class="contact-cell">
+                                                    <lightning-avatar alternative-text={row.sponsorName}
+                                                        initials={row.sponsorInitials} size="small"></lightning-avatar>
+                                                    <div class="contact-name slds-truncate">{row.sponsorName}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.productName}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.productDetails}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" style="text-align:center">
+                                                    <span class="link-blue">{row.productScopingDoc}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div  class="slds-truncate" style="text-align:center">
+                                                    <span class="link-blue" onclick={handleRequirementsClick} data-id={row.id}>{row.requirements}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div  style="text-align:center" class="slds-truncate">{row.matchingPercentage}%</div>
+                                            </td>
+                                            <td>
+                                                <lightning-input type="checkbox"  style="text-align:center"
+                                                    checked={row.interested}
+                                                    data-id={row.id}
+                                                    onchange={handleInterestedChange}>
+                                                </lightning-input>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
     </div>
 
     <!-- Global Execute Confirmation Modal (always present so it opens regardless of active tab) -->
@@ -1182,6 +1446,78 @@
                     <button class="btn btn-light" onclick={closeExecutePopup}>No</button>
                     <button class="btn btn-primary" onclick={confirmExecute}>Yes</button>
                 </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Interested Confirmation Modal -->
+    <template if:true={isInterestedConfirmOpen}>
+        <div class="modal-overlay" onclick={handleInterestedOverlayClick}>
+            <div class="modal-card" role="dialog" onclick={stopPropagation}>
+                <div class="modal-header">
+                    <h3>Confirm Interest</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to mark this enquiry as interested?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeInterestedPopup}>Cancel</button>
+                    <button class="btn btn-primary" onclick={confirmInterested}>Confirm</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Requirements Modal -->
+    <template if:true={isRequirementsModalOpen}>
+        <div class="modal-overlay" onclick={handleRequirementsOverlayClick}>
+            <div class="modal-card modal-card--xl requirements-modal" role="dialog" onclick={stopPropagation}>
+                <div class="modal-header">
+                    <h3>Requirements Details</h3>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeRequirementsModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body requirements-modal-body">
+                    <div class="requirements-layout">
+                        <!-- Side Navigation -->
+                        <div class="requirements-sidebar">
+                            <button class={facilitiesNavClass} data-tab="facilities" onclick={handleRequirementTabClick}>
+                                <span>Facilities Available</span>
+                            </button>
+                            <button class={therapeuticAreaNavClass} data-tab="therapeuticArea" onclick={handleRequirementTabClick}>
+                                <span>Therapeutic Area of Focus</span>
+                            </button>
+                            <button class={innovationFormatNavClass} data-tab="innovationFormat" onclick={handleRequirementTabClick}>
+                                <span>Innovation Format Interest</span>
+                            </button>
+                            <button class={innovationEndUserNavClass} data-tab="innovationEndUser" onclick={handleRequirementTabClick}>
+                                <span>Innovation End User Focus</span>
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="requirements-content">
+                            <template if:true={activeRequirementGroup}>
+                                <div class="requirements-card">
+                                    <div class="requirements-card__header">
+                                        <!-- <h4>{activeRequirementGroup.title}</h4> -->
+                                        <p>Requirements for this enquiry.</p>
+                                    </div>
+                                    <div class="requirements-list">
+                                        <template for:each={activeRequirementItems} for:item="req">
+                                            <div key={req.id} class="requirements-row">
+                                                <span class="requirements-label">{req.label}</span>
+                                                <lightning-input type="checkbox" checked={req.checked} ></lightning-input>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </template>

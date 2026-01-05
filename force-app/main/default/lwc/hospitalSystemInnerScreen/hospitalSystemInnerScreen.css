@@ -6,6 +6,121 @@
 }
 
 /* =========================
+   PROJECT STATUS BADGES
+   ========================= */
+.project-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 2px solid;
+    text-align: center;
+}
+
+.status-active {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+.status-planning {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.status-completed {
+    background-color: #d1ecf1;
+    border-color: #17a2b8;
+    color: #0c5460;
+}
+
+.status-on-hold {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+.status-cancelled {
+    background-color: #e2e3e5;
+    border-color: #6c757d;
+    color: #383d41;
+}
+
+/* =========================
+   LINK STYLES
+   ========================= */
+.link-blue {
+    color: #0176d3;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.link-blue:hover {
+    color: #014486;
+    text-decoration: underline;
+}
+
+/* =========================
+   TABLE CELL STYLES
+   ========================= */
+.contact-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-name {
+    flex: 1;
+}
+
+/* =========================
+   CHECKBOX STYLES
+   ========================= */
+/* Style for checked checkboxes in Possibilities table and Requirements modal */
+lightning-input[type="checkbox"] input[type="checkbox"]:checked {
+    background-color: #0176d3 !important;
+    border-color: #0176d3 !important;
+}
+
+lightning-input[type="checkbox"] input[type="checkbox"]:checked::after {
+    color: #ffffff !important;
+}
+
+/* Style for disabled checked checkboxes (Requirements modal) */
+lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked {
+    background-color: #0176d3 !important;
+    border-color: #0176d3 !important;
+    opacity: 1 !important;
+}
+
+lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after {
+    color: #ffffff !important;
+}
+
+/* Target the checkbox container */
+.slds-checkbox input:checked ~ .slds-checkbox_faux {
+    background-color: #0176d3 !important;
+    border-color: #0176d3 !important;
+}
+
+.slds-checkbox input:checked ~ .slds-checkbox_faux:after {
+    border-color: #ffffff !important;
+}
+
+/* Target disabled checkbox container */
+.slds-checkbox input:disabled:checked ~ .slds-checkbox_faux {
+    background-color: #0176d3 !important;
+    border-color: #0176d3 !important;
+    opacity: 1 !important;
+}
+
+.slds-checkbox input:disabled:checked ~ .slds-checkbox_faux:after {
+    border-color: #ffffff !important;
+}
+
+/* =========================
    HIGHLIGHTS PANEL
    ========================= */
 .highlights {
@@ -474,7 +589,7 @@
 /* Modal styles for Add Activity */
 .modal-overlay { position: fixed; inset: 0; background: rgba(10, 20, 30, 0.45); display: flex; align-items: center; justify-content: center; z-index: 2000; }
 .modal-card { width: 560px; max-width: 95%; background: #fff; border-radius: 10px; box-shadow: 0 12px 40px rgba(8,16,28,0.25); overflow: hidden; }
-.modal-header { padding: 16px 20px; border-bottom: 1px solid #eef1f4; }
+.modal-header { padding: 16px 20px; }
 .modal-header h3 { margin: 0; font-size: 1.05rem; color: #16325c; }
 .modal-body { padding: 16px 20px; }
 .form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
@@ -483,6 +598,10 @@
 .form-row textarea { min-height: 100px; resize: vertical; }
 .modal-footer { padding: 12px 20px; border-top: 1px solid #eef1f4; display: flex; justify-content: flex-end; gap: 8px; }
 .btn-light { background: #f3f3f3; border: 1px solid #ddd; color: #22324a; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.btn-close { background: #e0e0e0; border: 1px solid #c0c0c0; color: #3e3e3c; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.btn-close:hover { background: #d0d0d0; }
+.btn-save { background: #232B85; color: #ffffff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.btn-save:hover { background: #1a2166; }
 .btn-primary { background: #0176d3; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
 .btn-primary:hover { background: #0160b0; }
 
@@ -2408,6 +2527,161 @@
     background-color: #706e6b;
     color: white;
     border-color: #5c5a57;
+}
+
+/* =========================
+   REQUIREMENTS MODAL
+   ========================= */
+.requirements-modal {
+    width: 85%;
+    max-width: 800px;
+}
+
+.requirements-modal .modal-header {
+    position: relative;
+}
+
+.requirements-modal .modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    width: 32px;
+    height: 28px;
+    border: 2px solid #d8dde6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    
+}
+
+.requirements-modal .modal-close-btn:hover {
+    background: #f3f2f2;
+    border-color: #0176d3;
+    box-shadow: 0 2px 8px rgba(1,118,211,0.3);
+}
+
+.requirements-modal .modal-body {
+    padding: 0;
+    overflow: hidden;
+}
+
+.requirements-modal-body {
+    height: 450px;
+}
+
+.requirements-layout {
+    display: flex;
+    height: 100%;
+    gap: 1.5rem;
+}
+
+.requirements-sidebar {
+    width: 220px;
+    background-color: #fafafa;
+    
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.requirement-nav-item {
+    padding: 0.875rem 1rem;
+    background: #F4F5FB;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: #3e3e3c;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.requirement-nav-item:hover {
+    background-color: #e8e9f0;
+    border-color: #b0b0b0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.requirement-nav-item.active {
+    background: #293294;
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(41,50,148,0.25);
+}
+
+.requirements-content {
+    flex: 1;
+    padding: 1rem 1.5rem 1rem 0;
+    overflow-y: auto;
+}
+
+.requirements-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.requirements-card__header {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 2px solid #e0e0e0;
+    background: linear-gradient(180deg, #f9f9f9 0%, #f5f5f5 100%);
+    border-radius: 6px 6px 0 0;
+}
+
+.requirements-card__header h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #080707;
+}
+
+.requirements-card__header p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #706e6b;
+}
+
+.requirements-list {
+    padding: 0;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+}
+
+.requirements-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 0.625rem 1.25rem;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 1rem;
+    background: #ffffff;
+    transition: background-color 0.15s ease;
+}
+
+.requirements-row:hover {
+    background-color: #fafafa;
+}
+
+.requirements-row:last-child {
+    border-bottom: none;
+    border-radius: 0 0 6px 6px;
+}
+
+.requirements-label {
+    font-size: 0.8125rem;
+    color: #3e3e3c;
+    line-height: 1.4;
 }
 
 .notes-card .slds-table td {
