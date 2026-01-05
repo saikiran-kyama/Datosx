@@ -9,6 +9,17 @@ export default class PipelineMaster extends LightningElement {
     @track pageSizeOptions = [5, 10, 25, 50, 100];
     @track showFilters = false;
     
+    // Filter state
+    @track statusDropdownOpen = false;
+    @track cityDropdownOpen = false;
+    @track stateDropdownOpen = false;
+    @track statusOptions = [];
+    @track cityOptions = [];
+    @track stateOptions = [];
+    @track selectedStatus = [];
+    @track selectedCity = [];
+    @track selectedState = [];
+    
     // Enquiry Inner Screen Navigation
     @track showEnquiryInnerScreen = false;
     @track currentEnquiryId = '';
@@ -126,6 +137,9 @@ export default class PipelineMaster extends LightningElement {
     ];
 
     connectedCallback() {
+        // Initialize filter options
+        this.initializeFilterOptions();
+        
         // Load initial data - can be replaced with Apex calls
         console.log('PipelineMaster component loaded');
         console.log('Health Systems:', this.healthSystemsData.length);
@@ -133,6 +147,126 @@ export default class PipelineMaster extends LightningElement {
         console.log('Enquiries:', this.enquiriesData.length);
         console.log('Projects:', this.projectsData.length);
     }
+
+    initializeFilterOptions() {
+        // Build status options from all datasets
+        const allStatuses = new Set();
+        this.healthSystemsData.forEach(item => item.status && allStatuses.add(item.status));
+        this.sponsorsData.forEach(item => item.status && allStatuses.add(item.status));
+        this.enquiriesData.forEach(item => item.status && allStatuses.add(item.status));
+        this.projectsData.forEach(item => item.status && allStatuses.add(item.status));
+        this.statusOptions = Array.from(allStatuses).map(s => ({ label: s, value: s, checked: false }));
+
+        // Build city options
+        const allCities = new Set();
+        this.healthSystemsData.forEach(item => item.city && allCities.add(item.city));
+        this.sponsorsData.forEach(item => item.city && allCities.add(item.city));
+        this.enquiriesData.forEach(item => item.city && allCities.add(item.city));
+        this.projectsData.forEach(item => item.city && allCities.add(item.city));
+        this.cityOptions = Array.from(allCities).map(c => ({ label: c, value: c, checked: false }));
+
+        // Build state options
+        const allStates = new Set();
+        this.healthSystemsData.forEach(item => item.state && allStates.add(item.state));
+        this.sponsorsData.forEach(item => item.state && allStates.add(item.state));
+        this.enquiriesData.forEach(item => item.state && allStates.add(item.state));
+        this.projectsData.forEach(item => item.state && allStates.add(item.state));
+        this.stateOptions = Array.from(allStates).map(s => ({ label: s, value: s, checked: false }));
+    }
+
+    // Filter dropdown classes
+    get statusDropdownClass() { 
+        return this.statusDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+    
+    get cityDropdownClass() { 
+        return this.cityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+    
+    get stateDropdownClass() { 
+        return this.stateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+
+    // Filter display text
+    get statusDisplayText() { 
+        const count = this.statusOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+    
+    get cityDisplayText() { 
+        const count = this.cityOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+    
+    get stateDisplayText() { 
+        const count = this.stateOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+
+    // Toggle dropdown methods
+    toggleStatusDropdown() { 
+        this.statusDropdownOpen = !this.statusDropdownOpen; 
+        this.closeOtherDropdowns('status'); 
+    }
+    
+    toggleCityDropdown() { 
+        this.cityDropdownOpen = !this.cityDropdownOpen; 
+        this.closeOtherDropdowns('city'); 
+    }
+    
+    toggleStateDropdown() { 
+        this.stateDropdownOpen = !this.stateDropdownOpen; 
+        this.closeOtherDropdowns('state'); 
+    }
+
+    closeOtherDropdowns(except) {
+        if (except !== 'status') this.statusDropdownOpen = false;
+        if (except !== 'city') this.cityDropdownOpen = false;
+        if (except !== 'state') this.stateDropdownOpen = false;
+    }
+
+    // Checkbox change handlers
+    handleStatusCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.statusOptions = this.statusOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); 
+    }
+    
+    handleCityCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.cityOptions = this.cityOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); 
+    }
+    
+    handleStateCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.stateOptions = this.stateOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); 
+    }
+
+    // Filter actions
+    clearAllFilters() {
+        this.statusOptions = this.statusOptions.map(opt => ({ ...opt, checked: false }));
+        this.cityOptions = this.cityOptions.map(opt => ({ ...opt, checked: false }));
+        this.stateOptions = this.stateOptions.map(opt => ({ ...opt, checked: false }));
+        this.selectedStatus = [];
+        this.selectedCity = [];
+        this.selectedState = [];
+    }
+
+    closeFilter() {
+        this.showFilters = false;
+        this.closeOtherDropdowns('');
+    }
+
+    applyFilter() {
+        this.selectedStatus = this.statusOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedCity = this.cityOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedState = this.stateOptions.filter(o => o.checked).map(o => o.value);
+        this.closeOtherDropdowns('');
+        this.pageIndex = 0;
+    }
+
 
     getInitials(name) {
         if (!name) return '';

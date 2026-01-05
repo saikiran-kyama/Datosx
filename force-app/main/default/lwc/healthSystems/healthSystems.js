@@ -4,8 +4,8 @@ import AVATARS from '@salesforce/resourceUrl/avatars';
 export default class HealthSystems extends LightningElement {
     // View state
     showDetail = false;
-    selectedProjectId = '';
-    selectedProject = null;
+    selectedHSId = '';
+    selectedHS = null;
     
     // Filters
     showFilters = false;
@@ -398,11 +398,22 @@ export default class HealthSystems extends LightningElement {
         }
     }
 
-    // Handle back from project detail
+    // Handle back from hospital system detail
     handleBack() {
         this.showDetail = false;
-        this.selectedProject = null;
-        this.selectedProjectId = '';
+        this.selectedHS = null;
+        this.selectedHSId = '';
+    }
+
+    // Handle HS ID click to show detail
+    handleHsIdClick(event) {
+        const id = event.currentTarget.dataset.id;
+        const hsData = this.data.find(item => item.id === id);
+        if (hsData) {
+            this.selectedHS = hsData;
+            this.selectedHSId = id;
+            this.showDetail = true;
+        }
     }
 
     handleEdit(event) {

@@ -314,7 +314,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="slds-truncate" style=" color: #0176d3;">{row.hsId}</div>
+                                <div class="slds-truncate clickable-cell" style="color: #0176d3; cursor: pointer;" onclick={handleHsIdClick} data-id={row.id}>{row.hsId}</div>
                             </td>
                             <td>
                                 <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
@@ -381,9 +381,9 @@
         ></c-paginator>
         </template>
 
-        <!-- Detail view: show projectDetail when a project ID is clicked -->
+        <!-- Detail view: show hospitalSystemInnerScreen when a HS ID is clicked -->
         <template if:true={showDetail}>
-            <c-project-detail project={selectedProject} onback={handleBack}></c-project-detail>
+            <c-hospital-system-inner-screen health-system={selectedHS} onback={handleBack}></c-hospital-system-inner-screen>
         </template>
     </lightning-card>
 </template>

@@ -4,8 +4,8 @@ import AVATARS from '@salesforce/resourceUrl/avatars';
 export default class Sponsers extends LightningElement {
     // View state
     showDetail = false;
-    selectedProjectId = '';
-    selectedProject = null;
+    selectedSponsorId = '';
+    selectedSponsor = null;
     
     // Filters
     showFilters = false;
@@ -288,11 +288,22 @@ export default class Sponsers extends LightningElement {
         }
     }
 
-    // Handle back from project detail
+    // Handle sponsor ID click - navigate to sponsor detail view
+    handleSponsorIdClick(event) {
+        const sponsorId = event.currentTarget.dataset.id;
+        const row = this.data.find(r => r.id === sponsorId);
+        if (row) {
+            this.selectedSponsorId = row.id;
+            this.selectedSponsor = { ...row };
+            this.showDetail = true;
+        }
+    }
+
+    // Handle back from sponsor detail
     handleBack() {
         this.showDetail = false;
-        this.selectedProject = null;
-        this.selectedProjectId = '';
+        this.selectedSponsor = null;
+        this.selectedSponsorId = '';
     }
 
     // Placeholder edit/delete handlers
