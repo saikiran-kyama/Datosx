@@ -1,27 +1,38 @@
-
-
-
 import { LightningElement, api } from 'lwc';
 import AVATARS from '@salesforce/resourceUrl/avatars';
 
-export default class EnquireyInnerScreen extends LightningElement {
-    @api enquiryId; // Receive enquiry ID from parent
-    @api project; // Project data structure
+export default class HospitalSystemInnerScreen extends LightningElement {
+    @api healthSystem;
     currentTab = 'Details';
+    
+    // Study tab image
+    studyImage = `${AVATARS}/pageUnderConstruction.jpeg`;
+    // Protocol UI state
+    selectedProtocolStep = '';
+    // used to ensure we scroll the selected step into view only once per render
+    hasScrolledToSelectedStep = false;
+    // Add Activity modal state
+    isAddActivityOpen = false;
+    addFormMilestone = '';
+    addFormDescription = '';
     // HS Matches state
     selectedHSId = 'hs1';
     selectedHSName = 'Mayo Clinic';
     messagingTab = 'HS'; // 'HS' or 'Sponsor'
     messageInput = '';
     // Legal state
+    selectedLegalStep = '';
     legalStepsObjs = [];
     legalData = {};
     // Execute modal state for Legal grid
+    isExecuteOpen = false;
+    selectedExecuteRowId = null;
+    // Messaging state
+    messagingActiveTab = 'sponsors'; // 'sponsors' or 'healthSystems'
     selectedContact = null;
     messagingInput = '';
     messagingContacts = [];
     messagingMessages = [];
-    messagingActiveTab = 'sponsors'; // 'sponsors' or 'healthSystems'
     // Estimation tab navigation state
     estimationSteps = [];
     selectedEstimationSectionId = '';
@@ -39,6 +50,238 @@ export default class EnquireyInnerScreen extends LightningElement {
     chatMessages = [];
     totalSize = 0;
     currentPage = 0;
+
+    // Project detail view state
+    showProjectDetail = false;
+    selectedProject = null;
+
+    // Projects data for Project tab
+    projectsData = [
+        {
+            id: 'p1',
+            projectId: 'PRJ-001',
+            projectName: 'Clinical Trial Phase III',
+            status: 'Active',
+            statusClass: 'project-status-badge status-active',
+            completion: 75,
+            sponsorName: 'Pharma Corp',
+            sponsorInitials: 'PC',
+            sponsorPhoto: '',
+            healthSystemName: 'Mayo Clinic',
+            healthInitials: 'MC',
+            healthPhoto: '',
+            documents: 12,
+            notes: 8,
+            messages: 15,
+            lastUpdated: '2026-01-03',
+            state: 'MN',
+            city: 'Rochester',
+            contact: 'John Smith',
+            contactInitials: 'JS',
+            contactPhoto: '',
+            email: 'john.smith@mayo.edu',
+            phone: '555-0101'
+        },
+        {
+            id: 'p2',
+            projectId: 'PRJ-002',
+            projectName: 'Cardiovascular Study',
+            status: 'Planning',
+            statusClass: 'project-status-badge status-planning',
+            completion: 25,
+            sponsorName: 'MedTech Inc',
+            sponsorInitials: 'MT',
+            sponsorPhoto: '',
+            healthSystemName: 'Cleveland Clinic',
+            healthInitials: 'CC',
+            healthPhoto: '',
+            documents: 5,
+            notes: 3,
+            messages: 7,
+            lastUpdated: '2026-01-02',
+            state: 'OH',
+            city: 'Cleveland',
+            contact: 'Sarah Johnson',
+            contactInitials: 'SJ',
+            contactPhoto: '',
+            email: 'sarah.j@cleveland.org',
+            phone: '555-0202'
+        },
+        {
+            id: 'p3',
+            projectId: 'PRJ-003',
+            projectName: 'Diabetes Research',
+            status: 'Completed',
+            statusClass: 'project-status-badge status-completed',
+            completion: 100,
+            sponsorName: 'BioLife Sciences',
+            sponsorInitials: 'BL',
+            sponsorPhoto: '',
+            healthSystemName: 'Johns Hopkins',
+            healthInitials: 'JH',
+            healthPhoto: '',
+            documents: 25,
+            notes: 18,
+            messages: 42,
+            lastUpdated: '2025-12-28',
+            state: 'MD',
+            city: 'Baltimore',
+            contact: 'Michael Chen',
+            contactInitials: 'MC',
+            contactPhoto: '',
+            email: 'm.chen@jhmi.edu',
+            phone: '555-0303'
+        }
+    ];
+
+    // Possibilities data for Possibilities tab
+    possibilitiesData = [
+        {
+            id: 'enq1',
+            enquiryId: 'ENQ-2024-001',
+            sponsorName: 'Pharma Global Inc',
+            sponsorInitials: 'PG',
+            productName: 'CardioHealth Plus',
+            productDetails: 'Advanced cardiovascular health monitoring solution for clinical trials',
+            productScopingDoc: 'View',
+            requirements: 12,
+            matchingPercentage: 85,
+            interested: false
+        },
+        {
+            id: 'enq2',
+            enquiryId: 'ENQ-2024-002',
+            sponsorName: 'BioMed Solutions',
+            sponsorInitials: 'BS',
+            productName: 'NeuroTrack AI',
+            productDetails: 'AI-powered neurological disorder tracking and analysis platform',
+            productScopingDoc: 'View',
+            requirements: 18,
+            matchingPercentage: 92,
+            interested: false
+        },
+        {
+            id: 'enq3',
+            enquiryId: 'ENQ-2024-003',
+            sponsorName: 'MediCare Research',
+            sponsorInitials: 'MR',
+            productName: 'OncoMonitor Pro',
+            productDetails: 'Comprehensive oncology patient monitoring and data management system',
+            productScopingDoc: 'View',
+            requirements: 15,
+            matchingPercentage: 78,
+            interested: true
+        },
+        {
+            id: 'enq4',
+            enquiryId: 'ENQ-2024-004',
+            sponsorName: 'HealthTech Innovations',
+            sponsorInitials: 'HT',
+            productName: 'DiabetesWatch',
+            productDetails: 'Real-time diabetes management and glucose monitoring solution',
+            productScopingDoc: 'View',
+            requirements: 10,
+            matchingPercentage: 88,
+            interested: false
+        }
+    ];
+
+    // Confirmation modal state for Interested checkbox
+    isInterestedConfirmOpen = false;
+    selectedEnquiryId = null;
+
+    // Requirements modal state
+    isRequirementsModalOpen = false;
+    selectedRequirementTab = 'facilities';
+
+    // Requirements groups data
+    requirementGroups = [
+        {
+            id: 'facilities',
+            title: 'Facilities Available',
+            items: [
+                { id: 'fa1', label: 'Academic Medical Center', checked: true },
+                { id: 'fa2', label: 'Ambulatory Surgical Center', checked: true },
+                { id: 'fa3', label: 'Center of Excellence', checked: true },
+                { id: 'fa4', label: 'Community Health Clinic', checked: true },
+                { id: 'fa5', label: 'Diagnostic Imaging Center', checked: true },
+                { id: 'fa6', label: 'Emergency Room / Urgent Care', checked: true },
+                { id: 'fa7', label: 'Hospice', checked: true },
+                { id: 'fa8', label: 'Nursing Home', checked: true },
+                { id: 'fa9', label: 'Outpatient Clinic', checked: true },
+                { id: 'fa10', label: 'Rehab Center', checked: true },
+                { id: 'fa11', label: 'Research Institution', checked: true },
+                { id: 'fa12', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'therapeuticArea',
+            title: 'Therapeutic Area of Focus',
+            items: [
+                { id: 'ta1', label: 'Allergy and Immunology', checked: true },
+                { id: 'ta2', label: 'Cardiovascular', checked: true },
+                { id: 'ta3', label: 'Chronic Diseases', checked: true },
+                { id: 'ta4', label: 'Dental', checked: true },
+                { id: 'ta5', label: 'Dermatology', checked: true },
+                { id: 'ta6', label: 'Diagnostic Radiology', checked: true },
+                { id: 'ta7', label: 'Emergency Department (ER / ED)', checked: true },
+                { id: 'ta8', label: 'Endocrinology (Diabetes, Thyroid)', checked: true },
+                { id: 'ta9', label: 'ENT / Otolaryngology (Ear, Nose, Throat)', checked: true },
+                { id: 'ta10', label: 'Gastroenterology', checked: true },
+                { id: 'ta11', label: 'Genetic Medicine', checked: true },
+                { id: 'ta12', label: 'Hematology', checked: true },
+                { id: 'ta13', label: 'Infectious Disease', checked: true },
+                { id: 'ta14', label: "Men's Health", checked: true },
+                { id: 'ta15', label: 'Musculoskeletal', checked: true },
+                { id: 'ta16', label: 'Nephrology', checked: true },
+                { id: 'ta17', label: 'Neuroscience', checked: true },
+                { id: 'ta18', label: 'Oncology', checked: true },
+                { id: 'ta19', label: 'Ophthalmology', checked: true },
+                { id: 'ta20', label: 'Pathology', checked: true },
+                { id: 'ta21', label: 'Pediatrics', checked: true },
+                { id: 'ta22', label: 'Physical medicine and rehab', checked: true },
+                { id: 'ta23', label: 'Population Health', checked: true },
+                { id: 'ta24', label: 'Preventative', checked: true },
+                { id: 'ta25', label: 'Primary Care', checked: true },
+                { id: 'ta26', label: 'Psychiatry', checked: true },
+                { id: 'ta27', label: 'Pulmonary', checked: true },
+                { id: 'ta28', label: 'Respiratory', checked: true },
+                { id: 'ta29', label: 'Rheumatology', checked: true },
+                { id: 'ta30', label: 'Surgery', checked: true },
+                { id: 'ta31', label: 'Urology', checked: true },
+                { id: 'ta32', label: "Women's Health", checked: true },
+                { id: 'ta33', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'innovationFormat',
+            title: 'Innovation format interest',
+            items: [
+                { id: 'if1', label: 'HCP efficacy', checked: true },
+                { id: 'if2', label: 'Mobile health app', checked: true },
+                { id: 'if3', label: 'AI algorithm', checked: true },
+                { id: 'if4', label: 'Wearable device', checked: true },
+                { id: 'if5', label: 'Web application', checked: true },
+                { id: 'if6', label: 'Digital diagnostics', checked: true },
+                { id: 'if7', label: 'Other', checked: true }
+            ]
+        },
+        {
+            id: 'innovationEndUser',
+            title: 'Innovation end user focus',
+            items: [
+                { id: 'eu1', label: 'Providers', checked: true },
+                { id: 'eu2', label: 'Patients/Consumers', checked: true },
+                { id: 'eu3', label: 'Health Systems', checked: true },
+                { id: 'eu4', label: 'Researchers', checked: true },
+                { id: 'eu5', label: 'Administrators', checked: true },
+                { id: 'eu6', label: 'Payers', checked: true },
+                { id: 'eu7', label: 'Pharma', checked: false },
+                { id: 'eu8', label: 'Other', checked: true }
+            ]
+        }
+    ];
+
     eventTypes = ['Emergency', 'Expedite', 'Delayed', 'Sub Acute', 'Commercial', 'High Risk', 'Pregnant', 'Minor', 'Teenager', 'Cancer', 'Diabetic', 'Hyper Tension', 'Disabled'];
     filteredPatientTypes = [];
     contextOptions = [
@@ -116,9 +359,101 @@ export default class EnquireyInnerScreen extends LightningElement {
     savedSearchOptions = [
         { label: 'Pending Verification', value: 'pending_verification' },
         { label: 'SCH & Pending AUTH', value: 'sch_pending_auth' },
-      'Publication & Archiving',
-      'Final Wrap-Up'
+        { label: 'Referrals this week', value: 'referrals_week' },
+        { label: 'Authorized this week', value: 'authorized_week' }
     ];
+    // list of milestone names (new 7-stage structure)
+    milestoneNames = [
+        'Trial Preparation',
+        'Project Oversight & Management',
+        'Data Monitoring & SDV',
+        'Final Data Analysis',
+        'Sponsor Final Readout',
+        'Publication & Archiving',
+        'Final Wrap-Up'
+    ];
+    protocolSteps = [];
+
+    // protocolData will be built dynamically for each milestone (now contains activity items with checkboxes)
+    protocolData = {};
+
+    // Activity definitions for each milestone stage
+    milestoneActivities = {
+        'Trial Preparation': [
+            { id: 'tp1', text: 'Align with Sponsor on study objectives, timelines, and KPIs.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp2', text: 'Develop Study Execution Plan and tracking tools (weekly reports, dashboards).', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp3', text: 'Finalize datosX and HS research team roles/responsibilities.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp4', text: 'Confirm with Operations all contracts (Sponsor CTA, HS MSA, vendor agreements) are executed.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp5', text: 'Conduct Internal Kick-off Meeting (datosX Ops, Trial Lead, Leadership).', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp6', text: 'Conduct Trial Kick-off Meeting (Sponsor + HS).', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp7', text: 'Schedule IRB / Trial Preparation Meeting Series.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp8', text: 'Collaborate with HS to prepare and submit IRB application.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp9', text: 'Ensure all required IRB documents are finalized (protocol, ICF, CRF, recruitment materials, PI CV, etc.).', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp10', text: 'Track IRB review process and coordinate modification responses.', checked: false, section: '3–6 Months Before FPFV' },
+            { id: 'tp11', text: 'Set up data collection workflow and finalize EDC setup.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp12', text: 'Validate CRF versions (paper/electronic) and confirm regulatory compliance (HIPAA, 21 CFR Part 11).', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp13', text: 'Provide or arrange EDC system training for HS research team.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp14', text: 'Develop Data Monitoring and Source Data Verification (SDV) Plans.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp15', text: 'Define data entry timelines, query process, and AE/SAE tracking procedures.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp16', text: 'Define SDV visit schedule and data points for verification.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp17', text: 'Finalize Data Analysis Plan (responsible party, interim/final analyses, anonymization process).', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp18', text: 'Develop Patient Screening and Recruitment Plan.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp19', text: 'Review and approve recruitment materials before IRB submission.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp20', text: 'Support HS in outreach coordination and community engagement.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp21', text: 'Define participant visit schedule and site logistics.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp22', text: 'Confirm required supplies, equipment, and tools for site readiness.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp23', text: 'Create and circulate Site Readiness Checklist.', checked: false, section: '2–3 Months Before FPFV' },
+            { id: 'tp24', text: 'Conduct site readiness visit(s) and finalize Site Readiness Checklist.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp25', text: 'Organize and/or deliver site training sessions (virtual/on-site).', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp26', text: 'Verify recruitment materials and equipment are on-site and properly placed.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp27', text: 'Confirm IRB approval receipt.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp28', text: 'Re-confirm all agreements (Sponsor, HS, datosX, vendors) are executed.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp29', text: 'Confirm ClinicalTrials.gov registration completion.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp30', text: 'Finalize Go/No-Go decision with Sponsor and HS.', checked: false, section: '1 Month Before FPFV' },
+            { id: 'tp31', text: 'Confirm official FPFV date.', checked: false, section: '1 Month Before FPFV' }
+        ],
+        'Project Oversight & Management': [
+            { id: 'pom1', text: 'Provide weekly Sponsor updates on enrollment, site status, milestones.', checked: false, section: 'Trial Execution' },
+            { id: 'pom2', text: 'Identify and address recruitment or operational challenges promptly.', checked: false, section: 'Trial Execution' },
+            { id: 'pom3', text: 'Support HS research teams with issue resolution and data-entry troubleshooting.', checked: false, section: 'Trial Execution' },
+            { id: 'pom4', text: 'Maintain cross-functional coordination with Sponsor, HS, and datosX teams.', checked: false, section: 'Trial Execution' },
+            { id: 'pom5', text: 'Track meeting action items and ensure follow-up completion.', checked: false, section: 'Trial Execution' }
+        ],
+        'Data Monitoring & SDV': [
+            { id: 'dm1', text: 'Conduct ongoing remote EDC data review for completeness and consistency.', checked: false, section: 'Trial Execution' },
+            { id: 'dm2', text: 'Monitor AE/SAE reporting and protocol deviations.', checked: false, section: 'Trial Execution' },
+            { id: 'dm3', text: 'Generate and track data queries; ensure timely resolution.', checked: false, section: 'Trial Execution' },
+            { id: 'dm4', text: 'Develop and document a Source Data Verification (SDV) plan prior to on-site visits.', checked: false, section: 'Trial Execution' },
+            { id: 'dm5', text: 'Conduct on-site SDV visits as planned (initial, mid-study, closeout).', checked: false, section: 'Trial Execution' },
+            { id: 'dm6', text: 'Verify informed consent documentation and patient eligibility.', checked: false, section: 'Trial Execution' },
+            { id: 'dm7', text: 'Identify and correct data discrepancies.', checked: false, section: 'Trial Execution' },
+            { id: 'dm8', text: 'Provide corrective feedback to site teams.', checked: false, section: 'Trial Execution' },
+            { id: 'dm9', text: 'Produce Data Quality Reports summarizing trends and findings.', checked: false, section: 'Trial Execution' },
+            { id: 'dm10', text: 'Ensure corrective actions are implemented and documented.', checked: false, section: 'Trial Execution' },
+            { id: 'dm11', text: 'Coordinate final SDV completion and data lock with HS and Sponsor.', checked: false, section: 'Trial Execution' },
+            { id: 'dm12', text: "Support Sponsor's data team in final analysis preparation.", checked: false, section: 'Trial Execution' }
+        ],
+        'Final Data Analysis': [
+            { id: 'fda1', text: 'Coordinate with data vendor/biostatistics team for analysis as per plan.', checked: false, section: 'Trial Close' },
+            { id: 'fda2', text: 'Review preliminary findings; ensure clarity and consistency.', checked: false, section: 'Trial Close' },
+            { id: 'fda3', text: 'Resolve any post-lock data issues with Sponsor and vendor.', checked: false, section: 'Trial Close' }
+        ],
+        'Sponsor Final Readout': [
+            { id: 'sfr1', text: 'Organize and lead Final Readout Meeting with Sponsor.', checked: false, section: 'Trial Close' },
+            { id: 'sfr2', text: 'Align stakeholders on interpretation of results and key lessons.', checked: false, section: 'Trial Close' },
+            { id: 'sfr3', text: 'Document learnings for internal review.', checked: false, section: 'Trial Close' }
+        ],
+        'Publication & Archiving': [
+            { id: 'pa1', text: 'Support manuscript coordination (if applicable).', checked: false, section: 'Trial Close' },
+            { id: 'pa2', text: 'Compile data summaries, study documents, and regulatory materials.', checked: false, section: 'Trial Close' },
+            { id: 'pa3', text: 'Ensure secure long-term archiving of all study data, reports, and documents.', checked: false, section: 'Trial Close' },
+            { id: 'pa4', text: 'Confirm data retention compliance (5–15 years, as required).', checked: false, section: 'Trial Close' }
+        ],
+        'Final Wrap-Up': [
+            { id: 'fw1', text: 'Conduct internal study debrief with datosX teams.', checked: false, section: 'Trial Close' },
+            { id: 'fw2', text: 'Deliver final closeout report to Sponsor.', checked: false, section: 'Trial Close' }
+        ]
+    };
 
       // Estimation summary data based on the provided reference image
       estimationSummary = {
@@ -208,41 +543,94 @@ export default class EnquireyInnerScreen extends LightningElement {
         this.dispatchEvent(new CustomEvent('back'));
     }
 
+    // Profile tab - Add Contact button handler
+    handleAddContact() {
+        // Placeholder for add contact functionality
+        console.log('Add Contact clicked');
+        // You can dispatch a custom event or open a modal here
+    }
 
-    // isOverview removed (Overview tab deleted)
+    // Profile tab - Edit DX Team button handler
+    handleEditDxTeam() {
+        // Placeholder for edit DX team functionality
+        console.log('Edit DX Team clicked');
+        // You can dispatch a custom event or open a modal here
+    }
+
+    // Project detail navigation
+    handleProjectClick(event) {
+        const projectId = event.currentTarget.dataset.id;
+        if (!projectId) return;
+        const project = this.projectsData.find(p => p.id === projectId);
+        if (project) {
+            this.selectedProject = project;
+            this.showProjectDetail = true;
+        }
+    }
+
+    handleBackFromProjectDetail() {
+        this.showProjectDetail = false;
+        this.selectedProject = null;
+    }
+
+
+    // Overview removed; Details is default
 
     get isDetails() {
         return this.currentTab === 'Details';
-    }
-
-    get isDocuments() {
-        return this.currentTab === 'Documents';
     }
 
     get isRequirements() {
       return this.currentTab === 'Requirements';
     }
 
-
-    get isEstimation() {
-      return this.currentTab === 'estimation';
-    }
-
     get isLegal() {
         return this.currentTab === 'Legal';
-    }
-
-    get isHSMatches() {
-        return this.currentTab === 'HS-Matches';
     }
 
     get isMessaging() {
         return this.currentTab === 'Messaging';
     }
 
-
     get isNotes() {
         return this.currentTab === 'Related';
+    }
+
+    get isProject() {
+        return this.currentTab === 'Project';
+    }
+
+    get isPossibilities() {
+        return this.currentTab === 'Possibilities';
+    }
+
+    // Tab class getters to provide 'active' class when currentTab matches
+    get detailsTabClass() {
+      return this.currentTab === 'Details' ? 'record-home-details record-home-tab tabs__item active uiTabItem' : 'record-home-details record-home-tab tabs__item uiTabItem';
+    }
+
+    get requirementsTabClass() {
+      return this.currentTab === 'Requirements' ? 'record-home-requirements record-home-tab tabs__item active uiTabItem' : 'record-home-requirements record-home-tab tabs__item uiTabItem';
+    }
+
+    get messagingTabClass() {
+      return this.currentTab === 'Messaging' ? 'record-home-messaging record-home-tab tabs__item active uiTabItem' : 'record-home-messaging record-home-tab tabs__item uiTabItem';
+    }
+
+    get legalTabClass() {
+      return this.currentTab === 'Legal' ? 'record-home-legal record-home-tab tabs__item active uiTabItem' : 'record-home-legal record-home-tab tabs__item uiTabItem';
+    }
+
+    get relatedTabClass() {
+      return this.currentTab === 'Related' ? 'record-home-related record-home-tab tabs__item active uiTabItem' : 'record-home-related record-home-tab tabs__item uiTabItem';
+    }
+
+    get projectTabClass() {
+      return this.currentTab === 'Project' ? 'record-home-project record-home-tab tabs__item active uiTabItem' : 'record-home-project record-home-tab tabs__item uiTabItem';
+    }
+
+    get possibilitiesTabClass() {
+      return this.currentTab === 'Possibilities' ? 'record-home-possibilities record-home-tab tabs__item active uiTabItem' : 'record-home-possibilities record-home-tab tabs__item uiTabItem';
     }
 
     // Getters for conditional values in Notes section
@@ -254,22 +642,17 @@ export default class EnquireyInnerScreen extends LightningElement {
         return this.isAscending ? 'utility:arrowup' : 'utility:arrowdown';
     }
 
-    // Getter to show only top 5 HS matches
-    get topFiveHSMatches() {
-        return this.hsMatches.slice(0, 5);
-    }
-
     hsMatches = [
-        { id: 'hs1', name: 'Mayo Clinic', matchPercentage: 95, avatar: '/resource/avatars/HS1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item active', isSelected: true, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs2', name: 'Cleveland Clinic', matchPercentage: 92, avatar: '/resource/avatars/HS2.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: true, isApproved: true, isDXApproved: false, isHSMatch: false },
-        { id: 'hs3', name: 'Johns Hopkins', matchPercentage: 90, avatar: '/resource/avatars/HS3.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: true, isApproved: true, isDXApproved: true, isHSMatch: false },
-        { id: 'hs4', name: 'Mass General', matchPercentage: 88, avatar: '/resource/avatars/HS4.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs5', name: 'UCLA Medical', matchPercentage: 85, avatar: '/resource/avatars/HS5.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs6', name: 'UCSF Health', matchPercentage: 83, avatar: '/resource/avatars/ODF.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs7', name: 'Stanford Health', matchPercentage: 80, avatar: '/resource/avatars/ODF1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs8', name: 'Duke Health', matchPercentage: 78, avatar: '/resource/avatars/ODF2.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs9', name: 'Northwestern', matchPercentage: 76, avatar: '/resource/avatars/ODF3.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false },
-        { id: 'hs10', name: 'Cedars-Sinai', matchPercentage: 75, avatar: '/resource/avatars/HS1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item', isSelected: false, isApproved: false, isDXApproved: false, isHSMatch: false }
+        { id: 'hs1', name: 'Mayo Clinic', matchPercentage: 95, avatar: '/resource/avatars/HS1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item active' },
+        { id: 'hs2', name: 'Cleveland Clinic', matchPercentage: 92, avatar: '/resource/avatars/HS2.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs3', name: 'Johns Hopkins', matchPercentage: 90, avatar: '/resource/avatars/HS3.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs4', name: 'Mass General', matchPercentage: 88, avatar: '/resource/avatars/HS4.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs5', name: 'UCLA Medical', matchPercentage: 85, avatar: '/resource/avatars/HS5.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs6', name: 'UCSF Health', matchPercentage: 83, avatar: '/resource/avatars/ODF.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs7', name: 'Stanford Health', matchPercentage: 80, avatar: '/resource/avatars/ODF1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs8', name: 'Duke Health', matchPercentage: 78, avatar: '/resource/avatars/ODF2.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs9', name: 'Northwestern', matchPercentage: 76, avatar: '/resource/avatars/ODF3.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' },
+        { id: 'hs10', name: 'Cedars-Sinai', matchPercentage: 75, avatar: '/resource/avatars/HS1.png', itemClass: 'd-flex justify-content-between align-items-center mb-3 hs-match-item' }
     ];
 
     // Static capability groups for all Top 10 HS Matches
@@ -907,7 +1290,10 @@ export default class EnquireyInnerScreen extends LightningElement {
       });
     }
 
-    // milestoneOptions removed (protocol UI removed)
+    // Combobox options for milestone selection in Add Activity modal
+    get milestoneOptions() {
+      return (this.milestoneNames || []).map(m => ({ label: m, value: m }));
+    }
 
     // Messages data per HS and Sponsor
     messagesDataByHS = {
@@ -937,7 +1323,11 @@ export default class EnquireyInnerScreen extends LightningElement {
         }
     };
 
-    // Protocol-related UI removed
+    // Returns the activities for the currently selected protocol step (for Protocol Grid)
+    get currentProtocolRows() {
+        if (!this.selectedProtocolStep) return [];
+        return this.protocolData[this.selectedProtocolStep] || [];
+    }
 
     // Returns the messages for the selected HS and tab (for HS Matches & Messaging)
     get currentMessages() {
@@ -993,7 +1383,31 @@ export default class EnquireyInnerScreen extends LightningElement {
 
     }
 
-    // Protocol handlers removed
+    // Protocol: select a step to update the right panel
+    handleProtocolStepClick(event) {
+        const btn = event.target.closest('[data-step]');
+        if (!btn) return;
+        const stepName = btn.dataset.step;
+        if (!stepName) return;
+        this.selectedProtocolStep = stepName;
+        // update classes on steps array for template binding
+        this.protocolSteps = this.protocolSteps.map(s => ({ ...s, className: s.name === stepName ? 'step-item active' : 'step-item' }));
+        // scroll the clicked step to the top of the scroll container
+        try {
+            const el = this.template.querySelector(`[data-step="${stepName}"]`);
+            const list = this.template.querySelector('.step-list');
+            if (el && list) {
+                // prefer scrolling the container so selected item sits at the top
+                const offset = el.offsetTop - list.offsetTop;
+                list.scrollTo({ top: offset, behavior: 'smooth' });
+                this.hasScrolledToSelectedStep = true;
+            }
+        } catch (e) {
+            // fallback: item.scrollIntoView
+            const el = this.template.querySelector(`[data-step="${stepName}"]`);
+            if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        }
+    }
 
     // Legal: select an agreement type to update the right panel
     handleLegalStepClick(event) {
@@ -1058,6 +1472,122 @@ export default class EnquireyInnerScreen extends LightningElement {
         this.legalData = { ...this.legalData };
       }
         this.closeExecutePopup();
+    }
+
+    // Possibilities: handle Interested checkbox change
+    handleInterestedChange(event) {
+        const enquiryId = event.currentTarget?.dataset?.id;
+        const isChecked = event.target.checked;
+        
+        if (isChecked) {
+            // Show confirmation modal when checking
+            this.selectedEnquiryId = enquiryId;
+            this.isInterestedConfirmOpen = true;
+            // Uncheck temporarily until confirmed
+            event.target.checked = false;
+        } else {
+            // Allow unchecking without confirmation
+            const idx = this.possibilitiesData.findIndex(p => p.id === enquiryId);
+            if (idx >= 0) {
+                this.possibilitiesData[idx] = { ...this.possibilitiesData[idx], interested: false };
+                this.possibilitiesData = [...this.possibilitiesData];
+            }
+        }
+    }
+
+    // Close Interested confirmation modal
+    closeInterestedPopup() {
+        this.isInterestedConfirmOpen = false;
+        this.selectedEnquiryId = null;
+    }
+
+    // Confirm Interested checkbox
+    confirmInterested() {
+        if (!this.selectedEnquiryId) {
+            this.closeInterestedPopup();
+            return;
+        }
+        // Update the interested status
+        const idx = this.possibilitiesData.findIndex(p => p.id === this.selectedEnquiryId);
+        if (idx >= 0) {
+            this.possibilitiesData[idx] = { ...this.possibilitiesData[idx], interested: true };
+            this.possibilitiesData = [...this.possibilitiesData];
+        }
+        this.closeInterestedPopup();
+    }
+
+    // Handle overlay click for Interested modal
+    handleInterestedOverlayClick(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            this.closeInterestedPopup();
+        }
+    }
+
+    // Get active requirement group based on selected tab
+    get activeRequirementGroup() {
+        return this.requirementGroups.find(g => g.id === this.selectedRequirementTab);
+    }
+
+    // Get items for the active requirement group
+    get activeRequirementItems() {
+        const group = this.activeRequirementGroup;
+        return group ? group.items : [];
+    }
+
+    // Handle Requirements click - open modal
+    handleRequirementsClick(event) {
+        const enquiryId = event.currentTarget?.dataset?.id;
+        this.selectedEnquiryId = enquiryId;
+        this.isRequirementsModalOpen = true;
+    }
+
+    // Close Requirements modal
+    closeRequirementsModal() {
+        this.isRequirementsModalOpen = false;
+    }
+
+    // Save requirements and close modal
+    saveRequirements() {
+        // TODO: Add save logic here if needed
+        // For now, just close the modal
+        this.closeRequirementsModal();
+    }
+
+    // Handle requirement tab click in modal
+    handleRequirementTabClick(event) {
+        const tabId = event.currentTarget?.dataset?.tab;
+        if (tabId) {
+            this.selectedRequirementTab = tabId;
+        }
+    }
+
+    // Handle overlay click for Requirements modal
+    handleRequirementsOverlayClick(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            this.closeRequirementsModal();
+        }
+    }
+
+    // Get class for requirement nav items
+    getRequirementNavClass(tabId) {
+        return this.selectedRequirementTab === tabId ? 'requirement-nav-item active' : 'requirement-nav-item';
+    }
+
+    // Getters for each requirement tab nav class
+    get facilitiesNavClass() {
+        return this.getRequirementNavClass('facilities');
+    }
+
+    get therapeuticAreaNavClass() {
+        return this.getRequirementNavClass('therapeuticArea');
+    }
+
+    get innovationFormatNavClass() {
+        return this.getRequirementNavClass('innovationFormat');
+    }
+
+    get innovationEndUserNavClass() {
+        return this.getRequirementNavClass('innovationEndUser');
     }
 
       // Legal: edit a legal row (placeholder for future edit modal)
@@ -1211,36 +1741,6 @@ export default class EnquireyInnerScreen extends LightningElement {
         }));
     }
 
-    // Handle Select checkbox change
-    handleSelectCheckbox(event) {
-        const checkbox = event.target.closest('[data-id]');
-        if (!checkbox) return;
-        const hsId = checkbox.dataset.id;
-        if (!hsId) return;
-        
-        this.hsMatches = this.hsMatches.map(hs => {
-            if (hs.id === hsId) {
-                return { ...hs, isSelected: event.target.checked };
-            }
-            return hs;
-        });
-    }
-
-    // Handle HS Match checkbox change
-    handleHSMatchCheckbox(event) {
-        const checkbox = event.target.closest('[data-id]');
-        if (!checkbox) return;
-        const hsId = checkbox.dataset.id;
-        if (!hsId) return;
-        
-        this.hsMatches = this.hsMatches.map(hs => {
-            if (hs.id === hsId) {
-                return { ...hs, isHSMatch: event.target.checked };
-            }
-            return hs;
-        });
-    }
-
     // Toggle capability group open/closed
     toggleDropdown(event) {
         const btn = event.target.closest('[data-id]');
@@ -1323,15 +1823,115 @@ export default class EnquireyInnerScreen extends LightningElement {
         console.log('Estimation Delete', sectionId, rowId);
       }
 
-    // Protocol activity methods removed
+    // Protocol Activity: handle checkbox change
+    handleActivityCheckboxChange(event) {
+        const activityId = event.target.dataset.activityId;
+        const checked = event.target.checked;
+        
+        if (!this.selectedProtocolStep || !activityId) return;
+        
+        // Update the checked state for this activity
+        const activities = this.protocolData[this.selectedProtocolStep] || [];
+        this.protocolData[this.selectedProtocolStep] = activities.map(act => {
+            if (act.id === activityId) {
+                return { ...act, checked: checked };
+            }
+            return act;
+        });
+        
+        // Force reactivity
+        this.protocolData = { ...this.protocolData };
+    }
+
+    // Protocol Activity: open add activity modal
+    openAddActivityPopup() {
+        this.isAddActivityOpen = true;
+        this.addFormMilestone = this.selectedProtocolStep || this.milestoneNames[0];
+        this.addFormDescription = '';
+    }
+
+    // Protocol Activity: close add activity modal
+    closeAddActivityPopup() {
+        this.isAddActivityOpen = false;
+        this.addFormMilestone = '';
+        this.addFormDescription = '';
+    }
+
+    // Protocol Activity: handle milestone change in add form
+    handleAddFormMilestoneChange(event) {
+      // lightning-combobox emits value in event.detail.value; fallback to target.value
+      const val = event && event.detail && event.detail.value !== undefined ? event.detail.value : (event.target && event.target.value);
+      this.addFormMilestone = val;
+    }
+
+    // Protocol Activity: handle description change in add form
+    handleAddFormDescriptionChange(event) {
+      // lightning-textarea emits value in event.detail.value; fallback to target.value
+      const val = event && event.detail && event.detail.value !== undefined ? event.detail.value : (event.target && event.target.value);
+      this.addFormDescription = val;
+    }
+
+    // Protocol Activity: save new activity
+    saveAddActivity() {
+        if (!this.addFormDescription || !this.addFormDescription.trim()) {
+            alert('Please enter a description');
+            return;
+        }
+        
+        const milestone = this.addFormMilestone;
+        if (!milestone) return;
+        
+        // Create new activity
+        const newActivity = {
+            id: 'custom_' + Date.now(),
+            activity: this.addFormDescription.trim(),
+            checked: false,
+            section: 'Custom',
+            lastUpdated: new Date().toISOString().split('T')[0]
+        };
+        
+        // Add to protocol data
+        if (!this.protocolData[milestone]) {
+            this.protocolData[milestone] = [];
+        }
+        this.protocolData[milestone].push(newActivity);
+        
+        // Force reactivity
+        this.protocolData = { ...this.protocolData };
+        
+        // Close modal
+        this.closeAddActivityPopup();
+    }
+
+    // Protocol Activity: handle edit
+    handleEdit(event) {
+        const activityId = event.currentTarget.dataset.id;
+        // TODO: Implement edit functionality
+        console.log('Edit activity:', activityId);
+    }
+
+    // Protocol Activity: handle delete
+    handleDelete(event) {
+        const activityId = event.currentTarget.dataset.id;
+        
+        if (!this.selectedProtocolStep || !activityId) return;
+        
+        if (!confirm('Are you sure you want to delete this activity?')) return;
+        
+        // Remove the activity
+        const activities = this.protocolData[this.selectedProtocolStep] || [];
+        this.protocolData[this.selectedProtocolStep] = activities.filter(act => act.id !== activityId);
+        
+        // Force reactivity
+        this.protocolData = { ...this.protocolData };
+    }
 
     // Modal: handle overlay click to close
     handleModalOverlayClick(event) {
         // Only close if clicking directly on overlay (not on modal content)
-      // Modal handling removed for Protocol activities
-      if (event.target.classList && event.target.classList.contains('modal-overlay')) {
-        // no-op
-      }
+        if (event.target.classList.contains('modal-overlay')) {
+            this.closeAddActivityPopup();
+        }
     }
 
     // Modal: stop propagation to prevent overlay click
@@ -1340,7 +1940,32 @@ export default class EnquireyInnerScreen extends LightningElement {
     }
 
     renderedCallback() {
-        // Rendered callback: only keep non-protocol post-render behaviour
+        // when the Protocol tab is first rendered (or when protocolSteps change),
+        // ensure the selected milestone is scrolled to the top of the list
+        if (this.isProtocol) {
+          // Only perform the auto-scroll once, but do NOT return early from
+          // renderedCallback — we still need the rest of the post-render
+          // behaviour (e.g. applying progress widths) to run on subsequent
+          // renders when the tab is re-activated.
+          if (!this.hasScrolledToSelectedStep) {
+            try {
+              const stepName = this.selectedProtocolStep;
+              if (stepName) {
+                const el = this.template.querySelector(`[data-step="${stepName}"]`);
+                const list = this.template.querySelector('.step-list');
+                if (el && list) {
+                  const offset = el.offsetTop - list.offsetTop;
+                  list.scrollTo({ top: offset, behavior: 'auto' });
+                  this.hasScrolledToSelectedStep = true;
+                }
+              }
+            } catch (e) {
+              // ignore errors silently
+            }
+          }
+        }
+
+        // Diagnostic: log when Legal panel is present in DOM
         if (this.isLegal) {
             // eslint-disable-next-line no-console
             console.log('renderedCallback: Legal panel rendered, selectedLegalStep=', this.selectedLegalStep);
@@ -1419,30 +2044,50 @@ export default class EnquireyInnerScreen extends LightningElement {
     }
 
     connectedCallback() {
-        // Initialize project data if not provided
-        if (!this.project) {
-            this.project = {
-                projectId: this.enquiryId || 'ENQ001',
-                projectName: 'Clinical Trial Project',
-                projectStatus: 'Active',
-                status: 'Active',
-                sponsorName: 'Pharma Inc',
-                hsName: 'Health System A',
-                startDate: '2025-10-01',
-                dueDate: '2026-03-31',
-                eta: 'Q1 2026',
-                completion: '42%',
-                publishProject: false,
-                hsMatchingCompleted: false,
-                description: 'Sample project description for enquiry ' + (this.enquiryId || 'ENQ001'),
-                documentUrl: 'https://example.com/document',
-                primaryContact: 'John Doe',
-                twoPager: 'Study Overview Document',
-                ownerName: 'Jane Smith'
-            };
-        }
-        
-        // Protocol/Study initialization removed
+        // initialize steps with progress percentages
+        const defaultMilestone = this.milestoneNames[0];
+        // Assign random progress percentages to each milestone (20-100)
+        this.protocolSteps = this.milestoneNames.map((name) => ({
+            name,
+            className: name === defaultMilestone ? 'step-item active' : 'step-item',
+            progress: Math.floor(Math.random() * 81) + 20 // 20-100%
+        }));
+        this.selectedProtocolStep = defaultMilestone;
+        // initialize add form milestone to the selected one
+        this.addFormMilestone = this.selectedProtocolStep;
+        // Build protocolData from milestoneActivities
+        this.protocolData = {};
+        this.milestoneNames.forEach((name) => {
+            const activities = this.milestoneActivities[name] || [];
+            // simple date pool for dummy last-updated values
+            const datePool = ['2025-11-12','2025-11-05','2025-10-28','2025-09-15','2025-08-30'];
+            this.protocolData[name] = activities.map((act, i) => {
+              const planDate = datePool[i % datePool.length];
+              const actualDate = datePool[(i + 1) % datePool.length];
+              const planFinish = '2025-12-31';
+              const actualFinish = (i % 7 === 0) ? '2026-01-15' : '';
+              const eta = 'Q1 2026';
+              const progressPct = Math.max(0, Math.min(100, Math.floor(Math.random() * 90) + 5));
+              // If actualFinish has a value we consider the activity complete => 100%
+              const progress = actualFinish ? '100%' : (progressPct + '%');
+              const progressStyle = `width: ${progress}; background: linear-gradient(90deg,#2e7ce4,#2e9be4); height: 10px;`;
+              return {
+                id: act.id,
+                activity: act.text,
+                // pre-check every 5th activity to have some checked boxes
+                checked: act.checked || (i % 5 === 0),
+                section: act.section,
+                lastUpdated: datePool[(i + name.length) % datePool.length],
+                planDate,
+                actualDate,
+                planFinish,
+                actualFinish,
+                eta,
+                progress,
+                progressStyle
+              };
+            });
+        });
 
         // Initialize HS Matches state
         this.selectedHSId = 'hs1';
@@ -1556,7 +2201,13 @@ export default class EnquireyInnerScreen extends LightningElement {
       }
 
 
-    // overallProgress removed (protocol UI removed)
+    // Calculate overall progress percentage across all milestones
+    get overallProgress() {
+        if (!this.protocolSteps || this.protocolSteps.length === 0) return 0;
+        // Example: average progress across all protocol steps
+        const total = this.protocolSteps.reduce((sum, step) => sum + (step.progress || 0), 0);
+        return Math.round(total / this.protocolSteps.length);
+    }
 
     get estimationHeaderFields() {
       const header = this.estimationSummary && this.estimationSummary.header ? this.estimationSummary.header : [];

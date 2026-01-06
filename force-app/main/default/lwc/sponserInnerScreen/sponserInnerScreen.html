@@ -3,17 +3,23 @@
     <div class="highlights slds-clearfix slds-page-header slds-page-header_record-home">
         <div class="slds-grid primaryFieldRow">
             <div class="slds-grid slds-col slds-has-flexi-truncate">
-                
+                <!-- <div class="slds-media slds-no-space">
+                    <div class="highlights-icon-container slds-avatar slds-m-right_small icon" style="background-color: #df6184">
+                        <img alt="Project" src="https://app-business-9844--techmpar.sandbox.my.site.com/img/icon/t4v35/custom/custom13_120.png">
+                    </div>
+                </div> -->
                 <div class="slds-media__body">
                     <h1>
-                        <div class="entityNameTitle slds-line-height--reset">Project ID: {project.projectId}</div>
+                        <div class="entityNameTitle slds-line-height--reset">Sponsor ID: {sponsor.sponsorId}</div>
                         <span
-                            class="slds-page-header__title slds-m-right--small slds-align-middle slds-line-clamp clip-text">{project.projectId}</span>
+                            class="slds-page-header__title slds-m-right--small slds-align-middle slds-line-clamp clip-text">{sponsor.sponsorName}</span>
                     </h1>
                 </div>
             </div>
             <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center horizontal actionsContainer">
-                
+                <!-- <lightning-button class="slds-m-right_x-small" variant="neutral" label="Project Scoping Questionnaire Form"></lightning-button>
+                <lightning-button class="slds-m-right_x-small" variant="neutral" label="Protocol Questionnaire Form"></lightning-button>
+                <lightning-button class="slds-m-right_x-small" variant="neutral" label="Printable View"></lightning-button> -->
                 <lightning-button variant="neutral" label="Back" icon-name="utility:back"
                     onclick={handleBackClick}></lightning-button>
             </div>
@@ -22,32 +28,41 @@
             <div class="slds-grid slds-page-header__detail-row equal-space"
                 style="width: 107%;     background-color: #fffce4;">
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Enquiry Status</p>
+                    <p class="slds-text-title slds-truncate">Sponsor Name</p>
                     <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        <span class={project.statusClass}>{project.status}</span>
+                        {sponsor.sponsorName}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Status</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {sponsor.status}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">State</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {sponsor.state}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">City</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">{sponsor.city}</p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Contact</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">{sponsor.contact}
                     </p>
                 </div>
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Project Name</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        {project.projectName}</p>
+                    <p class="slds-text-title slds-truncate">Email</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">{sponsor.email}
+                    </p>
                 </div>
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Sponsor Name</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        {project.sponsorName}</p>
-                </div>
-                <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Date Created</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        2025-10-01
-</p>
+                    <p class="slds-text-title slds-truncate">Phone</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">{sponsor.phone}</p>
                 </div>
                 <div class="slds-page-header__detail-block">
                     <p class="slds-text-title slds-truncate">Last Updated</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        2026-03-31
-</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">{sponsor.lastUpdated}</p>
                 </div>
             </div>
         </div>
@@ -57,9 +72,6 @@
     <div class="uiTabset--base uiTabset--default uiTabset" style="margin-left: -3px;">
         <div role="tablist" class="uiTabBar">
             <ul role="presentation" class="tabs__nav" style="gap: 20px; align-items: center;">
-                <!-- Overview tab removed -->
-
-
                 <li role="presentation" class="record-home-details record-home-tab tabs__item active uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="true" role="tab" tabindex="0" title="Details" class="tabHeader"
                         href="javascript:void(0);" data-tab="Details" onclick={handleTabClick} style="padding: 8px 12px;">
@@ -73,37 +85,12 @@
                         <span class="title">Requirements</span>
                     </a>
                 </li>
-                <li role="presentation" class="record-home-hs-matches record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
-                    <a aria-selected="false" role="tab" tabindex="-1" title="HS Matches &amp; Messaging"
-                        class="tabHeader" href="javascript:void(0);" data-tab="HS-Matches" onclick={handleTabClick} style="padding: 8px 12px;">
-                        <span class="title">HS Matches &amp; Messaging</span>
-                    </a>
-                </li>
-                <!-- TASKS (Protocol) tab removed -->
-
-
-                <!-- Study tab removed -->
-
-
-
-                <li role="presentation" class="record-home-protocol record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
-                    <a aria-selected="false" role="tab" tabindex="-1" title="Protocol" class="tabHeader"
-                        href="javascript:void(0);" data-tab="estimation" onclick={handleTabClick} style="padding: 8px 12px;">
-                        <span class="title">Estimation</span>
-                    </a>
-                </li>
 
 
                 <li role="presentation" class="record-home-messaging record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="false" role="tab" tabindex="-1" title="Messaging" class="tabHeader"
                         href="javascript:void(0);" data-tab="Messaging" onclick={handleTabClick} style="padding: 8px 12px;">
                         <span class="title">Messaging</span>
-                    </a>
-                </li>
-                <li role="presentation" class="record-home-documents record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
-                    <a aria-selected="false" role="tab" tabindex="-1" title="Documents" class="tabHeader"
-                        href="javascript:void(0);" data-tab="Documents" onclick={handleTabClick} style="padding: 8px 12px;">
-                        <span class="title">Documents</span>
                     </a>
                 </li>
                 <li role="presentation" class="record-home-legal record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
@@ -122,106 +109,38 @@
         </div>
 
 
-        <!-- Overview content removed -->
-
-        <!-- Study tab removed -->
-
-
-
             <template if:true={isDetails}>
                 <section role="tabpanel" aria-expanded="true"
                     class="record-home-details record-home-tab tabs__content active uiTab">
                     <div class="slds-card slds-m-top_small">
                         <div class="slds-card__body slds-card__body_inner">
                             <div class="slds-grid slds-grid_pull-padded">
-                                <!-- Overview: three panels -->
+                                <!-- Sponsor Details Panel -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
                                         <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Project Details</div>
-                                        <div style="padding:10px;     margin-top: -10px;">
+                                            Sponsor Details</div>
+                                        <div style="padding:10px; margin-top: -10px;">
                                             <table style="width:100%;border-collapse:collapse;">
-                                                <thead>
-                                                    <!-- <tr>
-                                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
-                                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
-                                                                </tr> -->
-                                                </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project ID</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Sponsor ID</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.projectId}</span>
+                                                            <span>{sponsor.sponsorId}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="projectId"
+                                                                data-field="sponsorId"
                                                                 data-section="overview"></lightning-button-icon>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Status</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Sponsor Name</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.status}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="projectStatus"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Name</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.projectName}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="projectName"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Publish Project</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span><input type="checkbox" disabled
-                                                                    checked={project.publishProject} /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="publishProject"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            HS Matching Completed</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span><input type="checkbox" disabled
-                                                                    checked={project.hsMatchingCompleted} /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="hsMatchingCompleted"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Sponsor Company Account</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.sponsorName}</span>
+                                                            <span>{sponsor.sponsorName}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-field="sponsorName"
@@ -229,83 +148,114 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Description</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Status</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.description}</span>
+                                                            <span>{sponsor.status}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="description"
+                                                                data-field="status"
                                                                 data-section="overview"></lightning-button-icon>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Document Url</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            State</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.documentUrl}</span>
+                                                            <span>{sponsor.state}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="documentUrl"
+                                                                data-field="state"
                                                                 data-section="overview"></lightning-button-icon>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            datosX primary contact</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            City</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.primaryContact}</span>
+                                                            <span>{sponsor.city}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="primaryContact"
+                                                                data-field="city"
                                                                 data-section="overview"></lightning-button-icon>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Two-pager</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Primary Contact</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.twoPager}</span>
+                                                            <span>{sponsor.contact}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="twoPager"
+                                                                data-field="contact"
                                                                 data-section="overview"></lightning-button-icon>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Owner</td>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Email</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{project.ownerName}</span>
+                                                            <span>{sponsor.email}</span>
                                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="ownerName"
+                                                                data-field="email"
                                                                 data-section="overview"></lightning-button-icon>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Phone</td>
+                                                        <td class="value-cell"
+                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                            <span>{sponsor.phone}</span>
+                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                                data-field="phone"
+                                                                data-section="overview"></lightning-button-icon>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Last Updated</td>
+                                                        <td class="value-cell"
+                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                            <span>{sponsor.lastUpdated}</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Active Projects</td>
+                                                        <td class="value-cell"
+                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                            <span>{sponsor.projects}</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
+                                                            Enquiries</td>
+                                                        <td class="value-cell"
+                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
+                                                            <span>{sponsor.enquiries}</span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-            
                                 </div>
+            
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
+                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px;">
                                         <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
                                             Project Scoping Questionnaire</div>
-                                        <div style="padding:10px;     background: rgb(230, 247, 255);">
+                                        <div style="padding:10px; background: rgb(230, 247, 255);">
                                             <table
-                                                style="width:100%;border-collapse:collapse;background:#e6f7ff;     margin-top: -10px;">
+                                                style="width:100%;border-collapse:collapse;background:#e6f7ff; margin-top: -10px;">
                                                 <thead>
                                                     <!-- <tr>
                                                                     <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
@@ -474,7 +424,6 @@
                                             </table>
                                         </div>
                                     </div>
-            
                                 </div>
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
@@ -574,171 +523,6 @@
                 </section>
             </template>
 
-        <template if:true={isEstimation}>
-            <section role="tabpanel" aria-expanded="true"
-                class="record-home-estimation record-home-tab tabs__content active uiTab">
-                <div class="slds-card slds-m-top_small">
-                    <div class="slds-card__body slds-card__body_inner">
-                        <div class="protocol-container estimation-layout">
-                            <div class="protocol-left">
-                                <div class="milestone-box">
-                                    <div class="milestone-heading">Estimation</div>
-                                    <div class="step-list" onclick={handleEstimationStepClick} style="gap: 4px;">
-                                        <template for:each={estimationSteps} for:item="step">
-                                            <div key={step.id} data-estimation={step.id} class={step.className} style="padding: 8px 10px; margin-bottom: 2px;">
-                                                <div class="step-info">
-                                                    <div class="step-title">{step.title}</div>
-                                                </div>
-                                                <div class="step-value-block">
-                                                    <div class="step-cost-line">
-                                                        <span class="step-value-amount">{step.totalCost}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
-                                    <div class="overall-progress-badge estimation-overall">
-                                        <span class="overall-label">Grand Total</span>
-                                        <div class="overall-total-values">
-                                            <span class="overall-value">{estimationGrandTotal.totalCost}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="protocol-right estimation-right" style="margin-left: -151px;">
-                                <template if:true={isInvoiceScheduleSelected}>
-                                    <div class="invoice-section">
-                                        <div class="invoice-header">
-                                            <div class="invoice-title">{estimationInvoice.title}</div>
-                                            <button
-                                                style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;">
-                                                <span
-                                                    style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
-                                                <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
-                                            </button>
-                                        </div>
-                                        <table class="invoice-table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="col-actions">Actions</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Milestone</th>
-                                                    <th scope="col">% of Total</th>
-                                                    <th scope="col">Cost</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <template for:each={estimationInvoice.rows} for:item="row">
-                                                    <tr key={row.id}>
-                                                        <td class="estimation-actions-cell">
-                                                            <lightning-button-icon icon-name="utility:edit"
-                                                                alternative-text="Edit" title="Edit" variant="bare"
-                                                                data-section="invoice" data-row-id={row.id}
-                                                                onclick={handleEstimationEdit}></lightning-button-icon>
-                                                            <lightning-button-icon icon-name="utility:delete"
-                                                                alternative-text="Delete" title="Delete" variant="bare"
-                                                                data-section="invoice" data-row-id={row.id}
-                                                                onclick={handleEstimationDelete}></lightning-button-icon>
-                                                        </td>
-                                                        <td class="estimation-desc-cell">{row.description}</td>
-                                                        <td>{row.milestone}</td>
-                                                        <td>{row.percent}</td>
-                                                        <td>{row.amount}</td>
-                                                    </tr>
-                                                </template>
-                                            </tbody>
-                                        </table>
-                                        <template for:each={estimationInvoice.footnotes} for:item="note">
-                                            <p key={note} class="invoice-footnote">{note}</p>
-                                        </template>
-                                    </div>
-                                </template>
-                                <template if:false={isInvoiceScheduleSelected}>
-                                    <template if:true={currentEstimationSection}>
-                                        <div class="protocol-grid-header">
-                                            <div class="header-left">
-                                                <h4><strong>{currentEstimationSection.title}</strong></h4>
-                                            </div>
-                                            <div class="header-right">
-                                                <button class="btn-add" data-section={currentEstimationSection.id}
-                                                    onclick={handleEstimationAdd} title="Add item"
-                                                    style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;">
-                                                    <span
-                                                        style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
-                                                    <span style="color: white; margin-left: 1.5rem;"><b>Add</b></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <table class="estimation-table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="col-actions">Actions</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">
-                                                        <div class="two-line-heading">
-                                                            <span>datosX Cost</span>
-                                                            <small>Per Unit</small>
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col">
-                                                        <div class="two-line-heading">
-                                                            <span>Price Per Unit</span>
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col">Unit</th>
-                                                    <th scope="col">QTY</th>
-                                                    <th scope="col">
-                                                        <div class="two-line-heading">
-                                                            <span>Cost (unadjusted)</span>
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col">COST</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <template for:each={currentEstimationRows} for:item="row">
-                                                    <tr key={row.id}>
-                                                        <td class="estimation-actions-cell">
-                                                            <lightning-button-icon icon-name="utility:edit"
-                                                                alternative-text="Edit" title="Edit" variant="bare"
-                                                                data-section={currentEstimationSection.id}
-                                                                data-row-id={row.id}
-                                                                onclick={handleEstimationEdit}></lightning-button-icon>
-                                                            <lightning-button-icon icon-name="utility:delete"
-                                                                alternative-text="Delete" title="Delete" variant="bare"
-                                                                data-section={currentEstimationSection.id}
-                                                                data-row-id={row.id}
-                                                                onclick={handleEstimationDelete}></lightning-button-icon>
-                                                        </td>
-                                                        <td class="estimation-desc-cell">{row.item}</td>
-                                                        <td>{row.dxCostPerUnit}</td>
-                                                        <td>{row.pricePerUnit}</td>
-                                                        <td>{row.unit}</td>
-                                                        <td>{row.qty}</td>
-                                                        <td>{row.costUnadjusted}</td>
-                                                        <td>{row.totalCost}</td>
-                                                    </tr>
-                                                </template>
-                                                <tr class="estimation-subtotal">
-                                                    <td colspan="6">SUBTOTAL</td>
-                                                    <td>{currentEstimationSubtotal.costUnadjusted}</td>
-                                                    <td>{currentEstimationSubtotal.totalCost}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <p class="estimation-note">{estimationNote}</p>
-                                    </template>
-                                    <template if:false={currentEstimationSection}>
-                                        <div class="estimation-empty">No estimation data available.</div>
-                                    </template>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </template>
-
         <template if:true={isRequirements}>
             <section role="tabpanel" aria-expanded="true"
                 class="record-home-requirements record-home-tab tabs__content active uiTab">
@@ -784,291 +568,6 @@
             </section>
         </template>
         
-        <template if:true={isDocuments}>
-            <section role="tabpanel" aria-expanded="true"
-                class="record-home-documents record-home-tab tabs__content active uiTab">
-                <div class="slds-card slds-m-top_small">
-                    <div class="slds-card__body slds-card__body_inner">
-                        <c-documents-view project={project}></c-documents-view>
-                    </div>
-                </div>
-            </section>
-        </template>
-        <!-- HS Matches & Messaging tab content -->
-        <template if:true={isHSMatches}>
-            <section role="tabpanel" aria-expanded="true"
-                class="record-home-hs-matches record-home-tab tabs__content active uiTab">
-                <div class="slds-card slds-m-top_small hs-matches-card">
-                    <div class="slds-card__body slds-card__body_inner">
-                        <div class="hs-matches-wrapper">
-                            <div class="hs-three-columns">
-                                <div class="hs-left-panel">
-                                    <!-- Left panel intentionally left minimal (Top matches can render here) -->
-                                    <div class="hs-panel-card">
-                                        <div class="hs-panel-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                            <h5 class="fw-bold mb-0">Top 5 HS Matches</h5>
-                                            
-                                        </div>
-                                        <div class="hs-panel-body">
-                                            <template for:each={topFiveHSMatches} for:item="hs">
-                                                <div key={hs.id} class="hs-match-wrapper" 
-                                                     style="border-bottom: 1px solid #e0e0e0; padding: 12px 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background-color 0.2s;"
-                                                     onclick={handleHSSelect}
-                                                     data-id={hs.id}>
-                                                    <!-- Single checkbox on the left -->
-                                                    <div style="flex-shrink: 0;">
-                                                        <input type="checkbox" 
-                                                               class="hs-checkbox" 
-                                                               checked={hs.isSelected}
-                                                               data-id={hs.id}
-                                                               onchange={handleSelectCheckbox}
-                                                               onclick={stopPropagation}
-                                                               style="width: 20px; height: 20px; cursor: pointer; accent-color: #28a745; margin: 0;" />
-                                                    </div>
-                                                    
-                                                    <!-- Avatar -->
-                                                    <div style="flex-shrink: 0;">
-                                                        <img src={hs.avatar} alt={hs.name} 
-                                                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                                    </div>
-                                                    
-                                                    <!-- Name and Status -->
-                                                    <div style="flex-grow: 1; min-width: 0;">
-                                                        <h6 style="font-size: 14px; font-weight: 600; margin: 0 0 4px 0; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                            {hs.name}
-                                                        </h6>
-                                                        <template if:true={hs.isSelected}>
-                                                            <template if:false={hs.isApproved}>
-                                                                <template if:false={hs.isDXApproved}>
-                                                                    <p style="font-size: 12px; color: #ff9800; margin: 0; font-style: italic;">
-                                                                        Waiting for HS Response...
-                                                                    </p>
-                                                                </template>
-                                                            </template>
-                                                            <template if:true={hs.isApproved}>
-                                                                <template if:false={hs.isDXApproved}>
-                                                                    <p style="font-size: 12px; color: #28a745; margin: 0; font-weight: 600;">
-                                                                        HS Interested
-                                                                    </p>
-                                                                </template>
-                                                            </template>
-                                                            <template if:true={hs.isDXApproved}>
-                                                                <p style="font-size: 12px; color: #0176d3; margin: 0; font-weight: 600;">
-                                                                    DX Approved
-                                                                </p>
-                                                            </template>
-                                                        </template>
-                                                    </div>
-                                                    
-                                                    <!-- Score with optional thumbs up -->
-                                                    <div style="flex-shrink: 0; display: flex; align-items: center; gap: 6px;">
-                                                        <span style="background-color: #28a745; color: white; padding: 4px 10px; border-radius: 12px; font-weight: 600; font-size: 13px;">
-                                                            {hs.matchPercentage}%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </div>
-
-                                        <div style="display: flex; gap: 8px; padding-bottom: 10px;padding-right:5px; justify-content: flex-end;">
-                                                <button style="background-color: #c5cbd1; color: rgb(15, 15, 15); border: none; padding: 10px 20px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer;">
-                                                    Send to HS
-                                                </button>
-                                                <button style="background-color: #0176d3; color: white; border: none; padding: 10px 20px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer;">
-                                                    DX Approved
-                                                </button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="hs-middle-panel">
-                                    <div class="hs-panel-card">
-                                        <div class="hs-panel-header">
-                                            <h5 class="fw-bold mb-0">Capabilities: {selectedHSName}</h5>
-                                        </div>
-                                        <div class="hs-panel-body capabilities-scroll">
-                                            <!-- New expandable grid layout: each group renders as a single summary row
-                                                             with a toggle in the first column. When opened the group's items
-                                                             are shown as rows beneath the group (uses existing group.isOpen
-                                                             and toggleDropdown handler). -->
-                                            <div class="table-wrapper capability-table-wrapper">
-                                                <table
-                                                    class="slds-table slds-table_bordered slds-table_cell-buffer capability-table">
-                                                    <thead>
-                                                        <tr class="slds-line-height_reset">
-                                                            <th scope="col" style="width: 250px;">
-                                                                <div class="slds-truncate">Capabilty</div>
-                                                            </th>
-                                                            <!-- <th scope="col">
-                                                                <div class="slds-truncate">Capability</div>
-                                                            </th> -->
-                                                            <th scope="col" style="width: 105px;">
-                                                                <div class="slds-truncate">Project Needs</div>
-                                                            </th>
-                                                            <th scope="col" style="width: 120px;">
-                                                                <div class="slds-truncate">HS Capabilities</div>
-                                                            </th>
-                                                            <th scope="col" style="width: 59px;">
-                                                                <div class="slds-truncate">Weight</div>
-                                                            </th>
-                                                            <th scope="col" style="    text-align: center;">
-                                                                <div class="slds-truncate">Score</div>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <template for:each={capabilityGroups} for:item="group">
-                                                            <!-- Summary row for group -->
-                                                            <tr key={group.id} class="capability-group-row">
-                                                                <td>
-                                                                    <button class="group-toggle btn-reset"
-                                                                        aria-expanded={group.isOpen} data-id={group.id}
-                                                                        onclick={toggleDropdown}>
-                                                                        <template if:true={group.isOpen}><span
-                                                                                class="toggle-icon">▾</span></template>
-                                                                        <template if:false={group.isOpen}><span
-                                                                                class="toggle-icon">▸</span></template>
-                                                                        <span class="group-title">{group.title}</span>
-                                                                    </button>
-                                                                </td>
-                                                                <!-- <td></td> -->
-                                                                <td style="text-align: center;">
-                                                                    {group.projectNeedsCount}</td>
-                                                                <td style="text-align: center;">{group.hsCount}</td>
-                                                                <td style="text-align: center;">{group.weight}</td>
-                                                                <td style="text-align: center;">{group.score}</td>
-
-                                                            </tr>
-
-                                                            <!-- Expanded rows for group's items -->
-                                                            <template if:true={group.isOpen}>
-                                                                <template for:each={group.items} for:item="item">
-                                                                    <tr key={item.id} class="capability-item-row">
-                                                                        <!-- <td></td> -->
-                                                                        <td>{item.label}</td>
-                                                                        <td class="col-checkbox"
-                                                                            style="text-align: center;">
-                                                                            <input type="checkbox"
-                                                                                checked={item.projectNeeds}
-                                                                                class={item.projectNeeds}
-                                                                                data-both={item.projectNeeds}
-                                                                                data-hs={item.hs} />
-                                                                        </td>
-                                                                        <td class="col-checkbox"
-                                                                            style="text-align: center;">
-                                                                            <input type="checkbox" checked={item.hs}
-                                                                                class={item.hs}
-                                                                                data-both={item.projectNeeds}
-                                                                                data-hs={item.hs} />
-                                                                        </td>
-                                                                        <td style="text-align: center;">{item.weight}
-                                                                        </td>
-                                                                        <td style="text-align: center;">{item.score}
-                                                                        </td>
-                                                                    </tr>
-                                                                </template>
-                                                            </template>
-                                                        </template>
-                                                        <!-- Static total row -->
-                                                        <tr class="capability-total-row slds-text-title_bold">
-                                                            <td><strong style="font-size: 20px;">Total</strong></td>
-                                                            <td style="text-align: center;">{totalProjectNeeds}</td>
-                                                            <td style="text-align: center;">{totalHS}</td>
-
-                                                            <td style="text-align: center;">{totalWeightPercent}</td>
-                                                            <td style="text-align: center;">{totalScorePercent}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right: Messaging (like Angular DX Messages) -->
-                                <div class="hs-right-panel">
-                                    <div class="hs-panel-card chat-card">
-                                        <!-- <div class="chat-header">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <h5 class="fw-bold mb-0">Chat</h5>
-
-                                            </div>
-                                            
-                                        </div> -->
-                                        <div class="hs-panel-header">
-                                            <h5 class="fw-bold mb-0">Chat</h5>
-                                        </div>
-                                        <!-- <div style="margin-bottom: 11px;">
-                                            <div class="chat-tabs-buttons">
-                                                <button class={hsTabClass} onclick={selectHSTab}>HS</button>
-                                                <button class={sponsorTabClass} onclick={selectSponsorTab}>Sponsor</button>
-                                            </div>
-                                        </div> -->
-
-                                        <div class="chat-body">
-                                            <template for:each={currentMessages} for:item="msg">
-                                                <div key={msg.id} class={msg.chatClass}>
-                                                    <template if:true={msg.isReceived}>
-                                                        <div class="d-flex align-items-start">
-                                                            <span class="avatar me-2 flex-shrink-0">
-                                                                <img src={msg.avatar} alt="user">
-                                                            </span>
-                                                            <div>
-                                                                <div class="d-flex align-items-center mb-1">
-                                                                    <h6 class="fs-14 mb-0">{msg.sender}</h6>
-                                                                </div>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="message-box receive-message">
-                                                                        <p class="mb-0 fs-16">{msg.text}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                    <template if:true={msg.isSent}>
-                                                        <div class="d-flex align-items-start justify-content-end">
-                                                            <div>
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-end mb-1">
-                                                                    <h6 class="fs-14 fw-semibold mb-0">You</h6>
-                                                                </div>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="message-box sent-message"
-                                                                        style="background-color: #D9FDD3;">
-                                                                        <p class="mb-0 fs-16">{msg.text}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <span class="avatar ms-2 flex-shrink-0">
-                                                                <img src={msg.avatar} alt="user">
-                                                            </span>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </template>
-                                        </div>
-
-                                        <div class="chat-footer">
-                                            <div class="flex-fill">
-                                                <input type="text" style="width: 225px;" class="form-control border-0"
-                                                    placeholder="Type Something..." value={messageInput}
-                                                    onchange={handleMessageInput} />
-                                            </div>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <button class="btn btn-send" onclick={sendMessage}>
-                                                    Send
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </template>
-
         <!-- Messaging tab content -->
         <template if:true={isMessaging}>
             <section role="tabpanel" aria-expanded="true"
@@ -1247,8 +746,6 @@
                 </div>
             </section>
         </template>
-
-        <!-- Protocol tab removed -->
 
         <!-- Legal tab content -->
         <template if:true={isLegal}>
@@ -1552,7 +1049,7 @@
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Posted By</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Message</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Context</th>
-                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;text-align:center">Documents</th>
+                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Documents</th>
                                                 <th scope="col" class="slds-text-title_caps visibility-header" style="background-color: #EBEBEB;">
                                                     <div class="visibility-main-header" style="background-color: #EBEBEB; color: #666666;text-align:center">Visibility</div>
                                                     <div class="visibility-sub-headers">
@@ -1587,7 +1084,7 @@
                                                     <td data-label="Context" class="table-cell">
                                                         {msg.context}
                                                     </td>
-                                                    <td data-label="Documents" class="table-cell" style="text-align: center;">
+                                                    <td data-label="Documents" class="table-cell">
                                                         <template if:true={msg.hasDocument}>
                                                             <a href="#" class="document-view-link" onclick={handleViewDocument} data-id={msg.id}>
                                                                 View

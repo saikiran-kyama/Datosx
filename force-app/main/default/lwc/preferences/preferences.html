@@ -1,0 +1,84 @@
+<template>
+    <lightning-card>
+        <div class="slds-m-around_small">
+            <div class="table-wrapper">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr  class="slds-line-height_reset tr-grid-header">
+                            <th scope="col" class="sortable-header" data-field="name" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Subject</span>
+                                    <template if:true={isSortedBy.name}>
+                                        <lightning-icon icon-name={sortIcon} size="x-small" class="sort-icon"></lightning-icon>
+                                    </template>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="description" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Description</span>
+                                    <template if:true={isSortedBy.description}>
+                                        <lightning-icon icon-name={sortIcon} size="x-small" class="sort-icon"></lightning-icon>
+                                    </template>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="old_value" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Previous Value</span>
+                                    <template if:true={isSortedBy.old_value}>
+                                        <lightning-icon icon-name={sortIcon} size="x-small" class="sort-icon"></lightning-icon>
+                                    </template>
+                                </div>
+                            </th>
+                            <th scope="col" class="sortable-header" data-field="new_value" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>New Value</span>
+                                    <template if:true={isSortedBy.new_value}>
+                                        <lightning-icon icon-name={sortIcon} size="x-small" class="sort-icon"></lightning-icon>
+                                    </template>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate">Actions</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={preferences} for:item="item">
+                            <tr key={item.intSettingsId}>
+                                <td>
+                                    <div class="slds-truncate">{item.name}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{item.description}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate previous-value">{item.old_value}</div>
+                                </td>
+                                <td>
+                                    <lightning-input 
+                                        type="text" 
+                                        variant="label-hidden" 
+                                        value={item.old_value}
+                                        data-id={item.intSettingsId}
+                                        onchange={handleInputChange}
+                                        placeholder="Enter new value">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <button
+    class="custom-save-btn"
+    data-id={item.intSettingsId}
+    onclick={handleSave}
+    title="Save">
+    Save
+</button>
+
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </lightning-card>
+</template>
