@@ -386,4 +386,21 @@ td.status-cell {
     border-color: #706e6b;
 }
 
+/* Enquiries-specific status colors: light background + contrasting text */
+.enquiries-table td.status-cell .status-badge.status-active {
+    color: #1b5e20; /* deep green text */
+    background-color: #e6f4ea; /* very light green */
+    border-color: #1b5e20;
+}
+.enquiries-table td.status-cell .status-badge.status-inactive {
+    color: #7a1f1f; /* dark red text */
+    background-color: #fdecea; /* very light red/pink */
+    border-color: #7a1f1f;
+}
+.enquiries-table td.status-cell .status-badge.status-completed {
+    color: #5b2d6a; /* violet text */
+    background-color: #f3e9f8; /* very light violet */
+    border-color: #5b2d6a;
+}
+
 /* Requirements and HS Matches modal styles removed */

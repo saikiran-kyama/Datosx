@@ -70,7 +70,13 @@
                         </div>
                     </div>
                     <div class="slds-no-flex">
-                        <div class="action-buttons-separated">
+                        <div class="action-buttons-separated" style="display: flex; align-items: center; gap: 12px;">
+                            <lightning-input 
+                                type="search" 
+                                placeholder="Search..." 
+                                variant="label-hidden"
+                                style="width: 250px;">
+                            </lightning-input>
                             <button class="btn-filter-toggle"
                                 style="background-color: #f4f6f9; color: #16325c; border: 1px solid #d8dde6; border-radius: 4px; padding: 6px 14px;"
                                 onclick={handleFilter}>
@@ -101,12 +107,12 @@
                             <div class="filter-grid">
                                 
                                 <!-- Search Filter -->
-                                <div class="filter-item">
+                                <!-- <div class="filter-item">
                                     <div class="filter-item-header">
                                         <label class="form-label">Search</label>
                                     </div>
                                     <lightning-input type="search" placeholder="Search..." variant="label-hidden"></lightning-input>
-                                </div>
+                                </div> -->
 
                                 <!-- Status Filter -->
                                 <div class="filter-item">
@@ -420,7 +426,7 @@
         
                     <!-- Enquiries Table -->
                     <template if:true={isEnquiries}>
-                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-rounded">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-rounded enquiries-table">
                             <thead>
                                 <tr class="slds-line-height_reset" style="height: 36px;">
                                     <th scope="col" style="width: 120px; padding-top: 4px; padding-bottom: 4px;">
@@ -431,11 +437,6 @@
                                             <span>Enquiry ID</span>
                                         </div>
                                     </th>
-                                    <th scope="col" class="sortable-header" data-field="enquiryName" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>Enquiry Name</span>
-                                        </div>
-                                    </th>
                                     <th scope="col" class="sortable-header" data-field="status" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
                                         <div class="slds-truncate header-content">
                                             <span>Enquiry Status</span>
@@ -443,38 +444,37 @@
                                     </th>
                                     <th scope="col" class="sortable-header" data-field="sponsorName" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
                                         <div class="slds-truncate header-content">
-                                            <span>Sponsor</span>
+                                            <span>Sponsor Name</span>
                                         </div>
                                     </th>
-                                    <!-- Requirements and HS Matches columns removed -->
+                                    <th scope="col" class="sortable-header" data-field="projectName" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
+                                        <div class="slds-truncate header-content">
+                                            <span>Project Name</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="sortable-header" data-field="projectDetails" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
+                                        <div class="slds-truncate header-content">
+                                            <span>Project Details</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="sortable-header" data-field="projectScopingDoc" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
+                                        <div class="slds-truncate header-content">
+                                            <span>Project Scoping Doc</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="sortable-header" data-field="hsAllocated" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
+                                        <div class="slds-truncate header-content">
+                                            <span>HS Allocated</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="sortable-header" data-field="dateCreated" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
+                                        <div class="slds-truncate header-content">
+                                            <span>Date Created</span>
+                                        </div>
+                                    </th>
                                     <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
                                         <div class="slds-truncate header-content">
                                             <span>Last Updated</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="sortable-header" data-field="state" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>State</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="sortable-header" data-field="city" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>City</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="sortable-header" data-field="contact" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>Contact</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="sortable-header" data-field="email" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>Email</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="sortable-header" data-field="phone" onclick={handleSort} style="padding-top: 4px; padding-bottom: 4px;">
-                                        <div class="slds-truncate header-content">
-                                            <span>Phone</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -501,13 +501,6 @@
                                                     data-id={record.id} onclick={handleEnquiryClick}>{record.enquiryId}</a>
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="slds-truncate">
-                                                <a href="javascript:void(0);"
-                                                    style="color: #0176d3; font-weight: 600; text-decoration: none; cursor: pointer;"
-                                                    data-id={record.id} onclick={handleEnquiryClick}>{record.enquiryName}</a>
-                                            </div>
-                                        </td>
                                         <td class="status-cell">
                                             <span class={record.statusClass}>{record.status}</span>
                                         </td>
@@ -517,27 +510,28 @@
                                                 <span>{record.sponsorName}</span>
                                             </div>
                                         </td>
-                                        <!-- Requirements and HS Matches cells removed -->
+                                        <td>
+                                            <div class="slds-truncate">{record.projectName}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">{record.projectDetails}</div>
+                                        </td>
+                                            <td style="text-align:center;">
+                                                <template if:true={record.hasDocument}>
+                                                    <span style="color: #0176d3; cursor: pointer; font-weight: 600; text-align:center;">View</span>
+                                                </template>
+                                                <template if:false={record.hasDocument}>
+                                                    <span style="color: #706e6b; text-align:center;">-</span>
+                                                </template>
+                                            </td>
+                                        <td>
+                                            <div class="slds-truncate">{record.hsAllocated}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">{record.dateCreated}</div>
+                                        </td>
                                         <td>
                                             <div class="slds-truncate">{record.lastUpdated}</div>
-                                        </td>
-                                        <td>
-                                            <div class="slds-truncate">{record.state}</div>
-                                        </td>
-                                        <td>
-                                            <div class="slds-truncate">{record.city}</div>
-                                        </td>
-                                        <td>
-                                            <div class="slds-truncate name-with-avatar">
-                                                <span class="profile-avatar">{record.contactInitial}</span>
-                                                <span>{record.contact}</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="slds-truncate">{record.email}</div>
-                                        </td>
-                                        <td>
-                                            <div class="slds-truncate">{record.phone}</div>
                                         </td>
                                     </tr>
                                 </template>

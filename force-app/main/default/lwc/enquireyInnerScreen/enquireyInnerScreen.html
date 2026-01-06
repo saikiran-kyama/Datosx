@@ -6,7 +6,7 @@
                 
                 <div class="slds-media__body">
                     <h1>
-                        <div class="entityNameTitle slds-line-height--reset">Enquiry ID: {project.projectId}</div>
+                        <div class="entityNameTitle slds-line-height--reset">Project ID: {project.projectId}</div>
                         <span
                             class="slds-page-header__title slds-m-right--small slds-align-middle slds-line-clamp clip-text">{project.projectId}</span>
                     </h1>
@@ -22,14 +22,15 @@
             <div class="slds-grid slds-page-header__detail-row equal-space"
                 style="width: 107%;     background-color: #fffce4;">
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Enquiry Name</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        {project.projectName}</p>
-                </div>
-                <div class="slds-page-header__detail-block">
                     <p class="slds-text-title slds-truncate">Enquiry Status</p>
                     <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
-                        {project.status}</p>
+                        <span class={project.statusClass}>{project.status}</span>
+                    </p>
+                </div>
+                <div class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate">Project Name</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        {project.projectName}</p>
                 </div>
                 <div class="slds-page-header__detail-block">
                     <p class="slds-text-title slds-truncate">Sponsor Name</p>
@@ -37,27 +38,16 @@
                         {project.sponsorName}</p>
                 </div>
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">HS Name</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">Health System
-                        A</p>
+                    <p class="slds-text-title slds-truncate">Date Created</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        2025-10-01
+</p>
                 </div>
                 <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Start Date</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">2025-10-01
-                    </p>
-                </div>
-                <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Due Date</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">2026-03-31
-                    </p>
-                </div>
-                <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">ETA</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">Q1 2026</p>
-                </div>
-                <div class="slds-page-header__detail-block">
-                    <p class="slds-text-title slds-truncate">Completion</p>
-                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">42%</p>
+                    <p class="slds-text-title slds-truncate">Last Updated</p>
+                    <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
+                        2026-03-31
+</p>
                 </div>
             </div>
         </div>
@@ -148,7 +138,7 @@
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
                                         <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Enquiry Details</div>
+                                            Project Details</div>
                                         <div style="padding:10px;     margin-top: -10px;">
                                             <table style="width:100%;border-collapse:collapse;">
                                                 <thead>
@@ -161,7 +151,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiry ID</td>
+                                                            Project ID</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.projectId}</span>
@@ -174,7 +164,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiry Status</td>
+                                                            Project Status</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.status}</span>
@@ -187,7 +177,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiry Name</td>
+                                                            Project Name</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.projectName}</span>
@@ -200,7 +190,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Publish Enquiry</td>
+                                                            Publish Project</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span><input type="checkbox" disabled
@@ -241,7 +231,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiry Description</td>
+                                                            Project Description</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.description}</span>
@@ -254,7 +244,7 @@
                                                     <tr>
                                                         <td
                                                             style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiry Document Url</td>
+                                                            Project Document Url</td>
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.documentUrl}</span>
@@ -312,7 +302,7 @@
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
                                         <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Enquiry Scoping Questionnaire</div>
+                                            Project Scoping Questionnaire</div>
                                         <div style="padding:10px;     background: rgb(230, 247, 255);">
                                             <table
                                                 style="width:100%;border-collapse:collapse;background:#e6f7ff;     margin-top: -10px;">
@@ -484,6 +474,7 @@
                                             </table>
                                         </div>
                                     </div>
+            
                                 </div>
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
@@ -586,7 +577,7 @@
         <template if:true={isEstimation}>
             <section role="tabpanel" aria-expanded="true"
                 class="record-home-estimation record-home-tab tabs__content active uiTab">
-                <div class="slds-card slds-m-top_small estimation-card">
+                <div class="slds-card slds-m-top_small">
                     <div class="slds-card__body slds-card__body_inner">
                         <div class="protocol-container estimation-layout">
                             <div class="protocol-left">
@@ -880,10 +871,10 @@
                                         </div>
 
                                         <div style="display: flex; gap: 8px; padding-bottom: 10px;padding-right:5px; justify-content: flex-end;">
-                                                <button style="background-color: #c5cbd1; color: rgb(15, 15, 15); border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                                <button style="background-color: #c5cbd1; color: rgb(15, 15, 15); border: none; padding: 10px 20px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer;">
                                                     Send to HS
                                                 </button>
-                                                <button style="background-color: #0176d3; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                                <button style="background-color: #0176d3; color: white; border: none; padding: 10px 20px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer;">
                                                     DX Approved
                                                 </button>
                                         </div>
@@ -1561,7 +1552,7 @@
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Posted By</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Message</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Context</th>
-                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Documents</th>
+                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;text-align:center">Documents</th>
                                                 <th scope="col" class="slds-text-title_caps visibility-header" style="background-color: #EBEBEB;">
                                                     <div class="visibility-main-header" style="background-color: #EBEBEB; color: #666666;text-align:center">Visibility</div>
                                                     <div class="visibility-sub-headers">
@@ -1596,7 +1587,7 @@
                                                     <td data-label="Context" class="table-cell">
                                                         {msg.context}
                                                     </td>
-                                                    <td data-label="Documents" class="table-cell">
+                                                    <td data-label="Documents" class="table-cell" style="text-align: center;">
                                                         <template if:true={msg.hasDocument}>
                                                             <a href="#" class="document-view-link" onclick={handleViewDocument} data-id={msg.id}>
                                                                 View

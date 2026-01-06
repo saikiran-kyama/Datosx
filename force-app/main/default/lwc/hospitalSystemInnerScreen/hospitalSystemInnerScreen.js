@@ -543,6 +543,20 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         this.dispatchEvent(new CustomEvent('back'));
     }
 
+    // Profile tab - Add Contact button handler
+    handleAddContact() {
+        // Placeholder for add contact functionality
+        console.log('Add Contact clicked');
+        // You can dispatch a custom event or open a modal here
+    }
+
+    // Profile tab - Edit DX Team button handler
+    handleEditDxTeam() {
+        // Placeholder for edit DX team functionality
+        console.log('Edit DX Team clicked');
+        // You can dispatch a custom event or open a modal here
+    }
+
     // Project detail navigation
     handleProjectClick(event) {
         const projectId = event.currentTarget.dataset.id;

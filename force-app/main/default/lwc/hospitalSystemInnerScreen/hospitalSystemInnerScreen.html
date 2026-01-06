@@ -144,9 +144,14 @@
                                 <!-- HS Details Card -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="profile-card">
-                                        <div class="profile-card-header">
-                                            <lightning-icon icon-name="standard:record" size="small" class="profile-card-icon"></lightning-icon>
-                                            <span class="profile-card-title">HS Details</span>
+                                        <div class="profile-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <lightning-icon icon-name="standard:record" size="small" class="profile-card-icon"></lightning-icon>
+                                                <span class="profile-card-title">HS Details</span>
+                                            </div>
+                                            <button style="background-color: #0176d3; color: white; border: none; border-radius: 4px; padding: 6px 12px; font-size: 0.875rem; cursor: pointer; white-space: nowrap;">
+                                                Send Intake Questionnaire
+                                            </button>
                                         </div>
                                         <div class="profile-card-body">
                                             <!-- Row 1: HS ID -->
@@ -154,9 +159,7 @@
                                                 <div class="profile-field-label">HS ID</div>
                                                 <div class="profile-field-value">
                                                     <span>{healthSystem.hsId}</span>
-                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                        data-field="hsId" data-section="overview" class="profile-edit-icon"></lightning-button-icon>
+                                                    
                                                 </div>
                                             </div>
                                             <!-- Row 2: HS Name -->
@@ -232,7 +235,7 @@
                                             <div class="contact-person-header">
                                                 <div class="contact-person-info">
                                                     <span class="contact-person-name">{healthSystem.contact}</span>
-                                                    <span class="contact-person-role">Medical Director</span>
+                                                    
                                                 </div>
                                                 <div class="contact-person-actions">
                                                     <lightning-button-icon icon-name="utility:edit" size="x-small"
@@ -245,7 +248,7 @@
                                             <!-- Contact Details -->
                                             <div class="contact-detail-row">
                                                 <lightning-icon icon-name="utility:company" size="xx-small" class="contact-icon"></lightning-icon>
-                                                <span>Medical Director</span>
+                                                <span>Pimary Contact</span>
                                             </div>
                                             <div class="contact-detail-row">
                                                 <lightning-icon icon-name="utility:email" size="xx-small" class="contact-icon"></lightning-icon>
@@ -264,7 +267,7 @@
                                     <div class="profile-card">
                                         <div class="profile-card-header">
                                             <lightning-icon icon-name="standard:groups" size="small" class="profile-card-icon"></lightning-icon>
-                                            <span class="profile-card-title">DX Team</span>
+                                            <span class="profile-card-title">CVP Team</span>
                                             <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                 variant="bare" alternative-text="Edit DX Team" onclick={handleEditDxTeam}
                                                 class="dx-team-edit-btn"></lightning-button-icon>
@@ -275,7 +278,7 @@
                                             <!-- Coordinator Profile -->
                                             <div class="dx-team-profile">
                                                 <div class="dx-team-avatar">
-                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Coordinator Avatar" />
+                                                    <img src="https://orgfarm-4f811fcf7a-dev-ed.develop.lightning.force.com/resource/1766053176000/avatars/2.svg.jpg" alt="Coordinator Avatar" />
                                                 </div>
                                                 <div class="dx-team-info">
                                                     <span class="dx-team-name">James Mitchell</span>
@@ -287,276 +290,6 @@
                                                 <lightning-icon icon-name="utility:call" size="xx-small" class="dx-team-icon"></lightning-icon>
                                                 <span>+1 415-555-0208</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-            
-                                <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px;">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Project Scoping Questionnaire</div>
-                                        <div style="padding:10px; background: rgb(230, 247, 255);">
-                                            <table
-                                                style="width:100%;border-collapse:collapse;background:#e6f7ff; margin-top: -10px;">
-                                                <thead>
-                                                    <!-- <tr>
-                                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
-                                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
-                                                                </tr> -->
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Trial Details</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Phase II clinical trial evaluating retinal
-                                                                biomarkers</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="trialDetails"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Planned Site Count</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>12</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="plannedSiteCount"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Primary study objective</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Evaluate safety and efficacy of retinal AI
-                                                                assessment</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="primaryObjective"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Information Type</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Clinical Imaging</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="informationType"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Objectives (Secondary/Tertiary)</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Secondary: biomarker correlation; Tertiary: longitudinal
-                                                                progression</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="secondaryObjectives"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Statistical Analysis Required?</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span><input type="checkbox" disabled checked /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="statisticalAnalysis"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Population Criteria</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Adults 50-85 with early Alzheimer's diagnosis</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="populationCriteria"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Expected Timeline</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Q3 2026 - Q2 2027</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="expectedTimeline"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Exclusions</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Concurrent severe ocular disease or uncontrolled
-                                                                diabetes</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="studyExclusions"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Is Health System Chosen?</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span><input type="checkbox" disabled /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="healthSystemChosen"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Participant Enrollment Target</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>200</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="enrollmentTarget"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Submitted by</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Aleksandra Fornal</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Document/Agreement Status</div>
-                                        <div style="padding:10px;background:#fffce4;">
-                                            <table style="width:100%;border-collapse:collapse;    margin-top: -10px;">
-                                                <thead>
-                                                    <!-- <tr>
-                                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
-                                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
-                                                                </tr> -->
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Planning Overview</td>
-                                                        <td class="value-cell">
-                                                            <span>Initial planning completed; milestones and resource
-                                                                allocation defined.</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="planningOverview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="
-                    padding:8px 0;
-                    border-top:1px solid #eee;
-                    color:#333;
-                    font-weight:600;
-                ">
-                                                            <span style="margin-right:10px;     display: block;">Project
-                                                                Scoping</span>
-                                                            <span>Two-pager</span>
-                                                        </td>
-            
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Datosx Approved</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="twoPager"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="
-                    padding:8px 0;
-                    border-top:1px solid #eee;
-                    color:#333;
-                    font-weight:600;
-                ">
-                                                            <span style="margin-right:10px;     display: block;">Project
-                                                                Scoping</span>
-                                                            <span>Two-pager Document</span>
-                                                        </td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span style="color:#01b7f2">View Document</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="twoPager"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Created By</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Last Modified By</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </div>
