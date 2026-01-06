@@ -4,6 +4,11 @@ import AVATARS from '@salesforce/resourceUrl/avatars';
 export default class Sponsers extends LightningElement {
     // View state
     showDetail = false;
+    selectedProjectId = '';
+    selectedProject = null;
+    showAddModal = false;
+    showEditModal = false;
+    editRecordId = '';
     selectedSponsorId = '';
     selectedSponsor = null;
     
@@ -71,6 +76,139 @@ export default class Sponsers extends LightningElement {
         { label: 'Mumbai', value: 'Mumbai', checked: false },
         { label: 'Bangalore', value: 'Bangalore', checked: false }
     ];
+
+    // Add/Edit form fields
+    formSponsorName = '';
+    formState = '';
+    formCity = '';
+    formContact = '';
+    formEmail = '';
+    formPhone = '';
+    formStatus = 'Active';
+
+    statusOptionsList = [
+        { label: 'Active', value: 'Active' },
+        { label: 'Inactive', value: 'Inactive' }
+    ];
+
+    // Modal-specific searchable single-select dropdown state
+    formStateDropdownOpen = false;
+    formCityDropdownOpen = false;
+    formStateSearch = '';
+    formCitySearch = '';
+
+    get formStateDropdownClass() { return this.formStateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formCityDropdownClass() { return this.formCityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formFilteredStateOptions() { return this.formStateSearch ? this.stateOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.formStateSearch.toLowerCase())) : this.stateOptionsBase; }
+    get formFilteredCityOptions() { return this.formCitySearch ? this.cityOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.formCitySearch.toLowerCase())) : this.cityOptionsBase; }
+    get formStateDisplay() { return this.formState || 'Select State'; }
+    get formCityDisplay() { return this.formCity || 'Select City'; }
+
+    toggleFormStateDropdown() { this.formStateDropdownOpen = !this.formStateDropdownOpen; if (this.formStateDropdownOpen) this.formCityDropdownOpen = false; }
+    toggleFormCityDropdown() { this.formCityDropdownOpen = !this.formCityDropdownOpen; if (this.formCityDropdownOpen) this.formStateDropdownOpen = false; }
+    handleFormStateSearchInput(event) { this.formStateSearch = event.target.value; }
+    handleFormCitySearchInput(event) { this.formCitySearch = event.target.value; }
+    selectFormState(event) { const val = event.currentTarget.dataset.value; if (val) { this.formState = val; } this.formStateDropdownOpen = false; }
+    selectFormCity(event) { const val = event.currentTarget.dataset.value; if (val) { this.formCity = val; } this.formCityDropdownOpen = false; }
+
+    openAddModal() {
+        this.editRecordId = '';
+        this.formSponsorName = '';
+        this.formState = '';
+        this.formCity = '';
+        this.formContact = '';
+        this.formEmail = '';
+        this.formPhone = '';
+        this.formStatus = 'Active';
+        this.showAddModal = true;
+    }
+
+    closeAddModal() { this.showAddModal = false; }
+
+    openEditModal() { this.showEditModal = true; }
+    closeEditModal() { this.showEditModal = false; }
+
+    handleInputChange(event) {
+        const { name, value } = event.target;
+        if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+            this[name] = value;
+        }
+    }
+
+    handleEdit(event) {
+        const id = event.currentTarget.dataset.id;
+        if (!id) return;
+        const rec = this.data.find(r => r.id === id) || this.filteredData.find(r => r.id === id);
+        if (!rec) return;
+        this.editRecordId = id;
+        this.formSponsorName = rec.sponsorName || '';
+        this.formState = rec.state || '';
+        this.formCity = rec.city || '';
+        this.formContact = rec.contact || '';
+        this.formEmail = rec.email || '';
+        this.formPhone = rec.phone || '';
+        this.formStatus = rec.status === 'Inactive' || rec.status === 'Active' ? rec.status : 'Active';
+        this.openEditModal();
+    }
+
+    saveEdit() {
+        if (!this.editRecordId) return this.closeEditModal();
+        const idx = this.data.findIndex(r => r.id === this.editRecordId);
+        if (idx === -1) return this.closeEditModal();
+        const updated = { ...this.data[idx] };
+        updated.sponsorName = this.formSponsorName;
+        updated.state = this.formState;
+        updated.city = this.formCity;
+        updated.contact = this.formContact;
+        updated.email = this.formEmail;
+        updated.phone = this.formPhone;
+        updated.status = this.formStatus;
+        updated.statusClass = this.computeStatusClass(updated.status);
+        updated.lastUpdated = new Date().toISOString().slice(0,10);
+        const contactName = updated.contact || '';
+        updated.contactInitials = contactName.split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        updated.ownerPhoto = '';
+        updated.sponsorInitials = (updated.sponsorName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        updated.sponsorPhoto = '';
+        this.data = [...this.data.slice(0, idx), updated, ...this.data.slice(idx + 1)];
+        this.closeEditModal();
+    }
+
+    saveAdd() {
+        const id = `sp-${Date.now()}`;
+        const sponsorInitials = (this.formSponsorName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        const contactInitials = (this.formContact || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        const newRec = {
+            id,
+            sponsorId: id.toUpperCase(),
+            sponsorName: this.formSponsorName,
+            status: this.formStatus,
+            projects: 0,
+            enquiries: 0,
+            messages: 0,
+            state: this.formState,
+            city: this.formCity,
+            contact: this.formContact,
+            ownerPhoto: '',
+            contactInitials,
+            sponsorPhoto: '',
+            sponsorInitials,
+            email: this.formEmail,
+            phone: this.formPhone,
+            lastUpdated: new Date().toISOString().slice(0,10),
+            statusClass: this.computeStatusClass(this.formStatus)
+        };
+        this.data = [newRec, ...this.data];
+        this.closeAddModal();
+    }
+
+    computeStatusClass(status) {
+        let statusClass = 'badge-soft-info border border-info';
+        if (status === 'Active') statusClass = 'badge-soft-success border border-success';
+        else if (status === 'Inactive') statusClass = 'badge-soft-danger border border-danger';
+        else if (status === 'Onboarding') statusClass = 'badge-soft-info border border-info';
+        return statusClass;
+    }
 
     // reuse same option set for mNDA & LOI (per user request)
     mndaOptions = [
