@@ -3,7 +3,7 @@ import AVATARS from '@salesforce/resourceUrl/avatars';
 
 export default class SponserInnerScreen extends LightningElement {
     @api sponsor;
-    currentTab = 'Overview';
+    currentTab = 'Details';
     
     // Study tab image
     studyImage = `${AVATARS}/pageUnderConstruction.jpeg`;
@@ -312,44 +312,20 @@ export default class SponserInnerScreen extends LightningElement {
     }
 
 
-    get isOverview() {
-        return this.currentTab === 'Overview';
-    }
-
     get isDetails() {
         return this.currentTab === 'Details';
-    }
-
-    get isDocuments() {
-        return this.currentTab === 'Documents';
     }
 
     get isRequirements() {
       return this.currentTab === 'Requirements';
     }
 
-    get isProtocol() {
-        return this.currentTab === 'Protocol';
-    }
-
-    get isEstimation() {
-      return this.currentTab === 'estimation';
-    }
-
     get isLegal() {
         return this.currentTab === 'Legal';
     }
 
-    get isHSMatches() {
-        return this.currentTab === 'HS-Matches';
-    }
-
     get isMessaging() {
         return this.currentTab === 'Messaging';
-    }
-
-    get isStudy() {
-        return this.currentTab === 'Study';
     }
 
     get isNotes() {
