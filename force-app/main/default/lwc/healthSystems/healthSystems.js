@@ -6,6 +6,9 @@ export default class HealthSystems extends LightningElement {
     showDetail = false;
     selectedProjectId = '';
     selectedProject = null;
+    showAddModal = false;
+    showEditModal = false;
+    editRecordId = '';
     
     // Filters
     showFilters = false;
@@ -93,6 +96,40 @@ export default class HealthSystems extends LightningElement {
         { label: 'Pending for signatures', value: 'Pending for signatures', checked: false },
         { label: 'Signed', value: 'Signed', checked: false }
     ];
+
+    // Add/Edit form fields
+    formHsName = '';
+    formState = '';
+    formCity = '';
+    formContact = '';
+    formEmail = '';
+    formPhone = '';
+    formStatus = 'Active';
+
+    statusOptionsList = [
+        { label: 'Active', value: 'Active' },
+        { label: 'Inactive', value: 'Inactive' }
+    ];
+    // Modal-specific searchable single-select dropdown state
+    formStateDropdownOpen = false;
+    formCityDropdownOpen = false;
+    formStateSearch = '';
+    formCitySearch = '';
+
+    get formStateDropdownClass() { return this.formStateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formCityDropdownClass() { return this.formCityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formFilteredStateOptions() { return this.formStateSearch ? this.stateOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.formStateSearch.toLowerCase())) : this.stateOptionsBase; }
+    get formFilteredCityOptions() { return this.formCitySearch ? this.cityOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.formCitySearch.toLowerCase())) : this.cityOptionsBase; }
+
+    get formStateDisplay() { return this.formState || 'Select State'; }
+    get formCityDisplay() { return this.formCity || 'Select City'; }
+
+    toggleFormStateDropdown() { this.formStateDropdownOpen = !this.formStateDropdownOpen; if (this.formStateDropdownOpen) this.formCityDropdownOpen = false; }
+    toggleFormCityDropdown() { this.formCityDropdownOpen = !this.formCityDropdownOpen; if (this.formCityDropdownOpen) this.formStateDropdownOpen = false; }
+    handleFormStateSearchInput(event) { this.formStateSearch = event.target.value; }
+    handleFormCitySearchInput(event) { this.formCitySearch = event.target.value; }
+    selectFormState(event) { const val = event.currentTarget.dataset.value; if (val) { this.formState = val; } this.formStateDropdownOpen = false; }
+    selectFormCity(event) { const val = event.currentTarget.dataset.value; if (val) { this.formCity = val; } this.formCityDropdownOpen = false; }
     get statusDropdownClass() { return this.statusDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
     get stateDropdownClass() { return this.stateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
     get cityDropdownClass() { return this.cityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
@@ -115,6 +152,8 @@ export default class HealthSystems extends LightningElement {
     }
     get filteredStateOptions() { return this.stateSearchTerm ? this.stateOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.stateSearchTerm.toLowerCase())) : this.stateOptionsBase; }
     get filteredCityOptions() { return this.citySearchTerm ? this.cityOptionsBase.filter(opt => opt.label.toLowerCase().includes(this.citySearchTerm.toLowerCase())) : this.cityOptionsBase; }
+    get stateOptionsSimple() { return this.stateOptionsBase.map(o => ({ label: o.label, value: o.value })); }
+    get cityOptionsSimple() { return this.cityOptionsBase.map(o => ({ label: o.label, value: o.value })); }
     get statusDisplayText() { const count = this.statusOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
     get stateDisplayText() { const count = this.stateOptionsBase.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
     get cityDisplayText() { const count = this.cityOptionsBase.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
@@ -123,6 +162,31 @@ export default class HealthSystems extends LightningElement {
     get msaDisplayText() { const count = this.msaOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
     toggleFilters() { this.showFilters = !this.showFilters; }
     closeFilter() { this.showFilters = false; this.closeOtherDropdowns(''); }
+
+    // Modal helpers
+    openAddModal() {
+        this.editRecordId = '';
+        this.formHsName = '';
+        this.formState = '';
+        this.formCity = '';
+        this.formContact = '';
+        this.formEmail = '';
+        this.formPhone = '';
+        this.formStatus = 'Active';
+        this.showAddModal = true;
+    }
+
+    closeAddModal() { this.showAddModal = false; }
+
+    openEditModal() { this.showEditModal = true; }
+    closeEditModal() { this.showEditModal = false; }
+
+    handleInputChange(event) {
+        const { name, value } = event.target;
+        if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+            this[name] = value;
+        }
+    }
     // Handler for Grid Columns button click. Dispatches an event so a parent can react or implement toggling.
     handleGridColumnsClick() {
         // Placeholder: dispatch an event so other components or the page can show a columns modal/selector
@@ -278,6 +342,87 @@ export default class HealthSystems extends LightningElement {
         this.pageIndex = 0;
     }
 
+    computeStatusClass(status) {
+        let statusClass = 'badge-soft-info border border-info';
+        if (status === 'Active') statusClass = 'badge-soft-success border border-success';
+        else if (status === 'Inactive') statusClass = 'badge-soft-danger border border-danger';
+        else if (status === 'Onboarding') statusClass = 'badge-soft-info border border-info';
+        return statusClass;
+    }
+
+    handleEdit(event) {
+        const id = event.currentTarget.dataset.id;
+        if (!id) return;
+        const rec = this.data.find(r => r.id === id) || this.filteredData.find(r => r.id === id);
+        if (!rec) return;
+        this.editRecordId = id;
+        this.formHsName = rec.hsName || '';
+        this.formState = rec.state || '';
+        this.formCity = rec.city || '';
+        this.formContact = rec.contact || '';
+        this.formEmail = rec.email || '';
+        this.formPhone = rec.phone || '';
+        this.formStatus = rec.status === 'Inactive' || rec.status === 'Active' ? rec.status : 'Active';
+        this.openEditModal();
+    }
+
+    saveEdit() {
+        if (!this.editRecordId) return this.closeEditModal();
+        const idx = this.data.findIndex(r => r.id === this.editRecordId);
+        if (idx === -1) return this.closeEditModal();
+        const updated = { ...this.data[idx] };
+        updated.hsName = this.formHsName;
+        updated.state = this.formState;
+        updated.city = this.formCity;
+        updated.contact = this.formContact;
+        updated.email = this.formEmail;
+        updated.phone = this.formPhone;
+        updated.status = this.formStatus;
+        updated.statusClass = this.computeStatusClass(updated.status);
+        updated.lastUpdated = new Date().toISOString().slice(0,10);
+        // recompute initials and clear photos so initials show
+        const name = updated.contact || '';
+        const initials = name.split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        const hsInitials = (updated.hsName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        updated.contactInitials = initials;
+        updated.contactPhoto = '';
+        updated.healthInitials = hsInitials;
+        updated.healthPhoto = '';
+
+        this.data = [...this.data.slice(0, idx), updated, ...this.data.slice(idx + 1)];
+        this.closeEditModal();
+    }
+
+    saveAdd() {
+        const id = `hs-${Date.now()}`;
+        const hsInitials = (this.formHsName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        const contactInitials = (this.formContact || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+        const newRec = {
+            id,
+            hsId: id.toUpperCase(),
+            hsName: this.formHsName,
+            status: this.formStatus,
+            projects: 0,
+            matches: 0,
+            docs: 0,
+            legal: 0,
+            messages: 0,
+            state: this.formState,
+            city: this.formCity,
+            contact: this.formContact,
+            contactPhoto: '',
+            contactInitials,
+            healthPhoto: '',
+            healthInitials: hsInitials,
+            email: this.formEmail,
+            phone: this.formPhone,
+            lastUpdated: new Date().toISOString().slice(0,10),
+            statusClass: this.computeStatusClass(this.formStatus)
+        };
+        this.data = [newRec, ...this.data];
+        this.closeAddModal();
+    }
+
     goToLast() {
         this.pageIndex = Math.max(0, this.totalPages - 1);
     }
@@ -405,15 +550,7 @@ export default class HealthSystems extends LightningElement {
         this.selectedProjectId = '';
     }
 
-    handleEdit(event) {
-        const id = event.currentTarget.dataset.id;
-        // Dispatch edit event for parent to handle
-        this.dispatchEvent(new CustomEvent('edit', {
-            detail: { recordId: id, source: 'healthSystems' },
-            bubbles: true,
-            composed: true
-        }));
-    }
+    // handleEdit defined earlier (populates form and opens modal)
 
     handleDelete(event) {
         const id = event.currentTarget.dataset.id;

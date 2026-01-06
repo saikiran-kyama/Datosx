@@ -1,3 +1,502 @@
 <template>
-    
+    <lightning-card>
+        <div class="slds-m-around_small slds-grid slds-grid_align-end" style="gap: 0.5rem;">
+            <div class="slds-col" style="width: 15%;">
+                <lightning-input type="search" value={searchKey} onchange={handleSearchChange} placeholder="Search" class="search-bar">
+                </lightning-input>
+            </div>
+            <div class="slds-col slds-align-bottom right-stack">
+                <div class="icon-btn" title="Download CSV" aria-label="Download CSV">
+                    <lightning-icon icon-name="utility:download" size="x-small"></lightning-icon>
+                </div>
+                <div class="icon-btn" title="Grid Columns" aria-label="Grid Columns">
+                    <lightning-icon icon-name="utility:table" size="x-small"></lightning-icon>
+                </div>
+                <div class="view-toggle" role="group" aria-label="View selector">
+                    <lightning-button 
+                        label={viewButtonLabel}
+                        icon-name={viewButtonIcon}
+                        onclick={toggleView}
+                        variant="brand"
+                        class="control-button">
+                    </lightning-button>
+                </div>
+                <button class="btn-filter-toggle" onclick={toggleFilters} title="Filter">
+                    <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>
+                    <span style="margin-left:6px;">Filter</span>
+                </button>
+                <button class="btn-filter-toggle" style="background-color: #2e37a4 !important; color: white !important; border-radius: 4px; padding: 6px 14px; position: relative;" title="Add To Do" onclick={openAddModal}>
+                    <span style="color: white; font-size: 1.5rem; position: absolute; top: 41%; left: 25%; transform: translate(-50%, -50%);"><b>+</b></span>
+                    <span style="color: white; margin-left: 1.5rem;"><b>Add To Do</b></span>
+                </button>
+                
+            </div>
+        </div>
+
+        <template if:true={showFilters}>
+            <div class="custom-filter-panel">
+                <div class="filter-header">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4>Filter</h4>
+                        <a onclick={clearAllFilters}>Clear All</a>
+                    </div>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-grid">
+                        <!-- Placeholder filter inputs - replicate design from sponsers -->
+                        <div class="filter-item">
+                            <div class="filter-item-header">
+                                <label class="form-label">Status</label>
+                            </div>
+                            <div class="dropdown-container">
+                                <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                    <span>{statusDisplayText}</span>
+                                    <span class="chevron">▼</span>
+                                </button>
+                                <div class={statusDropdownClass}>
+                                    <ul class="dropdown-options">
+                                        <template for:each={statusOptions} for:item="opt">
+                                            <li key={opt.value}>
+                                                <label>
+                                                    <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleStatusCheckboxChange}>
+                                                    {opt.label}
+                                                </label>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-item">
+                            <div class="filter-item-header">
+                                <label class="form-label">Due Date</label>
+                            </div>
+                            <div class="date-range-inputs">
+                                <div class="input-wrapper">
+                                    <input class="filter-input" type="date" value={dueDateFrom} onchange={handleDueDateFromChange} aria-label="Due date from" />
+                                </div>
+                                <div class="input-wrapper">
+                                    <input class="filter-input" type="date" value={dueDateTo} onchange={handleDueDateToChange} aria-label="Due date to" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-footer">
+                        <div class="footer-actions">
+                            <a class="btn-close" onclick={toggleFilter}>Close</a>
+                            <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </template>
+
+            <template if:true={isGridView}>
+                <div class="table-wrapper">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col"> <div class="slds-truncate">Actions</div> </th>
+                                <th scope="col" class="sortable-header" data-field="status"><div class="slds-truncate header-content"><span>Status</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="subject"><div class="slds-truncate header-content"><span>Subject</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="dueDate"><div class="slds-truncate header-content"><span>Due Date</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="completionDate"><div class="slds-truncate header-content"><span>Completion Date</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="projectName"><div class="slds-truncate header-content"><span>Project Name</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="responsibility"><div class="slds-truncate header-content"><span>Responsibility</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="hsName"><div class="slds-truncate header-content"><span>HS Name</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="sponsorName"><div class="slds-truncate header-content"><span>Sponsor Name</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="dateCreated"><div class="slds-truncate header-content"><span>Date Created</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="lastUpdated"><div class="slds-truncate header-content"><span>Last Updated</span></div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr for:each={pagedData} for:item="row" key={row.id}>
+                                <td>
+                                    <div class="slds-button-group" role="group">
+                                        <lightning-button-icon icon-name="utility:edit" variant="bare" alternative-text="Edit" title="Edit" data-id={row.id} onclick={handleEdit} class="slds-m-right_x-small icon-edit"></lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:delete" variant="bare" alternative-text="Delete" title="Delete" data-id={row.id} onclick={handleDelete} class="icon-delete" style="color: #c23934 !important;" icon-class="icon-delete-svg"></lightning-button-icon>
+                                    </div>
+                                </td>
+                                <td><span class={row.statusClass}>{row.status}</span></td>
+                                <td><div class="slds-truncate">{row.subject}</div></td>
+                                <td><div class="slds-truncate">{row.dueDate}</div></td>
+                                <td><div class="slds-truncate">{row.completionDate}</div></td>
+                                <td><div class="slds-truncate">{row.projectName}</div></td>
+                                <td><div class="slds-truncate">{row.responsibility}</div></td>
+                                <td>
+                                    <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                        <lightning-avatar src={row.hsPhoto} alternative-text={row.hsName} size="small"></lightning-avatar>
+                                        <div class="contact-name slds-truncate">{row.hsName}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                        <lightning-avatar src={row.sponsorPhoto} alternative-text={row.sponsorName} size="small"></lightning-avatar>
+                                        <div class="contact-name slds-truncate">{row.sponsorName}</div>
+                                    </div>
+                                </td>
+                                <td><div class="slds-truncate">{row.dateCreated}</div></td>
+                                <td><div class="slds-truncate">{row.lastUpdated}</div></td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <c-paginator
+                total-size={totalSize}
+                page-size={pageSize}
+                page-index={pageIndex}
+                page-size-options={pageSizeOptions}
+                onpagechange={handlePage}
+            ></c-paginator>
+        </template>
+
+        <template if:true={showAddModal}>
+            <section role="dialog" aria-modal="true" class="modal-backdrop">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <div class="modal-title">Add To Do</div>
+                        <button class="modal-close" title="Close" onclick={closeAddModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-grid">
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <lightning-input name="formSubject" value={formSubject} onchange={handleInputChange} placeholder="Enter subject"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Due Date</label>
+                                <lightning-input type="date" name="formDueDate" value={formDueDate} onchange={handleInputChange}></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <lightning-input name="formProjectName" value={formProjectName} onchange={handleInputChange} placeholder="Enter project"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Responsibility</label>
+                                <lightning-input name="formResponsibility" value={formResponsibility} onchange={handleInputChange} placeholder="Enter owner"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>HS Name</label>
+                                <lightning-combobox name="formHsName" value={formHsName} options={hsOptions} placeholder="Select HS" onchange={handleInputChange}></lightning-combobox>
+                            </div>
+                            <div class="form-group">
+                                <label>Sponsor Name</label>
+                                <lightning-combobox name="formSponsorName" value={formSponsorName} options={sponsorOptions} placeholder="Select Sponsor" onchange={handleInputChange}></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-outline" onclick={closeAddModal}>Cancel</button>
+                        <button class="btn-primary" onclick={saveTodo}>Save</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={showEditModal}>
+            <section role="dialog" aria-modal="true" class="modal-backdrop">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <div class="modal-title">Edit To Do</div>
+                        <button class="modal-close" title="Close" onclick={closeEditModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-grid">
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <lightning-input name="formSubject" value={formSubject} onchange={handleInputChange} placeholder="Enter subject"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Due Date</label>
+                                <lightning-input type="date" name="formDueDate" value={formDueDate} onchange={handleInputChange}></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <lightning-input name="formProjectName" value={formProjectName} onchange={handleInputChange} placeholder="Enter project"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>Responsibility</label>
+                                <lightning-input name="formResponsibility" value={formResponsibility} onchange={handleInputChange} placeholder="Enter owner"></lightning-input>
+                            </div>
+                            <div class="form-group">
+                                <label>HS Name</label>
+                                <lightning-combobox name="formHsName" value={formHsName} options={hsOptions} placeholder="Select HS" onchange={handleInputChange}></lightning-combobox>
+                            </div>
+                            <div class="form-group">
+                                <label>Sponsor Name</label>
+                                <lightning-combobox name="formSponsorName" value={formSponsorName} options={sponsorOptions} placeholder="Select Sponsor" onchange={handleInputChange}></lightning-combobox>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <lightning-combobox name="formStatus" value={formStatus} options={statusOptionsList} placeholder="Select status" onchange={handleInputChange}></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-outline" onclick={closeEditModal}>Cancel</button>
+                        <button class="btn-primary" onclick={saveEdit}>Save</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isCalendarView}>
+            <div class="calendar-shell">
+                <div class="calendar-rail">
+                    <div class="mini-calendar-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="eyebrow">Calendar</div>
+                                <div class="card-title">{calendarMonthLabel}</div>
+                            </div>
+                            <div class="nav-buttons">
+                                <button class="nav-btn" onclick={prevPeriod} aria-label="Previous period">
+                                    <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                                </button>
+                                <button class="nav-btn" onclick={nextPeriod} aria-label="Next period">
+                                    <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="weekday-row">
+                            <template for:each={weekDays} for:item="day">
+                                <span key={day} class="weekday">{day}</span>
+                            </template>
+                        </div>
+                        <div class="mini-grid">
+                            <template for:each={miniCalendarDays} for:item="day">
+                                <template if:true={day.isToday}>
+                                    <div key={day.key} class="mini-cell today">
+                                        <template if:true={day.isDimmed}>
+                                            <span class="mini-date dimmed">{day.label}</span>
+                                        </template>
+                                        <template if:false={day.isDimmed}>
+                                            <span class="mini-date">{day.label}</span>
+                                        </template>
+                                        <template if:true={day.events.length}>
+                                            <span class="mini-dot"></span>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template if:false={day.isToday}>
+                                    <div key={day.key} class="mini-cell">
+                                        <template if:true={day.isDimmed}>
+                                            <span class="mini-date dimmed">{day.label}</span>
+                                        </template>
+                                        <template if:false={day.isDimmed}>
+                                            <span class="mini-date">{day.label}</span>
+                                        </template>
+                                        <template if:true={day.events.length}>
+                                            <span class="mini-dot"></span>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="status-cards">
+                        <div class="status-card upcoming-card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="eyebrow">Over Due</div>
+                                </div>
+                            </div>
+                            <div class="upcoming-list">
+                                <template if:true={hasUpcomingList}>
+                                    <template for:each={upcomingList} for:item="evt">
+                                        <div key={evt.id} class="upcoming-item">
+                                            <div class="upcoming-time">{evt.time}</div>
+                                            <div class="upcoming-content">
+                                                <div class="upcoming-title">{evt.title}</div>
+                                                <div class="upcoming-meta">{evt.description}</div>
+                                                <div class="upcoming-meta">{evt.day} {calendarMonthLabel}</div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:false={hasUpcomingList}>
+                                    <div class="empty-state">No upcoming items.</div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-main">
+                    <div class="calendar-topbar">
+                        <div class="top-left">
+                            <div class="month-title">{calendarTitle}</div>
+                            <div class="date-range">{calendarSubLabel}</div>
+                        </div>
+                        <div class="top-center">
+                            <button class="today-btn" onclick={goToToday} title="Today">Today</button>
+                            <button class="nav-btn" onclick={prevPeriod} aria-label="Previous period">
+                                <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                            </button>
+                            <button class="nav-btn" onclick={nextPeriod} aria-label="Next period">
+                                <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                            </button>
+                        </div>
+                        <div class="top-right">
+                            <div class="header-controls">
+                                <!-- <div class="icon-btn" title="Search" aria-label="Search">
+                                    <lightning-icon icon-name="utility:search" size="x-small"></lightning-icon>
+                                </div> -->
+                                <!-- <button class="btn-filter-toggle" onclick={toggleFilters} title="Filter">
+                                    <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>
+                                </button> -->
+                                <div class="view-modes" role="tablist" aria-label="View modes" onclick={handleModeClick}>
+                                    <button class={monthlyBtnClass} data-mode="monthly">Monthly</button>
+                                    <button class={weeklyBtnClass} data-mode="weekly">Weekly</button>
+                                    <button class={dailyBtnClass} data-mode="daily">Daily</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template if:true={isMonthlyView}>
+                        <div class="weekday-row main">
+                            <template for:each={weekDays} for:item="day">
+                                <span key={day} class="weekday">{day}</span>
+                            </template>
+                        </div>
+                        <div class="calendar-grid">
+                            <template for:each={calendarDays} for:item="day">
+                                <template if:true={day.isToday}>
+                                    <div key={day.key} class="day-card today">
+                                        <div class="day-header">
+                                            <span class="day-number">{day.label}</span>
+                                            <span class="today-pill">Today</span>
+                                        </div>
+                                        <div class="day-events">
+                                            <template for:each={day.events} for:item="evt">
+                                                <div key={evt.id} class={evt.cssClass}>
+                                                    <span class="event-dot"></span>
+                                                    <div class="event-text">{evt.title}</div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:false={day.isToday}>
+                                    <template if:true={day.isDimmed}>
+                                        <div key={day.key} class="day-card dimmed">
+                                            <div class="day-header">
+                                                <span class="day-number">{day.label}</span>
+                                            </div>
+                                            <div class="day-events">
+                                                <template for:each={day.events} for:item="evt">
+                                                    <div key={evt.id} class={evt.cssClass}>
+                                                        <span class="event-dot"></span>
+                                                        <template for:each={evt.lines} for:item="ln">
+                                                            <div key={ln.id} class="event-text">{ln.text}</div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={day.isDimmed}>
+                                        <div key={day.key} class="day-card">
+                                            <div class="day-header">
+                                                <span class="day-number">{day.label}</span>
+                                            </div>
+                                            <div class="day-events">
+                                                <template for:each={day.events} for:item="evt">
+                                                    <div key={evt.id} class={evt.cssClass}>
+                                                        <span class="event-dot"></span>
+                                                        <div class="event-text">{evt.title}</div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template if:true={isWeeklyView}>
+                        <div class="weekly-grid">
+                            <div class="weekly-time-col">
+                                <div class="weekly-timezone">GMT+00</div>
+                                <template for:each={timeSlots} for:item="slot">
+                                    <div key={slot.key} class="weekly-time-slot">{slot.label}</div>
+                                </template>
+                            </div>
+                            <div class="weekly-day-cols">
+                                <template for:each={weeklyDaysDetailed} for:item="day">
+                                    <template if:true={day.isToday}>
+                                        <div key={day.key} class="week-day-col today">
+                                            <div class="week-day-header">
+                                                <span class="weekday">{day.weekday}</span>
+                                                <span class="day-number">{day.date}</span>
+                                            </div>
+                                            <div class="week-day-body">
+                                                    <template for:each={day.events} for:item="evt">
+                                                        <div key={evt.id} class={evt.cssClass} style={evt.style}>
+                                                            <template for:each={evt.lines} for:item="ln">
+                                                                <div key={ln.id} class="event-text">{ln.text}</div>
+                                                            </template>
+                                                        </div>
+                                                    </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={day.isToday}>
+                                        <div key={day.key} class="week-day-col">
+                                            <div class="week-day-header">
+                                                <span class="weekday">{day.weekday}</span>
+                                                <span class="day-number">{day.date}</span>
+                                            </div>
+                                            <div class="week-day-body">
+                                                <template for:each={day.events} for:item="evt">
+                                                    <div key={evt.id} class={evt.cssClass} style={evt.style}>
+                                                        <div class="event-time">{evt.timeLabel}</div>
+                                                        <div class="event-text">{evt.title}</div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:true={isDailyView}>
+                        <div class="daily-grid">
+                            <div class="daily-time-col">
+                                <div class="daily-timezone">GMT+00</div>
+                                <template for:each={timeSlots} for:item="slot">
+                                    <div key={slot.key} class="weekly-time-slot">{slot.label}</div>
+                                </template>
+                            </div>
+                            <div class="daily-day-col">
+                                <div class="daily-day-header">
+                                    <div class="date-badge">
+                                        <div class="date-weekday">{dailyDetailed.weekday}</div>
+                                        <div class="date-number">{dailyDetailed.date}</div>
+                                    </div>
+                                </div>
+                                <div class="daily-day-body">
+                                    <template for:each={dailyDetailed.events} for:item="evt">
+                                        <div key={evt.id} class={evt.cssClass} style={evt.style}>
+                                            <div class="event-time">{evt.timeLabel}</div>
+                                            <template for:each={evt.lines} for:item="ln">
+                                                <div key={ln.id} class="event-text">{ln.text}</div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
 </template>
