@@ -58,15 +58,6 @@ export default class ProjectDetail extends LightningElement {
     statusDropdownOpen = false;
     selectedTags = [];
     message = '';
-    // Search key for Notes search bar
-    searchKey = '';
-    // Edit modal state for notes
-    isEditOpen = false;
-    editTargetId = null;
-    editMessageValue = '';
-    // Delete confirmation state for notes
-    isDeleteOpen = false;
-    deleteTargetId = null;
     selectedPatientType = '';
     showMore = false;
     isNavOpen = true;
@@ -2068,74 +2059,6 @@ export default class ProjectDetail extends LightningElement {
             }
             return msg;
         });
-    }
-
-    // Search input handler for Notes
-    handleSearchChange(event) {
-      this.searchKey = event.target.value;
-      // Optional: live-filter chatMessages here or use this.searchKey elsewhere
-    }
-
-    // Open edit modal for a specific message
-    handleEditMessage(event) {
-      // prefer dataset on currentTarget
-      const idStr = event.currentTarget?.dataset?.id || event.target?.dataset?.id;
-      if (!idStr) return;
-      const messageId = parseInt(idStr, 10);
-      const msg = this.chatMessages.find(m => m.id === messageId);
-      if (!msg) return;
-      this.editTargetId = messageId;
-      this.editMessageValue = msg.message || '';
-      this.isEditOpen = true;
-    }
-
-    handleEditMessageChange(event) {
-      this.editMessageValue = event.target.value;
-    }
-
-    saveEdit() {
-      if (!this.editTargetId) {
-        this.closeEditPopup();
-        return;
-      }
-      const id = this.editTargetId;
-      this.chatMessages = this.chatMessages.map(msg => {
-        if (msg.id === id) {
-          return { ...msg, message: this.editMessageValue };
-        }
-        return msg;
-      });
-      this.closeEditPopup();
-    }
-
-    closeEditPopup() {
-      this.isEditOpen = false;
-      this.editTargetId = null;
-      this.editMessageValue = '';
-    }
-
-    // Delete flow for notes
-    handleDeleteMessage(event) {
-      const idStr = event.currentTarget?.dataset?.id || event.target?.dataset?.id;
-      if (!idStr) return;
-      this.deleteTargetId = parseInt(idStr, 10);
-      this.isDeleteOpen = true;
-    }
-
-    closeDeletePopup() {
-      this.isDeleteOpen = false;
-      this.deleteTargetId = null;
-    }
-
-    confirmDelete() {
-      if (!this.deleteTargetId) {
-        this.closeDeletePopup();
-        return;
-      }
-      const id = this.deleteTargetId;
-      this.chatMessages = this.chatMessages.filter(msg => msg.id !== id);
-      this.totalSize = this.chatMessages.length;
-      this.closeDeletePopup();
     }
 
 
