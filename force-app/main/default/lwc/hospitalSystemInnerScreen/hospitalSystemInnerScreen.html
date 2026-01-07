@@ -1174,12 +1174,31 @@
             <section role="tabpanel" aria-expanded="true"
                 class="record-home-intake record-home-tab tabs__content active uiTab">
                 <div class="slds-card slds-m-top_small intake-wrapper">
+                    <!-- Header Section -->
+                    <div class="intake-header">
+                        <div class="intake-header-left">
+                            <div class="intake-header-icon">
+                                <lightning-icon icon-name="utility:task" size="small"></lightning-icon>
+                            </div>
+                            <div class="intake-header-text">
+                                <h2 class="intake-header-title">Intake Questionnaire</h2>
+                                <p class="intake-header-subtitle">Modify the details below, received from the intake questionnaire.</p>
+                            </div>
+                        </div>
+                        <button class="btn-send-questionnaire">
+                            <lightning-icon icon-name="utility:email" size="x-small" class="btn-icon"></lightning-icon>
+                            Send Questionnaire
+                        </button>
+                    </div>
+                    
                     <div class="intake-container">
                         <!-- Left Navigation -->
                         <div class="intake-left-nav">
                             <template for:each={intakeNavItems} for:item="section">
                                 <div key={section.id} class={section.className} data-section={section.id} onclick={handleIntakeSectionClick}>
-                                    <lightning-icon icon-name={section.icon} size="x-small" class="intake-nav-icon"></lightning-icon>
+                                    <span class={section.statusClass}>
+                                        <lightning-icon icon-name={section.statusIcon} size="xx-small" class="intake-status-icon"></lightning-icon>
+                                    </span>
                                     <span class="intake-nav-text">{section.name}</span>
                                 </div>
                             </template>
@@ -1238,10 +1257,13 @@
                                         <div class="intake-card">
                                             <div class="intake-card-body">
                                                 <div class="intake-form-row">
+
+
+
+
                                                     <div class="intake-field">
-                                                        
                                                         <label class="intake-label"><span class="required">*</span> Name of your institution</label>
-                                                        <lightning-input type="text" name="institutionName" required class="intake-input"></lightning-input>
+                                                        <lightning-input type="text" name="institutionName"  class="intake-input"></lightning-input>
                                                     </div>
                                                 </div>
                                                 <div class="intake-form-row">
@@ -1380,8 +1402,15 @@
 
                             <!-- Global Actions -->
                             <div class="intake-global-actions">
+                                <button class="btn-back" onclick={handleIntakeBack}>
+                                    <lightning-icon icon-name="utility:back" size="x-small" class="btn-icon-left"></lightning-icon>
+                                    Back
+                                </button>
                                 <button class="btn-clear" onclick={handleIntakeClear}>Clear</button>
-                                <button class="btn-save" onclick={handleIntakeSaveAndNext}>Save &amp; Next</button>
+                                <button class="btn-save" onclick={handleIntakeSaveAndNext}>
+                                    Save &amp; Next
+                                    <lightning-icon icon-name="utility:forward" size="x-small" class="btn-icon-right"></lightning-icon>
+                                </button>
                             </div>
                         </div>
                     </div>

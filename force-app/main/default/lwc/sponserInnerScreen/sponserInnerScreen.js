@@ -393,10 +393,18 @@ export default class SponserInnerScreen extends LightningElement {
 
     // Intake navigation items with active state
     get intakeNavItems() {
-        return this.intakeSections.map(section => ({
-            ...section,
-            className: section.id === this.selectedIntakeSection ? 'intake-nav-item active' : 'intake-nav-item'
-        }));
+        return this.intakeSections.map((section, index) => {
+            const isActive = section.id === this.selectedIntakeSection;
+            const currentIndex = this.intakeSections.findIndex(s => s.id === this.selectedIntakeSection);
+            const isCompleted = index < currentIndex;
+            
+            return {
+                ...section,
+                className: isActive ? 'intake-nav-item active' : 'intake-nav-item',
+                statusClass: isActive ? 'intake-status-active' : (isCompleted ? 'intake-status-completed' : 'intake-status-pending'),
+                statusIcon: isActive ? 'utility:check' : (isCompleted ? 'utility:check' : 'utility:record')
+            };
+        });
     }
 
     // Handle intake section click
@@ -421,6 +429,22 @@ export default class SponserInnerScreen extends LightningElement {
             // At the last section - could show a completion message or save
             console.log('All sections completed');
         }
+    }
+
+    // Back navigation for Intake
+    handleIntakeBack() {
+        const currentIndex = this.intakeSections.findIndex(
+            section => section.id === this.selectedIntakeSection
+        );
+        if (currentIndex > 0) {
+            this.selectedIntakeSection = this.intakeSections[currentIndex - 1].id;
+        }
+    }
+
+    // Clear Intake form
+    handleIntakeClear() {
+        // Reset form values - implementation can be expanded as needed
+        console.log('Clearing intake form');
     }
 
     // Getters for conditional values in Notes section

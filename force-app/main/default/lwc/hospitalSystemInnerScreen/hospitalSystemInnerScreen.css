@@ -2940,6 +2940,113 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #f8fafc;
+}
+
+/* Header Section */
+.intake-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 32px;
+    
+    margin-right: 365px;
+    
+}
+
+.intake-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.intake-header-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intake-header-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.intake-header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.intake-header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.intake-header-subtitle {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 4px 0 0 0;
+}
+
+.btn-send-questionnaire {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-send-questionnaire:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-send-questionnaire lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Status Indicators */
+.intake-status-active,
+.intake-status-completed {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.intake-status-active lightning-icon,
+.intake-status-completed lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.intake-status-pending {
+    width: 24px;
+    height: 24px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.intake-status-pending lightning-icon {
+    --slds-c-icon-color-foreground-default: #94a3b8;
 }
 
 .intake-container {
@@ -3132,10 +3239,13 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
 
 /* Save Button */
 .btn-save {
-    background: #2E37A4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     color: #ffffff;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 24px;
     border-radius: 6px;
     font-size: 0.95rem;
     font-weight: 600;
@@ -3144,17 +3254,20 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
 }
 
 .btn-save:hover {
-    background: #014486;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.4);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-save lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
 }
 
 /* Clear Button */
 .btn-clear {
-    background: #a9a9a9;
-    color: #000000;
+    background: #1e293b;
+    color: #ffffff;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 24px;
     border-radius: 6px;
     font-size: 0.95rem;
     font-weight: 600;
@@ -3163,9 +3276,43 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
 }
 
 .btn-clear:hover {
-    background: #8c8c8c;
+    background: #0f172a;
     transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(169, 169, 169, 0.4);
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.4);
+}
+
+/* Back Button */
+.btn-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.btn-back lightning-icon {
+    --slds-c-icon-color-foreground-default: #475569;
+}
+
+.btn-icon-left {
+    margin-right: 4px;
+}
+
+.btn-icon-right {
+    margin-left: 4px;
 }
 
 /* Global Form Actions */

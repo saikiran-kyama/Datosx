@@ -637,10 +637,18 @@ export default class HospitalSystemInnerScreen extends LightningElement {
 
     // Intake navigation items
     get intakeNavItems() {
-        return this.intakeSections.map(section => ({
-            ...section,
-            className: `intake-nav-item ${this.selectedIntakeSection === section.id ? 'active' : ''}`
-        }));
+        return this.intakeSections.map((section, index) => {
+            const isActive = this.selectedIntakeSection === section.id;
+            const currentIndex = this.intakeSections.findIndex(s => s.id === this.selectedIntakeSection);
+            const isCompleted = index < currentIndex;
+            
+            return {
+                ...section,
+                className: `intake-nav-item ${isActive ? 'active' : ''}`,
+                statusClass: isActive ? 'intake-status-active' : (isCompleted ? 'intake-status-completed' : 'intake-status-pending'),
+                statusIcon: isActive ? 'utility:check' : (isCompleted ? 'utility:check' : 'utility:record')
+            };
+        });
     }
 
     // Salutation options for intake
@@ -1480,6 +1488,16 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     handleIntakeClear() {
         // Reset form values - implementation can be expanded as needed
         console.log('Clearing intake form');
+    }
+
+    // Back navigation for Intake
+    handleIntakeBack() {
+        const currentIndex = this.intakeSections.findIndex(
+            section => section.id === this.selectedIntakeSection
+        );
+        if (currentIndex > 0) {
+            this.selectedIntakeSection = this.intakeSections[currentIndex - 1].id;
+        }
     }
 
     // Protocol: select a step to update the right panel
