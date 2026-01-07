@@ -2931,3 +2931,310 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
 .dx-team-icon {
     color: #6b7280;
 }
+
+/* =========================
+   INTAKE TAB STYLES
+   ========================= */
+.intake-wrapper {
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.intake-container {
+    display: flex;
+    min-height: 650px;
+}
+
+/* Left Navigation */
+.intake-left-nav {
+    width: 20%;
+    min-width: 280px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    height: fit-content;
+    max-height: calc(100vh - 160px);
+    padding: 12px;
+    margin-left: 23px;
+    margin-top: 36px;
+}
+
+.intake-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    background: #ffffff;
+    border: 1px solid transparent;
+}
+
+.intake-nav-item:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    transform: translateX(2px);
+}
+
+.intake-nav-item.active {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    border-left: 3px solid #2e37a4;
+}
+
+.intake-nav-icon {
+    --slds-c-icon-color-foreground-default: #64748b;
+}
+
+.intake-nav-item.active .intake-nav-icon {
+    --slds-c-icon-color-foreground-default: #2e37a4;
+}
+
+.intake-nav-text {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.intake-nav-item.active .intake-nav-text {
+    color: #2e37a4;
+    font-weight: 600;
+}
+
+/* Right Content Area */
+.intake-content {
+    width: 55%;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+/* Forms Row - Side by Side Layout */
+.intake-forms-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.intake-form-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Section Title */
+.intake-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 16px;
+    margin-top: 8px;
+    background: transparent;
+}
+
+.intake-section-title:first-child {
+    margin-top: 0;
+}
+
+/* Intake Card */
+.intake-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    margin-bottom: 24px;
+}
+
+.intake-card-body {
+    padding: 24px;
+}
+
+/* Form Rows */
+.intake-form-row {
+    margin-bottom: 20px;
+}
+
+.intake-form-row:last-child {
+    margin-bottom: 0;
+}
+
+.intake-form-row.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* Form Fields */
+.intake-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.intake-field.half-width {
+    width: 50%;
+}
+
+.intake-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.intake-label .required {
+    color: #dc3545;
+    margin-right: 4px;
+}
+
+.intake-input {
+    width: 100%;
+}
+
+/* Checkbox Grid */
+.intake-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 24px;
+    padding: 16px 0;
+}
+
+.intake-checkbox-grid.therapeutic-grid {
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+/* Custom checkbox styling */
+.intake-checkbox-grid lightning-input {
+    --slds-c-checkbox-color-background-checked: #4fc3f7;
+    --slds-c-checkbox-color-border: #adb5bd;
+}
+
+/* Form Actions - Button Container */
+.intake-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Save Button */
+.btn-save {
+    background: #2E37A4;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+    background: #014486;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.4);
+}
+
+/* Clear Button */
+.btn-clear {
+    background: #a9a9a9;
+    color: #000000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-clear:hover {
+    background: #8c8c8c;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(169, 169, 169, 0.4);
+}
+
+/* Global Form Actions */
+.intake-global-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+}
+
+/* Responsive Design for Intake Tab */
+@media (max-width: 1024px) {
+    .intake-container {
+        flex-direction: column;
+    }
+
+    .intake-forms-row {
+        flex-direction: column;
+    }
+    
+    .intake-left-nav {
+        width: 100%;
+        min-width: unset;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-x: auto;
+        gap: 0.5rem;
+        background: #ffffff;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-left: 0;
+        margin-top: 0;
+    }
+    
+    .intake-nav-item {
+        padding: 11px 14px;
+        border: 1px solid transparent;
+        background: #ffffff;
+        border-radius: 5px;
+        margin-bottom: 4px;
+    }
+    
+    .intake-nav-item.active {
+        background: #f1f5f9;
+        border-color: #e2e8f0;
+        border-left: 3px solid #2e37a4;
+    }
+    
+    .intake-content {
+        padding: 24px;
+        width: 100%;
+    }
+    
+    .intake-form-row.two-col {
+        grid-template-columns: 1fr;
+    }
+    
+    .intake-checkbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .intake-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .intake-field.half-width {
+        width: 100%;
+    }
+}
