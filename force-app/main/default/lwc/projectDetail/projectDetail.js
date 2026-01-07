@@ -2067,19 +2067,29 @@ export default class ProjectDetail extends LightningElement {
 
 
     // Intake / Project Scoping Questionnaire State
+    statisticalAnalysisOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' }
+    ];
+    healthCareSystemOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' }
+    ];
+    statisticalAnalysisValue = '';
+    healthCareSystemValue = '';
+    
     intakeQuestions = [
-        { id: 1, label: 'What is the primary objective of this project?', value: '' },
-        { id: 2, label: 'What is the target patient population?', value: '' },
-        { id: 3, label: 'What are the key inclusion criteria?', value: '' },
-        { id: 4, label: 'What are the key exclusion criteria?', value: '' },
-        { id: 5, label: 'What is the estimated sample size?', value: '' },
-        { id: 6, label: 'What is the expected study duration?', value: '' },
-        { id: 7, label: 'What specific data points need to be collected?', value: '' },
-        { id: 8, label: 'Are there any specific safety monitoring requirements?', value: '' },
-        { id: 9, label: 'What is the budget range?', value: '' },
-        { id: 10, label: 'What is the desired timeline for completion?', value: '' },
-        { id: 11, label: 'What are the key deliverables?', value: '' },
-        { id: 12, label: 'Any additional comments or requirements?', value: '' }
+        { id: 1, label: 'Please provide any available details about the trial you would like to execute (e.g., prospective vs. retrospective, randomized, placebo controlled, etc.)', value: '', type: 'textarea' },
+        { id: 2, label: 'What is the Primary Study Objective?', value: '', type: 'textarea' },
+        { id: 3, label: 'What is the secondary and/or tertiary study objective(s) if any?', value: '', type: 'textarea' },
+        { id: 4, label: 'What is the intended Study Population (inclusion criteria)?', value: '', type: 'textarea' },
+        { id: 5, label: 'What participants would be excluded from the study (exclusion criteria)?', value: '', type: 'textarea' },
+        { id: 6, label: 'How many participants are you seeking to enroll in the study?', value: '', type: 'input' },
+        { id: 7, label: 'How many sites would you like to use?', value: '', type: 'input' },
+        { id: 8, label: 'What type of information are you seeking to gather (e.g. survey data, labs, imaging)?', value: '', type: 'textarea' },
+        { id: 9, label: 'What is the anticipated timeline for the study?', value: '', type: 'textarea' }
     ];
 
     get isIntake() {

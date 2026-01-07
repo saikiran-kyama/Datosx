@@ -73,7 +73,7 @@
     <!-- Tabs -->
     <div class="uiTabset--base uiTabset--default uiTabset" style="margin-left: -3px;">
         <div role="tablist" class="uiTabBar">
-            <ul role="presentation" class="tabs__nav" style="gap: 20px; align-items: center;">
+            <ul role="presentation" class="tabs__nav" style="gap: 15px; align-items: center;">
                 <li role="presentation" class="record-home-overview record-home-tab tabs__item active uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="true" role="tab" tabindex="0" title="Overview" class="tabHeader"
                         href="javascript:void(0);" data-tab="Overview" onclick={handleTabClick} style="padding: 8px 12px;">
@@ -210,30 +210,64 @@
         <template if:true={isIntake}>
             <section role="tabpanel" aria-expanded="true" class="record-home-intake record-home-tab tabs__content active uiTab">
                 <div class="slds-card slds-m-top_small">
-                    <div class="slds-card__body slds-card__body_inner intake-form-container" style="padding: 20px 40px;">
-                        <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 20px; text-align: left;">Project Scoping Questionnaire Form</h2>
+                    <div class="slds-card__body slds-card__body_inner intake-form-container" style="padding: 32px 48px; max-width: 900px;">
+                        <h2 class="intake-form-title">Project Scoping Questionnaire Form</h2>
+                        
+                        
                         
                         <div class="questions-list">
                             <template for:each={intakeQuestions} for:item="question">
-                                <div key={question.id} class="question-item" style="margin-bottom: 24px; text-align: left;">
-                                    <p class="question-label" style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: #16325c;">
-                                        {question.id}. {question.label}
+                                <div key={question.id} class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                    <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                        <span style="color: #ef4444;">*</span> {question.label}
                                     </p>
+                                    <template if:true={question.type}>
+                                        <template if:false={question.type}>
+                                            <!-- This won't render, just for template structure -->
+                                        </template>
+                                    </template>
                                     <lightning-textarea 
                                          value={question.value} 
                                          onchange={handleIntakeChange}
                                          data-id={question.id}
                                          variant="label-hidden"
                                          class="intake-textarea"
-                                         style="min-height: 100px; --slds-c-textarea-sizing-min-height: 100px;"
+                                         style="--slds-c-textarea-sizing-min-height: 100px;"
                                     ></lightning-textarea>
                                 </div>
                             </template>
+                            
+                            <!-- Dropdown Questions -->
+                            <div class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                    <span style="color: #ef4444;">*</span> In addition to data collection, will statistical analysis of the data be required?
+                                </p>
+                                <lightning-combobox 
+                                    options={statisticalAnalysisOptions}
+                                    value={statisticalAnalysisValue}
+                                    variant="label-hidden"
+                                    placeholder="--None--"
+                                    class="intake-combobox"
+                                ></lightning-combobox>
+                            </div>
+                            
+                            <div class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                    <span style="color: #ef4444;">*</span> Is there an already selected health care system?
+                                </p>
+                                <lightning-combobox 
+                                    options={healthCareSystemOptions}
+                                    value={healthCareSystemValue}
+                                    variant="label-hidden"
+                                    placeholder="--None--"
+                                    class="intake-combobox"
+                                ></lightning-combobox>
+                            </div>
                         </div>
 
-                        <div class="form-actions" >
-                             <button onclick={handleIntakeClear} class="slds-button slds-button_neutral">Clear</button>
-                             <button onclick={handleIntakeSave} class="slds-button slds-button_brand">Save</button>
+                        <div class="form-actions">
+                             <button onclick={handleIntakeClear} class="slds-button slds-button_neutral" style="min-width: 100px;">Clear</button>
+                             <button onclick={handleIntakeSave} class="slds-button slds-button_brand" style="min-width: 100px;">Save</button>
                         </div>
                     </div>
                 </div>
