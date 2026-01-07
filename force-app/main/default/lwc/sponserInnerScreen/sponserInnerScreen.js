@@ -407,6 +407,22 @@ export default class SponserInnerScreen extends LightningElement {
         }
     }
 
+    // Handle Save and Next button click
+    handleSaveAndNext() {
+        // Find current section index
+        const currentIndex = this.intakeSections.findIndex(
+            section => section.id === this.selectedIntakeSection
+        );
+        
+        // Move to next section if not at the end
+        if (currentIndex !== -1 && currentIndex < this.intakeSections.length - 1) {
+            this.selectedIntakeSection = this.intakeSections[currentIndex + 1].id;
+        } else if (currentIndex === this.intakeSections.length - 1) {
+            // At the last section - could show a completion message or save
+            console.log('All sections completed');
+        }
+    }
+
     // Getters for conditional values in Notes section
     get showMoreButtonLabel() {
         return this.showMore ? 'Less' : 'More';

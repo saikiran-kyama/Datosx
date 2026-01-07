@@ -2469,75 +2469,110 @@
 .intake-container {
     display: flex;
     min-height: 650px;
-    background: #f8f9fa;
+    
 }
 
 /* Left Navigation */
 .intake-left-nav {
     width: 20%;
-    background: white;
-    padding: 0;
-    border-right: 1px solid #dee2e6;
+    min-width: 300px;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding-top:40px
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    height: fit-content;
+    max-height: calc(100vh - 160px);
+    padding: 12px;
+    margin-left: 23px;
+    margin-top:36px;
 }
 
 .intake-nav-header {
-    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-bottom: none;
-    background: transparent;
 }
 
 .intake-nav-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #080707;
 }
 
 .intake-nav-item {
     display: flex;
     align-items: center;
-    padding: 16px 24px;
+    gap: 10px;
+    padding: 11px 14px;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 1px solid #dddbda;
-    color: #080707;
-    background: white;
-    margin: 0 0.5rem;
-    border-radius: 4px;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    background: #ffffff;
+    border: 1px solid transparent;
 }
 
 .intake-nav-item:hover {
-    background: #f3f3f3;
-    color: #080707;
-    border-color: #dddbda;
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    transform: translateX(2px);
 }
 
 .intake-nav-item.active {
-    background: #0176d3;
-    border: 1px solid #0176d3;
-    color: #ffffff;
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    border-left: 3px solid #2e37a4;
 }
 
 .intake-nav-icon {
-    margin-right: 14px;
-    --slds-c-icon-color-foreground-default: currentColor;
+    --slds-c-icon-color-foreground-default: #64748b;
+}
+
+.intake-nav-item.active .intake-nav-icon {
+    --slds-c-icon-color-foreground-default: #2e37a4;
 }
 
 .intake-nav-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
+    flex: 1;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.intake-nav-item.active .intake-nav-text {
+    color: #2e37a4;
+    font-weight: 600;
 }
 
 /* Right Content Area */
 .intake-content {
-    width: 50%;
+    width: 55%;
     padding: 32px;
-    background: #f8f9fa;
+    
     overflow-y: auto;
+}
+
+/* Forms Row - Side by Side Layout */
+.intake-forms-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.intake-form-wrapper {
+    flex: 1;
+    min-width: 0;
 }
 
 /* Section Title */
@@ -2565,6 +2600,138 @@
 
 .intake-card-body {
     padding: 24px;
+}
+
+/* Form Actions - Button Container */
+.intake-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Save Button */
+.btn-save {
+    background: #2E37A4;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+    background: #014486;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.4);
+}
+
+/* Clear Button */
+.btn-clear {
+    background: #a9a9a9;
+    color: #000000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-clear:hover {
+    background: #8c8c8c;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(169, 169, 169, 0.4);
+}
+
+/* Global Form Actions */
+.intake-global-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    
+}
+
+/* Company Details Custom Styles - Single Column Layout */
+.company-details-wrapper {
+    max-width: 100%;
+}
+
+.company-details-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-bottom: 20px;
+}
+
+.company-details-card {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.company-details-body {
+    padding: 28px;
+}
+
+.company-institution-row,
+.company-size-row,
+.company-url-row {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.company-institution-row:last-child,
+.company-size-row:last-child,
+.company-url-row:last-child {
+    margin-bottom: 0;
+}
+
+.company-institution-field,
+.company-size-field,
+.company-url-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.company-institution-label,
+.company-size-label,
+.company-url-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.company-institution-input,
+.company-size-input,
+.company-url-input {
+    width: 100%;
+}
+
+/* Remove borders from lightning components */
+.company-institution-input lightning-input,
+.company-size-input lightning-combobox,
+.company-url-input lightning-input {
+    --slds-c-input-shadow: none;
+    --slds-c-input-border-color: transparent;
+}
+
+/* Fix combobox gap issue */
+.company-size-input lightning-combobox {
+    margin-top: -8px;
 }
 
 /* Form Rows */
@@ -2633,6 +2800,10 @@
     .intake-container {
         flex-direction: column;
     }
+
+    .intake-forms-row {
+        flex-direction: column;
+    }
     
     .intake-left-nav {
         width: 100%;
@@ -2641,8 +2812,9 @@
         flex-wrap: wrap;
         overflow-x: auto;
         gap: 0.5rem;
-        background: white;
-        
+        background: #ffffff;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
     
     .intake-nav-header {
@@ -2650,16 +2822,17 @@
     }
     
     .intake-nav-item {
-        padding: 12px 16px;
-        border: 1px solid #dddbda;
-        background: white;
-        color: #080707;
+        padding: 11px 14px;
+        border: 1px solid transparent;
+        background: #ffffff;
+        border-radius: 5px;
+        margin-bottom: 4px;
     }
     
     .intake-nav-item.active {
-        background: #0176d3;
-        color: #ffffff;
-        border: 1px solid #0176d3;
+        background: #f1f5f9;
+        border-color: #e2e8f0;
+        border-left: 3px solid #2e37a4;
     }
     
     .intake-content {
