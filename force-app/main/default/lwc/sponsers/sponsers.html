@@ -166,6 +166,10 @@
                                 <lightning-input name="formSponsorName" value={formSponsorName} onchange={handleInputChange} placeholder="Enter Sponsor name"></lightning-input>
                             </div>
                             <div class="hs-form-group">
+                                <label>Contact</label>
+                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
+                            </div>
+                            <div class="hs-form-group">
                                 <label>State</label>
                                 <div class="dropdown-container">
                                     <button class="dropdown-btn" onclick={toggleFormStateDropdown} type="button">
@@ -203,10 +207,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="hs-form-group">
-                                <label>Contact</label>
-                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
-                            </div>
+                            
                             <div class="hs-form-group">
                                 <label>Email</label>
                                 <lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter email"></lightning-input>
@@ -238,6 +239,10 @@
                             <div class="hs-form-group">
                                 <label>Sponsor Name</label>
                                 <lightning-input name="formSponsorName" value={formSponsorName} onchange={handleInputChange} placeholder="Enter Sponsor name"></lightning-input>
+                            </div>
+                            <div class="hs-form-group">
+                                <label>Contact</label>
+                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
                             </div>
                             <div class="hs-form-group">
                                 <label>Status</label>
@@ -281,10 +286,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="hs-form-group">
-                                <label>Contact</label>
-                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
-                            </div>
+                            
                             <div class="hs-form-group">
                                 <label>Email</label>
                                 <lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter email"></lightning-input>
@@ -420,7 +422,7 @@
                                         class="slds-m-right_x-small icon-edit">
                                     </lightning-button-icon>
                                         <lightning-button-icon icon-name="utility:delete" variant="bare"
-                                            alternative-text="Delete" title="Delete" data-id={row.id} onclick={handleDelete}
+                                            alternative-text="Delete" title="Delete" data-id={row.id} onclick={openDeleteModal}
                                             class="icon-delete" style="color: #c23934 !important;" icon-class="icon-delete-svg">
                                         </lightning-button-icon>
                                 </div>
@@ -484,6 +486,27 @@
             page-size-options={pageSizeOptions}
             onpagechange={handlePage}
         ></c-paginator>
+        </template>
+
+        <!-- Delete Confirmation Modal -->
+        <template if:true={showDeleteModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Delete Sponsor</div>
+                        <button class="hs-modal__close" title="Close" onclick={closeDeleteModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div style="padding: 8px 4px;">
+                            <p>Do you want to delete <strong>{deleteRecordName}</strong>?</p>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closeDeleteModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={confirmDelete}>Delete</button>
+                    </div>
+                </div>
+            </section>
         </template>
 
         <!-- Detail view: show sponserInnerScreen when a sponsor ID is clicked -->

@@ -151,9 +151,6 @@
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                     <thead>
                         <tr class="slds-line-height_reset">
-                            <th scope="col">
-                                <div class="slds-truncate">Actions</div>
-                            </th>
                             <th scope="col" class="sortable-header" data-field="projectId" onclick={handleSort}>
                                 <div class="slds-truncate header-content">
                                     <span>Project ID</span>
@@ -226,14 +223,12 @@
                                     </template>
                                 </div>
                             </th>
-                            <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
+                            <th scope="col">
                                 <div class="slds-truncate header-content">
-                                    <span>Last Updated</span>
-                                    <template if:true={isSortedBy.lastUpdated}>
-                                        <span class={sortDirection}></span>
-                                    </template>
+                                    <span>Questionnaire</span>
                                 </div>
                             </th>
+                            
                             <th scope="col" class="sortable-header" data-field="state" onclick={handleSort}>
                                 <div class="slds-truncate header-content">
                                     <span>State</span>
@@ -274,25 +269,19 @@
                                     </template>
                                 </div>
                             </th>
+                            <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
+                                <div class="slds-truncate header-content">
+                                    <span>Last Updated</span>
+                                    <template if:true={isSortedBy.lastUpdated}>
+                                        <span class={sortDirection}></span>
+                                    </template>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <template for:each={pagedData} for:item="row">
-                            <tr key={row.id}>
-
-                                <td>
-                                    <div class="slds-button-group" role="group">
-                                        <lightning-button-icon icon-name="utility:edit" variant="bare"
-                                            alternative-text="Edit" title="Edit" data-id={row.id} onclick={handleEdit}
-                                            class="slds-m-right_x-small icon-edit">
-                                        </lightning-button-icon>
-                                        <lightning-button-icon icon-name="utility:delete" variant="bare"
-                                            alternative-text="Delete" title="Delete" data-id={row.id}
-                                            onclick={handleDelete} class="icon-delete"
-                                            style="color: #c23934 !important;" icon-class="icon-delete-svg">
-                                        </lightning-button-icon>
-                                    </div>
-                                </td>
+                            <tr key={row.id}>     
                                 <td>
                                     <button class="link-like" data-id={row.id} onclick={openDetail}
                                         style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer">
@@ -337,7 +326,11 @@
                                     <div class="slds-truncate center-link-cell">{row.messages}</div>
                                 </td>
                                 <td>
-                                    <div class="slds-truncate">{row.lastUpdated}</div>
+                                    <div class="questionnaire-icons">
+                                        <template for:each={row.questionnaires} for:item="q">
+                                            <i key={q.key} class={q.icon} title={q.title} style={q.style} aria-hidden="true" data-key={q.key} data-rowid={row.id} onclick={handleQuestionnaireClick}></i>
+                                        </template>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="slds-truncate">{row.state}</div>
@@ -357,6 +350,9 @@
                                 </td>
                                 <td>
                                     <div class="slds-truncate">{row.phone}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{row.lastUpdated}</div>
                                 </td>
 
                             </tr>
@@ -711,5 +707,76 @@
                 </div>
             </div>
         </div>
+    </template>
+
+    <!-- Questionnaire modal -->
+    <template if:true={showQuestionnaireModal}>
+        <div class="modal-overlay" onclick={closeQuestionnaireModal}>
+            <div class="modal-card modal-card--sm" onclick={stopQuestionnaireModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>{questionnaireModalTitle}</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeQuestionnaireModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem;">
+                    <p>{questionnaireModalMessage}</p>
+
+                    <template if:true={isNpsModal}>
+                        <table class="slds-table slds-table_cell-buffer" style="margin-top:0.5rem;">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Full Name</th>
+                                        <th>Contact Type</th>
+                                        <th>Partner</th>
+                                        <th>Email ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={questionnaireModalRows} for:item="r">
+                                        <tr key={r.id}>
+                                            <td style="width:32px;">
+                                                <input type="checkbox" data-id={r.id} checked={r.checked} onchange={handleQuestionnaireRowCheckboxChange} />
+                                            </td>
+                                            <td>{r.fullName}</td>
+                                            <td>{r.contactType}</td>
+                                            <td>{r.partner}</td>
+                                            <td>{r.email}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                        </table>
+                    </template>
+                </div>
+                <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:8px;padding:0.75rem 1rem;">
+                    <button class="btn btn-light" onclick={closeQuestionnaireModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={confirmQuestionnaireSend}>Send</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Delete Confirmation Modal -->
+    <template if:true={showDeleteModal}>
+        <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+            <div class="hs-modal">
+                <div class="hs-modal__header">
+                    <div class="hs-modal__title">Delete Project</div>
+                    <button class="hs-modal__close" title="Close" onclick={closeDeleteModal} aria-label="Close">✕</button>
+                </div>
+                <div class="hs-modal__body">
+                    <div style="padding: 8px 4px;">
+                        <p>Do you want to delete <strong>{deleteRecordName}</strong>?</p>
+                    </div>
+                </div>
+                <div class="hs-modal__footer">
+                    <button class="hs-btn-outline" onclick={closeDeleteModal}>Cancel</button>
+                    <button class="hs-btn-primary" onclick={confirmDelete}>Delete</button>
+                </div>
+            </div>
+        </section>
     </template>
 </template>

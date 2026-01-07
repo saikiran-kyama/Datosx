@@ -32,6 +32,30 @@ export default class ProjectDetail extends LightningElement {
     
     // Notes tab state
     filterToggle = false;
+    // Documents-style filter state
+    filterFromDate = '';
+    filterToDate = '';
+    filterDocumentCategoryDisplay = 'All';
+    filterDocumentTypeDisplay = 'All';
+    documentCategoryOptions = [
+      { label: 'All', value: 'all', checked: false },
+      { label: 'Consent', value: 'consent', checked: false },
+      { label: 'Protocol', value: 'protocol', checked: false }
+    ];
+    documentTypeOptions = [
+      { label: 'PDF', value: 'pdf', checked: false },
+      { label: 'DOCX', value: 'docx', checked: false },
+      { label: 'Image', value: 'image', checked: false }
+    ];
+    docCategoryDropdownOpen = false;
+    docTypeDropdownOpen = false;
+
+    // Visibility (status) dropdown state copied/adapted from healthSystems
+    statusOptions = [
+      { label: 'HS', value: 'HS', checked: false },
+      { label: 'Sponsor', value: 'Sponsor', checked: false }
+    ];
+    statusDropdownOpen = false;
     selectedTags = [];
     message = '';
     selectedPatientType = '';
@@ -1892,6 +1916,65 @@ export default class ProjectDetail extends LightningElement {
 
     toggleFilter() {
         this.filterToggle = !this.filterToggle;
+    }
+
+    // Visibility dropdown helpers
+    toggleStatusDropdown() { this.statusDropdownOpen = !this.statusDropdownOpen; }
+    get statusDropdownClass() { return this.statusDropdownOpen ? 'dropdown-options open' : 'dropdown-options'; }
+    get statusDisplayText() { const count = this.statusOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
+    handleStatusCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.statusOptions = this.statusOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
+
+    handleFilterChange(event) {
+      const name = event.target.name;
+      const val = event.target.value;
+      if (name === 'fromDate') this.filterFromDate = val;
+      if (name === 'toDate') this.filterToDate = val;
+    }
+
+    toggleDocCategoryDropdown() {
+      this.docCategoryDropdownOpen = !this.docCategoryDropdownOpen;
+    }
+
+    toggleDocTypeDropdown() {
+      this.docTypeDropdownOpen = !this.docTypeDropdownOpen;
+    }
+
+    get docCategoryDropdownClass() {
+      return this.docCategoryDropdownOpen ? 'dropdown-options open' : 'dropdown-options';
+    }
+
+    get docTypeDropdownClass() {
+      return this.docTypeDropdownOpen ? 'dropdown-options open' : 'dropdown-options';
+    }
+
+    handleDocCategoryCheckboxChange(event) {
+      const val = event.target.value;
+      this.documentCategoryOptions = this.documentCategoryOptions.map(o => o.value === val ? { ...o, checked: event.target.checked } : o);
+      const selected = this.documentCategoryOptions.filter(o => o.checked).map(o => o.label);
+      this.filterDocumentCategoryDisplay = selected.length ? selected.join(', ') : 'All';
+    }
+
+    handleDocTypeCheckboxChange(event) {
+      const val = event.target.value;
+      this.documentTypeOptions = this.documentTypeOptions.map(o => o.value === val ? { ...o, checked: event.target.checked } : o);
+      const selected = this.documentTypeOptions.filter(o => o.checked).map(o => o.label);
+      this.filterDocumentTypeDisplay = selected.length ? selected.join(', ') : 'All';
+    }
+
+    clearAllFilters() {
+      this.filterFromDate = '';
+      this.filterToDate = '';
+      this.documentCategoryOptions = this.documentCategoryOptions.map(o => ({ ...o, checked: false }));
+      this.documentTypeOptions = this.documentTypeOptions.map(o => ({ ...o, checked: false }));
+      this.filterDocumentCategoryDisplay = 'All';
+      this.filterDocumentTypeDisplay = 'All';
+    }
+
+    applyFilter() {
+      // placeholder: apply filters to message list or documents
+      // currently just closes the filter panel
+      this.filterToggle = false;
+      // You may add logic here to actually filter `chatMessages` or pass filter params to child components
     }
 
     handlePatientTypeChange(event) {

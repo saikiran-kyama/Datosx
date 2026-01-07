@@ -8,6 +8,18 @@ export default class ProjectTasks extends LightningElement {
     isAddActivityOpen = false;
     addFormMilestone = '';
     addFormDescription = '';
+    addFormPlanStart = '';
+    addFormPlanFinish = '';
+    addFormActualStart = '';
+    addFormEta = '';
+    // edit mode state
+    isEditing = false;
+    editingActivityId = null;
+    // Mark Complete modal state
+    isMarkCompleteOpen = false;
+    // Delete confirmation modal state
+    isDeleteOpen = false;
+    deleteTargetId = null;
     protocolSteps = [];
     protocolData = {};
 
@@ -16,6 +28,19 @@ export default class ProjectTasks extends LightningElement {
         'Trial Execution',
         'Trial Close'
     ];
+
+    // Code prefix mapping and counters (auto-increment starting at 100001)
+    prefixMap = {
+        'Trial Preparation': 'TR',
+        'Trial Execution': 'TE',
+        'Trial Close': 'TC'
+    };
+
+    codeCounters = {
+        TR: 100001,
+        TE: 100001,
+        TC: 100001
+    };
 
     milestoneActivities = {
         'Trial Preparation': [
@@ -125,6 +150,10 @@ export default class ProjectTasks extends LightningElement {
         const datePool = ['2025-11-12', '2025-11-05', '2025-10-28', '2025-09-15', '2025-08-30'];
         this.milestoneNames.forEach((name) => {
             const activities = this.milestoneActivities[name] || [];
+            // determine prefix for this milestone
+            const prefix = this.prefixMap[name] || 'TR';
+            // start counter from existing counter value
+            let counter = this.codeCounters[prefix] || 100001;
             this.protocolData[name] = activities.map((act, i) => {
                 const planDate = datePool[i % datePool.length];
                 const actualDate = datePool[(i + 1) % datePool.length];
@@ -133,9 +162,12 @@ export default class ProjectTasks extends LightningElement {
                 const eta = 'Q1 2026';
                 const progressPct = Math.max(0, Math.min(100, Math.floor(Math.random() * 90) + 5));
                 const progress = actualFinish ? '100%' : `${progressPct}%`;
+                const code = `${prefix}-${counter}`;
+                counter += 1;
                 return {
                     id: act.id,
                     activity: act.text,
+                    code,
                     checked: act.checked || i % 5 === 0,
                     section: act.section,
                     lastUpdated: datePool[(i + name.length) % datePool.length],
@@ -148,6 +180,8 @@ export default class ProjectTasks extends LightningElement {
                     progressStyle: `width: ${progress}; background: linear-gradient(90deg,#2e7ce4,#2e9be4); height: 10px;`
                 };
             });
+            // update counter back to state
+            this.codeCounters[prefix] = counter;
         });
     }
 
@@ -216,15 +250,55 @@ export default class ProjectTasks extends LightningElement {
     }
 
     openAddActivityPopup() {
+        this.isEditing = false;
+        this.editingActivityId = null;
         this.isAddActivityOpen = true;
         this.addFormMilestone = this.selectedProtocolStep || this.milestoneNames[0];
         this.addFormDescription = '';
+        this.addFormPlanStart = '';
+        this.addFormPlanFinish = '';
+        this.addFormActualStart = '';
+        this.addFormEta = '';
+    }
+
+    openMarkCompletePopup() {
+        this.isMarkCompleteOpen = true;
+    }
+
+    closeMarkCompletePopup() {
+        this.isMarkCompleteOpen = false;
+    }
+
+    confirmMarkComplete() {
+        if (!this.selectedProtocolStep) {
+            this.closeMarkCompletePopup();
+            return;
+        }
+        const activities = this.protocolData[this.selectedProtocolStep] || [];
+        const today = new Date().toISOString().split('T')[0];
+        this.protocolData[this.selectedProtocolStep] = activities.map((act) => {
+            if (act.checked) {
+                return {
+                    ...act,
+                    actualFinish: today,
+                    progress: '100%',
+                    progressStyle: 'width: 100%; background: linear-gradient(90deg,#2e7ce4,#2e9be4); height: 10px;'
+                };
+            }
+            return act;
+        });
+        this.protocolData = { ...this.protocolData };
+        this.closeMarkCompletePopup();
     }
 
     closeAddActivityPopup() {
         this.isAddActivityOpen = false;
         this.addFormMilestone = '';
         this.addFormDescription = '';
+        this.addFormPlanStart = '';
+        this.addFormPlanFinish = '';
+        this.addFormActualStart = '';
+        this.addFormEta = '';
     }
 
     handleAddFormMilestoneChange(event) {
@@ -237,6 +311,26 @@ export default class ProjectTasks extends LightningElement {
         this.addFormDescription = val;
     }
 
+    handleAddFormPlanStartChange(event) {
+        const val = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+        this.addFormPlanStart = val;
+    }
+
+    handleAddFormPlanFinishChange(event) {
+        const val = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+        this.addFormPlanFinish = val;
+    }
+
+    handleAddFormActualStartChange(event) {
+        const val = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+        this.addFormActualStart = val;
+    }
+
+    handleAddFormEtaChange(event) {
+        const val = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+        this.addFormEta = val;
+    }
+
     saveAddActivity() {
         if (!this.addFormDescription || !this.addFormDescription.trim()) {
             alert('Please enter a description');
@@ -244,17 +338,71 @@ export default class ProjectTasks extends LightningElement {
         }
         const milestone = this.addFormMilestone;
         if (!milestone) return;
+        // If editing an existing activity, update it
+        if (this.isEditing && this.editingActivityId) {
+            const editId = this.editingActivityId;
+            let original = null;
+            let originalMilestone = null;
+            // find original activity
+            for (const m of this.milestoneNames) {
+                const arr = this.protocolData[m] || [];
+                const idx = arr.findIndex(a => a.id === editId);
+                if (idx !== -1) {
+                    original = arr[idx];
+                    originalMilestone = m;
+                    // remove original from its array
+                    this.protocolData[m] = [...arr.slice(0, idx), ...arr.slice(idx + 1)];
+                    break;
+                }
+            }
+            if (!original) {
+                // nothing to edit, just close
+                this.closeAddActivityPopup();
+                this.isEditing = false;
+                this.editingActivityId = null;
+                return;
+            }
+            // construct updated activity, preserve existing code
+            const updated = {
+                ...original,
+                activity: this.addFormDescription.trim(),
+                planDate: this.addFormPlanStart || '',
+                actualDate: this.addFormActualStart || '',
+                planFinish: this.addFormPlanFinish || '',
+                eta: this.addFormEta || '',
+                lastUpdated: new Date().toISOString().split('T')[0]
+            };
+            // if user changed milestone, add to new milestone array, else insert back to original
+            if (!this.protocolData[milestone]) this.protocolData[milestone] = [];
+            this.protocolData[milestone] = [...this.protocolData[milestone], updated];
+            this.protocolData = { ...this.protocolData };
+            this.isEditing = false;
+            this.editingActivityId = null;
+            this.closeAddActivityPopup();
+            return;
+        }
+
+        // Creating a new activity
+        const newActivityId = 'custom_' + Date.now();
+        // assign code based on selected milestone prefix and auto-increment counter
+        const prefix = this.prefixMap[milestone] || 'TR';
+        const counter = this.codeCounters[prefix] || 100001;
+        const newCode = `${prefix}-${counter}`;
+        // increment counter for future codes
+        this.codeCounters[prefix] = counter + 1;
+
         const newActivity = {
-            id: 'custom_' + Date.now(),
+            id: newActivityId,
             activity: this.addFormDescription.trim(),
+            code: newCode,
             checked: false,
             section: 'Custom',
             lastUpdated: new Date().toISOString().split('T')[0],
-            planDate: '',
-            actualDate: '',
-            planFinish: '',
+            planDate: this.addFormPlanStart || '',
+            actualDate: this.addFormActualStart || '',
+            planFinish: this.addFormPlanFinish || '',
             actualFinish: '',
-            eta: '',
+            eta: this.addFormEta || '',
             progress: '0%',
             progressStyle: 'width: 0%'
         };
@@ -268,18 +416,64 @@ export default class ProjectTasks extends LightningElement {
 
     handleEdit(event) {
         const activityId = event.currentTarget.dataset.id;
-        // Placeholder for future edit behavior
-        // eslint-disable-next-line no-console
-        console.log('Edit activity:', activityId);
+        if (!activityId) return;
+        // find the activity across protocolData
+        let found = null;
+        let foundMilestone = null;
+        for (const m of this.milestoneNames) {
+            const arr = this.protocolData[m] || [];
+            const idx = arr.findIndex(a => a.id === activityId);
+            if (idx !== -1) {
+                found = arr[idx];
+                foundMilestone = m;
+                break;
+            }
+        }
+        if (!found) return;
+        // populate add form for editing
+        this.isEditing = true;
+        this.editingActivityId = activityId;
+        this.isAddActivityOpen = true;
+        this.addFormMilestone = foundMilestone || this.selectedProtocolStep || this.milestoneNames[0];
+        this.addFormDescription = found.activity || '';
+        this.addFormPlanStart = found.planDate || '';
+        this.addFormPlanFinish = found.planFinish || '';
+        this.addFormActualStart = found.actualDate || '';
+        this.addFormEta = found.eta || '';
     }
 
     handleDelete(event) {
         const activityId = event.currentTarget.dataset.id;
-        if (!this.selectedProtocolStep || !activityId) return;
-        if (!confirm('Are you sure you want to delete this activity?')) return;
-        const activities = this.protocolData[this.selectedProtocolStep] || [];
-        this.protocolData[this.selectedProtocolStep] = activities.filter((act) => act.id !== activityId);
-        this.protocolData = { ...this.protocolData };
+        if (!activityId) return;
+        // open confirmation modal and store target id
+        this.deleteTargetId = activityId;
+        this.isDeleteOpen = true;
+    }
+
+    closeDeletePopup() {
+        this.isDeleteOpen = false;
+        this.deleteTargetId = null;
+    }
+
+    confirmDelete() {
+        const activityId = this.deleteTargetId;
+        if (!activityId) {
+            this.closeDeletePopup();
+            return;
+        }
+        // remove activity across all milestones if found
+        let changed = false;
+        const newData = {};
+        for (const m of this.milestoneNames) {
+            const arr = this.protocolData[m] || [];
+            const filtered = arr.filter(a => a.id !== activityId);
+            if (filtered.length !== arr.length) changed = true;
+            newData[m] = filtered;
+        }
+        if (changed) {
+            this.protocolData = { ...this.protocolData, ...newData };
+        }
+        this.closeDeletePopup();
     }
 
     handleModalOverlayClick(event) {
