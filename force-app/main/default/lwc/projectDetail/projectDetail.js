@@ -2066,4 +2066,45 @@ export default class ProjectDetail extends LightningElement {
 
 
 
+    // Intake / Project Scoping Questionnaire State
+    intakeQuestions = [
+        { id: 1, label: 'What is the primary objective of this project?', value: '' },
+        { id: 2, label: 'What is the target patient population?', value: '' },
+        { id: 3, label: 'What are the key inclusion criteria?', value: '' },
+        { id: 4, label: 'What are the key exclusion criteria?', value: '' },
+        { id: 5, label: 'What is the estimated sample size?', value: '' },
+        { id: 6, label: 'What is the expected study duration?', value: '' },
+        { id: 7, label: 'What specific data points need to be collected?', value: '' },
+        { id: 8, label: 'Are there any specific safety monitoring requirements?', value: '' },
+        { id: 9, label: 'What is the budget range?', value: '' },
+        { id: 10, label: 'What is the desired timeline for completion?', value: '' },
+        { id: 11, label: 'What are the key deliverables?', value: '' },
+        { id: 12, label: 'Any additional comments or requirements?', value: '' }
+    ];
+
+    get isIntake() {
+        return this.currentTab === 'Intake';
+    }
+
+    handleIntakeChange(event) {
+        const id = parseInt(event.target.dataset.id, 10);
+        const val = event.target.value;
+        this.intakeQuestions = this.intakeQuestions.map(q => {
+            if (q.id === id) {
+                return { ...q, value: val };
+            }
+            return q;
+        });
+    }
+
+    handleIntakeClear() {
+        this.intakeQuestions = this.intakeQuestions.map(q => ({ ...q, value: '' }));
+    }
+
+    handleIntakeSave() {
+        // eslint-disable-next-line no-console
+        console.log('Intake Saved:', JSON.stringify(this.intakeQuestions));
+        // Add toast or notification logic here if needed
+    }
+
 }

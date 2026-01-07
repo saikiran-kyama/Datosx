@@ -604,6 +604,80 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         return this.currentTab === 'Possibilities';
     }
 
+    get isIntake() {
+        return this.currentTab === 'Intake';
+    }
+
+    // Intake tab state
+    selectedIntakeSection = 'submitter';
+    intakeSections = [
+        { id: 'submitter', name: 'Submitter & Company Details', icon: 'utility:user' },
+        { id: 'facilities', name: 'Facilities Available', icon: 'utility:location' },
+        { id: 'therapeutic', name: 'Therapeutic Area of Focus', icon: 'utility:heart' },
+        { id: 'edcs', name: 'EDCS', icon: 'utility:database' },
+        { id: 'ehrs', name: 'EHRS', icon: 'utility:record' }
+    ];
+
+    // Intake section getters
+    get isIntakeSubmitter() {
+        return this.selectedIntakeSection === 'submitter';
+    }
+    get isIntakeFacilities() {
+        return this.selectedIntakeSection === 'facilities';
+    }
+    get isIntakeTherapeutic() {
+        return this.selectedIntakeSection === 'therapeutic';
+    }
+    get isIntakeEdcs() {
+        return this.selectedIntakeSection === 'edcs';
+    }
+    get isIntakeEhrs() {
+        return this.selectedIntakeSection === 'ehrs';
+    }
+
+    // Intake navigation items
+    get intakeNavItems() {
+        return this.intakeSections.map((section, index) => {
+            const isActive = this.selectedIntakeSection === section.id;
+            const currentIndex = this.intakeSections.findIndex(s => s.id === this.selectedIntakeSection);
+            const isCompleted = index < currentIndex;
+            
+            return {
+                ...section,
+                className: `intake-nav-item ${isActive ? 'active' : ''}`,
+                statusClass: isActive ? 'intake-status-active' : (isCompleted ? 'intake-status-completed' : 'intake-status-pending'),
+                statusIcon: isActive ? 'utility:check' : (isCompleted ? 'utility:check' : 'utility:record')
+            };
+        });
+    }
+
+    // Salutation options for intake
+    salutationOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Mr.', value: 'Mr.' },
+        { label: 'Ms.', value: 'Ms.' },
+        { label: 'Mrs.', value: 'Mrs.' },
+        { label: 'Dr.', value: 'Dr.' },
+        { label: 'Prof.', value: 'Prof.' }
+    ];
+
+    // Annual patient volume options
+    annualPatientOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Less than 10,000', value: 'less_10k' },
+        { label: '10,000 - 50,000', value: '10k_50k' },
+        { label: '50,000 - 100,000', value: '50k_100k' },
+        { label: '100,000 - 500,000', value: '100k_500k' },
+        { label: 'More than 500,000', value: 'more_500k' }
+    ];
+
+    // Innovation team options
+    innovationTeamOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' }
+    ];
+
     // Tab class getters to provide 'active' class when currentTab matches
     get detailsTabClass() {
       return this.currentTab === 'Details' ? 'record-home-details record-home-tab tabs__item active uiTabItem' : 'record-home-details record-home-tab tabs__item uiTabItem';
@@ -631,6 +705,10 @@ export default class HospitalSystemInnerScreen extends LightningElement {
 
     get possibilitiesTabClass() {
       return this.currentTab === 'Possibilities' ? 'record-home-possibilities record-home-tab tabs__item active uiTabItem' : 'record-home-possibilities record-home-tab tabs__item uiTabItem';
+    }
+
+    get intakeTabClass() {
+      return this.currentTab === 'Intake' ? 'record-home-intake record-home-tab tabs__item active uiTabItem' : 'record-home-intake record-home-tab tabs__item uiTabItem';
     }
 
     // Getters for conditional values in Notes section
@@ -1380,7 +1458,46 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         } catch (e) {
             // ignore DOM errors
         }
+        // Initialize Intake tab section when user navigates to it
+        if (tab === 'Intake') {
+            if (!this.selectedIntakeSection) {
+                this.selectedIntakeSection = 'submitter';
+            }
+        }
+    }
 
+    // Intake section click handler
+    handleIntakeSectionClick(event) {
+        const sectionId = event.currentTarget.dataset.section;
+        if (sectionId) {
+            this.selectedIntakeSection = sectionId;
+        }
+    }
+
+    // Save and Next for Intake
+    handleIntakeSaveAndNext() {
+        const currentIndex = this.intakeSections.findIndex(
+            section => section.id === this.selectedIntakeSection
+        );
+        if (currentIndex !== -1 && currentIndex < this.intakeSections.length - 1) {
+            this.selectedIntakeSection = this.intakeSections[currentIndex + 1].id;
+        }
+    }
+
+    // Clear Intake form
+    handleIntakeClear() {
+        // Reset form values - implementation can be expanded as needed
+        console.log('Clearing intake form');
+    }
+
+    // Back navigation for Intake
+    handleIntakeBack() {
+        const currentIndex = this.intakeSections.findIndex(
+            section => section.id === this.selectedIntakeSection
+        );
+        if (currentIndex > 0) {
+            this.selectedIntakeSection = this.intakeSections[currentIndex - 1].id;
+        }
     }
 
     // Protocol: select a step to update the right panel

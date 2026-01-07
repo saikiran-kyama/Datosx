@@ -79,6 +79,13 @@
                     </a>
                 </li>
 
+                <li role="presentation" class="record-home-intake record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Intake" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Intake" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Intake</span>
+                    </a>
+                </li>
+
                 <li role="presentation" class="record-home-requirements record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="false" role="tab" tabindex="-1" title="Requirements" class="tabHeader"
                         href="javascript:void(0);" data-tab="Requirements" onclick={handleTabClick} style="padding: 8px 12px;">
@@ -105,6 +112,7 @@
                         <span class="title">Notes</span>
                     </a>
                 </li>
+                
             </ul>
         </div>
 
@@ -1144,6 +1152,287 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Intake tab content -->
+        <template if:true={isIntake}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-intake record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small intake-wrapper">
+                    <!-- Header Section -->
+                    <div class="intake-header">
+                        <div class="intake-header-left">
+                            <div class="intake-header-icon">
+                                <lightning-icon icon-name="utility:task" size="small"></lightning-icon>
+                            </div>
+                            <div class="intake-header-text">
+                                <h2 class="intake-header-title">Intake Questionnaire</h2>
+                                <p class="intake-header-subtitle">Modify the details below, received from the intake questionnaire.</p>
+                            </div>
+                        </div>
+                        <button class="btn-send-questionnaire">
+                            <lightning-icon icon-name="utility:email" size="x-small" class="btn-icon"></lightning-icon>
+                            Send Questionnaire
+                        </button>
+                    </div>
+                    
+                    <div class="intake-container">
+                        <!-- Left Navigation -->
+                        <div class="intake-left-nav">
+                            <template for:each={intakeNavItems} for:item="section">
+                                <div key={section.id} class={section.className} data-section={section.id} onclick={handleIntakeSectionClick}>
+                                    <span class={section.statusClass}>
+                                        <lightning-icon icon-name={section.statusIcon} size="xx-small" class="intake-status-icon"></lightning-icon>
+                                    </span>
+                                    <span class="intake-nav-text">{section.name}</span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Right Content Area -->
+                        <div class="intake-content">
+                            <!-- Section 1: Submitter & Company Details -->
+                            <template if:true={isIntakeSubmitter}>
+                                <div class="intake-forms-row">
+                                    <!-- Submitter Details Form -->
+                                    <div class="intake-form-wrapper">
+                                        <div class="intake-section-title">Submitter Details</div>
+                                        <div class="intake-card">
+                                            <div class="intake-card-body">
+                                                <div class="intake-form-row">
+                                                    <div class="intake-field">
+                                                        <label class="intake-label"><span class="required">*</span>Your Salutation</label>
+                                                        <lightning-combobox placeholder="--None--" options={salutationOptions} class="intake-input"></lightning-combobox>
+                                                    </div>
+                                                </div>
+                                                <div class="intake-form-row two-col">
+                                                    <div class="intake-field">
+                                                        <label class="intake-label"><span class="required">*</span>Your First Name</label>
+                                                        <lightning-input type="text" variant="label-hidden" class="intake-input"></lightning-input>
+                                                    </div>
+                                                    <div class="intake-field">
+                                                        <label class="intake-label"><span class="required">*</span>Your Last Name</label>
+                                                        <lightning-input type="text" variant="label-hidden" class="intake-input"></lightning-input>
+                                                    </div>
+                                                </div>
+                                                <div class="intake-form-row two-col">
+                                                    <div class="intake-field">
+                                                        <label class="intake-label"><span class="required">*</span>Your Role</label>
+                                                        <lightning-input type="text" variant="label-hidden" class="intake-input"></lightning-input>
+                                                    </div>
+                                                    <div class="intake-field">
+                                                        <label class="intake-label"><span class="required">*</span>Your Email Address</label>
+                                                        <lightning-input type="email" variant="label-hidden" placeholder="your@example.com" class="intake-input"></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Company Details Form -->
+                                    <div class="intake-form-wrapper company-details-wrapper">
+                                        <div class="intake-section-title company-details-title">Company Details</div>
+                                        <div class="intake-card company-details-card">
+                                            <div class="intake-card-body company-details-body">
+                                                <div class="intake-form-row company-institution-row">
+                                                    <div class="intake-field company-institution-field">
+                                                        <label class="intake-label company-institution-label"><span class="required">*</span>Name of your institution:</label>
+                                                        <lightning-input type="text" variant="label-hidden" class="intake-input company-institution-input"></lightning-input>
+                                                    </div>
+                                                </div>
+                                                <div class="intake-form-row company-size-row">
+                                                    <div class="intake-field company-size-field">
+                                                        <label class="intake-label company-size-label"><span class="required">*</span>What is the size of your company?</label>
+                                                        <lightning-combobox placeholder="--None--" style="margin-top: -13px;" options={companySizeOptions} class="intake-input company-size-input"></lightning-combobox>
+                                                    </div>
+                                                </div>
+                                                <div class="intake-form-row company-url-row">
+                                                    <div class="intake-field company-url-field">
+                                                        <label class="intake-label company-url-label">Company URL link</label>
+                                                        <lightning-input type="url" variant="label-hidden" class="intake-input company-url-input"></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Section 2: Technology Information -->
+                            <template if:true={isIntakeTechnology}>
+                                <!-- Card 1: Product Name -->
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>What is the name of the product you would like to test?</label>
+                                                <lightning-input type="text" variant="label-hidden" value="Meta Quest Copy" class="intake-input"></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: Solution Type Checkboxes -->
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>What type of solution is this product? (check all that apply)</label>
+                                                <div class="intake-checkbox-grid">
+                                                    <lightning-input type="checkbox" label="AI Algorithm"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Device" checked></lightning-input>
+                                                    <lightning-input type="checkbox" label="Digital Diagnostics"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Mobile Health App"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Wearable Device" checked></lightning-input>
+                                                    <lightning-input type="checkbox" label="Other"></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: Problem Description -->
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>What problem does your technology solve?</label>
+                                                <lightning-input type="text" variant="label-hidden" value="VR & AR capability for gaming" class="intake-input"></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Section 3: End Users -->
+                            <template if:true={isIntakeEndUsers}>
+                                <div class="intake-section-title">End Users</div>
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>Who are your end-users? (check all that apply)</label>
+                                                <div class="intake-checkbox-grid">
+                                                    <lightning-input type="checkbox" label="Administrators"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Health Systems"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Patients"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Providers"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Researchers"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Other"></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Section 4: Therapeutic Area of Focus -->
+                            <template if:true={isIntakeTherapeutic}>
+                                <div class="intake-section-title">Therapeutic Area of Focus</div>
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>Please select your organizations area(s) of focus (check all that apply)</label>
+                                                <div class="intake-checkbox-grid therapeutic-grid">
+                                                    <lightning-input type="checkbox" label="Allergy and Immunology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Cardiovascular"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Chronic Diseases"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Dental"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Dermatology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Diagnostic Radiology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Emergency Department (ER / ED)"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Endocrinology (Diabetes, Thyroid, Hormone Disorders)"></lightning-input>
+                                                    <lightning-input type="checkbox" label="ENT / Otolaryngology (Ear, Nose, Throat)"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Gastroenterology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Genetic Medicine"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Hematology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Infectious Disease"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Mens Health"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Musculoskeletal"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Nephrology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Neuroscience"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Oncology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Ophthalmology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Pathology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Pediatrics"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Physical medicine and rehab"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Population Health"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Preventative"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Primary Care"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Psychiatry"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Pulmonary"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Respiratory"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Rheumatology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Surgery"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Urology"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Womens Health"></lightning-input>
+                                                    <lightning-input type="checkbox" label="N/A"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Other"></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Section 5: Clinical Trials or Studies -->
+                            <template if:true={isIntakeTrials}>
+                                <div class="intake-section-title">Clinical Trials or Studies</div>
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>Have you already run clinical trials or studies to help validate your technology?</label>
+                                                <lightning-combobox placeholder="--None--" options={clinicalTrialsOptions} class="intake-input"></lightning-combobox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                            </template>
+
+                            <!-- Section 6: Reference Sources (standalone) -->
+                            <template if:true={isIntakeReference}>
+                                <div class="intake-section-title">Reference Sources</div>
+                                <div class="intake-card">
+                                    <div class="intake-card-body">
+                                        <div class="intake-form-row">
+                                            <div class="intake-field">
+                                                <label class="intake-label"><span class="required">*</span>How did you hear about us? (check all that apply)</label>
+                                                <div class="intake-checkbox-grid">
+                                                    <lightning-input type="checkbox" label="Conference"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Digital Health"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Direct Approach"></lightning-input>
+                                                    <lightning-input type="checkbox" label="HealthXL"></lightning-input>
+                                                    <lightning-input type="checkbox" label="ORCHA"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Search Engine"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Social Media"></lightning-input>
+                                                    <lightning-input type="checkbox" label="Other"></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Global Form Actions -->
+                            <div class="intake-global-actions">
+                                <button class="btn-back" onclick={handleIntakeBack}>
+                                    <lightning-icon icon-name="utility:back" size="x-small" class="btn-icon-left"></lightning-icon>
+                                    Back
+                                </button>
+                                <button class="btn-clear" onclick={handleIntakeClear}>Clear</button>
+                                <button class="btn-save" onclick={handleSaveAndNext}>
+                                    Save &amp; Next
+                                    <lightning-icon icon-name="utility:forward" size="x-small" class="btn-icon-right"></lightning-icon>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
