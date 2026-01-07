@@ -38,6 +38,41 @@ export default class SponserInnerScreen extends LightningElement {
     selectedEstimationSectionId = '';
     invoiceStepId = 'invoiceSchedule';
     
+    // Intake tab state
+    selectedIntakeSection = 'submitter';
+    intakeSections = [
+        { id: 'submitter', name: 'Submitter & Company Details', icon: 'utility:user' },
+        { id: 'technology', name: 'Technology Information', icon: 'utility:connected_apps' },
+        { id: 'endusers', name: 'End Users', icon: 'utility:groups' },
+        { id: 'therapeutic', name: 'Therapeutic Area of Focus', icon: 'utility:heart' },
+        { id: 'trials', name: 'Clinical Trials or Studies', icon: 'utility:knowledge_base' },
+        { id: 'reference', name: 'Reference Sources', icon: 'utility:link' }
+    ];
+    // Intake combobox options
+    salutationOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Mr.', value: 'Mr.' },
+        { label: 'Ms.', value: 'Ms.' },
+        { label: 'Mrs.', value: 'Mrs.' },
+        { label: 'Dr.', value: 'Dr.' },
+        { label: 'Prof.', value: 'Prof.' }
+    ];
+    companySizeOptions = [
+        { label: '--None--', value: '' },
+        { label: '1-10', value: '1-10' },
+        { label: '11-50', value: '11-50' },
+        { label: '51-200', value: '51-200' },
+        { label: '201-500', value: '201-500' },
+        { label: '501-1000', value: '501-1000' },
+        { label: '1000+', value: '1000+' }
+    ];
+    clinicalTrialsOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'Yes' },
+        { label: 'No', value: 'No' },
+        { label: 'In Progress', value: 'In Progress' }
+    ];
+    
     // Notes tab state
     filterToggle = false;
     selectedTags = [];
@@ -330,6 +365,46 @@ export default class SponserInnerScreen extends LightningElement {
 
     get isNotes() {
         return this.currentTab === 'Related';
+    }
+
+    get isIntake() {
+        return this.currentTab === 'Intake';
+    }
+
+    // Intake section getters
+    get isIntakeSubmitter() {
+        return this.selectedIntakeSection === 'submitter';
+    }
+    get isIntakeTechnology() {
+        return this.selectedIntakeSection === 'technology';
+    }
+    get isIntakeEndUsers() {
+        return this.selectedIntakeSection === 'endusers';
+    }
+    get isIntakeTherapeutic() {
+        return this.selectedIntakeSection === 'therapeutic';
+    }
+    get isIntakeTrials() {
+        return this.selectedIntakeSection === 'trials';
+    }
+    get isIntakeReference() {
+        return this.selectedIntakeSection === 'reference';
+    }
+
+    // Intake navigation items with active state
+    get intakeNavItems() {
+        return this.intakeSections.map(section => ({
+            ...section,
+            className: section.id === this.selectedIntakeSection ? 'intake-nav-item active' : 'intake-nav-item'
+        }));
+    }
+
+    // Handle intake section click
+    handleIntakeSectionClick(event) {
+        const sectionId = event.currentTarget.dataset.section;
+        if (sectionId) {
+            this.selectedIntakeSection = sectionId;
+        }
     }
 
     // Getters for conditional values in Notes section
