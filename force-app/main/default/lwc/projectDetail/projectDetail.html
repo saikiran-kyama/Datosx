@@ -1,5 +1,6 @@
 <template>
     <!-- Highlights Panel -->
+    
     <div class="highlights slds-clearfix slds-page-header slds-page-header_record-home">
         <div class="slds-grid primaryFieldRow">
             <div class="slds-grid slds-col slds-has-flexi-truncate">
@@ -80,6 +81,13 @@
                     </a>
                 </li>
 
+
+                <li role="presentation" class="record-home-intake record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Intake" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Intake" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Intake</span>
+                    </a>
+                </li>
 
                 <li role="presentation" class="record-home-details record-home-tab tabs__item  uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="true" role="tab" tabindex="0" title="Details" class="tabHeader"
@@ -195,6 +203,40 @@
                     </template>
                 </div>
         
+            </section>
+        </template>
+
+        <!-- Intake Tab Content -->
+        <template if:true={isIntake}>
+            <section role="tabpanel" aria-expanded="true" class="record-home-intake record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner intake-form-container" style="padding: 20px 40px;">
+                        <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 20px; text-align: left;">Project Scoping Questionnaire Form</h2>
+                        
+                        <div class="questions-list">
+                            <template for:each={intakeQuestions} for:item="question">
+                                <div key={question.id} class="question-item" style="margin-bottom: 24px; text-align: left;">
+                                    <p class="question-label" style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: #16325c;">
+                                        {question.id}. {question.label}
+                                    </p>
+                                    <lightning-textarea 
+                                         value={question.value} 
+                                         onchange={handleIntakeChange}
+                                         data-id={question.id}
+                                         variant="label-hidden"
+                                         class="intake-textarea"
+                                         style="min-height: 100px; --slds-c-textarea-sizing-min-height: 100px;"
+                                    ></lightning-textarea>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="form-actions" >
+                             <button onclick={handleIntakeClear} class="slds-button slds-button_neutral">Clear</button>
+                             <button onclick={handleIntakeSave} class="slds-button slds-button_brand">Save</button>
+                        </div>
+                    </div>
+                </div>
             </section>
         </template>
 
