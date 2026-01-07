@@ -304,7 +304,7 @@
     alternative-text="Delete"
     title="Delete"
     data-id={row.id}
-    onclick={handleDelete}
+    onclick={openDeleteModal}
     class="delete-btn"
     style="--sds-c-icon-color-foreground: #c23934;"
 ></lightning-button-icon>
@@ -381,6 +381,27 @@
         ></c-paginator>
         </template>
 
+        <!-- Delete Confirmation Modal -->
+        <template if:true={showDeleteModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Delete Health System</div>
+                        <button class="hs-modal__close" title="Close" onclick={closeDeleteModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div style="padding: 8px 4px;">
+                            <p>Do you want to delete <strong>{deleteRecordName}</strong>?</p>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closeDeleteModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={confirmDelete}>Delete</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
         <!-- Detail view: show hospitalSystemInnerScreen when a HS ID is clicked -->
         <template if:true={showDetail}>
             <c-hospital-system-inner-screen health-system={selectedHS} onback={handleBack}></c-hospital-system-inner-screen>
@@ -399,6 +420,10 @@
                             <div class="hs-form-group">
                                 <label>HS Name</label>
                                 <lightning-input name="formHsName" value={formHsName} onchange={handleInputChange} placeholder="Enter HS name"></lightning-input>
+                            </div>
+                             <div class="hs-form-group">
+                                <label>Contact</label>
+                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
                             </div>
                             <div class="hs-form-group">
                                 <label>State</label>
@@ -438,10 +463,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="hs-form-group">
-                                <label>Contact</label>
-                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
-                            </div>
+                           
                             <div class="hs-form-group">
                                 <label>Email</label>
                                 <lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter email"></lightning-input>
@@ -473,6 +495,10 @@
                             <div class="hs-form-group">
                                 <label>HS Name</label>
                                 <lightning-input name="formHsName" value={formHsName} onchange={handleInputChange} placeholder="Enter HS name"></lightning-input>
+                            </div>
+                            <div class="hs-form-group">
+                                <label>Contact</label>
+                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
                             </div>
                             <div class="hs-form-group">
                                 <label>Status</label>
@@ -516,10 +542,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="hs-form-group">
-                                <label>Contact</label>
-                                <lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter contact"></lightning-input>
-                            </div>
+                            
                             <div class="hs-form-group">
                                 <label>Email</label>
                                 <lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter email"></lightning-input>

@@ -11,6 +11,10 @@ export default class HealthSystems extends LightningElement {
     editRecordId = '';
     selectedHSId = '';
     selectedHS = null;
+    // Delete modal state
+    showDeleteModal = false;
+    deleteRecordId = '';
+    deleteRecordName = '';
     
     // Filters
     showFilters = false;
@@ -44,29 +48,29 @@ export default class HealthSystems extends LightningElement {
     // Data
     data = [
         { id: '1', hsId: 'HS-001', hsName: 'Lakeside Health', status: 'Active', projects: 5, matches: 7, docs: 12, legal: 3, messages: 17, state: 'Texas', city: 'Houston', contact: 'Dr. Michael Stone', contactPhoto: `${AVATARS}/1.svg.jpg`, healthPhoto: `${AVATARS}/HS1.png`, email: 'michael.stone@lakesidehealth.com', phone: '+1-713-555-0101', lastUpdated: '2025-11-01' },
-        { id: '2', hsId: 'HS-002', hsName: 'Sunshine Medical', status: 'Onboarding', projects: 3, matches: 4, docs: 6, legal: 2, messages: 8, state: 'Florida', city: 'Miami', contact: 'Dr. Ana Garcia', contactPhoto: `${AVATARS}/2.svg.jpg`, healthPhoto: `${AVATARS}/HS2.png`, email: 'ana.garcia@sunshinemed.com', phone: '+1-305-555-0112', lastUpdated: '2025-10-28' },
+        { id: '2', hsId: 'HS-002', hsName: 'Sunshine Medical', status: 'Inactive', projects: 3, matches: 4, docs: 6, legal: 2, messages: 8, state: 'Florida', city: 'Miami', contact: 'Dr. Ana Garcia', contactPhoto: `${AVATARS}/2.svg.jpg`, healthPhoto: `${AVATARS}/HS2.png`, email: 'ana.garcia@sunshinemed.com', phone: '+1-305-555-0112', lastUpdated: '2025-10-28' },
         { id: '3', hsId: 'HS-003', hsName: 'Bayview Health', status: 'Active', projects: 8, matches: 10, docs: 15, legal: 5, messages: 22, state: 'California', city: 'San Francisco', contact: 'Dr. Emily Chen', contactPhoto: `${AVATARS}/3.svg.jpg`, healthPhoto: `${AVATARS}/HS3.png`, email: 'emily.chen@bayviewhealth.com', phone: '+1-415-555-0123', lastUpdated: '2025-11-10' },
-        { id: '4', hsId: 'HS-004', hsName: 'Riverview Medical', status: 'Onboarding', projects: 2, matches: 1, docs: 3, legal: 1, messages: 3, state: 'New York', city: 'Albany', contact: 'Dr. Steven Clark', contactPhoto: `${AVATARS}/4.svg.jpg`, healthPhoto: `${AVATARS}/HS4.png`, email: 'steven.clark@riverview.com', phone: '+1-518-555-0134', lastUpdated: '2025-10-15' },
+        { id: '4', hsId: 'HS-004', hsName: 'Riverview Medical', status: 'Inactive', projects: 2, matches: 1, docs: 3, legal: 1, messages: 3, state: 'New York', city: 'Albany', contact: 'Dr. Steven Clark', contactPhoto: `${AVATARS}/4.svg.jpg`, healthPhoto: `${AVATARS}/HS4.png`, email: 'steven.clark@riverview.com', phone: '+1-518-555-0134', lastUpdated: '2025-10-15' },
         { id: '5', hsId: 'HS-005', hsName: 'Mountain Health', status: 'Active', projects: 6, matches: 9, docs: 10, legal: 2, messages: 14, state: 'Colorado', city: 'Denver', contact: 'Dr. Laura Bennett', contactPhoto: `${AVATARS}/5.svg.jpg`, healthPhoto: `${AVATARS}/HS5.png`, email: 'laura.bennett@mountainhealth.com', phone: '+1-303-555-0145', lastUpdated: '2025-11-05' },
         { id: '6', hsId: 'HS-006', hsName: 'Prairie Care', status: 'Active', projects: 4, matches: 5, docs: 7, legal: 1, messages: 9, state: 'Illinois', city: 'Chicago', contact: 'Dr. Raj Patel', contactPhoto: `${AVATARS}/6.svg.jpg`, healthPhoto: `${AVATARS}/HS6.png`, email: 'raj.patel@prairiecare.com', phone: '+1-312-555-0156', lastUpdated: '2025-10-22' },
-        { id: '7', hsId: 'HS-007', hsName: 'Coastal General', status: 'Onboarding', projects: 1, matches: 2, docs: 2, legal: 0, messages: 2, state: 'Georgia', city: 'Atlanta', contact: 'Dr. Karen White', contactPhoto: `${AVATARS}/7.svg.jpg`, healthPhoto: `${AVATARS}/HS7.png`, email: 'karen.white@coastalgen.com', phone: '+1-404-555-0167', lastUpdated: '2025-09-30' },
+        { id: '7', hsId: 'HS-007', hsName: 'Coastal General', status: 'Inactive', projects: 1, matches: 2, docs: 2, legal: 0, messages: 2, state: 'Georgia', city: 'Atlanta', contact: 'Dr. Karen White', contactPhoto: `${AVATARS}/7.svg.jpg`, healthPhoto: `${AVATARS}/HS7.png`, email: 'karen.white@coastalgen.com', phone: '+1-404-555-0167', lastUpdated: '2025-09-30' },
         { id: '8', hsId: 'HS-008', hsName: 'Desert Springs', status: 'Active', projects: 7, matches: 8, docs: 11, legal: 4, messages: 19, state: 'Arizona', city: 'Phoenix', contact: 'Dr. Omar Ruiz', contactPhoto: `${AVATARS}/8.svg.jpg`, healthPhoto: `${AVATARS}/HS8.png`, email: 'omar.ruiz@desertsprings.com', phone: '+1-602-555-0178', lastUpdated: '2025-11-11' },
         { id: '9', hsId: 'HS-009', hsName: 'Riverbend Health', status: 'Active', projects: 5, matches: 6, docs: 9, legal: 2, messages: 11, state: 'Ohio', city: 'Columbus', contact: 'Dr. Megan Lee', contactPhoto: `${AVATARS}/1.svg.jpg`, healthPhoto: `${AVATARS}/HS1.png`, email: 'megan.lee@riverbend.com', phone: '+1-614-555-0189', lastUpdated: '2025-11-02' },
-        { id: '10', hsId: 'HS-010', hsName: 'Harbor Medical', status: 'Onboarding', projects: 2, matches: 3, docs: 4, legal: 1, messages: 5, state: 'North Carolina', city: 'Charlotte', contact: 'Dr. Paul Gordon', contactPhoto: `${AVATARS}/2.svg.jpg`, healthPhoto: `${AVATARS}/HS2.png`, email: 'paul.gordon@harbormed.com', phone: '+1-704-555-0190', lastUpdated: '2025-10-18' },
+        { id: '10', hsId: 'HS-010', hsName: 'Harbor Medical', status: 'Inactive', projects: 2, matches: 3, docs: 4, legal: 1, messages: 5, state: 'North Carolina', city: 'Charlotte', contact: 'Dr. Paul Gordon', contactPhoto: `${AVATARS}/2.svg.jpg`, healthPhoto: `${AVATARS}/HS2.png`, email: 'paul.gordon@harbormed.com', phone: '+1-704-555-0190', lastUpdated: '2025-10-18' },
         { id: '11', hsId: 'HS-011', hsName: 'Lakeshore Clinic', status: 'Active', projects: 9, matches: 12, docs: 18, legal: 6, messages: 26, state: 'Michigan', city: 'Detroit', contact: 'Dr. Nina Shah', contactPhoto: `${AVATARS}/3.svg.jpg`, healthPhoto: `${AVATARS}/HS3.png`, email: 'nina.shah@lakeshoreclinic.com', phone: '+1-313-555-0201', lastUpdated: '2025-11-12' },
         { id: '12', hsId: 'HS-012', hsName: 'Cedar Valley Health', status: 'Active', projects: 3, matches: 4, docs: 5, legal: 1, messages: 6, state: 'Minnesota', city: 'Minneapolis', contact: 'Dr. Erik Olson', contactPhoto: `${AVATARS}/4.svg.jpg`, healthPhoto: `${AVATARS}/HS4.png`, email: 'erik.olson@cedarvalley.com', phone: '+1-612-555-0212', lastUpdated: '2025-10-29' },
-        { id: '13', hsId: 'HS-013', hsName: 'Blue Ridge Medical', status: 'Onboarding', projects: 2, matches: 2, docs: 3, legal: 0, messages: 3, state: 'Virginia', city: 'Richmond', contact: 'Dr. Claire Adams', contactPhoto: `${AVATARS}/5.svg.jpg`, healthPhoto: `${AVATARS}/HS5.png`, email: 'claire.adams@blueridge.com', phone: '+1-804-555-0223', lastUpdated: '2025-09-25' },
+        { id: '13', hsId: 'HS-013', hsName: 'Blue Ridge Medical', status: 'Inactive', projects: 2, matches: 2, docs: 3, legal: 0, messages: 3, state: 'Virginia', city: 'Richmond', contact: 'Dr. Claire Adams', contactPhoto: `${AVATARS}/5.svg.jpg`, healthPhoto: `${AVATARS}/HS5.png`, email: 'claire.adams@blueridge.com', phone: '+1-804-555-0223', lastUpdated: '2025-09-25' },
         { id: '14', hsId: 'HS-014', hsName: 'Pinecrest Health', status: 'Active', projects: 6, matches: 7, docs: 10, legal: 2, messages: 13, state: 'Tennessee', city: 'Nashville', contact: 'Dr. Henry Moore', contactPhoto: `${AVATARS}/6.svg.jpg`, healthPhoto: `${AVATARS}/HS6.png`, email: 'henry.moore@pinecrest.com', phone: '+1-615-555-0234', lastUpdated: '2025-11-07' },
         { id: '15', hsId: 'HS-015', hsName: 'Gulf Coast Health', status: 'Active', projects: 4, matches: 5, docs: 8, legal: 1, messages: 10, state: 'Louisiana', city: 'New Orleans', contact: 'Dr. Isabelle Martin', contactPhoto: `${AVATARS}/7.svg.jpg`, healthPhoto: `${AVATARS}/HS7.png`, email: 'isabelle.martin@gulfcoast.com', phone: '+1-504-555-0245', lastUpdated: '2025-10-09' },
-        { id: '16', hsId: 'HS-016', hsName: 'Summit Medical', status: 'Onboarding', projects: 1, matches: 1, docs: 1, legal: 0, messages: 1, state: 'Indiana', city: 'Indianapolis', contact: 'Dr. Tom Baker', contactPhoto: `${AVATARS}/8.svg.jpg`, healthPhoto: `${AVATARS}/HS8.png`, email: 'tom.baker@summitmed.com', phone: '+1-317-555-0256', lastUpdated: '2025-10-05' },
+        { id: '16', hsId: 'HS-016', hsName: 'Summit Medical', status: 'Inactive', projects: 1, matches: 1, docs: 1, legal: 0, messages: 1, state: 'Indiana', city: 'Indianapolis', contact: 'Dr. Tom Baker', contactPhoto: `${AVATARS}/8.svg.jpg`, healthPhoto: `${AVATARS}/HS8.png`, email: 'tom.baker@summitmed.com', phone: '+1-317-555-0256', lastUpdated: '2025-10-05' },
         { id: '17', hsId: 'HS-017', hsName: 'Central Plains Health', status: 'Active', projects: 5, matches: 6, docs: 9, legal: 2, messages: 12, state: 'Missouri', city: 'Kansas City', contact: 'Dr. Olivia Park', contactPhoto: `${AVATARS}/1.svg.jpg`, healthPhoto: `${AVATARS}/HS1.png`, email: 'olivia.park@centralplains.com', phone: '+1-816-555-0267', lastUpdated: '2025-11-03' },
         { id: '18', hsId: 'HS-018', hsName: 'Harborview Health', status: 'Active', projects: 7, matches: 8, docs: 13, legal: 3, messages: 20, state: 'Washington', city: 'Seattle', contact: 'Dr. Carlos Gomez', contactPhoto: `${AVATARS}/2.svg.jpg`, healthPhoto: `${AVATARS}/HS2.png`, email: 'carlos.gomez@harborview.com', phone: '+1-206-555-0278', lastUpdated: '2025-11-09' },
-        { id: '19', hsId: 'HS-019', hsName: 'Harborpoint Clinic', status: 'Onboarding', projects: 2, matches: 2, docs: 2, legal: 0, messages: 4, state: 'Massachusetts', city: 'Boston', contact: 'Dr. Sara Bennett', contactPhoto: `${AVATARS}/3.svg.jpg`, healthPhoto: `${AVATARS}/HS3.png`, email: 'sara.bennett@harborpoint.com', phone: '+1-617-555-0289', lastUpdated: '2025-09-20' },
+        { id: '19', hsId: 'HS-019', hsName: 'Harborpoint Clinic', status: 'Inactive', projects: 2, matches: 2, docs: 2, legal: 0, messages: 4, state: 'Massachusetts', city: 'Boston', contact: 'Dr. Sara Bennett', contactPhoto: `${AVATARS}/3.svg.jpg`, healthPhoto: `${AVATARS}/HS3.png`, email: 'sara.bennett@harborpoint.com', phone: '+1-617-555-0289', lastUpdated: '2025-09-20' },
         { id: '20', hsId: 'HS-020', hsName: 'Valley Regional', status: 'Active', projects: 10, matches: 14, docs: 22, legal: 7, messages: 30, state: 'California', city: 'Los Angeles', contact: 'Dr. William Hart', contactPhoto: `${AVATARS}/4.svg.jpg`, healthPhoto: `${AVATARS}/HS4.png`, email: 'william.hart@valleyregional.com', phone: '+1-323-555-0290', lastUpdated: '2025-11-13' }
     ];
     statusOptions = [
         { label: 'Active', value: 'Active', checked: false },
-        { label: 'Onboarding', value: 'Onboarding', checked: false }
+        { label: 'Inactive', value: 'Inactive', checked: false }
     ];
     stateOptionsBase = [
         { label: 'Telangana', value: 'Telangana', checked: false },
@@ -565,14 +569,30 @@ export default class HealthSystems extends LightningElement {
 
     // handleEdit defined earlier (populates form and opens modal)
 
-    handleDelete(event) {
-        const id = event.currentTarget.dataset.id;
-        // Dispatch delete event for parent to handle
-        this.dispatchEvent(new CustomEvent('delete', {
-            detail: { recordId: id, source: 'healthSystems' },
-            bubbles: true,
-            composed: true
-        }));
+    // Open delete confirmation modal
+    openDeleteModal(event) {
+        const id = event && event.currentTarget ? event.currentTarget.dataset.id : null;
+        if (!id) return;
+        const rec = this.data.find(r => r.id === id);
+        this.deleteRecordId = id;
+        this.deleteRecordName = rec ? rec.hsName : '';
+        this.showDeleteModal = true;
+    }
+
+    closeDeleteModal() {
+        this.showDeleteModal = false;
+        this.deleteRecordId = '';
+        this.deleteRecordName = '';
+    }
+
+    // Confirm and perform delete locally
+    confirmDelete() {
+        const id = this.deleteRecordId;
+        if (!id) return this.closeDeleteModal();
+        const idx = this.data.findIndex(r => r.id === id);
+        if (idx === -1) { this.closeDeleteModal(); return; }
+        this.data = [...this.data.slice(0, idx), ...this.data.slice(idx + 1)];
+        this.closeDeleteModal();
     }
 
     // Click handlers for the center-aligned numeric/link-like cells

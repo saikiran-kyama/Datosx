@@ -5,9 +5,45 @@ export default class PipelineMaster extends LightningElement {
     @track sortBy = '';
     @track sortDirection = 'asc';
     @track pageIndex = 0;
-    @track pageSize = 10;
+    @track pageSize = 25;
     @track pageSizeOptions = [5, 10, 25, 50, 100];
     @track showFilters = false;
+
+    // Modal state
+    @track showAddModal = false;
+    @track showEditModal = false;
+    @track editRecordId = '';
+    // Promote modal state
+    @track showPromoteModal = false;
+    @track promoteRecordId = '';
+    @track promoteRecordName = '';
+
+    // Form fields (Health Systems / Sponsors)
+    @track formName = '';
+    @track formCity = '';
+    @track formState = '';
+    @track formContact = '';
+    @track formEmail = '';
+    @track formPhone = '';
+
+    // Modal-specific searchable single-select dropdown state (for State/City in forms)
+    @track formStateDropdownOpen = false;
+    @track formCityDropdownOpen = false;
+    @track formStateSearch = '';
+    @track formCitySearch = '';
+
+    // Enquiries-only fields
+    @track formEnquiryStatus = 'Active';
+    @track formEnquirySponsorName = '';
+    @track formEnquiryProjectName = '';
+    @track formEnquiryProjectDetails = '';
+    @track formEnquiryDocName = '';
+
+    enquiryStatusOptions = [
+        { label: 'Active', value: 'Active' },
+        { label: 'Inactive', value: 'Inactive' },
+        { label: 'Completed', value: 'Completed' }
+    ];
     
     // Filter state
     @track statusDropdownOpen = false;
@@ -98,12 +134,48 @@ export default class PipelineMaster extends LightningElement {
     // Mock data - replace with actual Apex calls
     @track healthSystemsData = [
         { id: 'HS001', name: 'Memorial Hospital', status: 'Partner', city: 'New York', state: 'NY', contact: 'John Doe', email: 'john@memorial.com', phone: '555-0101', lastUpdated: '2025-12-15' },
-        { id: 'HS002', name: 'City Medical Center', status: 'Prospect', city: 'Los Angeles', state: 'CA', contact: 'Jane Smith', email: 'jane@citymed.com', phone: '555-0102', lastUpdated: '2025-12-20' }
+        { id: 'HS002', name: 'City Medical Center', status: 'Prospect', city: 'Los Angeles', state: 'CA', contact: 'Jane Smith', email: 'jane@citymed.com', phone: '555-0102', lastUpdated: '2025-12-20' },
+        { id: 'HS003', name: 'Green Valley Health', status: 'Partner', city: 'Chicago', state: 'IL', contact: 'Alan Wright', email: 'alan@greenvalley.com', phone: '555-0103', lastUpdated: '2025-12-10' },
+        { id: 'HS004', name: 'Bayview Medical', status: 'Prospect', city: 'San Francisco', state: 'CA', contact: 'Emily Chen', email: 'emily@bayview.com', phone: '555-0104', lastUpdated: '2025-12-12' },
+        { id: 'HS005', name: 'Lakeside Clinic', status: 'Partner', city: 'Seattle', state: 'WA', contact: 'Mark Turner', email: 'mark@lakeside.com', phone: '555-0105', lastUpdated: '2025-12-08' },
+        { id: 'HS006', name: 'Sunrise Hospital', status: 'Prospect', city: 'Miami', state: 'FL', contact: 'Priya Shah', email: 'priya@sunrise.com', phone: '555-0106', lastUpdated: '2025-12-05' },
+        { id: 'HS007', name: 'Cedar Valley Health', status: 'Partner', city: 'Denver', state: 'CO', contact: 'Luke Adams', email: 'luke@cedarvalley.com', phone: '555-0107', lastUpdated: '2025-12-07' },
+        { id: 'HS008', name: 'Harborview Center', status: 'Prospect', city: 'Boston', state: 'MA', contact: 'Sara Bennett', email: 'sara@harborview.com', phone: '555-0108', lastUpdated: '2025-12-09' },
+        { id: 'HS009', name: 'Summit Health', status: 'Partner', city: 'Phoenix', state: 'AZ', contact: 'Carlos Mendez', email: 'carlos@summit.com', phone: '555-0109', lastUpdated: '2025-12-11' },
+        { id: 'HS010', name: 'Prairie Care', status: 'Prospect', city: 'Dallas', state: 'TX', contact: 'Rachel Lee', email: 'rachel@prairiecare.com', phone: '555-0110', lastUpdated: '2025-12-06' },
+        { id: 'HS011', name: 'Riverview Health', status: 'Partner', city: 'Portland', state: 'OR', contact: 'Tom Harris', email: 'tom@riverview.com', phone: '555-0111', lastUpdated: '2025-12-13' },
+        { id: 'HS012', name: 'Coastal General', status: 'Prospect', city: 'San Diego', state: 'CA', contact: 'Nina Patel', email: 'nina@coastalgen.com', phone: '555-0112', lastUpdated: '2025-12-14' },
+        { id: 'HS013', name: 'Valley Regional', status: 'Partner', city: 'Austin', state: 'TX', contact: 'Victor Cruz', email: 'victor@valleyregional.com', phone: '555-0113', lastUpdated: '2025-12-16' },
+        { id: 'HS014', name: 'Evergreen Hospital', status: 'Prospect', city: 'Atlanta', state: 'GA', contact: 'Linda Park', email: 'linda@evergreen.com', phone: '555-0114', lastUpdated: '2025-12-18' },
+        { id: 'HS015', name: 'Pinecrest Medical', status: 'Partner', city: 'Nashville', state: 'TN', contact: 'James Cole', email: 'james@pinecrest.com', phone: '555-0115', lastUpdated: '2025-12-17' },
+        { id: 'HS016', name: 'Midtown Clinic', status: 'Prospect', city: 'Columbus', state: 'OH', contact: 'Olivia Grant', email: 'olivia@midtown.com', phone: '555-0116', lastUpdated: '2025-12-04' },
+        { id: 'HS017', name: 'Highland Health', status: 'Partner', city: 'Charlotte', state: 'NC', contact: 'Ethan Ross', email: 'ethan@highland.com', phone: '555-0117', lastUpdated: '2025-12-03' },
+        { id: 'HS018', name: 'Maplewood Medical', status: 'Prospect', city: 'Houston', state: 'TX', contact: 'Grace Kim', email: 'grace@maplewood.com', phone: '555-0118', lastUpdated: '2025-12-02' },
+        { id: 'HS019', name: 'Canyon Ridge Health', status: 'Partner', city: 'Salt Lake City', state: 'UT', contact: 'Henry Diaz', email: 'henry@canyonridge.com', phone: '555-0119', lastUpdated: '2025-12-01' },
+        { id: 'HS020', name: 'Silver Lake Clinic', status: 'Prospect', city: 'Detroit', state: 'MI', contact: 'Isabel Moore', email: 'isabel@silverlake.com', phone: '555-0120', lastUpdated: '2025-11-30' }
     ];
 
     @track sponsorsData = [
         { id: 'SP001', name: 'PharmaCorp Inc', status: 'Partner', city: 'Boston', state: 'MA', contact: 'Mike Johnson', email: 'mike@pharmacorp.com', phone: '555-0201', lastUpdated: '2025-12-18' },
-        { id: 'SP002', name: 'BioTech Solutions', status: 'Prospect', city: 'San Francisco', state: 'CA', contact: 'Sarah Williams', email: 'sarah@biotech.com', phone: '555-0202', lastUpdated: '2025-12-22' }
+        { id: 'SP002', name: 'BioTech Solutions', status: 'Prospect', city: 'San Francisco', state: 'CA', contact: 'Sarah Williams', email: 'sarah@biotech.com', phone: '555-0202', lastUpdated: '2025-12-22' },
+        { id: 'SP003', name: 'NextGen Pharma', status: 'Partner', city: 'Houston', state: 'TX', contact: 'Kevin Brown', email: 'kevin@nextgen.com', phone: '555-0203', lastUpdated: '2025-12-15' },
+        { id: 'SP004', name: 'LifeCure Labs', status: 'Prospect', city: 'Seattle', state: 'WA', contact: 'Amelia Clark', email: 'amelia@lifecure.com', phone: '555-0204', lastUpdated: '2025-12-14' },
+        { id: 'SP005', name: 'Global Trials', status: 'Partner', city: 'Chicago', state: 'IL', contact: 'Raj Patel', email: 'raj@globaltrials.com', phone: '555-0205', lastUpdated: '2025-12-12' },
+        { id: 'SP006', name: 'MedSolutions', status: 'Prospect', city: 'Denver', state: 'CO', contact: 'Linda Gomez', email: 'linda@medsolutions.com', phone: '555-0206', lastUpdated: '2025-12-11' },
+        { id: 'SP007', name: 'HealthWave', status: 'Partner', city: 'Miami', state: 'FL', contact: 'Victor Long', email: 'victor@healthwave.com', phone: '555-0207', lastUpdated: '2025-12-10' },
+        { id: 'SP008', name: 'TriCore Labs', status: 'Prospect', city: 'Phoenix', state: 'AZ', contact: 'Nora Diaz', email: 'nora@tricore.com', phone: '555-0208', lastUpdated: '2025-12-09' },
+        { id: 'SP009', name: 'OptimaBio', status: 'Partner', city: 'Dallas', state: 'TX', contact: 'Chris Young', email: 'chris@optimabio.com', phone: '555-0209', lastUpdated: '2025-12-08' },
+        { id: 'SP010', name: 'BioVantage', status: 'Prospect', city: 'San Diego', state: 'CA', contact: 'Irene Flores', email: 'irene@biovantage.com', phone: '555-0210', lastUpdated: '2025-12-07' },
+        { id: 'SP011', name: 'Prime Therapeutics', status: 'Partner', city: 'Atlanta', state: 'GA', contact: 'Derek Lee', email: 'derek@primethera.com', phone: '555-0211', lastUpdated: '2025-12-06' },
+        { id: 'SP012', name: 'Vertex Research', status: 'Prospect', city: 'Portland', state: 'OR', contact: 'Sophia Martin', email: 'sophia@vertex.com', phone: '555-0212', lastUpdated: '2025-12-05' },
+        { id: 'SP013', name: 'CureGenix', status: 'Partner', city: 'Austin', state: 'TX', contact: 'Ethan Carter', email: 'ethan@curegenix.com', phone: '555-0213', lastUpdated: '2025-12-04' },
+        { id: 'SP014', name: 'Synergetic Trials', status: 'Prospect', city: 'Charlotte', state: 'NC', contact: 'Grace Howard', email: 'grace@synergetic.com', phone: '555-0214', lastUpdated: '2025-12-03' },
+        { id: 'SP015', name: 'Pulse BioResearch', status: 'Partner', city: 'Columbus', state: 'OH', contact: 'Oliver Scott', email: 'oliver@pulsebio.com', phone: '555-0215', lastUpdated: '2025-12-02' },
+        { id: 'SP016', name: 'Everest BioCare', status: 'Prospect', city: 'Detroit', state: 'MI', contact: 'Harper James', email: 'harper@everestbio.com', phone: '555-0216', lastUpdated: '2025-12-01' },
+        { id: 'SP017', name: 'Zenith Pharma', status: 'Partner', city: 'Tampa', state: 'FL', contact: 'Liam Brooks', email: 'liam@zenithpharma.com', phone: '555-0217', lastUpdated: '2025-11-30' },
+        { id: 'SP018', name: 'NovaTrials', status: 'Prospect', city: 'Philadelphia', state: 'PA', contact: 'Chloe Evans', email: 'chloe@novatrials.com', phone: '555-0218', lastUpdated: '2025-11-29' },
+        { id: 'SP019', name: 'Clinix Research', status: 'Partner', city: 'Kansas City', state: 'MO', contact: 'Noah Price', email: 'noah@clinix.com', phone: '555-0219', lastUpdated: '2025-11-28' },
+        { id: 'SP020', name: 'TrustMed Global', status: 'Prospect', city: 'Orlando', state: 'FL', contact: 'Ava Reed', email: 'ava@trustmed.com', phone: '555-0220', lastUpdated: '2025-11-27' }
     ];
 
     @track enquiriesData = [
@@ -152,21 +224,20 @@ export default class PipelineMaster extends LightningElement {
         // Status options will be set dynamically based on active tab
         this.updateStatusOptions();
 
-        // Build city options
-        const allCities = new Set();
-        this.healthSystemsData.forEach(item => item.city && allCities.add(item.city));
-        this.sponsorsData.forEach(item => item.city && allCities.add(item.city));
-        this.enquiriesData.forEach(item => item.city && allCities.add(item.city));
-        this.projectsData.forEach(item => item.city && allCities.add(item.city));
-        this.cityOptions = Array.from(allCities).map(c => ({ label: c, value: c, checked: false }));
+        // Use the same canonical State and City lists as `sponsers` component
+        this.stateOptions = [
+            { label: 'Telangana', value: 'Telangana', checked: false },
+            { label: 'Delhi', value: 'Delhi', checked: false },
+            { label: 'Maharashtra', value: 'Maharashtra', checked: false },
+            { label: 'Karnataka', value: 'Karnataka', checked: false }
+        ];
 
-        // Build state options
-        const allStates = new Set();
-        this.healthSystemsData.forEach(item => item.state && allStates.add(item.state));
-        this.sponsorsData.forEach(item => item.state && allStates.add(item.state));
-        this.enquiriesData.forEach(item => item.state && allStates.add(item.state));
-        this.projectsData.forEach(item => item.state && allStates.add(item.state));
-        this.stateOptions = Array.from(allStates).map(s => ({ label: s, value: s, checked: false }));
+        this.cityOptions = [
+            { label: 'Hyderabad', value: 'Hyderabad', checked: false },
+            { label: 'Delhi', value: 'Delhi', checked: false },
+            { label: 'Mumbai', value: 'Mumbai', checked: false },
+            { label: 'Bangalore', value: 'Bangalore', checked: false }
+        ];
     }
 
     updateStatusOptions() {
@@ -224,6 +295,21 @@ export default class PipelineMaster extends LightningElement {
         return count > 0 ? count + ' selected' : 'Select'; 
     }
 
+    // Form dropdown classes and helpers
+    get formStateDropdownClass() { return this.formStateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formCityDropdownClass() { return this.formCityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get formFilteredStateOptions() { return this.formStateSearch ? this.stateOptions.filter(opt => opt.label.toLowerCase().includes(this.formStateSearch.toLowerCase())) : this.stateOptions; }
+    get formFilteredCityOptions() { return this.formCitySearch ? this.cityOptions.filter(opt => opt.label.toLowerCase().includes(this.formCitySearch.toLowerCase())) : this.cityOptions; }
+    get formStateDisplay() { return this.formState || 'Select State'; }
+    get formCityDisplay() { return this.formCity || 'Select City'; }
+
+    toggleFormStateDropdown() { this.formStateDropdownOpen = !this.formStateDropdownOpen; if (this.formStateDropdownOpen) this.formCityDropdownOpen = false; }
+    toggleFormCityDropdown() { this.formCityDropdownOpen = !this.formCityDropdownOpen; if (this.formCityDropdownOpen) this.formStateDropdownOpen = false; }
+    handleFormStateSearchInput(event) { this.formStateSearch = event.target.value; }
+    handleFormCitySearchInput(event) { this.formCitySearch = event.target.value; }
+    selectFormState(event) { const val = event.currentTarget.dataset.value; if (val) { this.formState = val; } this.formStateDropdownOpen = false; }
+    selectFormCity(event) { const val = event.currentTarget.dataset.value; if (val) { this.formCity = val; } this.formCityDropdownOpen = false; }
+
     // Toggle dropdown methods
     toggleStatusDropdown() { 
         this.statusDropdownOpen = !this.statusDropdownOpen; 
@@ -279,6 +365,9 @@ export default class PipelineMaster extends LightningElement {
         this.showFilters = false;
         this.closeOtherDropdowns('');
     }
+
+    closeAddModal() { this.showAddModal = false; }
+    closeEditModal() { this.showEditModal = false; }
 
     applyFilter() {
         this.selectedStatus = this.statusOptions.filter(o => o.checked).map(o => o.value);
@@ -339,7 +428,10 @@ export default class PipelineMaster extends LightningElement {
             hsInitial: this.getInitials(record.healthSystemName),
             contactInitial: this.getInitials(record.contact),
             statusLower: s,
-            statusClass
+            statusClass,
+            // promotion availability: only allow promote when status is exactly 'prospect'
+            canPromote: s === 'prospect',
+            promoteDisabled: s !== 'prospect'
         };
     }
 
@@ -478,8 +570,19 @@ export default class PipelineMaster extends LightningElement {
     }
 
     handleAdd() {
-        // Implement add functionality
-        console.log('Add clicked for:', this.activeTab);
+        this.editRecordId = '';
+        this.formName = '';
+        this.formCity = '';
+        this.formState = '';
+        this.formContact = '';
+        this.formEmail = '';
+        this.formPhone = '';
+        this.formEnquiryStatus = 'Active';
+        this.formEnquirySponsorName = '';
+        this.formEnquiryProjectName = '';
+        this.formEnquiryProjectDetails = '';
+        this.formEnquiryDocName = '';
+        this.showAddModal = true;
     }
 
     handleFilter() {
@@ -489,6 +592,20 @@ export default class PipelineMaster extends LightningElement {
     handleUpload() {
         // Implement upload functionality
         console.log('Upload clicked');
+    }
+
+    handleInputChange(event) {
+        const { name, value } = event.target;
+        if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+            this[name] = value;
+        }
+    }
+
+    handleDocChange(event) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            this.formEnquiryDocName = files[0].name;
+        }
     }
 
     handleDownload() {
@@ -503,14 +620,197 @@ export default class PipelineMaster extends LightningElement {
 
     handleEdit(event) {
         const recordId = event.currentTarget.dataset.id;
-        console.log('Edit clicked for:', recordId);
-        // Implement edit functionality
+        if (!recordId) return;
+        let rec;
+        if (this.isHealthSystems) {
+            rec = this.healthSystemsData.find(r => r.id === recordId);
+            if (rec) {
+                this.formName = rec.name || '';
+                this.formCity = rec.city || '';
+                this.formState = rec.state || '';
+                this.formContact = rec.contact || '';
+                this.formEmail = rec.email || '';
+                this.formPhone = rec.phone || '';
+            }
+        } else if (this.isSponsors) {
+            rec = this.sponsorsData.find(r => r.id === recordId);
+            if (rec) {
+                this.formName = rec.name || '';
+                this.formCity = rec.city || '';
+                this.formState = rec.state || '';
+                this.formContact = rec.contact || '';
+                this.formEmail = rec.email || '';
+                this.formPhone = rec.phone || '';
+            }
+        } else if (this.isEnquiries) {
+            rec = this.enquiriesData.find(r => r.id === recordId);
+            if (rec) {
+                this.formEnquiryStatus = rec.status || 'Active';
+                this.formEnquirySponsorName = rec.sponsorName || '';
+                this.formEnquiryProjectName = rec.projectName || rec.enquiryName || '';
+                this.formEnquiryProjectDetails = rec.projectDetails || '';
+                this.formEnquiryDocName = rec.projectScopingDoc || '';
+            }
+        }
+        if (!rec) return;
+        this.editRecordId = recordId;
+        this.showEditModal = true;
     }
 
     handleDelete(event) {
         const recordId = event.currentTarget.dataset.id;
         console.log('Delete clicked for:', recordId);
         // Implement delete functionality
+    }
+
+    // Promote handlers
+    openPromoteModal(event) {
+        const recordId = event && event.currentTarget ? event.currentTarget.dataset.id : null;
+        if (!recordId) return;
+        // find in current active dataset
+        let rec = null;
+        if (this.isHealthSystems) rec = this.healthSystemsData.find(r => r.id === recordId);
+        else if (this.isSponsors) rec = this.sponsorsData.find(r => r.id === recordId);
+        if (!rec) return;
+        const statusLower = (rec.status || '').toLowerCase();
+        if (statusLower !== 'prospect') return; // only allow when prospect
+        this.promoteRecordId = recordId;
+        this.promoteRecordName = rec.name || rec.sponsorName || '';
+        this.showPromoteModal = true;
+    }
+
+    closePromoteModal() {
+        this.showPromoteModal = false;
+        this.promoteRecordId = '';
+        this.promoteRecordName = '';
+    }
+
+    confirmPromote() {
+        const id = this.promoteRecordId;
+        if (!id) return this.closePromoteModal();
+        // update in whichever dataset contains the id
+        let idx = this.healthSystemsData.findIndex(r => r.id === id);
+        if (idx !== -1) {
+            const updated = { ...this.healthSystemsData[idx], status: 'Partner', lastUpdated: new Date().toISOString().slice(0,10) };
+            this.healthSystemsData = [...this.healthSystemsData.slice(0, idx), updated, ...this.healthSystemsData.slice(idx + 1)];
+            this.closePromoteModal();
+            return;
+        }
+        idx = this.sponsorsData.findIndex(r => r.id === id);
+        if (idx !== -1) {
+            const updated = { ...this.sponsorsData[idx], status: 'Partner', lastUpdated: new Date().toISOString().slice(0,10) };
+            this.sponsorsData = [...this.sponsorsData.slice(0, idx), updated, ...this.sponsorsData.slice(idx + 1)];
+            this.closePromoteModal();
+            return;
+        }
+        this.closePromoteModal();
+    }
+
+    // Save handlers for Add/Edit
+    saveAdd() {
+        if (this.isHealthSystems) {
+            const id = `HS${Date.now()}`;
+            const newRec = {
+                id,
+                name: this.formName,
+                status: 'Prospect',
+                city: this.formCity,
+                state: this.formState,
+                contact: this.formContact,
+                email: this.formEmail,
+                phone: this.formPhone,
+                lastUpdated: new Date().toISOString().slice(0,10)
+            };
+            this.healthSystemsData = [newRec, ...this.healthSystemsData];
+        } else if (this.isSponsors) {
+            const id = `SP${Date.now()}`;
+            const newRec = {
+                id,
+                name: this.formName,
+                status: 'Prospect',
+                city: this.formCity,
+                state: this.formState,
+                contact: this.formContact,
+                email: this.formEmail,
+                phone: this.formPhone,
+                lastUpdated: new Date().toISOString().slice(0,10)
+            };
+            this.sponsorsData = [newRec, ...this.sponsorsData];
+        } else if (this.isEnquiries) {
+            const id = `ENQ${Date.now()}`;
+            const newRec = {
+                id,
+                enquiryId: id,
+                status: this.formEnquiryStatus,
+                statusClass: this.getStatusClassForEnquiry(this.formEnquiryStatus),
+                sponsorName: this.formEnquirySponsorName,
+                sponsorInitial: this.getInitials(this.formEnquirySponsorName),
+                projectName: this.formEnquiryProjectName,
+                projectDetails: this.formEnquiryProjectDetails,
+                projectScopingDoc: this.formEnquiryDocName,
+                hasDocument: !!this.formEnquiryDocName,
+                hsAllocated: '-',
+                dateCreated: new Date().toISOString().slice(0,10),
+                lastUpdated: new Date().toISOString().slice(0,10)
+            };
+            this.enquiriesData = [newRec, ...this.enquiriesData];
+        }
+        this.showAddModal = false;
+    }
+
+    saveEdit() {
+        if (!this.editRecordId) { this.showEditModal = false; return; }
+        if (this.isHealthSystems) {
+            const idx = this.healthSystemsData.findIndex(r => r.id === this.editRecordId);
+            if (idx !== -1) {
+                const updated = { ...this.healthSystemsData[idx] };
+                updated.name = this.formName;
+                updated.city = this.formCity;
+                updated.state = this.formState;
+                updated.contact = this.formContact;
+                updated.email = this.formEmail;
+                updated.phone = this.formPhone;
+                updated.lastUpdated = new Date().toISOString().slice(0,10);
+                this.healthSystemsData = [...this.healthSystemsData.slice(0, idx), updated, ...this.healthSystemsData.slice(idx + 1)];
+            }
+        } else if (this.isSponsors) {
+            const idx = this.sponsorsData.findIndex(r => r.id === this.editRecordId);
+            if (idx !== -1) {
+                const updated = { ...this.sponsorsData[idx] };
+                updated.name = this.formName;
+                updated.city = this.formCity;
+                updated.state = this.formState;
+                updated.contact = this.formContact;
+                updated.email = this.formEmail;
+                updated.phone = this.formPhone;
+                updated.lastUpdated = new Date().toISOString().slice(0,10);
+                this.sponsorsData = [...this.sponsorsData.slice(0, idx), updated, ...this.sponsorsData.slice(idx + 1)];
+            }
+        } else if (this.isEnquiries) {
+            const idx = this.enquiriesData.findIndex(r => r.id === this.editRecordId);
+            if (idx !== -1) {
+                const updated = { ...this.enquiriesData[idx] };
+                updated.status = this.formEnquiryStatus;
+                updated.statusClass = this.getStatusClassForEnquiry(this.formEnquiryStatus);
+                updated.sponsorName = this.formEnquirySponsorName;
+                updated.sponsorInitial = this.getInitials(this.formEnquirySponsorName);
+                updated.projectName = this.formEnquiryProjectName;
+                updated.projectDetails = this.formEnquiryProjectDetails;
+                updated.projectScopingDoc = this.formEnquiryDocName;
+                updated.hasDocument = !!this.formEnquiryDocName;
+                updated.lastUpdated = new Date().toISOString().slice(0,10);
+                this.enquiriesData = [...this.enquiriesData.slice(0, idx), updated, ...this.enquiriesData.slice(idx + 1)];
+            }
+        }
+        this.showEditModal = false;
+    }
+
+    getStatusClassForEnquiry(status) {
+        const s = (status || '').toLowerCase();
+        if (s === 'active') return 'status-badge status-active';
+        if (s === 'inactive') return 'status-badge status-inactive';
+        if (s === 'completed') return 'status-badge status-completed';
+        return 'status-badge status-default';
     }
 
     // (Requirements modal removed)

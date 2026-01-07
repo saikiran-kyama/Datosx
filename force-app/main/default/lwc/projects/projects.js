@@ -1,5 +1,7 @@
 import { LightningElement } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
 import AVATARS from '@salesforce/resourceUrl/avatars';
+import FONT_AWESOME from '@salesforce/resourceUrl/fontawesome';
 
 export default class Projects extends LightningElement {
     // Filters
@@ -755,6 +757,7 @@ export default class Projects extends LightningElement {
             const sponsorInitials = (row.sponsorName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
             const healthInitials = (row.healthSystemName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
             const contactInitials = (row.contact || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+            const questionnaires = row.questionnaires && row.questionnaires.length ? row.questionnaires : this.buildQuestionnaires(idx);
             return {
                 ...row,
                 sponsorInitials,
@@ -763,19 +766,56 @@ export default class Projects extends LightningElement {
                 healthPhoto: row.healthPhoto || '',
                 contactInitials,
                 contactPhoto: row.contactPhoto || '',
-                statusClass: this.getStatusClass(row.status)
+                statusClass: this.getStatusClass(row.status),
+                questionnaires
             };
+        });
+        // load Font Awesome CSS from static resource (expects css/all.min.css)
+        loadStyle(this, FONT_AWESOME + '/css/all.min.css').catch((err) => {
+            // non-fatal: log failure to load font styles
+            // eslint-disable-next-line no-console
+            console.warn('Failed to load Font Awesome CSS', err);
         });
     }
 
     // map status -> class (reuse sponsor badges style)
     getStatusClass(status) {
         if (!status) return 'badge-soft-info border border-info';
-        const successStates = ['Study Ongoing', 'Project Closed', 'Final Protocol provided', 'Agreements Finalization', 'NPS Shared'];
-        const dangerStates = ['Project On Hold', 'Project Cancelled'];
-        if (successStates.includes(status)) return 'badge-soft-success border border-success';
-        if (dangerStates.includes(status)) return 'badge-soft-info border border-info';
+        const s = String(status).toLowerCase().trim();
+        const successStates = ['study ongoing', 'project closed', 'final protocol provided', 'agreements finalization', 'nps shared'];
+        const dangerStates = ['project on hold', 'project cancelled'];
+        if (successStates.includes(s)) return 'badge-soft-success border border-success';
+        if (dangerStates.includes(s)) return 'badge-soft-info border border-info';
         return 'badge-soft-info border border-info';
+    }
+
+    questionnaireDefs = [
+        { key: 'scoping', label: 'Project Scoping Questionnaire', icon: 'fas fa-search' },
+        { key: 'protocol', label: 'Protocol Questionnaire', icon: 'fas fa-file-medical' },
+        { key: 'nps', label: 'NPS Survey', icon: 'fa-solid fa-check-double' }
+    ];
+
+    questionnaireStatusCycle = ['Response Received', 'Awaiting Response', 'Pending'];
+
+    getQuestionnaireColor(status) {
+        if (status === 'Response Received') return '#2e844a';
+        if (status === 'Awaiting Response') return '#f5a623';
+        return '#9fa3a7';
+    }
+
+    buildQuestionnaires(idx) {
+        return this.questionnaireDefs.map((def, i) => {
+            const status = this.questionnaireStatusCycle[(idx + i) % this.questionnaireStatusCycle.length];
+            const color = this.getQuestionnaireColor(status);
+            const bg = color;
+            const iconColor = '#ffffff';
+            return {
+                ...def,
+                status,
+                title: `${def.label} - ${status}`,
+                style: `background-color: ${bg}; color: ${iconColor}; width: 29px; height: 29px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; margin-right:8px; font-size:0.9rem;`
+            };
+        });
     }
 
     // Pagination settings
@@ -785,6 +825,20 @@ export default class Projects extends LightningElement {
     // Detail view
     showDetail = false;
     selectedProject = null;
+
+    // Delete modal state
+    showDeleteModal = false;
+    deleteRecordId = '';
+
+    // Questionnaire modal state
+    showQuestionnaireModal = false;
+    questionnaireModalType = ''; // 'scoping' | 'protocol' | 'nps'
+    questionnaireModalKind = 'confirm'; // 'confirm' or 'nps'
+    questionnaireModalTitle = '';
+    questionnaireModalMessage = '';
+    questionnaireModalRows = []; // for nps selection rows
+    selectedQuestionnaireRow = null;
+    deleteRecordName = '';
 
     // Add project modal state
     isAddProjectModalOpen = false;
@@ -798,19 +852,75 @@ export default class Projects extends LightningElement {
     ];
 
     addModalStatusOptions = [
+        { label: 'NA', value: 'NA' },
         { label: 'Discovery', value: 'Discovery' },
         { label: 'Deep Dive Call', value: 'Deep Dive Call' },
         { label: 'Protocol Draft', value: 'Protocol Draft' },
-        { label: 'Study Ongoing', value: 'Study Ongoing' }
+        { label: 'Study Ongoing', value: 'Study Ongoing' },
+        { label: 'Project Scoping Questionnaire Sent', value: 'Project Scoping Questionnaire Sent' },
+        { label: 'Project Scoping Questionnaire Received', value: 'Project Scoping Questionnaire Received' },
+        { label: 'Deep Dive Call', value: 'Deep Dive Call' },
+        { label: 'Draft Protocol Synopsis', value: 'Draft Protocol Synopsis' },
+        { label: 'Protocol Synopsis Ready', value: 'Protocol Synopsis Ready' },
+        { label: 'Health System Matching', value: 'Health System Matching' },
+        { label: 'Protocol Draft 1 creation', value: 'Protocol Draft 1 creation' },
+        { label: 'Protocol Draft 1 review', value: 'Protocol Draft 1 review' },
+        { label: 'Protocol Draft 2 creation', value: 'Protocol Draft 2 creation' },
+        { label: 'Protocol Draft 2 review', value: 'Protocol Draft 2 review' },
+        { label: 'Protocol Draft 3 creation', value: 'Protocol Draft 3 creation' },
+        { label: 'Final Protocol Review', value: 'Final Protocol Review' },
+        { label: 'Final Protocol provided', value: 'Final Protocol provided' },
+        { label: 'Agreements Finalization', value: 'Agreements Finalization' },
+        { label: 'Project Management Setup', value: 'Project Management Setup' },
+        { label: 'Study Ongoing', value: 'Study Ongoing' },
+        { label: 'Alignment on long-term data storage', value: 'Alignment on long-term data storage' },
+        { label: 'NPS Shared', value: 'NPS Shared' },
+        { label: 'Project Wrap Up', value: 'Project Wrap Up' },
+        { label: 'Project Closed', value: 'Project Closed' },
+        { label: 'Project On Hold', value: 'Project On Hold' },
+        { label: 'Project Cancelled', value: 'Project Cancelled' }
     ];
 
     // Document/Agreement dropdown options
     documentOptions = [
-        { label: '--None--', value: '' },
-        { label: 'Draft', value: 'Draft' },
-        { label: 'Under Review', value: 'Under Review' },
-        { label: 'Approved', value: 'Approved' }
-    ];
+    { label: '--None--', value: '' },
+    { label: 'Draft', value: 'Draft' },
+    { label: 'Under Review', value: 'Under Review' },
+    { label: 'Approved', value: 'Approved' },
+
+    { label: 'Author Engaged', value: 'Author Engaged' },
+    { label: 'Awaiting datosX Approval', value: 'Awaiting datosX Approval' },
+    { label: 'Cancelled', value: 'Cancelled' },
+    { label: 'datosX Approved', value: 'datosX Approved' },
+    { label: 'datosX Complete', value: 'datosX Complete' },
+    { label: 'datosX In Progress', value: 'datosX In Progress' },
+    { label: 'datosX On Hold', value: 'datosX On Hold' },
+    { label: 'datosX Pending', value: 'datosX Pending' },
+    { label: 'datosX Rejected', value: 'datosX Rejected' },
+    { label: 'datosX Review', value: 'datosX Review' },
+
+    { label: 'Health System Approved', value: 'Health System Approved' },
+    { label: 'Health System Rejected', value: 'Health System Rejected' },
+    { label: 'Health System Review', value: 'Health System Review' },
+    { label: 'Health System Submitted', value: 'Health System Submitted' },
+
+    { label: 'Ready', value: 'Ready' },
+    { label: 'Scheduled', value: 'Scheduled' },
+
+    { label: 'Sponsor Approved', value: 'Sponsor Approved' },
+    { label: 'Sponsor Rejected', value: 'Sponsor Rejected' },
+    { label: 'Sponsor Review', value: 'Sponsor Review' },
+    { label: 'Sponsor Submitted', value: 'Sponsor Submitted' },
+
+    { label: 'Vendor Approved', value: 'Vendor Approved' },
+    { label: 'Vendor Engaged', value: 'Vendor Engaged' },
+    { label: 'Vendor Rejected', value: 'Vendor Rejected' },
+    { label: 'Vendor Review', value: 'Vendor Review' },
+    { label: 'Vendor Submitted', value: 'Vendor Submitted' },
+
+    { label: 'N/A', value: 'N/A' }
+];
+
 
     // Options for scoping questionnaire dropdowns
     statAnalysisOptions = [
@@ -1032,9 +1142,34 @@ export default class Projects extends LightningElement {
 
     get sortDirection() { return this.sortOrder === 'asc' ? 'sorting-arrow-asc' : 'sorting-arrow-desc'; }
 
-    // Placeholder edit/delete handlers
+    // Placeholder edit handler
     handleEdit(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('edit', { detail: { id } })); }
-    handleDelete(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('delete', { detail: { id } })); }
+
+    // Open delete confirmation modal for a project
+    openDeleteModal(event) {
+        const id = event && event.currentTarget ? event.currentTarget.dataset.id : null;
+        if (!id) return;
+        const rec = this.data.find(r => r.id === id);
+        this.deleteRecordId = id;
+        this.deleteRecordName = rec ? rec.projectName : '';
+        this.showDeleteModal = true;
+    }
+
+    closeDeleteModal() {
+        this.showDeleteModal = false;
+        this.deleteRecordId = '';
+        this.deleteRecordName = '';
+    }
+
+    // Confirm and remove project locally
+    confirmDelete() {
+        const id = this.deleteRecordId;
+        if (!id) return this.closeDeleteModal();
+        const idx = this.data.findIndex(r => r.id === id);
+        if (idx === -1) { this.closeDeleteModal(); return; }
+        this.data = [...this.data.slice(0, idx), ...this.data.slice(idx + 1)];
+        this.closeDeleteModal();
+    }
 
     // Open detail view for given project id
     openDetail(event) {
@@ -1106,9 +1241,102 @@ export default class Projects extends LightningElement {
 
     handleAddProjectOverlayClick(event) {
         if (event.target.classList && event.target.classList.contains('modal-overlay')) {
-            this.closeAddProjectModal();
+             this.closeAddProjectModal();
         }
     }
+
+    handleQuestionnaireClick(event) {
+        const key = event.currentTarget.dataset.key;
+        const rowId = event.currentTarget.dataset.rowid;
+        const row = this.data.find(r => r.id === rowId) || null;
+        // Only allow popup when the questionnaire status is 'Pending'
+        const qItem = row && row.questionnaires ? row.questionnaires.find(q => q.key === key) : null;
+        if (!qItem || qItem.status !== 'Pending') {
+            // not pending -> do nothing
+            // eslint-disable-next-line no-console
+            console.log('Questionnaire action blocked: status is not Pending', key, qItem ? qItem.status : undefined);
+            return;
+        }
+        this.selectedQuestionnaireRow = row;
+        this.questionnaireModalType = key;
+        if (key === 'scoping') {
+            this.questionnaireModalKind = 'confirm';
+            this.questionnaireModalTitle = 'Send Project Scoping Questionnaire';
+            this.questionnaireModalMessage = `Do you confirm to send Project Scoping Questionnaire`;
+        } else if (key === 'protocol') {
+            this.questionnaireModalKind = 'confirm';
+            this.questionnaireModalTitle = 'Send Protocol Questionnaire';
+            this.questionnaireModalMessage = `Do you confirm to send Protocol Questionnaire`;
+        } else if (key === 'nps') {
+            this.questionnaireModalKind = 'nps';
+            this.questionnaireModalTitle = 'Send NPS Survey';
+            this.questionnaireModalMessage = 'Select recipients to send the NPS Survey';
+            // prepare two static rows (use row values if available, otherwise dummy)
+            const sponsorFullName = row && row.sponsorName ? `${row.sponsorName} Contact` : 'Sponsor Contact';
+            const sponsorEmail = row && row.email ? row.email : 'sponsor.contact@example.com';
+            const hsFullName = row && row.healthSystemName ? `${row.healthSystemName} Contact` : 'HS Contact';
+            const hsEmail = row && row.email ? `hs.contact+${row.id}@example.com` : 'hs.contact@example.com';
+            this.questionnaireModalRows = [
+                {
+                    id: 'sponsor',
+                    fullName: sponsorFullName,
+                    contactType: 'Primary',
+                    partner: 'Sponsor',
+                    email: sponsorEmail,
+                    checked: true
+                },
+                {
+                    id: 'hs',
+                    fullName: hsFullName,
+                    contactType: 'Primary',
+                    partner: 'Health System',
+                    email: hsEmail,
+                    checked: false
+                }
+            ];
+        } else {
+            // default to confirm
+            this.questionnaireModalKind = 'confirm';
+            this.questionnaireModalTitle = 'Send Questionnaire';
+            this.questionnaireModalMessage = `Do you confirm to send ${key} questionnaire`;
+        }
+        this.showQuestionnaireModal = true;
+    }
+
+    closeQuestionnaireModal() {
+        this.showQuestionnaireModal = false;
+        this.questionnaireModalType = '';
+        this.questionnaireModalRows = [];
+        this.selectedQuestionnaireRow = null;
+    }
+
+    confirmQuestionnaireSend() {
+        // In a real implementation, this would call an Apex method or perform an action.
+        // For now, just close the modal and optionally log to console.
+        // eslint-disable-next-line no-console
+        console.log('Confirmed send for', this.questionnaireModalType, 'row', this.selectedQuestionnaireRow);
+        this.closeQuestionnaireModal();
+    }
+
+    handleQuestionnaireRowCheckboxChange(event) {
+        const idx = parseInt(event.currentTarget.dataset.index, 10);
+        const checked = event.target.checked;
+        if (!Number.isNaN(idx) && this.questionnaireModalRows && this.questionnaireModalRows[idx]) {
+            this.questionnaireModalRows[idx].checked = checked;
+            // trigger reactivity
+            this.questionnaireModalRows = [...this.questionnaireModalRows];
+        }
+    }
+
+    stopQuestionnaireModalPropagation(event) {
+        event.stopPropagation();
+    }
+
+    // True when the current questionnaire modal is NPS selection
+    get isNpsModal() {
+        return this.questionnaireModalKind === 'nps';
+    }
+
 
     stopAddProjectModalPropagation(event) {
         event.stopPropagation();

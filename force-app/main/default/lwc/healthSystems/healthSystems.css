@@ -409,11 +409,8 @@ lightning-datatable {
 }
 
 .badge-soft-info {
-    background-color: #e3f2fd; /* Softer blue background */
-    color: #1565c0; /* Darker blue text for better contrast */
-    border: 1px solid #64b5f6; /* Blue border */
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    background-color: #fdecea; color: #c23934; border: 1px solid #f5c6cb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; 
+
 }
 
 /* Center aligned cells that should look like links */

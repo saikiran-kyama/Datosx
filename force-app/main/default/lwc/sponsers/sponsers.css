@@ -35,7 +35,7 @@
 .icon-delete lightning-primitive-icon { fill: #6c757d !important; }
 .icon-delete-svg, .icon-delete-svg svg, .icon-delete-svg lightning-primitive-icon { fill: #c23934 !important; color: #c23934 !important; stroke: #c23934 !important; }
 .badge-soft-success { background-color: #e6f4ea; color: #2e7d32; border: 1px solid #81c784; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
-.badge-soft-info { background-color: #e3f2fd; color: #1565c0; border: 1px solid #64b5f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+.badge-soft-info { background-color: #fdecea; color: #c23934; border: 1px solid #f5c6cb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
 .contact-cell { display: flex; align-items: center; gap: 0.5rem; }
 .contact-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hyper { color: #0d6efd; cursor: pointer; text-decoration: none; }
@@ -112,17 +112,18 @@
 }
 
 .hs-modal .dropdown-btn {
-    height: 40px;
+    height: 31px;
     padding: 0 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: #fff;
-    border: 1px solid #d9dbdf;
+    border: 1px solid #595f6a;
     border-radius: 8px;
     font-size: 14px;
     color: #3c3c3c;
     box-sizing: border-box;
+    margin-top: 26px;
 }
 
 .hs-modal .dropdown-btn .chevron {
