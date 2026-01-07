@@ -51,7 +51,7 @@
             <div class="slds-card">
                 <!-- Action Bar -->
                 <div class="slds-card__header slds-grid">
-                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <!-- <div class="slds-media slds-media_center slds-has-flexi-truncate">
                         <div class="slds-media__body">
                             <h2 class="slds-card__header-title">
                                 <template if:true={isHealthSystems}>
@@ -68,9 +68,9 @@
                                 </template>
                             </h2>
                         </div>
-                    </div>
-                    <div class="slds-no-flex">
-                        <div class="action-buttons-separated" style="display: flex; align-items: center; gap: 12px;">
+                    </div> -->
+                    <div class="slds-no-flex" style="width: 100%;">
+                        <div class="action-buttons-separated" style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; width: 100%;">
                             <lightning-input 
                                 type="search" 
                                 placeholder="Search..." 
@@ -274,6 +274,10 @@
                                                     title="Delete" variant="bare" class="delete-icon" data-id={record.id}
                                                     onclick={handleDelete}>
                                                 </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:check" alternative-text="Promote"
+                                                    title="Promote to Partner" variant="bare" class="promote-icon" data-id={record.id}
+                                                    onclick={openPromoteModal} disabled={record.promoteDisabled}>
+                                                </lightning-button-icon>
                                             </div>
                                         </td>
                                         <td>
@@ -383,6 +387,11 @@
                                                     title="Delete" variant="bare" class="delete-icon" data-id={record.id}
                                                     onclick={handleDelete}>
                                                 </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:check" alternative-text="Promote"
+                                                    title="Promote to Partner" variant="bare" class="promote-icon" data-id={record.id}
+                                                    onclick={openPromoteModal} disabled={record.promoteDisabled}>
+                                                </lightning-button-icon>
+                                                
                                             </div>
                                         </td>
                                         <td>
@@ -711,6 +720,251 @@
             </div>
         </div>
         
+        </template>
+
+        <!-- Add Modal (tab-aware) -->
+        <template if:true={showAddModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Add {activeTabLabel}</div>
+                        <button class="hs-modal__close" title="Close" onclick={closeAddModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div class="hs-modal__grid">
+                            <template if:true={isHealthSystems}>
+                                <div class="hs-form-group"><label>HS Name</label><lightning-input name="formName" value={formName} onchange={handleInputChange} placeholder="Enter HS Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Contact Person</label><lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter Contact"></lightning-input></div>
+                                <div class="hs-form-group"><label>State</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormStateDropdown} type="button">
+                                            <span>{formStateDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formStateDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search State" oninput={handleFormStateSearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredStateOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormState}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>City</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormCityDropdown} type="button">
+                                            <span>{formCityDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formCityDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search City" oninput={handleFormCitySearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredCityOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormCity}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>Email ID</label><lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter Email"></lightning-input></div>
+                                <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
+                            </template>
+                            <template if:true={isSponsors}>
+                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formName" value={formName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Contact Person</label><lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter Contact"></lightning-input></div>
+                                <div class="hs-form-group"><label>State</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormStateDropdown} type="button">
+                                            <span>{formStateDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formStateDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search State" oninput={handleFormStateSearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredStateOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormState}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>City</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormCityDropdown} type="button">
+                                            <span>{formCityDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formCityDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search City" oninput={handleFormCitySearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredCityOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormCity}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>Email ID</label><lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter Email"></lightning-input></div>
+                                <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
+                            </template>
+                            <template if:true={isEnquiries}>
+                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Project Name</label><lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input></div>
+                                <div class="hs-form-group hs-form-group--full"><label>Project Details</label><lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea></div>
+                                <div class="hs-form-group hs-form-group--full"><label>Project Scoping Doc</label><lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input><template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closeAddModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={saveAdd}>Save</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Edit Modal (tab-aware) -->
+        <template if:true={showEditModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Edit {activeTabLabel}</div>
+                        <button class="hs-modal__close" title="Close" onclick={closeEditModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div class="hs-modal__grid">
+                            <template if:true={isHealthSystems}>
+                                <div class="hs-form-group"><label>HS Name</label><lightning-input name="formName" value={formName} onchange={handleInputChange} placeholder="Enter HS Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Contact Person</label><lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter Contact"></lightning-input></div>
+                                <div class="hs-form-group"><label>State</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormStateDropdown} type="button">
+                                            <span>{formStateDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formStateDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search State" oninput={handleFormStateSearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredStateOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormState}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>City</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormCityDropdown} type="button">
+                                            <span>{formCityDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formCityDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search City" oninput={handleFormCitySearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredCityOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormCity}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>Email ID</label><lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter Email"></lightning-input></div>
+                                <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
+                            </template>
+                            <template if:true={isSponsors}>
+                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formName" value={formName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Contact Person</label><lightning-input name="formContact" value={formContact} onchange={handleInputChange} placeholder="Enter Contact"></lightning-input></div>
+
+                                <div class="hs-form-group"><label>State</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormStateDropdown} type="button">
+                                            <span>{formStateDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formStateDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search State" oninput={handleFormStateSearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredStateOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormState}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>City</label>
+                                    <div class="dropdown-container">
+                                        <button class="dropdown-btn" onclick={toggleFormCityDropdown} type="button">
+                                            <span>{formCityDisplay}</span>
+                                            <span class="chevron">▼</span>
+                                        </button>
+                                        <div class={formCityDropdownClass}>
+                                            <input type="text" class="dropdown-search" placeholder="Search City" oninput={handleFormCitySearchInput} />
+                                            <ul class="dropdown-options">
+                                                <template for:each={formFilteredCityOptions} for:item="opt">
+                                                    <li key={opt.value} data-value={opt.value} onclick={selectFormCity}>
+                                                        <label>{opt.label}</label>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hs-form-group"><label>Email ID</label><lightning-input type="email" name="formEmail" value={formEmail} onchange={handleInputChange} placeholder="Enter Email"></lightning-input></div>
+                                <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
+                            </template>
+                            <template if:true={isEnquiries}>
+                                <div class="hs-form-group"><label>Status</label><lightning-combobox name="formEnquiryStatus" value={formEnquiryStatus} options={enquiryStatusOptions} onchange={handleInputChange}></lightning-combobox></div>
+                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
+                                <div class="hs-form-group"><label>Project Name</label><lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input></div>
+                                <div class="hs-form-group hs-form-group--full"><label>Project Details</label><lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea></div>
+                                <div class="hs-form-group hs-form-group--full"><label>Project Scoping Doc</label><lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input><template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closeEditModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={saveEdit}>Save</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Promote Confirmation Modal -->
+        <template if:true={showPromoteModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Convert to Partner</div>
+                        <button class="hs-modal__close" title="Close" onclick={closePromoteModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div class="hs-modal__grid">
+                            <div class="hs-form-group hs-form-group--full">
+                                <p>Do you confirm to convert <strong>{promoteRecordName}</strong> to <strong>Partner</strong>?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closePromoteModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={confirmPromote}>Confirm</button>
+                    </div>
+                </div>
+            </section>
         </template>
 
     <!-- Requirements and HS Matches modals removed -->

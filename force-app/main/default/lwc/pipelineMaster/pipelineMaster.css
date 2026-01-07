@@ -201,6 +201,38 @@
     padding: 1rem;
 }
 
+.hs-modal .dropdown-btn {
+    height: 31px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #595f6a;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #3c3c3c;
+    box-sizing: border-box;
+    margin-top: 26px;
+}
+
+/* Modal styles reused from Health Systems */
+.hs-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+.hs-modal { background: #fff; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.18); width: 720px; max-width: 92vw; max-height: 92vh; display: flex; flex-direction: column; overflow: visible; }
+.hs-modal__header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e6e6e6; }
+.hs-modal__title { font-size: 1.1rem; font-weight: 700; color: #1f1f1f; }
+.hs-modal__close { background: transparent; border: none; font-size: 1.1rem; color: #4b4b4b; cursor: pointer; padding: 6px; }
+.hs-modal__body { padding: 18px 20px 10px 20px; overflow: visible; }
+.hs-modal__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+.hs-form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #3c3c3c; }
+.hs-modal lightning-combobox, .hs-modal lightning-input, .hs-modal lightning-textarea { width: 100%; }
+.hs-modal__footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px 18px 20px; border-top: 1px solid #e6e6e6; }
+.hs-btn-primary { background: #2e37a4; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 700; cursor: pointer; }
+.hs-btn-outline { background: #fff; color: #2e37a4; border: 1px solid #d9dbf4; border-radius: 6px; padding: 8px 16px; font-weight: 700; cursor: pointer; }
+.hs-form-group--full { grid-column: 1 / -1; }
+.file-name { margin-top: 6px; font-size: 0.85rem; color: #555; }
+@media (max-width: 720px) { .hs-modal__grid { grid-template-columns: 1fr; } .hs-modal { width: 100%; max-width: 96vw; } }
+
 .table-container {
     overflow-x: auto;
     max-height: calc(100vh - 400px);
@@ -404,3 +436,37 @@ td.status-cell {
 }
 
 /* Requirements and HS Matches modal styles removed */
+
+/* --- Imported styles from sponsers.css to support searchable State/City dropdowns and buttons --- */
+/* Button styles used in header */
+.btn-filter-toggle { padding: 6px 14px !important; background: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; cursor: pointer !important; font-size: 13px !important; font-weight: 400 !important; color: #333 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; }
+.btn-filter-toggle:hover { background: #f8f9fa !important; border-color: #adb5bd !important; }
+
+/* Table wrapper used in sponsers component */
+.table-wrapper { width: 100%; overflow-x: auto; }
+
+/* Icon color helpers */
+.icon-edit lightning-primitive-icon { fill: #0d6efd !important; }
+.icon-delete lightning-primitive-icon { fill: #6c757d !important; }
+.icon-delete-svg, .icon-delete-svg svg, .icon-delete-svg lightning-primitive-icon { fill: #c23934 !important; color: #c23934 !important; stroke: #c23934 !important; }
+
+/* Soft badge helpers (used by sponsers) */
+.badge-soft-success { background-color: #e6f4ea; color: #2e7d32; border: 1px solid #81c784; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+.badge-soft-info { background-color: #e3f2fd; color: #1565c0; border: 1px solid #64b5f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+
+/* Reuse modal & dropdown rules (if any differences exist they are already present above) */
+.dropdown-container { position: relative; }
+.dropdown-btn { display:flex; align-items:center; justify-content:space-between; width:100%; padding:8px 10px; background:#fff; border:1px solid #ced4da; border-radius:4px; font-size:13px; color:#495057; cursor:pointer; }
+.dropdown-menu { position:absolute; top:calc(100% + 6px); left:0; width:100%; max-height:none; overflow:visible; background:#fff; border:1px solid #ced4da; border-radius:4px; box-shadow:0 6px 20px rgba(0,0,0,0.18); z-index:200000; margin-top:6px; padding:8px; display:none; }
+.dropdown-menu.show { display:block; }
+.dropdown-search { width:100%; padding:6px 8px; border:1px solid #ced4da; border-radius:4px; font-size:13px; margin-bottom:8px; }
+.dropdown-options { list-style:none; padding:0; margin:0; }
+.dropdown-options li { margin-bottom:4px; }
+
+/* Small responsive tweaks already used by sponsers */
+@media (max-width:720px) {
+    .hs-modal__grid { grid-template-columns: 1fr; }
+    .hs-modal { width:100%; max-width:96vw; }
+}
+
+/* End imported sponsers styles */

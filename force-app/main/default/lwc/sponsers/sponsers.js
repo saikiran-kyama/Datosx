@@ -11,6 +11,10 @@ export default class Sponsers extends LightningElement {
     editRecordId = '';
     selectedSponsorId = '';
     selectedSponsor = null;
+    // Delete modal state
+    showDeleteModal = false;
+    deleteRecordId = '';
+    deleteRecordName = '';
     
     // Filters
     showFilters = false;
@@ -32,37 +36,37 @@ export default class Sponsers extends LightningElement {
     // Sample Data for Sponsors (updated to match requested columns)
  data = [
   { id: '1', sponsorId: 'SP-001', sponsorName: 'Acme Pharma', status: 'Active', projects: 3, enquiries: 2, messages: 5, state: 'Texas', city: 'Houston', contact: 'Ravi Kumar', ownerPhoto: `${AVATARS}/1.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF1.png`, email: 'ravi.kumar@acmepharma.com', phone: '+1-415-555-0101', lastUpdated: '2025-11-12' },
-  { id: '2', sponsorId: 'SP-002', sponsorName: 'BioHealth Ltd', status: 'Onboarding', projects: 3, enquiries: 2, messages: 5, state: 'Florida', city: 'Miami', contact: 'Suman Rao', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'suman.rao@biohealth.com', phone: '+1-212-555-0199', lastUpdated: '2025-11-05' },
+  { id: '2', sponsorId: 'SP-002', sponsorName: 'BioHealth Ltd', status: 'Inactive', projects: 3, enquiries: 2, messages: 5, state: 'Florida', city: 'Miami', contact: 'Suman Rao', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'suman.rao@biohealth.com', phone: '+1-212-555-0199', lastUpdated: '2025-11-05' },
   { id: '3', sponsorId: 'SP-003', sponsorName: 'MedSolutions', status: 'Active', projects: 3, enquiries: 2, messages: 5, state: 'California', city: 'San Diego', contact: 'Anil Mehta', ownerPhoto: `${AVATARS}/3.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF3.png`, email: 'anil.mehta@medsolutions.com', phone: '+1-713-555-0144', lastUpdated: '2025-10-30' },
-  { id: '4', sponsorId: 'SP-004', sponsorName: 'Global Trials', status: 'Onboarding', projects: 3, enquiries: 2, messages: 5, state: 'New York', city: 'Buffalo', contact: 'Priya Singh', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'priya.singh@globaltrials.com', phone: '+1-312-555-0123', lastUpdated: '2025-11-01' },
+  { id: '4', sponsorId: 'SP-004', sponsorName: 'Global Trials', status: 'Inactive', projects: 3, enquiries: 2, messages: 5, state: 'New York', city: 'Buffalo', contact: 'Priya Singh', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'priya.singh@globaltrials.com', phone: '+1-312-555-0123', lastUpdated: '2025-11-01' },
 
   { id: '5', sponsorId: 'SP-005', sponsorName: 'HealthNova', status: 'Active', projects: 4, enquiries: 3, messages: 8, state: 'Texas', city: 'Dallas', contact: 'Neeraj Patil', ownerPhoto: `${AVATARS}/1.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF1.png`, email: 'neeraj@healthnova.com', phone: '+1-469-555-0110', lastUpdated: '2025-11-10' },
   { id: '6', sponsorId: 'SP-006', sponsorName: 'CureGenix', status: 'Inactive', projects: 1, enquiries: 1, messages: 3, state: 'Florida', city: 'Tampa', contact: 'Meera Shah', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'meera@curegenix.com', phone: '+1-813-555-0147', lastUpdated: '2025-10-28' },
   { id: '7', sponsorId: 'SP-007', sponsorName: 'LifeBridge Research', status: 'Active', projects: 5, enquiries: 2, messages: 10, state: 'Georgia', city: 'Atlanta', contact: 'Vinay Joshi', ownerPhoto: `${AVATARS}/3.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF3.png`, email: 'vinay@lifebridge.com', phone: '+1-404-555-0133', lastUpdated: '2025-11-11' },
-  { id: '8', sponsorId: 'SP-008', sponsorName: 'Prime Trials', status: 'Onboarding', projects: 2, enquiries: 1, messages: 4, state: 'Arizona', city: 'Phoenix', contact: 'Kritika Rao', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'kritika@primetrials.com', phone: '+1-602-555-0172', lastUpdated: '2025-11-02' },
+  { id: '8', sponsorId: 'SP-008', sponsorName: 'Prime Trials', status: 'Inactive', projects: 2, enquiries: 1, messages: 4, state: 'Arizona', city: 'Phoenix', contact: 'Kritika Rao', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'kritika@primetrials.com', phone: '+1-602-555-0172', lastUpdated: '2025-11-02' },
 
   { id: '9', sponsorId: 'SP-009', sponsorName: 'NeuroMedix', status: 'Active', projects: 6, enquiries: 3, messages: 12, state: 'Washington', city: 'Seattle', contact: 'Aakash Reddy', ownerPhoto: `${AVATARS}/1.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF1.png`, email: 'aakash@neuromedix.com', phone: '+1-206-555-0138', lastUpdated: '2025-10-26' },
   { id: '10', sponsorId: 'SP-010', sponsorName: 'Everest BioCare', status: 'Inactive', projects: 1, enquiries: 0, messages: 2, state: 'Illinois', city: 'Chicago', contact: 'Pooja Nair', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'pooja@everestbio.com', phone: '+1-312-555-0190', lastUpdated: '2025-09-14' },
 
   { id: '11', sponsorId: 'SP-011', sponsorName: 'Zenith Pharma', status: 'Active', projects: 4, enquiries: 2, messages: 9, state: 'Texas', city: 'Austin', contact: 'Rohan Gupta', ownerPhoto: `${AVATARS}/3.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF3.png`, email: 'rohan@zenithpharma.com', phone: '+1-512-555-0177', lastUpdated: '2025-11-06' },
-  { id: '12', sponsorId: 'SP-012', sponsorName: 'VitalPath Research', status: 'Onboarding', projects: 2, enquiries: 1, messages: 6, state: 'Florida', city: 'Orlando', contact: 'Shruti Sharma', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'shruti@vitalpath.com', phone: '+1-407-555-0195', lastUpdated: '2025-11-03' },
+  { id: '12', sponsorId: 'SP-012', sponsorName: 'VitalPath Research', status: 'Inactive', projects: 2, enquiries: 1, messages: 6, state: 'Florida', city: 'Orlando', contact: 'Shruti Sharma', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'shruti@vitalpath.com', phone: '+1-407-555-0195', lastUpdated: '2025-11-03' },
 
   { id: '13', sponsorId: 'SP-013', sponsorName: 'NovaTrials', status: 'Active', projects: 7, enquiries: 3, messages: 11, state: 'California', city: 'Los Angeles', contact: 'Arvind Rao', ownerPhoto: `${AVATARS}/1.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF1.png`, email: 'arvind@novatrials.com', phone: '+1-213-555-0184', lastUpdated: '2025-10-22' },
   { id: '14', sponsorId: 'SP-014', sponsorName: 'Clinix Research', status: 'Inactive', projects: 1, enquiries: 0, messages: 1, state: 'Georgia', city: 'Savannah', contact: 'Divya Pillai', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'divya@clinix.com', phone: '+1-912-555-0123', lastUpdated: '2025-09-19' },
 
   { id: '15', sponsorId: 'SP-015', sponsorName: 'PharmaEdge', status: 'Active', projects: 5, enquiries: 4, messages: 13, state: 'Texas', city: 'Houston', contact: 'Suresh Iyer', ownerPhoto: `${AVATARS}/3.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF3.png`, email: 'suresh@pharmaedge.com', phone: '+1-713-555-0166', lastUpdated: '2025-11-09' },
-  { id: '16', sponsorId: 'SP-016', sponsorName: 'TrustMed Global', status: 'Onboarding', projects: 2, enquiries: 1, messages: 4, state: 'Arizona', city: 'Tucson', contact: 'Madhavi Rao', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'madhavi@trustmed.com', phone: '+1-520-555-0155', lastUpdated: '2025-10-31' },
+  { id: '16', sponsorId: 'SP-016', sponsorName: 'TrustMed Global', status: 'Inactive', projects: 2, enquiries: 1, messages: 4, state: 'Arizona', city: 'Tucson', contact: 'Madhavi Rao', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'madhavi@trustmed.com', phone: '+1-520-555-0155', lastUpdated: '2025-10-31' },
 
   { id: '17', sponsorId: 'SP-017', sponsorName: 'BioCrest Labs', status: 'Active', projects: 3, enquiries: 2, messages: 7, state: 'Washington', city: 'Spokane', contact: 'Hari Prasad', ownerPhoto: `${AVATARS}/1.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF1.png`, email: 'hari@biocrest.com', phone: '+1-509-555-0171', lastUpdated: '2025-10-18' },
   { id: '18', sponsorId: 'SP-018', sponsorName: 'MedCore Trials', status: 'Inactive', projects: 1, enquiries: 0, messages: 1, state: 'Florida', city: 'Jacksonville', contact: 'Lakshmi Menon', ownerPhoto: `${AVATARS}/2.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF2.png`, email: 'lakshmi@medcore.com', phone: '+1-904-555-0135', lastUpdated: '2025-09-25' },
 
   { id: '19', sponsorId: 'SP-019', sponsorName: 'Pulse BioResearch', status: 'Active', projects: 6, enquiries: 2, messages: 9, state: 'Illinois', city: 'Springfield', contact: 'Rajesh Kumar', ownerPhoto: `${AVATARS}/3.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF3.png`, email: 'rajesh@pulsebio.com', phone: '+1-217-555-0157', lastUpdated: '2025-11-07' },
-  { id: '20', sponsorId: 'SP-020', sponsorName: 'Synergetic Trials', status: 'Onboarding', projects: 2, enquiries: 1, messages: 4, state: 'California', city: 'San Jose', contact: 'Deepika Rani', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'deepika@synergetic.com', phone: '+1-408-555-0148', lastUpdated: '2025-11-04' }
+  { id: '20', sponsorId: 'SP-020', sponsorName: 'Synergetic Trials', status: 'Inactive', projects: 2, enquiries: 1, messages: 4, state: 'California', city: 'San Jose', contact: 'Deepika Rani', ownerPhoto: `${AVATARS}/4.svg.jpg`, sponsorPhoto: `${AVATARS}/ODF.png`, email: 'deepika@synergetic.com', phone: '+1-408-555-0148', lastUpdated: '2025-11-04' }
 ];
 
     statusOptions = [
         { label: 'Active', value: 'Active', checked: false },
-        { label: 'Onboarding', value: 'Onboarding', checked: false }
+        { label: 'Inactive', value: 'Inactive', checked: false }
     ];
     stateOptionsBase = [
         { label: 'Telangana', value: 'Telangana', checked: false },
@@ -437,6 +441,8 @@ export default class Sponsers extends LightningElement {
         }
     }
 
+    
+
     // Handle back from sponsor detail
     handleBack() {
         this.showDetail = false;
@@ -444,7 +450,29 @@ export default class Sponsers extends LightningElement {
         this.selectedSponsorId = '';
     }
 
-    // Placeholder edit/delete handlers
-    handleEdit(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('edit', { detail: { id } })); }
-    handleDelete(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('delete', { detail: { id } })); }
+    // Open delete confirmation modal
+    openDeleteModal(event) {
+        const id = event && event.currentTarget ? event.currentTarget.dataset.id : null;
+        if (!id) return;
+        const rec = this.data.find(r => r.id === id);
+        this.deleteRecordId = id;
+        this.deleteRecordName = rec ? rec.sponsorName : '';
+        this.showDeleteModal = true;
+    }
+
+    closeDeleteModal() {
+        this.showDeleteModal = false;
+        this.deleteRecordId = '';
+        this.deleteRecordName = '';
+    }
+
+    // Confirm and perform delete
+    confirmDelete() {
+        const id = this.deleteRecordId;
+        if (!id) return this.closeDeleteModal();
+        const idx = this.data.findIndex(r => r.id === id);
+        if (idx === -1) { this.closeDeleteModal(); return; }
+        this.data = [...this.data.slice(0, idx), ...this.data.slice(idx + 1)];
+        this.closeDeleteModal();
+    }
 }

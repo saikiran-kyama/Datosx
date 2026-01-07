@@ -1,9 +1,9 @@
 /* Protocol / Tasks layout */
 .protocol-card { background: #fff; }
 .protocol-container { display: flex; gap: 1rem; align-items: stretch; }
-.protocol-left { flex: 0 0 33%; }
+.protocol-left { flex: 0 0 27%; }
 .protocol-right { flex: 1 1 67%; }
-.milestone-box { border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; background: #fbfbfc; min-height: 160px; width: 316px; }
+.milestone-box { border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; background: #fbfbfc; min-height: 160px; width: 236px; }
 .milestone-heading { font-weight: 600; color: #17324d; margin-bottom: 8px; font-size: 0.95rem; }
 
 /* Progress chips */
@@ -27,6 +27,8 @@
 .completed-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: #28a745; }
 .btn-add { background: #0176d3; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 .btn-add:hover { background: #0160b0; }
+.btn-mark { background: #0176d3; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.btn-mark:hover { background: #0160b0; }
 
 /* Activities table */
 .protocol-grid-table-activities { display: flex; flex-direction: column; border: 1px solid #e6e9ee; border-radius: 6px; overflow: hidden; background: #fff; }
@@ -56,5 +58,4 @@
 .modal-footer { padding: 12px 20px; border-top: 1px solid #eef1f4; display: flex; justify-content: flex-end; gap: 8px; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none; border: none; }
 .btn-light { background: #f3f3f3; border: 1px solid #ddd; color: #22324a; }
-.btn-primary { background: #0176d3; color: #fff; }
-.btn-primary:hover { background: #0160b0; }
+.btn-primary { background: #2E37A4; color: #fff; }
