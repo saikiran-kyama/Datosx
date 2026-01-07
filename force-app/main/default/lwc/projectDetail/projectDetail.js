@@ -58,15 +58,6 @@ export default class ProjectDetail extends LightningElement {
     statusDropdownOpen = false;
     selectedTags = [];
     message = '';
-    // Search key for Notes search bar
-    searchKey = '';
-    // Edit modal state for notes
-    isEditOpen = false;
-    editTargetId = null;
-    editMessageValue = '';
-    // Delete confirmation state for notes
-    isDeleteOpen = false;
-    deleteTargetId = null;
     selectedPatientType = '';
     showMore = false;
     isNavOpen = true;
@@ -2070,118 +2061,9 @@ export default class ProjectDetail extends LightningElement {
         });
     }
 
-    // Search input handler for Notes
-    handleSearchChange(event) {
-      this.searchKey = event.target.value;
-      // Optional: live-filter chatMessages here or use this.searchKey elsewhere
-    }
-
-    // Open edit modal for a specific message
-    handleEditMessage(event) {
-      // prefer dataset on currentTarget
-      const idStr = event.currentTarget?.dataset?.id || event.target?.dataset?.id;
-      if (!idStr) return;
-      const messageId = parseInt(idStr, 10);
-      const msg = this.chatMessages.find(m => m.id === messageId);
-      if (!msg) return;
-      this.editTargetId = messageId;
-      this.editMessageValue = msg.message || '';
-      this.isEditOpen = true;
-    }
-
-    handleEditMessageChange(event) {
-      this.editMessageValue = event.target.value;
-    }
-
-    saveEdit() {
-      if (!this.editTargetId) {
-        this.closeEditPopup();
-        return;
-      }
-      const id = this.editTargetId;
-      this.chatMessages = this.chatMessages.map(msg => {
-        if (msg.id === id) {
-          return { ...msg, message: this.editMessageValue };
-        }
-        return msg;
-      });
-      this.closeEditPopup();
-    }
-
-    closeEditPopup() {
-      this.isEditOpen = false;
-      this.editTargetId = null;
-      this.editMessageValue = '';
-    }
-
-    // Delete flow for notes
-    handleDeleteMessage(event) {
-      const idStr = event.currentTarget?.dataset?.id || event.target?.dataset?.id;
-      if (!idStr) return;
-      this.deleteTargetId = parseInt(idStr, 10);
-      this.isDeleteOpen = true;
-    }
-
-    closeDeletePopup() {
-      this.isDeleteOpen = false;
-      this.deleteTargetId = null;
-    }
-
-    confirmDelete() {
-      if (!this.deleteTargetId) {
-        this.closeDeletePopup();
-        return;
-      }
-      const id = this.deleteTargetId;
-      this.chatMessages = this.chatMessages.filter(msg => msg.id !== id);
-      this.totalSize = this.chatMessages.length;
-      this.closeDeletePopup();
-    }
 
 
 
 
-
-
-    // Intake / Project Scoping Questionnaire State
-    intakeQuestions = [
-        { id: 1, label: 'What is the primary objective of this project?', value: '' },
-        { id: 2, label: 'What is the target patient population?', value: '' },
-        { id: 3, label: 'What are the key inclusion criteria?', value: '' },
-        { id: 4, label: 'What are the key exclusion criteria?', value: '' },
-        { id: 5, label: 'What is the estimated sample size?', value: '' },
-        { id: 6, label: 'What is the expected study duration?', value: '' },
-        { id: 7, label: 'What specific data points need to be collected?', value: '' },
-        { id: 8, label: 'Are there any specific safety monitoring requirements?', value: '' },
-        { id: 9, label: 'What is the budget range?', value: '' },
-        { id: 10, label: 'What is the desired timeline for completion?', value: '' },
-        { id: 11, label: 'What are the key deliverables?', value: '' },
-        { id: 12, label: 'Any additional comments or requirements?', value: '' }
-    ];
-
-    get isIntake() {
-        return this.currentTab === 'Intake';
-    }
-
-    handleIntakeChange(event) {
-        const id = parseInt(event.target.dataset.id, 10);
-        const val = event.target.value;
-        this.intakeQuestions = this.intakeQuestions.map(q => {
-            if (q.id === id) {
-                return { ...q, value: val };
-            }
-            return q;
-        });
-    }
-
-    handleIntakeClear() {
-        this.intakeQuestions = this.intakeQuestions.map(q => ({ ...q, value: '' }));
-    }
-
-    handleIntakeSave() {
-        // eslint-disable-next-line no-console
-        console.log('Intake Saved:', JSON.stringify(this.intakeQuestions));
-        // Add toast or notification logic here if needed
-    }
 
 }
