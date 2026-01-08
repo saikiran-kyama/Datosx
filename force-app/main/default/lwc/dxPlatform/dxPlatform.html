@@ -143,56 +143,62 @@
 
             <!-- Content Area -->
             <main class="dashboard-content">
-                <template if:true={isOverviewPage}>
-                    <template if:true={showHealthSystems}>
-                        <c-dashboard-health-systems></c-dashboard-health-systems>
-                    </template>
-
-                    <template if:true={showSponsor}>
-                        <c-dashboard-sponsor></c-dashboard-sponsor>
-                    </template>
+                <!-- ========== Health System LWC Components ========== -->
+                <template if:true={showHsProjects}>
+                    <c-hs-projects></c-hs-projects>
                 </template>
 
-                <template if:true={isProjectsPage}>
-                    <template if:true={showHealthSystemProjects}>
-                        <c-projects-H-S></c-projects-H-S>
-                    </template>
-                    <template if:true={showSponsorProjects}>
-                        <c-projects-sponsor></c-projects-sponsor>
-                    </template>
+                <template if:true={showHsPossibilities}>
+                    <c-hs-possibilities></c-hs-possibilities>
                 </template>
 
-                    <template if:true={isCapabilitiesPage}>
-                        <c-page-under-construction></c-page-under-construction >
-                    </template>
+                <template if:true={showHsProfile}>
+                    <c-hs-profile></c-hs-profile>
+                </template>
 
-                    <template if:true={isMessagingPage}>
-                        <c-messages-datosx></c-messages-datosx>
-                    </template>
+                <template if:true={showHsQualifications}>
+                    <c-hs-qualifications></c-hs-qualifications>
+                </template>
 
-                    <template if:true={isEnquiresPage}>
-                        <c-page-under-construction></c-page-under-construction >    
-                    </template>
+                <template if:true={showHsMessages}>
+                    <c-hs-messages></c-hs-messages>
+                </template>
 
-                    <template if:true={isLegalPage}>
-                        <c-page-under-construction></c-page-under-construction >
-                    </template>
-                <template if:false={isOverviewPage}>
-                    
-                    <template if:false={isProjectsPage}>
-                        <template if:true={isDocumentsPage}>
-                            <!-- Embedded Documents View Component for Documents -->
-                            <c-documents-view></c-documents-view>
-                        </template>
-                        <template if:false={isDocumentsPage}>
-                            <template if:true={isMatchesPage}>
-                                <c-dx-matches></c-dx-matches>
-                            </template>
-                            <template if:false={isMatchesPage}>
-                                <lightning-formatted-rich-text value={currentPageContent}></lightning-formatted-rich-text>
-                            </template>
-                        </template>
-                    </template>
+                <template if:true={showHsAgreements}>
+                    <c-hs-agreements></c-hs-agreements>
+                </template>
+
+                <template if:true={showHsNotes}>
+                    <c-hs-notes></c-hs-notes>
+                </template>
+
+                <!-- ========== Sponsor LWC Components ========== -->
+                <template if:true={showSponsorProjectsComponent}>
+                    <c-sponsor-projects></c-sponsor-projects>
+                </template>
+
+                <template if:true={showSponsorEnquiries}>
+                    <c-sponsor-enquiries></c-sponsor-enquiries>
+                </template>
+
+                <template if:true={showSponsorProfile}>
+                    <c-sponsor-profile></c-sponsor-profile>
+                </template>
+
+                <template if:true={showSponsorRequirements}>
+                    <c-sponsor-requirements></c-sponsor-requirements>
+                </template>
+
+                <template if:true={showSponsorMessages}>
+                    <c-sponsor-messages></c-sponsor-messages>
+                </template>
+
+                <template if:true={showSponsorAgreements}>
+                    <c-sponsor-agreements></c-sponsor-agreements>
+                </template>
+
+                <template if:true={showSponsorNotes}>
+                    <c-sponsor-notes></c-sponsor-notes>
                 </template>
             </main>
         </div>

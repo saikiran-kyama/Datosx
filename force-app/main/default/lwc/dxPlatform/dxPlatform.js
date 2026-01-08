@@ -1,4 +1,4 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import LOGO_URL from '@salesforce/resourceUrl/dxPlatformAssets';
 import BACKGROUND_URL from '@salesforce/resourceUrl/dxPlatformAssets';
 
@@ -10,22 +10,22 @@ const CREDENTIALS = {
 
 const NAVIGATION = {
     healthsystem: [
-        { id: 'overview', label: 'Overview' },
-        { id: 'capabilities', label: 'Capabilities' },
-        { id: 'matches', label: 'Matches'},
-        { id: 'projects', label: 'Projects'},
-        { id: 'messaging', label: 'Messaging' },
-        // { id: 'documents', label: 'Documents'},
-        { id: 'legal', label: 'Legal' }
+        { id: 'projects', label: 'Projects' },
+        { id: 'possibilities', label: 'Possibilities' },
+        { id: 'profile', label: 'Profile' },
+        { id: 'qualifications', label: 'Qualifications' },
+        { id: 'messaging', label: 'Messages' },
+        { id: 'agreements', label: 'Agreements' },
+        { id: 'notes', label: 'Notes' }
     ],
     sponsor: [
-        { id: 'overview', label: 'Overview' },
-        // { id: 'capabilities', label: 'Capabilities' },
-        { id: 'enquires', label: 'Enquiries' },
         { id: 'projects', label: 'Projects' },
-        { id: 'messaging', label: 'Messaging' },
-        { id: 'documents', label: 'Legal' },
-        // { id: 'legal', label: 'Legal' }
+        { id: 'enquiries', label: 'Enquiries' },
+        { id: 'profile', label: 'Profile' },
+        { id: 'requirements', label: 'Requirements' },
+        { id: 'messaging', label: 'Messages' },
+        { id: 'agreements', label: 'Agreements' },
+        { id: 'notes', label: 'Notes' }
     ],
 };
 
@@ -161,14 +161,14 @@ const PAGE_CONTENT = {
 };
 
 export default class DxPlatform extends LightningElement {
-    @track username = '';
-    @track password = '';
-    @track errorMessage = '';
-    @track isAuthenticated = false;
-    @track currentRole = '';
-    @track currentPage = 'overview';
-    @track passwordClass = false; // For password visibility toggle
-    @track rememberMe = false; // For remember me checkbox
+    username = '';
+    password = '';
+    errorMessage = '';
+    isAuthenticated = false;
+    currentRole = '';
+    currentPage = 'projects'; // Default to projects as landing page
+    passwordClass = false; // For password visibility toggle
+    rememberMe = false; // For remember me checkbox
     logoUrl = LOGO_URL + '/om_logo-rem.png';
     backgroundUrl = BACKGROUND_URL + '/Datcover.jpeg';
 
@@ -267,15 +267,104 @@ export default class DxPlatform extends LightningElement {
     }
 
     get isEnquiresPage() {
-        return this.currentPage === 'enquires';
+        return this.currentPage === 'enquiries';
     }
 
+    // ========== Health System Navigation Getters ==========
+    get isPossibilitiesPage() {
+        return this.currentPage === 'possibilities';
+    }
 
+    get isProfilePage() {
+        return this.currentPage === 'profile';
+    }
+
+    get isQualificationsPage() {
+        return this.currentPage === 'qualifications';
+    }
+
+    get isAgreementsPage() {
+        return this.currentPage === 'agreements';
+    }
+
+    get isNotesPage() {
+        return this.currentPage === 'notes';
+    }
+
+    get isRequirementsPage() {
+        return this.currentPage === 'requirements';
+    }
+
+    // ========== Health System Component Visibility ==========
+    get showHsProjects() {
+        return this.isProjectsPage && this.isHealthSystemRole;
+    }
+
+    get showHsPossibilities() {
+        return this.isPossibilitiesPage && this.isHealthSystemRole;
+    }
+
+    get showHsProfile() {
+        return this.isProfilePage && this.isHealthSystemRole;
+    }
+
+    get showHsQualifications() {
+        return this.isQualificationsPage && this.isHealthSystemRole;
+    }
+
+    get showHsMessages() {
+        return this.isMessagingPage && this.isHealthSystemRole;
+    }
+
+    get showHsAgreements() {
+        return this.isAgreementsPage && this.isHealthSystemRole;
+    }
+
+    get showHsNotes() {
+        return this.isNotesPage && this.isHealthSystemRole;
+    }
+
+    // ========== Sponsor Component Visibility ==========
+    get showSponsorProjectsComponent() {
+        return this.isProjectsPage && this.isSponsorRole;
+    }
+
+    get showSponsorEnquiries() {
+        return this.isEnquiresPage && this.isSponsorRole;
+    }
+
+    get showSponsorProfile() {
+        return this.isProfilePage && this.isSponsorRole;
+    }
+
+    get showSponsorRequirements() {
+        return this.isRequirementsPage && this.isSponsorRole;
+    }
+
+    get showSponsorMessages() {
+        return this.isMessagingPage && this.isSponsorRole;
+    }
+
+    get showSponsorAgreements() {
+        return this.isAgreementsPage && this.isSponsorRole;
+    }
+
+    get showSponsorNotes() {
+        return this.isNotesPage && this.isSponsorRole;
+    }
+
+    // ========== Role Helper Getters ==========
+    get isHealthSystemRole() {
+        return this.currentRole === 'healthsystem' || this.currentRole === 'health-system';
+    }
+
+    get isSponsorRole() {
+        return this.currentRole === 'sponsor';
+    }
 
     get currentPageContent() {
         const navKey = this.currentRole === 'health-system' ? 'healthsystem' : this.currentRole;
-        return PAGE_CONTENT[navKey]?.[this.currentPage] ;
-        //|| '<p>Page not found</p>'
+        return PAGE_CONTENT[navKey]?.[this.currentPage];
     }
 
     // Toggle password visibility
@@ -331,7 +420,7 @@ export default class DxPlatform extends LightningElement {
             console.log('Login successful!');
             this.isAuthenticated = true;
             this.currentRole = role;
-            this.currentPage = 'overview';
+            this.currentPage = 'projects'; // Projects is the landing page
             this.errorMessage = '';
             
             // Save to sessionStorage
@@ -351,7 +440,7 @@ export default class DxPlatform extends LightningElement {
         this.username = '';
         this.password = '';
         this.currentRole = '';
-        this.currentPage = 'overview';
+        this.currentPage = 'projects';
         this.errorMessage = '';
         this.passwordClass = false;
         
