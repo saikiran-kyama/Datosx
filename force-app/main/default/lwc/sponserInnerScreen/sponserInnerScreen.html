@@ -1,4 +1,9 @@
 <template>
+    <template if:true={showProjectDetail}>
+        <c-project-detail project={selectedProject} onback={handleBackFromProjectDetail}></c-project-detail>
+    </template>
+
+    <template if:false={showProjectDetail}>
     <!-- Highlights Panel -->
     <div class="highlights slds-clearfix slds-page-header slds-page-header_record-home">
         <div class="slds-grid primaryFieldRow">
@@ -919,9 +924,9 @@
                             <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                                 <thead>
                                     <tr class="slds-line-height_reset">
-                                        <th scope="col">
+                                        <!-- <th scope="col">
                                             <div class="slds-truncate">Actions</div>
-                                        </th>
+                                        </th> -->
                                         <th scope="col">
                                             <div class="slds-truncate">Project ID</div>
                                         </th>
@@ -971,7 +976,7 @@
                                 <tbody>
                                     <template for:each={projectsData} for:item="row">
                                         <tr key={row.id}>
-                                            <td>
+                                            <!-- <td>
                                                 <div class="slds-button-group" role="group">
                                                     <lightning-button-icon icon-name="utility:edit" variant="bare"
                                                         alternative-text="Edit" title="Edit" data-id={row.id}
@@ -983,7 +988,7 @@
                                                         style="color: #c23934 !important;" icon-class="icon-delete-svg">
                                                     </lightning-button-icon>
                                                 </div>
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <button class="link-like" data-id={row.id} onclick={handleProjectClick}
                                                     style="background:none;border:none;padding:0;margin:0;color:#0176d3;cursor:pointer">
@@ -1462,5 +1467,6 @@
                 </div>
             </div>
         </div>
+    </template>
     </template>
 </template>

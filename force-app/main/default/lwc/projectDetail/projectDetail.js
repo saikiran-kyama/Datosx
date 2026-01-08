@@ -49,6 +49,11 @@ export default class ProjectDetail extends LightningElement {
     ];
     docCategoryDropdownOpen = false;
     docTypeDropdownOpen = false;
+    // Add Note modal state
+    isAddNoteModalOpen = false;
+    addNoteMessage = '';
+    addNoteFile = null;
+    editingNoteId = null;
 
     // Visibility (status) dropdown state copied/adapted from healthSystems
     statusOptions = [
@@ -1979,6 +1984,91 @@ export default class ProjectDetail extends LightningElement {
 
     handlePatientTypeChange(event) {
         this.selectedPatientType = event.detail.value;
+    }
+
+    // Add Note modal handlers
+    openAddNotePopup() {
+      this.isAddNoteModalOpen = true;
+      this.editingNoteId = null;
+      this.addNoteMessage = '';
+      this.addNoteFile = null;
+    }
+
+    closeAddNotePopup() {
+      this.isAddNoteModalOpen = false;
+    }
+
+    handleAddNoteOverlayClick(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        this.closeAddNotePopup();
+      }
+    }
+
+    stopPropagation(event) {
+      event.stopPropagation();
+    }
+
+    handleAddNoteMessageChange(event) {
+      this.addNoteMessage = event.target.value;
+    }
+
+    handleAddNoteFileChange(event) {
+      const files = event.target.files;
+      this.addNoteFile = files && files.length > 0 ? files[0] : null;
+    }
+
+    handleEditMessage(event) {
+      const id = parseInt(event.currentTarget.dataset.id, 10);
+      const msg = this.chatMessages.find(m => m.id === id);
+      this.editingNoteId = id || null;
+      this.addNoteMessage = msg ? msg.message || '' : '';
+      this.addNoteFile = null;
+      this.isAddNoteModalOpen = true;
+    }
+
+    saveAddNote() {
+      const messageText = (this.addNoteMessage || '').trim();
+      if (!messageText) {
+        this.closeAddNotePopup();
+        return;
+      }
+
+      if (this.editingNoteId) {
+        this.chatMessages = this.chatMessages.map(msg => {
+          if (msg.id === this.editingNoteId) {
+            return {
+              ...msg,
+              message: messageText,
+              hasDocument: this.addNoteFile ? true : msg.hasDocument
+            };
+          }
+          return msg;
+        });
+      } else {
+        const nextId = (this.chatMessages.reduce((maxId, msg) => Math.max(maxId, msg.id || 0), 0) || 0) + 1;
+        const newMessage = {
+          id: nextId,
+          date: new Date(),
+          postedBy: 'Current User',
+          message: messageText,
+          context: 'User Input',
+          tags: [],
+          tagsDisplay: '',
+          hsVisible: false,
+          cvpVisible: false,
+          hsCheckboxId: `hs-checkbox-${nextId}`,
+          cvpCheckboxId: `cvp-checkbox-${nextId}`,
+          hasDocument: !!this.addNoteFile
+        };
+
+        this.chatMessages = [...this.chatMessages, newMessage];
+      }
+      this.totalSize = this.chatMessages.length;
+
+      this.addNoteMessage = '';
+      this.addNoteFile = null;
+      this.editingNoteId = null;
+      this.closeAddNotePopup();
     }
 
     addMessage() {
