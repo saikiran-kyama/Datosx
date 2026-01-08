@@ -2,6 +2,63 @@ import { LightningElement, api } from 'lwc';
 import AVATARS from '@salesforce/resourceUrl/avatars';
 
 export default class SponserInnerScreen extends LightningElement {
+  // Project detail navigation
+  handleProjectClick(event) {
+    const projectId = event.currentTarget.dataset.id;
+    if (!projectId) return;
+    const project = this.projectsData.find(p => p.id === projectId);
+    if (project) {
+      this.selectedProject = project;
+      this.showProjectDetail = true;
+    }
+  }
+
+  handleBackFromProjectDetail() {
+    this.showProjectDetail = false;
+    this.selectedProject = null;
+  }
+
+  // Enquiries handlers
+  handleEnquirySort(event) {
+    const field = event.currentTarget.dataset.field;
+    if (!field) return;
+    if (this.enquiriesSortField === field) {
+      this.enquiriesSortDirection = this.enquiriesSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.enquiriesSortField = field;
+      this.enquiriesSortDirection = 'asc';
+    }
+    this.enquiriesData = [...this.enquiriesData]
+      .sort((a, b) => {
+        const dir = this.enquiriesSortDirection === 'asc' ? 1 : -1;
+        const av = (a[field] || '').toString().toLowerCase();
+        const bv = (b[field] || '').toString().toLowerCase();
+        if (av === bv) return 0;
+        return av > bv ? dir : -dir;
+      });
+  }
+
+  handleEnquiryEdit(event) {
+    const id = event.currentTarget.dataset.id;
+    // placeholder: hook to edit flow
+    // eslint-disable-next-line no-console
+    console.log('Edit enquiry', id);
+  }
+
+  handleEnquiryDelete(event) {
+    const id = event.currentTarget.dataset.id;
+    // placeholder: hook to delete flow
+    // eslint-disable-next-line no-console
+    console.log('Delete enquiry', id);
+  }
+
+  handleEnquiryClick(event) {
+    const id = event.currentTarget.dataset.id;
+    // placeholder: navigate/view enquiry detail
+    // eslint-disable-next-line no-console
+    console.log('Open enquiry', id);
+  }
+
     @api sponsor;
     currentTab = 'Details';
     
@@ -33,6 +90,79 @@ export default class SponserInnerScreen extends LightningElement {
     messagingInput = '';
     messagingContacts = [];
     messagingMessages = [];
+    // Project detail view state
+    showProjectDetail = false;
+    selectedProject = null;
+
+    // Projects data for Projects tab
+    projectsData = [
+      {
+        id: 'p1',
+        projectId: 'PRJ-001',
+        projectName: 'Clinical Trial Phase III',
+        status: 'Active',
+        statusClass: 'project-status-badge status-active',
+        completion: 75,
+        sponsorName: 'Pharma Corp',
+        sponsorInitials: 'PC',
+        sponsorPhoto: '',
+        documents: 12,
+        notes: 8,
+        messages: 15,
+        lastUpdated: '2026-01-03',
+        state: 'MN',
+        city: 'Rochester',
+        contact: 'John Smith',
+        contactInitials: 'JS',
+        contactPhoto: '',
+        email: 'john.smith@mayo.edu',
+        phone: '555-0101'
+      },
+      {
+        id: 'p2',
+        projectId: 'PRJ-002',
+        projectName: 'Cardiovascular Study',
+        status: 'Planning',
+        statusClass: 'project-status-badge status-planning',
+        completion: 25,
+        sponsorName: 'MedTech Inc',
+        sponsorInitials: 'MT',
+        sponsorPhoto: '',
+        documents: 5,
+        notes: 3,
+        messages: 7,
+        lastUpdated: '2026-01-02',
+        state: 'OH',
+        city: 'Cleveland',
+        contact: 'Sarah Johnson',
+        contactInitials: 'SJ',
+        contactPhoto: '',
+        email: 'sarah.j@cleveland.org',
+        phone: '555-0202'
+      },
+      {
+        id: 'p3',
+        projectId: 'PRJ-003',
+        projectName: 'Diabetes Research',
+        status: 'Completed',
+        statusClass: 'project-status-badge status-completed',
+        completion: 100,
+        sponsorName: 'BioLife Sciences',
+        sponsorInitials: 'BL',
+        sponsorPhoto: '',
+        documents: 25,
+        notes: 18,
+        messages: 42,
+        lastUpdated: '2025-12-28',
+        state: 'MD',
+        city: 'Baltimore',
+        contact: 'Michael Chen',
+        contactInitials: 'MC',
+        contactPhoto: '',
+        email: 'm.chen@jhmi.edu',
+        phone: '555-0303'
+      }
+    ];
     // Estimation tab navigation state
     estimationSteps = [];
     selectedEstimationSectionId = '';
@@ -158,6 +288,28 @@ export default class SponserInnerScreen extends LightningElement {
             cellAttributes: { alignment: 'left' }
         }
     ];
+
+      // Enquiries state
+      enquiriesSortField = 'enquiryId';
+      enquiriesSortDirection = 'asc';
+      enquiriesData = [
+        { id: 'ENQ001', enquiryId: 'New1455', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'Sample Sponsor', sponsorInitial: 'SS', projectName: 'CDS Clinical Trial', projectDetails: 'Phase III cardiovascular study', hasDocument: true, hsAllocated: 'Mayo Clinic', dateCreated: '2025-10-15', lastUpdated: '2025-11-15' },
+        { id: 'ENQ002', enquiryId: 'PX-1002', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'BioHealth Ltd', sponsorInitial: 'BH', projectName: 'Beta Research', projectDetails: 'Oncology drug trial Phase II', hasDocument: true, hsAllocated: 'Cleveland Clinic', dateCreated: '2025-10-10', lastUpdated: '2025-11-10' },
+        { id: 'ENQ003', enquiryId: 'PX-1003', status: 'Inactive', statusClass: 'badge-soft-danger border border-danger', sponsorName: 'MedSolutions', sponsorInitial: 'MS', projectName: 'Gamma Protocol', projectDetails: 'Neurological disorder study', hasDocument: false, hsAllocated: '-', dateCreated: '2025-10-08', lastUpdated: '2025-11-08' },
+        { id: 'ENQ004', enquiryId: 'PX-1004', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'Global Trials', sponsorInitial: 'GT', projectName: 'Delta Study', projectDetails: 'Diabetes management research', hasDocument: true, hsAllocated: 'Johns Hopkins', dateCreated: '2025-10-12', lastUpdated: '2025-11-12' },
+        { id: 'ENQ005', enquiryId: 'PX-1005', status: 'Inactive', statusClass: 'badge-soft-danger border border-danger', sponsorName: 'Acme Pharma', sponsorInitial: 'AP', projectName: 'Epsilon Trial', projectDetails: 'Immunology clinical trial', hasDocument: false, hsAllocated: '-', dateCreated: '2025-09-25', lastUpdated: '2025-10-25' },
+        { id: 'ENQ006', enquiryId: 'PX-1006', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'NextGen Pharma', sponsorInitial: 'NP', projectName: 'Zeta Discovery', projectDetails: 'Rare disease treatment study', hasDocument: true, hsAllocated: 'Stanford Health', dateCreated: '2025-10-05', lastUpdated: '2025-11-05' },
+        { id: 'ENQ007', enquiryId: 'PX-1007', status: 'Completed', statusClass: 'badge-soft-info border border-info', sponsorName: 'Alpha Bio', sponsorInitial: 'AB', projectName: 'Theta Clinical', projectDetails: 'Respiratory disease trial', hasDocument: true, hsAllocated: 'Mass General', dateCreated: '2025-09-30', lastUpdated: '2025-10-30' },
+        { id: 'ENQ008', enquiryId: 'PX-1008', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'TriCore Labs', sponsorInitial: 'TL', projectName: 'Omega Research', projectDetails: 'Pain management study', hasDocument: true, hsAllocated: 'UCSF Medical', dateCreated: '2025-10-14', lastUpdated: '2025-11-14' },
+        { id: 'ENQ009', enquiryId: 'PX-1009', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'BioVantage', sponsorInitial: 'BV', projectName: 'Sigma Trial', projectDetails: 'Infectious disease protocol', hasDocument: false, hsAllocated: 'Northwestern', dateCreated: '2025-10-09', lastUpdated: '2025-11-09' },
+        { id: 'ENQ010', enquiryId: 'PX-1010', status: 'Inactive', statusClass: 'badge-soft-danger border border-danger', sponsorName: 'OptimaBio', sponsorInitial: 'OB', projectName: 'Lambda Study', projectDetails: 'Metabolic syndrome research', hasDocument: false, hsAllocated: '-', dateCreated: '2025-10-01', lastUpdated: '2025-11-01' },
+        { id: 'ENQ011', enquiryId: 'PX-1011', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'HealthWave', sponsorInitial: 'HW', projectName: 'Kappa Protocol', projectDetails: 'Cardiovascular intervention', hasDocument: true, hsAllocated: 'Duke Health', dateCreated: '2025-10-11', lastUpdated: '2025-11-11' },
+        { id: 'ENQ012', enquiryId: 'PX-1012', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'BioMedX', sponsorInitial: 'BX', projectName: 'Mu Clinical', projectDetails: 'Renal disease study', hasDocument: true, hsAllocated: 'Emory Healthcare', dateCreated: '2025-10-13', lastUpdated: '2025-11-13' },
+        { id: 'ENQ013', enquiryId: 'PX-1013', status: 'Completed', statusClass: 'badge-soft-info border border-info', sponsorName: 'LifeCure', sponsorInitial: 'LC', projectName: 'Nu Discovery', projectDetails: 'Cancer immunotherapy trial', hasDocument: true, hsAllocated: 'UCLA Health', dateCreated: '2025-10-06', lastUpdated: '2025-11-06' },
+        { id: 'ENQ014', enquiryId: 'PX-1014', status: 'Inactive', statusClass: 'badge-soft-danger border border-danger', sponsorName: 'BioAxis', sponsorInitial: 'BA', projectName: 'Xi Research', projectDetails: 'Genetic disorder study', hasDocument: false, hsAllocated: '-', dateCreated: '2025-10-02', lastUpdated: '2025-11-02' },
+        { id: 'ENQ015', enquiryId: 'PX-1015', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'MedCore', sponsorInitial: 'MC', projectName: 'Omicron Trial', projectDetails: 'Dermatology clinical study', hasDocument: true, hsAllocated: 'Tampa General', dateCreated: '2025-09-28', lastUpdated: '2025-10-28' },
+        { id: 'ENQ016', enquiryId: 'PX-1016', status: 'Active', statusClass: 'badge-soft-success border border-success', sponsorName: 'NextStep Labs', sponsorInitial: 'NS', projectName: 'Rho Clinical', projectDetails: 'Ophthalmology research', hasDocument: false, hsAllocated: 'Albany Medical', dateCreated: '2025-10-04', lastUpdated: '2025-11-04' }
+      ];
 
     savedSearchOptions = [
         { label: 'Pending Verification', value: 'pending_verification' },
@@ -365,6 +517,14 @@ export default class SponserInnerScreen extends LightningElement {
 
     get isNotes() {
         return this.currentTab === 'Related';
+    }
+
+    get isEnquiries() {
+      return this.currentTab === 'Enquiries';
+    }
+
+    get isProject() {
+      return this.currentTab === 'Project';
     }
 
     get isIntake() {
@@ -1195,6 +1355,29 @@ export default class SponserInnerScreen extends LightningElement {
             // ignore DOM errors
         }
 
+    }
+
+    // Handle Add Contact button click
+    handleAddContact() {
+        // TODO: Implement add contact modal/functionality
+        // eslint-disable-next-line no-console
+        console.log('Add Contact clicked');
+    }
+
+    // Handle Edit DX Team button click
+    handleEditDxTeam() {
+        // TODO: Implement edit DX team modal/functionality
+        // eslint-disable-next-line no-console
+        console.log('Edit DX Team clicked');
+    }
+
+    // Handle inline edit for profile fields
+    handleInlineEdit(event) {
+        const field = event.currentTarget.dataset.field;
+        const section = event.currentTarget.dataset.section;
+        // TODO: Implement inline edit modal/functionality
+        // eslint-disable-next-line no-console
+        console.log('Inline edit clicked for field:', field, 'in section:', section);
     }
 
     // Protocol: select a step to update the right panel

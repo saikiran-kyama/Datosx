@@ -92,8 +92,20 @@
                         <span class="title">Requirements</span>
                     </a>
                 </li>
-
-
+                
+                <li role="presentation" class="record-home-project record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Project" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Project" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Projects</span>
+                    </a>
+                </li>
+                <li role="presentation" class="record-home-enquiries record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Enquiries" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Enquiries" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Enquiries</span>
+                    </a>
+                </li>
+                
                 <li role="presentation" class="record-home-messaging record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
                     <a aria-selected="false" role="tab" tabindex="-1" title="Messaging" class="tabHeader"
                         href="javascript:void(0);" data-tab="Messaging" onclick={handleTabClick} style="padding: 8px 12px;">
@@ -122,406 +134,144 @@
                     class="record-home-details record-home-tab tabs__content active uiTab">
                     <div class="slds-card slds-m-top_small">
                         <div class="slds-card__body slds-card__body_inner">
-                            <div class="slds-grid slds-grid_pull-padded">
-                                <!-- Sponsor Details Panel -->
+                            <div class="slds-grid slds-grid_pull-padded profile-cards-container">
+                                <!-- Sponsor Details Card -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Sponsor Details</div>
-                                        <div style="padding:10px; margin-top: -10px;">
-                                            <table style="width:100%;border-collapse:collapse;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Sponsor ID</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.sponsorId}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="sponsorId"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Sponsor Name</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.sponsorName}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="sponsorName"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Status</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.status}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="status"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            State</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.state}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="state"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            City</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.city}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="city"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Primary Contact</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.contact}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="contact"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Email</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.email}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="email"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Phone</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.phone}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-field="phone"
-                                                                data-section="overview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Last Updated</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.lastUpdated}</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Active Projects</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.projects}</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Enquiries</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>{sponsor.enquiries}</span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="profile-card">
+                                        <div class="profile-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <lightning-icon icon-name="standard:record" size="small" class="profile-card-icon"></lightning-icon>
+                                                <span class="profile-card-title">Sponsor Details</span>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Row 1: Sponsor ID -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">Sponsor ID</div>
+                                                <div class="profile-field-value">
+                                                    <span>{sponsor.sponsorId}</span>
+                                                    
+                                                </div>
+                                            </div>
+                                            <!-- Row 2: Sponsor Name -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">Sponsor Name</div>
+                                                <div class="profile-field-value">
+                                                    <span>{sponsor.sponsorName}</span>
+                                                    
+                                                </div>
+                                            </div>
+                                            <!-- Row 3: Status -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">Status</div>
+                                                <div class="profile-field-value">
+                                                    <span class="status-badge status-active">
+                                                        <lightning-icon icon-name="utility:success" size="xx-small" class="status-icon"></lightning-icon>
+                                                        {sponsor.status}
+                                                    </span>
+                                                    
+                                                </div>
+                                            </div>
+                                            <!-- Row 4: Active Projects -->
+                                            <!-- <div class="profile-field-row">
+                                                <div class="profile-field-label">Active Projects</div>
+                                                <div class="profile-field-value">
+                                                    <span>{sponsor.projects}</span>
+                                                    
+                                                </div>
+                                            </div> -->
+                                            <!-- Row 5: State -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">State</div>
+                                                <div class="profile-field-value">
+                                                    <span>{sponsor.state}</span>
+                                                   
+                                                </div>
+                                            </div>
+                                            <!-- Row 6: City -->
+                                            <div class="profile-field-row">
+                                                <div class="profile-field-label">City</div>
+                                                <div class="profile-field-value">
+                                                    <span>{sponsor.city}</span>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-            
+
+                                <!-- Contact Details Card -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px;">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Project Scoping Questionnaire</div>
-                                        <div style="padding:10px; background: rgb(230, 247, 255);">
-                                            <table
-                                                style="width:100%;border-collapse:collapse;background:#e6f7ff; margin-top: -10px;">
-                                                <thead>
-                                                    <!-- <tr>
-                                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
-                                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
-                                                                </tr> -->
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Trial Details</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Phase II clinical trial evaluating retinal
-                                                                biomarkers</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="trialDetails"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Planned Site Count</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>12</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="plannedSiteCount"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Primary study objective</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Evaluate safety and efficacy of retinal AI
-                                                                assessment</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="primaryObjective"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Information Type</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Clinical Imaging</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="informationType"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Objectives (Secondary/Tertiary)</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Secondary: biomarker correlation; Tertiary: longitudinal
-                                                                progression</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="secondaryObjectives"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Statistical Analysis Required?</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span><input type="checkbox" disabled checked /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="statisticalAnalysis"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Population Criteria</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Adults 50-85 with early Alzheimer's diagnosis</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="populationCriteria"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Expected Timeline</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Q3 2026 - Q2 2027</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="expectedTimeline"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Study Exclusions</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Concurrent severe ocular disease or uncontrolled
-                                                                diabetes</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="studyExclusions"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Is Health System Chosen?</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span><input type="checkbox" disabled /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="healthSystemChosen"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Participant Enrollment Target</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>200</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="scoping"
-                                                                data-field="enrollmentTarget"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Submitted by</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
-                                                            <span>Aleksandra Fornal</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="profile-card">
+                                        <div class="profile-card-header">
+                                            <lightning-icon icon-name="standard:contact" size="small" class="profile-card-icon"></lightning-icon>
+                                            <span class="profile-card-title">Contact Details</span>
+                                            <button class="add-contact-btn" onclick={handleAddContact}>
+                                                <lightning-icon icon-name="utility:add" size="xx-small"></lightning-icon>
+                                                Add Contact
+                                            </button>
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Contact Person Info -->
+                                            <div class="contact-person-header">
+                                                <div class="contact-person-info">
+                                                    <span class="contact-person-name">{sponsor.contact}</span>
+                                                    
+                                                </div>
+                                                <div class="contact-person-actions">
+                                                    <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                        variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                                        data-field="contact" data-section="overview"></lightning-button-icon>
+                                                    <lightning-button-icon icon-name="utility:delete" size="x-small"
+                                                        variant="bare" alternative-text="Delete"></lightning-button-icon>
+                                                </div>
+                                            </div>
+                                            <!-- Contact Details -->
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:company" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>Primary Contact</span>
+                                            </div>
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:email" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>{sponsor.email}</span>
+                                            </div>
+                                            <div class="contact-detail-row">
+                                                <lightning-icon icon-name="utility:call" size="xx-small" class="contact-icon"></lightning-icon>
+                                                <span>{sponsor.phone}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- CVP Team Card -->
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
-                                    <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
-                                        <div style="background-color:#425b63;color:white;padding:10px;font-weight:700;">
-                                            Document/Agreement Status</div>
-                                        <div style="padding:10px;background:#fffce4;">
-                                            <table style="width:100%;border-collapse:collapse;    margin-top: -10px;">
-                                                <thead>
-                                                    <!-- <tr>
-                                                                    <th style="text-align:left;padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">Field</th>
-                                                                    <th style="text-align:left;padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;font-weight:600;">Value</th>
-                                                                </tr> -->
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Project Planning Overview</td>
-                                                        <td class="value-cell">
-                                                            <span>Initial planning completed; milestones and resource
-                                                                allocation defined.</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="planningOverview"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="
-                    padding:8px 0;
-                    border-top:1px solid #eee;
-                    color:#333;
-                    font-weight:600;
-                ">
-                                                            <span style="margin-right:10px;     display: block;">Project
-                                                                Scoping</span>
-                                                            <span>Two-pager</span>
-                                                        </td>
-            
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Datosx Approved</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="twoPager"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="
-                    padding:8px 0;
-                    border-top:1px solid #eee;
-                    color:#333;
-                    font-weight:600;
-                ">
-                                                            <span style="margin-right:10px;     display: block;">Project
-                                                                Scoping</span>
-                                                            <span>Two-pager Document</span>
-                                                        </td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span style="color:#01b7f2">View Document</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
-                                                                variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
-                                                                data-section="documents"
-                                                                data-field="twoPager"></lightning-button-icon>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Created By</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding:8px 0;border-top:1px solid #eee;color:#333;font-weight:600;">
-                                                            Last Modified By</td>
-                                                        <td class="value-cell"
-                                                            style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
-                                                            <span>Aleksandra Fornal, 10/27/2025, 6:13 PM</span>
-            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="profile-card">
+                                        <div class="profile-card-header">
+                                            <lightning-icon icon-name="standard:groups" size="small" class="profile-card-icon"></lightning-icon>
+                                            <span class="profile-card-title">CVP Team</span>
+                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                variant="bare" alternative-text="Edit DX Team" onclick={handleEditDxTeam}
+                                                class="dx-team-edit-btn"></lightning-button-icon>
+                                        </div>
+                                        <div class="profile-card-body">
+                                            <!-- Coordinator Name Label -->
+                                            <div class="dx-team-label">Coordinator Name</div>
+                                            <!-- Coordinator Profile -->
+                                            <div class="dx-team-profile">
+                                                <div class="dx-team-avatar">
+                                                    <img src="https://orgfarm-4f811fcf7a-dev-ed.develop.lightning.force.com/resource/1766053176000/avatars/2.svg.jpg" alt="Coordinator Avatar" />
+                                                </div>
+                                                <div class="dx-team-info">
+                                                    <span class="dx-team-name">James Mitchell</span>
+                                                    <span class="dx-team-email">jmitchell@dxhealth.com</span>
+                                                </div>
+                                            </div>
+                                            <!-- Phone -->
+                                            <div class="dx-team-contact-row">
+                                                <lightning-icon icon-name="utility:call" size="xx-small" class="dx-team-icon"></lightning-icon>
+                                                <span>+1 415-555-0208</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1155,6 +905,263 @@
                     </div>
                 </div>
             </section>
+        </template>
+
+        <!-- Projects tab content -->
+        <template if:true={isProject}>
+            <template if:false={showProjectDetail}>
+            <section role="tabpanel" aria-expanded="true"
+                class="record-home-project record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <!-- Projects Table -->
+                        <div class="table-wrapper">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">
+                                            <div class="slds-truncate">Actions</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project ID</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Project Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Completion</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Sponsor</div>
+                                        </th>
+                                        
+                                        <th scope="col">
+                                            <div class="slds-truncate">Documents</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Notes</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Messages</div>
+                                        </th>
+                                        
+                                        <th scope="col">
+                                            <div class="slds-truncate">State</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">City</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Contact</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Phone</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate">Last Updated</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={projectsData} for:item="row">
+                                        <tr key={row.id}>
+                                            <td>
+                                                <div class="slds-button-group" role="group">
+                                                    <lightning-button-icon icon-name="utility:edit" variant="bare"
+                                                        alternative-text="Edit" title="Edit" data-id={row.id}
+                                                        class="slds-m-right_x-small icon-edit">
+                                                    </lightning-button-icon>
+                                                    <lightning-button-icon icon-name="utility:delete" variant="bare"
+                                                        alternative-text="Delete" title="Delete" data-id={row.id}
+                                                        class="icon-delete"
+                                                        style="color: #c23934 !important;" icon-class="icon-delete-svg">
+                                                    </lightning-button-icon>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="link-like" data-id={row.id} onclick={handleProjectClick}
+                                                    style="background:none;border:none;padding:0;margin:0;color:#0176d3;cursor:pointer">
+                                                    <div class="slds-truncate hyper" style="color:blue">{row.projectId}</div>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="link-like" data-id={row.id} onclick={handleProjectClick}
+                                                    style="background:none;border:none;padding:0;margin:0;color:#0176d3;cursor:pointer">
+                                                    <div class="slds-truncate hyper">{row.projectName}</div>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <span class={row.statusClass}>
+                                                    {row.status}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" style="text-align: center;">{row.completion}%</div>
+                                            </td>
+                                            <td>
+                                                <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                                    <lightning-avatar src={row.sponsorPhoto} alternative-text={row.sponsorName}
+                                                        initials={row.sponsorInitials} size="small"></lightning-avatar>
+                                                    <div class="contact-name slds-truncate">{row.sponsorName}</div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.documents}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.notes}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate center-link-cell">{row.messages}</div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="slds-truncate">{row.state}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.city}</div>
+                                            </td>
+                                            <td>
+                                                <div class="contact-cell" style="display:flex; align-items:center; gap:0.5rem;">
+                                                    <lightning-avatar src={row.contactPhoto} alternative-text={row.contact}
+                                                        initials={row.contactInitials} size="small"></lightning-avatar>
+                                                    <div class="contact-name slds-truncate">{row.contact}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.email}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.phone}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate">{row.lastUpdated}</div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </template>
+
+            <!-- Project Detail View -->
+            <template if:true={showProjectDetail}>
+                <c-project-detail project={selectedProject} onback={handleBackFromProjectDetail}></c-project-detail>
+            </template>
+        </template>
+
+        <!-- Enquiries tab content -->
+        <template if:true={isEnquiries}>
+            <table class="slds-table slds-m-top_small slds-table_bordered slds-table_cell-buffer table-rounded enquiries-table">
+                <thead>
+                    <tr class="slds-line-height_reset" style="height: 36px;">
+                        <th scope="col" style="width: 120px; padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate">Actions</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="enquiryId" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Enquiry ID</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="status" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Enquiry Status</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="projectName" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Project Name</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="projectDetails" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Project Details</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="projectScopingDoc" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Project Scoping Doc</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="hsAllocated" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>HS Allocated</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="dateCreated" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Date Created</span>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleEnquirySort} style="padding-top: 4px; padding-bottom: 4px;">
+                            <div class="slds-truncate header-content">
+                                <span>Last Updated</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={enquiriesData} for:item="record">
+                        <tr key={record.id} class="slds-hint-parent">
+                            <td>
+                                <div class="action-buttons-cell">
+                                    <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                        title="Edit" variant="bare" class="edit-icon" data-id={record.id}
+                                        onclick={handleEnquiryEdit}>
+                                    </lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                                        title="Delete" variant="bare" class="delete-icon" data-id={record.id}
+                                        onclick={handleEnquiryDelete}>
+                                    </lightning-button-icon>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">
+                                    <a href="javascript:void(0);"
+                                        style="color: #0176d3; font-weight: 600; text-decoration: none; cursor: pointer;"
+                                        data-id={record.id} onclick={handleEnquiryClick}>{record.enquiryId}</a>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class={record.statusClass}>{record.status}</span>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.projectName}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.projectDetails}</div>
+                            </td>
+                            <td style="text-align:center;">
+                                <template if:true={record.hasDocument}>
+                                    <span style="color: #0176d3; cursor: pointer; font-weight: 600; text-align:center;">View</span>
+                                </template>
+                                <template if:false={record.hasDocument}>
+                                    <span style="color: #706e6b; text-align:center;">-</span>
+                                </template>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.hsAllocated}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.dateCreated}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.lastUpdated}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
         </template>
 
         <!-- Intake tab content -->
