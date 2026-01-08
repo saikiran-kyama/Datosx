@@ -876,4 +876,57 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
         this.taskTodoRecords = [newItem, ...this.taskTodoRecords];
         this.closeAddModal();
     };
+
+    // --- Task modal handlers (open/close/save) reused from projectTasks ---
+    openAddActivityPopup() {
+        this.isEditing = false;
+        this.editingActivityId = null;
+        this.isAddActivityOpen = true;
+        this.addFormMilestone = this.selectedProtocolStep || this.milestoneNames[0];
+        this.addFormDescription = '';
+        this.addFormPlanStart = '';
+        this.addFormPlanFinish = '';
+        this.addFormActualStart = '';
+        this.addFormEta = '';
+    }
+
+    closeAddActivityPopup() {
+        this.isAddActivityOpen = false;
+        this.addFormMilestone = '';
+        this.addFormDescription = '';
+        this.addFormPlanStart = '';
+        this.addFormPlanFinish = '';
+        this.addFormActualStart = '';
+        this.addFormEta = '';
+    }
+
+    saveAddActivity = () => {
+        if (!this.addFormDescription || !this.addFormDescription.trim()) {
+            alert('Please enter a description');
+            return;
+        }
+        const milestone = this.addFormMilestone || this.milestoneNames[0];
+        const prefix = milestone === 'Trial Execution' ? 'TE' : (milestone === 'Trial Close' ? 'TC' : 'TR');
+        const id = 'act-' + Date.now();
+        const newActivity = {
+            id,
+            activity: this.addFormDescription.trim(),
+            code: `${prefix}-${Date.now() % 100000}`,
+            checked: false,
+            section: milestone,
+            lastUpdated: new Date().toISOString().split('T')[0],
+            planDate: this.addFormPlanStart || '',
+            actualDate: this.addFormActualStart || '',
+            planFinish: this.addFormPlanFinish || '',
+            actualFinish: '',
+            eta: this.addFormEta || '',
+            progress: '0%',
+            progressStyle: 'width: 0%; background: linear-gradient(90deg,#2e7ce4,#2e9be4); height: 10px;'
+        };
+        if (!this.protocolData) this.protocolData = {};
+        if (!this.protocolData[milestone]) this.protocolData[milestone] = [];
+        this.protocolData[milestone] = [newActivity, ...this.protocolData[milestone]];
+        this.protocolData = { ...this.protocolData };
+        this.closeAddActivityPopup();
+    };
 }

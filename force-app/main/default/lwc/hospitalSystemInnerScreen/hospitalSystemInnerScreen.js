@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import AVATARS from '@salesforce/resourceUrl/avatars';
 
+const AGREEMENT_TYPES = ['mNDA', 'LOI', 'ESA', 'MSA'];
+
 export default class HospitalSystemInnerScreen extends LightningElement {
     @api healthSystem;
     currentTab = 'Details';
@@ -24,6 +26,23 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     selectedLegalStep = '';
     legalStepsObjs = [];
     legalData = {};
+    legalSteps = [...AGREEMENT_TYPES];
+    isLegalAddModalOpen = false;
+    legalFormAgreementType = AGREEMENT_TYPES[0];
+    legalFormVersion = '';
+    legalFormInitiatedBy = '';
+    legalFormHs = '';
+    legalFormSponsor = '';
+    legalFormDx = '';
+    legalFormDueDate = '';
+    legalFormDocName = '';
+    legalFormStatus = 'In Process';
+    legalEditingRowId = null;
+    legalStatusOptions = [
+      { label: 'In Process', value: 'In Process' },
+      { label: 'Completed', value: 'Completed' },
+      { label: 'Rejected', value: 'Rejected' }
+    ];
     // Execute modal state for Legal grid
     isExecuteOpen = false;
     selectedExecuteRowId = null;
@@ -33,6 +52,20 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     messagingInput = '';
     messagingContacts = [];
     messagingMessages = [];
+    isAddContactModalOpen = false;
+    contactFormName = '';
+    contactFormType = 'Primary';
+    contactFormEmail = '';
+    contactFormPhone = '';
+    isDxTeamModalOpen = false;
+    dxTeamFormName = '';
+    dxTeamFormEmail = '';
+    dxTeamFormPhone = '';
+    contactTypeOptions = [
+      { label: 'Primary', value: 'Primary' },
+      { label: 'Secondary', value: 'Secondary' },
+      { label: 'Others', value: 'Others' }
+    ];
     // Estimation tab navigation state
     estimationSteps = [];
     selectedEstimationSectionId = '';
@@ -40,6 +73,16 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     
     // Notes tab state
     filterToggle = false;
+    // Documents-style filter state
+    filterFromDate = '';
+    filterToDate = '';
+    searchKey = '';
+    // Visibility (status) dropdown state
+    statusOptions = [
+      { label: 'HS', value: 'HS', checked: false },
+      { label: 'Sponsor', value: 'Sponsor', checked: false }
+    ];
+    statusDropdownOpen = false;
     selectedTags = [];
     message = '';
     selectedPatientType = '';
@@ -52,6 +95,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
     currentPage = 0;
 
     // Project detail view state
+            projectScopingDoc = 'mNDA Packet.pdf';
     showProjectDetail = false;
     selectedProject = null;
 
@@ -61,10 +105,11 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             id: 'p1',
             projectId: 'PRJ-001',
             projectName: 'Clinical Trial Phase III',
-            status: 'Active',
+            status: 'Study Ongoing',
             statusClass: 'project-status-badge status-active',
             completion: 75,
             sponsorName: 'Pharma Corp',
+            projectScopingDoc: 'LOI_Template.docx',
             sponsorInitials: 'PC',
             sponsorPhoto: '',
             healthSystemName: 'Mayo Clinic',
@@ -78,6 +123,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             city: 'Rochester',
             contact: 'John Smith',
             contactInitials: 'JS',
+            projectScopingDoc: 'ESA_Draft.pdf',
             contactPhoto: '',
             email: 'john.smith@mayo.edu',
             phone: '555-0101'
@@ -86,7 +132,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             id: 'p2',
             projectId: 'PRJ-002',
             projectName: 'Cardiovascular Study',
-            status: 'Planning',
+            status: 'Deep Dive Call',
             statusClass: 'project-status-badge status-planning',
             completion: 25,
             sponsorName: 'MedTech Inc',
@@ -111,7 +157,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             id: 'p3',
             projectId: 'PRJ-003',
             projectName: 'Diabetes Research',
-            status: 'Completed',
+            status: 'Protocol Draft 1 Creation',
             statusClass: 'project-status-badge status-completed',
             completion: 100,
             sponsorName: 'BioLife Sciences',
@@ -143,7 +189,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             sponsorInitials: 'PG',
             productName: 'CardioHealth Plus',
             productDetails: 'Advanced cardiovascular health monitoring solution for clinical trials',
-            productScopingDoc: 'View',
+            projectScopingDoc: 'View',
             requirements: 12,
             matchingPercentage: 85,
             interested: false
@@ -155,7 +201,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             sponsorInitials: 'BS',
             productName: 'NeuroTrack AI',
             productDetails: 'AI-powered neurological disorder tracking and analysis platform',
-            productScopingDoc: 'View',
+            projectScopingDoc: 'View',
             requirements: 18,
             matchingPercentage: 92,
             interested: false
@@ -167,7 +213,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             sponsorInitials: 'MR',
             productName: 'OncoMonitor Pro',
             productDetails: 'Comprehensive oncology patient monitoring and data management system',
-            productScopingDoc: 'View',
+            projectScopingDoc: 'View',
             requirements: 15,
             matchingPercentage: 78,
             interested: true
@@ -179,7 +225,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             sponsorInitials: 'HT',
             productName: 'DiabetesWatch',
             productDetails: 'Real-time diabetes management and glucose monitoring solution',
-            productScopingDoc: 'View',
+            projectScopingDoc: 'View',
             requirements: 10,
             matchingPercentage: 88,
             interested: false
@@ -545,16 +591,82 @@ export default class HospitalSystemInnerScreen extends LightningElement {
 
     // Profile tab - Add Contact button handler
     handleAddContact() {
-        // Placeholder for add contact functionality
-        console.log('Add Contact clicked');
-        // You can dispatch a custom event or open a modal here
+      this.resetContactForm();
+      this.isAddContactModalOpen = true;
+    }
+
+    closeAddContactModal() {
+      this.isAddContactModalOpen = false;
+      this.resetContactForm();
+    }
+
+    handleContactFormChange(event) {
+      const name = event?.target?.name;
+      const value = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+      if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+        this[name] = value;
+      }
+    }
+
+    saveContactDetails() {
+      // Placeholder for persisting the new contact details.
+      this.closeAddContactModal();
+    }
+
+    resetContactForm() {
+      this.contactFormName = '';
+      this.contactFormType = 'Primary';
+      this.contactFormEmail = '';
+      this.contactFormPhone = '';
+    }
+
+    handleEditContact(event) {
+      const dataset = event?.currentTarget?.dataset || {};
+      this.contactFormName = dataset.name || '';
+      this.contactFormType = dataset.type || 'Primary';
+      this.contactFormEmail = dataset.email || '';
+      this.contactFormPhone = dataset.phone || '';
+      this.isAddContactModalOpen = true;
     }
 
     // Profile tab - Edit DX Team button handler
-    handleEditDxTeam() {
-        // Placeholder for edit DX team functionality
-        console.log('Edit DX Team clicked');
-        // You can dispatch a custom event or open a modal here
+    handleEditDxTeam(event) {
+      const dataset = event?.currentTarget?.dataset || {};
+      this.dxTeamFormName = dataset.name || '';
+      this.dxTeamFormEmail = dataset.email || '';
+      this.dxTeamFormPhone = dataset.phone || '';
+      this.isDxTeamModalOpen = true;
+    }
+
+    handleDxTeamFormChange(event) {
+      const name = event?.target?.name;
+      const value = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+      if (!name) {
+        return;
+      }
+      if (name === 'dxTeamFormName') {
+        this.dxTeamFormName = value;
+      } else if (name === 'dxTeamFormEmail') {
+        this.dxTeamFormEmail = value;
+      } else if (name === 'dxTeamFormPhone') {
+        this.dxTeamFormPhone = value;
+      }
+    }
+
+    saveDxTeamDetails() {
+      // Placeholder for persisting Coordinator details.
+      this.closeDxTeamModal();
+    }
+
+    closeDxTeamModal() {
+      this.isDxTeamModalOpen = false;
+      this.resetDxTeamForm();
+    }
+
+    resetDxTeamForm() {
+      this.dxTeamFormName = '';
+      this.dxTeamFormEmail = '';
+      this.dxTeamFormPhone = '';
     }
 
     // Project detail navigation
@@ -1373,6 +1485,15 @@ export default class HospitalSystemInnerScreen extends LightningElement {
       return (this.milestoneNames || []).map(m => ({ label: m, value: m }));
     }
 
+    get legalFormDocDisplay() {
+      return this.legalFormDocName ? `Selected: ${this.legalFormDocName}` : 'No document selected';
+    }
+
+    get legalAgreementOptions() {
+      const steps = this.legalSteps && this.legalSteps.length ? this.legalSteps : AGREEMENT_TYPES;
+      return steps.map((type) => ({ label: type, value: type }));
+    }
+
     // Messages data per HS and Sponsor
     messagesDataByHS = {
         hs1: {
@@ -1421,6 +1542,14 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         return this.legalData[this.selectedLegalStep] || [];
     }
 
+    get legalModalTitle() {
+      return this.legalEditingRowId ? 'Edit Agreement' : 'Add Agreement';
+    }
+
+    get showLegalStatusField() {
+      return !!this.legalEditingRowId;
+    }
+
     handleTabClick(event) {
         try {
             event.preventDefault();
@@ -1433,9 +1562,9 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         this.currentTab = tab;
         // ensure Legal data is initialized when user navigates to it
         if (tab === 'Legal') {
-            if (!this.legalSteps || !this.legalSteps.length) {
-                this.legalSteps = ['mNDA', 'LOI', 'ESA', 'MSA'];
-            }
+          if (!this.legalSteps || !this.legalSteps.length) {
+            this.legalSteps = [...AGREEMENT_TYPES];
+          }
             if (!this.selectedLegalStep) {
                 this.selectedLegalStep = this.legalSteps[0];
             }
@@ -1540,6 +1669,83 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         }));
     }
 
+    openLegalAddModal() {
+      if (!this.selectedLegalStep && this.legalSteps && this.legalSteps.length) {
+        this.selectedLegalStep = this.legalSteps[0];
+      }
+      this.resetLegalForm();
+      this.isLegalAddModalOpen = true;
+    }
+
+    closeLegalAddModal() {
+      this.isLegalAddModalOpen = false;
+      this.resetLegalForm();
+    }
+
+    resetLegalForm() {
+      const defaultAgreement = this.selectedLegalStep || (this.legalSteps && this.legalSteps[0]) || AGREEMENT_TYPES[0];
+      this.legalFormAgreementType = defaultAgreement;
+      this.legalFormVersion = '';
+      this.legalFormInitiatedBy = '';
+      this.legalFormHs = '';
+      this.legalFormSponsor = '';
+      this.legalFormDx = '';
+      this.legalFormDueDate = '';
+      this.legalFormDocName = '';
+      this.legalFormStatus = 'In Process';
+      this.legalEditingRowId = null;
+    }
+
+    handleLegalFormInputChange(event) {
+      const name = event?.target?.name;
+      const value = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+      if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+        this[name] = value;
+      }
+    }
+
+    handleLegalDocChange(event) {
+      const fileList = event?.target?.files;
+      this.legalFormDocName = fileList && fileList.length ? fileList[0].name : '';
+    }
+
+    saveLegalAdd() {
+      const activeStep = this.selectedLegalStep || (this.legalSteps && this.legalSteps.length ? this.legalSteps[0] : null);
+      if (!activeStep) {
+        this.closeLegalAddModal();
+        return;
+      }
+      const baseRow = {
+        agreementType: this.legalFormAgreementType || activeStep,
+        version: this.legalFormVersion || 'Draft',
+        status: this.legalFormStatus || 'In Process',
+        initiatedBy: this.legalFormInitiatedBy || '—',
+        hsName: this.legalFormHs || '—',
+        sponsorName: this.legalFormSponsor || '—',
+        dxName: this.legalFormDx || '—',
+        projectScopingDoc: this.legalFormDocName || 'Uploaded Document',
+        dueDate: this.legalFormDueDate || new Date().toISOString().slice(0, 10)
+      };
+      const rows = this.legalData[activeStep] ? [...this.legalData[activeStep]] : [];
+      if (this.legalEditingRowId) {
+        const idx = rows.findIndex(r => r.id === this.legalEditingRowId);
+        if (idx >= 0) {
+          rows[idx] = { ...rows[idx], ...baseRow, id: this.legalEditingRowId };
+          this.legalData = { ...this.legalData, [activeStep]: rows };
+        }
+      } else {
+        const newRow = {
+          id: `legal-${Date.now()}`,
+          ...baseRow,
+          hsAvatar: '',
+          sponsorAvatar: '',
+          dxAvatar: ''
+        };
+        this.legalData = { ...this.legalData, [activeStep]: [newRow, ...rows] };
+      }
+      this.closeLegalAddModal();
+    }
+
     // Open execute confirmation popup for a specific legal row
     handleExecuteClick(event) {
       // Prefer event.currentTarget (the element with the onclick handler)
@@ -1584,7 +1790,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
       const rows = this.legalData[this.selectedLegalStep] || [];
       const idx = rows.findIndex(r => r.id === this.selectedExecuteRowId);
       if (idx >= 0) {
-        rows[idx] = { ...rows[idx], status: 'Executed' };
+        rows[idx] = { ...rows[idx], status: 'Completed' };
         // force reactivity
         this.legalData = { ...this.legalData };
       }
@@ -1707,12 +1913,29 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         return this.getRequirementNavClass('innovationEndUser');
     }
 
-      // Legal: edit a legal row (placeholder for future edit modal)
+      // Legal: edit a legal row using the same modal as Add
       handleLegalEdit(event) {
         const id = event.currentTarget?.dataset?.id;
-        // eslint-disable-next-line no-console
-        console.log('Legal Edit clicked for id=', id);
-        // TODO: open a modal or dispatch an event to edit the legal row
+        if (!id || !this.selectedLegalStep) {
+          return;
+        }
+        const rows = this.legalData[this.selectedLegalStep] || [];
+        const row = rows.find(r => r.id === id);
+        if (!row) {
+          return;
+        }
+        this.legalEditingRowId = id;
+        this.legalFormAgreementType = row.agreementType || this.selectedLegalStep;
+        this.legalFormVersion = row.version || '';
+        this.legalFormInitiatedBy = row.initiatedBy || '';
+        this.legalFormHs = row.hsName || '';
+        this.legalFormSponsor = row.sponsorName || '';
+        this.legalFormDx = row.dxName || '';
+        this.legalFormDueDate = row.dueDate || '';
+        this.legalFormDocName = row.projectScopingDoc || '';
+        const hasValidStatus = this.legalStatusOptions.some(option => option.value === row.status);
+        this.legalFormStatus = hasValidStatus ? row.status : 'In Process';
+        this.isLegalAddModalOpen = true;
       }
 
       // Legal: handle delete for a legal row
@@ -2214,11 +2437,13 @@ export default class HospitalSystemInnerScreen extends LightningElement {
         this.initializeMessagingData();
 
         // Initialize Legal tab - Agreement Types with data
-        const agreementTypes = ['mNDA', 'LOI', 'ESA', 'MSA'];
-        this.selectedLegalStep = agreementTypes[0];
+        if (!this.legalSteps || !this.legalSteps.length) {
+          this.legalSteps = [...AGREEMENT_TYPES];
+        }
+        this.selectedLegalStep = this.legalSteps[0];
         
         // Create step objects with className for template binding
-        this.legalStepsObjs = agreementTypes.map(name => ({
+        this.legalStepsObjs = this.legalSteps.map(name => ({
             name: name,
             className: name === this.selectedLegalStep ? 'step-item active' : 'step-item'
         }));
@@ -2230,6 +2455,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
             id: 'row1',
             version: 'v1.0',
             status: 'Completed',
+            projectScopingDoc: 'View',
             initiatedBy: 'Legal Team',
             hsName: this.hsMatches && this.hsMatches[0] ? this.hsMatches[0].name : 'HS Name',
             hsAvatar: this.hsMatches && this.hsMatches[0] ? this.hsMatches[0].avatar : '/resource/avatars/HS1.png',
@@ -2242,8 +2468,9 @@ export default class HospitalSystemInnerScreen extends LightningElement {
           {
             id: 'row2',
             version: 'v1.1',
-            status: 'Pending',
+            status: 'In Process',
             initiatedBy: 'Sponsor Review',
+            projectScopingDoc: 'View',
             hsName: this.hsMatches && this.hsMatches[1] ? this.hsMatches[1].name : 'HS Name',
             hsAvatar: this.hsMatches && this.hsMatches[1] ? this.hsMatches[1].avatar : '/resource/avatars/HS2.png',
             sponsorName: 'BioCorp',
@@ -2255,8 +2482,9 @@ export default class HospitalSystemInnerScreen extends LightningElement {
           {
             id: 'row3',
             version: 'v2.0',
-            status: 'Pending',
+            status: 'Rejected',
             initiatedBy: 'Counterparty',
+            projectScopingDoc: 'View',
             hsName: this.hsMatches && this.hsMatches[2] ? this.hsMatches[2].name : 'HS Name',
             hsAvatar: this.hsMatches && this.hsMatches[2] ? this.hsMatches[2].avatar : '/resource/avatars/HS3.png',
             sponsorName: 'Global Pharma',
@@ -2267,7 +2495,7 @@ export default class HospitalSystemInnerScreen extends LightningElement {
           }
         ];
         this.legalData = {};
-        agreementTypes.forEach((agreementType) => {
+        this.legalSteps.forEach((agreementType) => {
           // clone the rows per agreementType to avoid shared references
           this.legalData[agreementType] = staticLegalRows.map(r => ({ ...r }));
         });
@@ -2741,6 +2969,39 @@ export default class HospitalSystemInnerScreen extends LightningElement {
 
     toggleFilter() {
         this.filterToggle = !this.filterToggle;
+    }
+
+    // Visibility dropdown helpers
+    toggleStatusDropdown() { this.statusDropdownOpen = !this.statusDropdownOpen; }
+    get statusDropdownClass() { return this.statusDropdownOpen ? 'dropdown-options open' : 'dropdown-options'; }
+    get statusDisplayText() { const count = this.statusOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
+    handleStatusCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.statusOptions = this.statusOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
+
+    handleSearchChange(event) {
+        this.searchKey = event.target.value;
+    }
+
+    handleDueDateFromChange(event) {
+        this.filterFromDate = event.target.value;
+    }
+
+    handleFilterChange(event) {
+        const name = event.target.name;
+        const val = event.target.value;
+        if (name === 'fromDate') this.filterFromDate = val;
+        if (name === 'toDate') this.filterToDate = val;
+    }
+
+    clearAllFilters() {
+        this.filterFromDate = '';
+        this.filterToDate = '';
+        this.statusOptions = this.statusOptions.map(o => ({ ...o, checked: false }));
+    }
+
+    applyFilter() {
+        // placeholder: apply filters to message list
+        // currently just closes the filter panel
+        this.filterToggle = false;
     }
 
     handlePatientTypeChange(event) {

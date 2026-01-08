@@ -12,28 +12,20 @@
     display: inline-block;
     padding: 4px 12px;
     border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 500;
     border: 2px solid;
     text-align: center;
 }
 
 .status-active {
-    background-color: #d4edda;
-    border-color: #28a745;
-    color: #155724;
+    background-color: #e6f4ea; color: #2e7d32; border: 1px solid #81c784; padding: 0.25rem 0.5rem; border-radius: 0.25rem;
 }
 
 .status-planning {
-    background-color: #fff3cd;
-    border-color: #ffc107;
-    color: #856404;
+    background-color: #e3f2fd; color: #1565c0; border: 1px solid #64b5f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem;
 }
 
 .status-completed {
-    background-color: #d1ecf1;
-    border-color: #17a2b8;
-    color: #0c5460;
+    background-color: #e3f2fd; color: #1565c0; border: 1px solid #64b5f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem;
 }
 
 .status-on-hold {
@@ -274,6 +266,35 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
     color: #0176d3;
     border-bottom-color: #0176d3;
     font-weight: 400;
+}
+
+/* Legal Add Button placement in header */
+.legal-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.legal-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0176d3;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.legal-add-btn__plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
 }
 
 .tabHeader:hover {
@@ -905,6 +926,147 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
 @media (max-width: 900px) {
     .protocol-container { flex-direction: column; }
     .protocol-left { flex: 0 0 auto; }
+}
+
+.legal-header-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.legal-add-btn {
+    position: relative;
+    background: #2e37a4;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 18px 8px 42px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.legal-add-btn__plus {
+    position: absolute;
+    left: 14px;
+    top: 46%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.legal-add-btn__label {
+    letter-spacing: 0.01em;
+}
+
+.legal-doc-label {
+    font-size: 0.8rem;
+    color: #5b5b5b;
+    margin-top: 6px;
+}
+
+.hs-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.hs-modal {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+    width: 720px;
+    max-width: 92vw;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hs-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.hs-modal__title {
+    font-size: 1.1rem;
+    color: #1f1f1f;
+}
+
+.hs-modal__close {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    color: #4b4b4b;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.hs-modal__body {
+    padding: 18px 20px 10px 20px;
+}
+
+.hs-modal__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px 22px;
+}
+
+.hs-form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #3c3c3c;
+}
+
+.hs-form-group--full {
+    grid-column: span 2;
+}
+
+.hs-modal lightning-input,
+.hs-modal lightning-combobox,
+.hs-modal lightning-textarea {
+    width: 100%;
+}
+
+.hs-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 22px 15px 15px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.hs-btn-primary {
+    background: #2e37a4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hs-btn-outline {
+    background: #fff;
+    color: #2e37a4;
+    border: 1px solid #d9dbf4;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 720px) {
+    .hs-modal__grid { grid-template-columns: 1fr; }
+    .hs-modal { width: 100%; max-width: 96vw; }
+    .hs-form-group--full { grid-column: span 1; }
 }
 
 /* =====================================
@@ -3324,6 +3486,42 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
     padding-top: 24px;
 }
 
+
+/* Documents view: Filter panel and control styles (copied from documentsView.css) */
+.custom-filter-panel * { box-sizing: border-box; }
+.custom-filter-panel { position: static; z-index: 1; background: #fff; border: 1px solid #e9ecef; border-radius: 6px; width: 100%; max-width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 0; margin: 0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+.custom-filter-panel .filter-header { padding: 10px 14px; border-bottom: 1px solid #e9ecef; }
+.custom-filter-panel .filter-header h4 { font-size: 16px; font-weight: 600; margin: 0; color: #333; }
+.custom-filter-panel .filter-header a { font-size: 13px; color: #dc3545; text-decoration: underline; cursor: pointer; }
+.custom-filter-panel .filter-body { padding: 14px; }
+.custom-filter-panel .filter-footer { padding: 10px 14px; background: #f8f9fa; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; border-top: 1px solid #e9ecef; }
+.custom-filter-panel .form-label { color: #2a2a85; font-weight: 600; font-size: 13px; margin-bottom: 4px; display: block; }
+.custom-filter-panel .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.custom-filter-panel .filter-item { min-width: 0; }
+.custom-filter-panel .filter-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.custom-filter-panel .footer-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.custom-filter-panel .footer-actions button, .custom-filter-panel .footer-actions a { padding: 6px 16px; border: 1px solid #ced4da; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+.custom-filter-panel .footer-actions .btn-close { background: #fff; color: #333; }
+.custom-filter-panel .footer-actions .btn-filter { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+.btn-filter-toggle { padding: 6px 14px !important; background: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; cursor: pointer !important; font-size: 13px !important; font-weight: 400 !important; color: #333 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; }
+.btn-filter-toggle:hover { background: #f8f9fa !important; border-color: #adb5bd !important; }
+
+/* Dropdown helpers used by the filter panel */
+.dropdown-container { position: relative; }
+.dropdown-btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; }
+.dropdown-btn .chevron { margin-left: 8px; }
+.dropdown-options { display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1px solid #e6e7ea; border-radius: 6px; max-height: 220px; overflow: auto; box-shadow: 0 6px 18px rgba(19,31,51,0.06); z-index: 10; }
+.dropdown-options.open { display: block; }
+.dropdown-list { list-style: none; margin: 0; padding: 8px; }
+.dropdown-list li { padding: 6px 8px; }
+.dropdown-checkbox { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }
+.dropdown-label { font-size: 13px; color: #333; }
+
+.input-wrapper { width: 100%; }
+.filter-input { width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 13px; color: #495057; background: #fff; box-sizing: border-box; height: 39px; }
+.filter-input:focus { outline: none; border-color: #0d6efd; box-shadow: 0 0 0 0.125rem rgba(13,110,253,0.12); }
+
+
 /* Responsive Design for Intake Tab */
 @media (max-width: 1024px) {
     .intake-container {
@@ -3385,3 +3583,4 @@ lightning-input[type="checkbox"] input[type="checkbox"]:disabled:checked::after 
         width: 100%;
     }
 }
+
