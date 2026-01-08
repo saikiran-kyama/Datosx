@@ -68,13 +68,13 @@
             <lightning-card title="Activities & Alerts"
                 class="position-relative border card rounded-2 shadow-sm task-todo-card">
                 <div slot="actions" class="task-grid-actions">
-                    <button class="btn-sponsor-action" title="Add Todo" style="background-color: #ffff;
-    color: #2e37a4;
-    border: 1px solid #2e37a4;">
+                        <button class="btn-sponsor-action" title="Add Todo" style="background-color: #ffff;
+                            color: #2e37a4;
+                            border: 1px solid #2e37a4;" onclick={openAddModal}>
                         <span class="plus-symbol">+</span>
                         <span class="action-label">To do</span>
                     </button>
-                    <button class="btn-sponsor-action" title="Add Task">
+                    <button class="btn-sponsor-action" title="Add Task" onclick={openAddActivityPopup}>
                         <span class="plus-symbol">+</span>
                         <span class="action-label">Task</span>
                     </button>
@@ -333,7 +333,7 @@
     <div class="col-xl-4 col-lg-4 d-flex donut-column">
             <div class="card shadow-sm flex-fill w-100 h-100 d-flex flex-column">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="fw-bold mb-0 text-color" style="font-size: 1.5em !important;">Top 3 States for Projects</h5>
+                    <h5 class="fw-bold mb-0 text-color" style="font-size: 1.5em !important;">Projects By Trial Status</h5>
                     <div class="float-end">
                         <select class="year-select" onchange={handleYearChange} value={selectedYear} style="width: 81px;">
                             <template for:each={years} for:item="yr">
@@ -382,6 +382,104 @@
             </div>
         </div>
     </div>
+
+    <template if:true={showAddModal}>
+        <section role="dialog" aria-modal="true" class="modal-backdrop">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title">Add To Do</div>
+                    <button class="modal-close" title="Close" onclick={closeAddModal} aria-label="Close">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-grid">
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <lightning-input name="formSubject" value={formSubject} onchange={handleInputChange} placeholder="Enter subject"></lightning-input>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <lightning-input type="date" name="formDueDate" value={formDueDate} onchange={handleInputChange}></lightning-input>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Time</label>
+                            <lightning-input type="time" name="formDueTime" value={formDueTime} onchange={handleInputChange}></lightning-input>
+                        </div>
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <lightning-input name="formProjectName" value={formProjectName} onchange={handleInputChange} placeholder="Enter project"></lightning-input>
+                        </div>
+                        <div class="form-group">
+                            <label>Responsibility</label>
+                            <lightning-input name="formResponsibility" value={formResponsibility} onchange={handleInputChange} placeholder="Enter owner"></lightning-input>
+                        </div>
+                        <div class="form-group">
+                            <label>HS Name</label>
+                            <lightning-combobox name="formHsName" value={formHsName} options={hsOptions} placeholder="Select HS" onchange={handleInputChange}></lightning-combobox>
+                        </div>
+                        <div class="form-group">
+                            <label>Sponsor Name</label>
+                            <lightning-combobox name="formSponsorName" value={formSponsorName} options={sponsorOptions} placeholder="Select Sponsor" onchange={handleInputChange}></lightning-combobox>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-outline" onclick={closeAddModal}>Cancel</button>
+                    <button class="btn-primary" onclick={saveTodo}>Save</button>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template if:true={isAddActivityOpen}>
+        <div class="modal-overlay" onclick={handleModalOverlayClick}>
+            <div class="modal-card" role="dialog" onclick={stopPropagation}>
+                <div class="modal-header">
+                    <h3>Add Task</h3>
+                </div>
+                <div class="modal-body">
+                    <div style="display:flex; gap:1rem; align-items:flex-start;">
+                        <div style="flex:1; min-width:0;">
+                            <div class="form-row">
+                                <label>Milestone</label>
+                                <lightning-combobox options={milestoneOptions} value={addFormMilestone}
+                                    onchange={handleAddFormMilestoneChange}></lightning-combobox>
+                            </div>
+                            <div class="form-row">
+                                <label>Task Description</label>
+                                <textarea placeholder="Enter task description"
+                                    value={addFormDescription}
+                                    onchange={handleAddFormDescriptionChange}
+                                    style="height:246px; min-height:246px; width:100%; box-sizing:border-box; padding:0.5rem; border-radius: 4px;">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <div class="form-row">
+                                <label>Plan Start</label>
+                                <lightning-input type="date" value={addFormPlanStart} onchange={handleAddFormPlanStartChange}></lightning-input>
+                            </div>
+                            <div class="form-row">
+                                <label>Plan Finish</label>
+                                <lightning-input type="date" value={addFormPlanFinish} onchange={handleAddFormPlanFinishChange}></lightning-input>
+                            </div>
+                            <div class="form-row">
+                                <label>Actual Start</label>
+                                <lightning-input type="date" value={addFormActualStart} onchange={handleAddFormActualStartChange}></lightning-input>
+                            </div>
+                            <div class="form-row">
+                                <label>ETA</label>
+                                <lightning-input type="date" value={addFormEta} onchange={handleAddFormEtaChange}></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeAddActivityPopup}>Close</button>
+                    <button class="btn btn-primary" onclick={saveAddActivity}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
 
 </template>
 

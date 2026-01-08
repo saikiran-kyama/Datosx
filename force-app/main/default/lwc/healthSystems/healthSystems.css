@@ -569,7 +569,7 @@ lightning-datatable {
 
 .hs-modal__title {
     font-size: 1.1rem;
-    font-weight: 700;
+    /* font-weight: 700; */
     color: #1f1f1f;
 }
 

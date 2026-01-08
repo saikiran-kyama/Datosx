@@ -69,18 +69,23 @@
                         </div>
 
                         <div class="filter-item">
-                            <div class="filter-item-header">
-                                <label class="form-label">Due Date</label>
-                            </div>
-                            <div class="date-range-inputs">
-                                <div class="input-wrapper">
-                                    <input class="filter-input" type="date" value={dueDateFrom} onchange={handleDueDateFromChange} aria-label="Due date from" />
-                                </div>
-                                <div class="input-wrapper">
-                                    <input class="filter-input" type="date" value={dueDateTo} onchange={handleDueDateToChange} aria-label="Due date to" />
-                                </div>
-                            </div>
-                        </div>
+                                            <div class="filter-item-header">
+                                                <label class="form-label">From Date</label>
+                                            </div>
+                                            <div class="input-wrapper">
+                                                <input class="filter-input" type="date" value={dueDateFrom} onchange={handleDueDateFromChange} aria-label="Due date from" />
+                                            </div>
+                                        </div>
+
+                                        <!-- To Date -->
+                                        <div class="filter-item">
+                                            <div class="filter-item-header">
+                                                <label class="form-label">To Date</label>
+                                            </div>
+                                            <div class="input-wrapper">
+                                                <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                            </div>
+                                        </div>
                     </div>
                     <div class="filter-footer">
                         <div class="footer-actions">
@@ -98,9 +103,9 @@
                         <thead>
                             <tr class="slds-line-height_reset">
                                 <th scope="col"> <div class="slds-truncate">Actions</div> </th>
-                                <th scope="col" class="sortable-header" data-field="status"><div class="slds-truncate header-content"><span>Status</span></div></th>
                                 <th scope="col" class="sortable-header" data-field="subject"><div class="slds-truncate header-content"><span>Subject</span></div></th>
-                                <th scope="col" class="sortable-header" data-field="dueDate"><div class="slds-truncate header-content"><span>Due Date</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="status"><div class="slds-truncate header-content"><span>Status</span></div></th>
+                                <th scope="col" class="sortable-header" data-field="timeDueDate"><div class="slds-truncate header-content"><span>Time & Due Date</span></div></th>
                                 <th scope="col" class="sortable-header" data-field="completionDate"><div class="slds-truncate header-content"><span>Completion Date</span></div></th>
                                 <th scope="col" class="sortable-header" data-field="projectName"><div class="slds-truncate header-content"><span>Project Name</span></div></th>
                                 <th scope="col" class="sortable-header" data-field="responsibility"><div class="slds-truncate header-content"><span>Responsibility</span></div></th>
@@ -118,9 +123,9 @@
                                         <lightning-button-icon icon-name="utility:delete" variant="bare" alternative-text="Delete" title="Delete" data-id={row.id} onclick={handleDelete} class="icon-delete" style="color: #c23934 !important;" icon-class="icon-delete-svg"></lightning-button-icon>
                                     </div>
                                 </td>
-                                <td><span class={row.statusClass}>{row.status}</span></td>
                                 <td><div class="slds-truncate">{row.subject}</div></td>
-                                <td><div class="slds-truncate">{row.dueDate}</div></td>
+                                <td><span class={row.statusClass}>{row.status}</span></td>
+                                <td><div class="slds-truncate">{row.timeDueDate}</div></td>
                                 <td><div class="slds-truncate">{row.completionDate}</div></td>
                                 <td><div class="slds-truncate">{row.projectName}</div></td>
                                 <td><div class="slds-truncate">{row.responsibility}</div></td>
@@ -170,6 +175,10 @@
                                 <lightning-input type="date" name="formDueDate" value={formDueDate} onchange={handleInputChange}></lightning-input>
                             </div>
                             <div class="form-group">
+                                <label>Due Time</label>
+                                <lightning-input type="time" name="formDueTime" value={formDueTime} onchange={handleInputChange}></lightning-input>
+                            </div>
+                            <div class="form-group">
                                 <label>Project Name</label>
                                 <lightning-input name="formProjectName" value={formProjectName} onchange={handleInputChange} placeholder="Enter project"></lightning-input>
                             </div>
@@ -213,6 +222,10 @@
                                 <lightning-input type="date" name="formDueDate" value={formDueDate} onchange={handleInputChange}></lightning-input>
                             </div>
                             <div class="form-group">
+                                <label>Due Time</label>
+                                <lightning-input type="time" name="formDueTime" value={formDueTime} onchange={handleInputChange}></lightning-input>
+                            </div>
+                            <div class="form-group">
                                 <label>Project Name</label>
                                 <lightning-input name="formProjectName" value={formProjectName} onchange={handleInputChange} placeholder="Enter project"></lightning-input>
                             </div>
@@ -237,6 +250,26 @@
                     <div class="modal-footer">
                         <button class="btn-outline" onclick={closeEditModal}>Cancel</button>
                         <button class="btn-primary" onclick={saveEdit}>Save</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={showDeleteModal}>
+            <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+                <div class="hs-modal">
+                    <div class="hs-modal__header">
+                        <div class="hs-modal__title">Delete To Do</div>
+                        <button class="hs-modal__close" title="Close" onclick={closeDeleteModal} aria-label="Close">✕</button>
+                    </div>
+                    <div class="hs-modal__body">
+                        <div style="padding: 8px 4px;">
+                            <p>Do you want to delete <strong>{deleteRecordName}</strong>?</p>
+                        </div>
+                    </div>
+                    <div class="hs-modal__footer">
+                        <button class="hs-btn-outline" onclick={closeDeleteModal}>Cancel</button>
+                        <button class="hs-btn-primary" onclick={confirmDelete}>Delete</button>
                     </div>
                 </div>
             </section>
@@ -326,12 +359,12 @@
                 </div>
 
                 <div class="calendar-main">
-                    <div class="calendar-topbar">
+                    <div class="calendar-topbar" style="display:flex; justify-content:space-between; align-items:center;">
                         <div class="top-left">
                             <div class="month-title">{calendarTitle}</div>
                             <div class="date-range">{calendarSubLabel}</div>
                         </div>
-                        <div class="top-center">
+                        <div class="top-right">
                             <button class="today-btn" onclick={goToToday} title="Today">Today</button>
                             <button class="nav-btn" onclick={prevPeriod} aria-label="Previous period">
                                 <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
@@ -340,21 +373,21 @@
                                 <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
                             </button>
                         </div>
-                        <div class="top-right">
+                        <!-- <div class="top-right">
                             <div class="header-controls">
-                                <!-- <div class="icon-btn" title="Search" aria-label="Search">
+                                <div class="icon-btn" title="Search" aria-label="Search">
                                     <lightning-icon icon-name="utility:search" size="x-small"></lightning-icon>
-                                </div> -->
-                                <!-- <button class="btn-filter-toggle" onclick={toggleFilters} title="Filter">
+                                </div>
+                                <button class="btn-filter-toggle" onclick={toggleFilters} title="Filter">
                                     <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>
-                                </button> -->
+                                </button>
                                 <div class="view-modes" role="tablist" aria-label="View modes" onclick={handleModeClick}>
                                     <button class={monthlyBtnClass} data-mode="monthly">Monthly</button>
                                     <button class={weeklyBtnClass} data-mode="weekly">Weekly</button>
                                     <button class={dailyBtnClass} data-mode="daily">Daily</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <template if:true={isMonthlyView}>
@@ -375,7 +408,11 @@
                                             <template for:each={day.events} for:item="evt">
                                                 <div key={evt.id} class={evt.cssClass}>
                                                     <span class="event-dot"></span>
-                                                    <div class="event-text">{evt.title}</div>
+                                                    <div class="event-text event-text-with-time">
+                                                        <span class="event-time-label">{evt.timeLabel}</span>
+                                                    
+                                                        <span class="event-title-label">{ evt.title}</span>
+                                                    </div>
                                                 </div>
                                             </template>
                                         </div>
@@ -391,9 +428,12 @@
                                                 <template for:each={day.events} for:item="evt">
                                                     <div key={evt.id} class={evt.cssClass}>
                                                         <span class="event-dot"></span>
-                                                        <template for:each={evt.lines} for:item="ln">
-                                                            <div key={ln.id} class="event-text">{ln.text}</div>
-                                                        </template>
+                                                        <div class="event-text event-text-with-time">
+                                                            <span class="event-time-label">{evt.timeLabel}</span>
+                                                            <template for:each={evt.lines} for:item="ln">
+                                                                <span key={ln.id} class="event-title-label">{ln.text}</span>
+                                                            </template>
+                                                        </div>
                                                     </div>
                                                 </template>
                                             </div>
@@ -408,7 +448,10 @@
                                                 <template for:each={day.events} for:item="evt">
                                                     <div key={evt.id} class={evt.cssClass}>
                                                         <span class="event-dot"></span>
-                                                        <div class="event-text">{evt.title}</div>
+                                                        <div class="event-text event-text-with-time">
+                                                            <span class="event-time-label">{evt.timeLabel}</span>
+                                                            <span class="event-title-label">{evt.title}</span>
+                                                        </div>
                                                     </div>
                                                 </template>
                                             </div>
