@@ -1,0 +1,4 @@
+/* layoutOverride component styles */
+:host {
+    display: block;
+}
