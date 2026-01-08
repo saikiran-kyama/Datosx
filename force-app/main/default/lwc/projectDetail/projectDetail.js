@@ -2088,8 +2088,7 @@ export default class ProjectDetail extends LightningElement {
         { id: 5, label: 'What participants would be excluded from the study (exclusion criteria)?', value: '', type: 'textarea' },
         { id: 6, label: 'How many participants are you seeking to enroll in the study?', value: '', type: 'input' },
         { id: 7, label: 'How many sites would you like to use?', value: '', type: 'input' },
-        { id: 8, label: 'What type of information are you seeking to gather (e.g. survey data, labs, imaging)?', value: '', type: 'textarea' },
-        { id: 9, label: 'What is the anticipated timeline for the study?', value: '', type: 'textarea' }
+        { id: 8, label: 'What type of information are you seeking to gather (e.g. survey data, labs, imaging)?', value: '', type: 'textarea' }
     ];
 
     get isIntake() {
