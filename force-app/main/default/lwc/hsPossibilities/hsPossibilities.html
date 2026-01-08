@@ -1,3 +1,144 @@
 <template>
-    
+    <lightning-card>
+        <!-- Possibilities Table -->
+        <div class="table-wrapper">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">
+                            <div class="slds-truncate">Enquiry ID</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Sponsor Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Project Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Project Details</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Project Scoping Doc</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Requirements</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">% Matching</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Interested</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={possibilitiesData} for:item="row">
+                        <tr key={row.id}>
+                            <td>
+                                <div class="slds-truncate">{row.enquiryId}</div>
+                            </td>
+                            <td>
+                                <div class="contact-cell">
+                                    <lightning-avatar alternative-text={row.sponsorName}
+                                        initials={row.sponsorInitials} size="small"></lightning-avatar>
+                                    <div class="contact-name slds-truncate">{row.sponsorName}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{row.productName}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{row.productDetails}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" style="text-align:center">
+                                    <span class="link-blue">{row.productScopingDoc}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div  class="slds-truncate" style="text-align:center">
+                                    <span class="link-blue" onclick={handleRequirementsClick} data-id={row.id}>{row.requirements}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div  style="text-align:center" class="slds-truncate">{row.matchingPercentage}%</div>
+                            </td>
+                            <td>
+                                <lightning-input type="checkbox"  style="text-align:center"
+                                    checked={row.interested}
+                                    data-id={row.id}
+                                    onchange={handleInterestedChange}>
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+
+    <!-- Requirements Modal -->
+    <template if:true={isRequirementsModalOpen}>
+        <div class="modal-overlay" onclick={closeRequirementsModal}>
+            <div class="modal-card modal-card--lg" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>Requirements</h3>
+                        <p>View the requirements for this project</p>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeRequirementsModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                    <div class="requirements-tabs">
+                        <template for:each={requirementTabsWithState} for:item="tab">
+                            <button key={tab.id} class={tab.className} data-tab={tab.id} onclick={handleRequirementTabClick}>
+                                {tab.title}
+                            </button>
+                        </template>
+                    </div>
+                    <div class="requirements-content">
+                        <template if:true={activeRequirementGroup}>
+                            <template for:each={activeRequirementGroup.items} for:item="item">
+                                <div key={item.id} class="requirement-item">
+                                    <lightning-input type="checkbox" 
+                                        label={item.label}
+                                        checked={item.checked}
+                                        disabled="true">
+                                    </lightning-input>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" onclick={closeRequirementsModal}>Close</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Interested Confirmation Modal -->
+    <template if:true={isInterestedConfirmOpen}>
+        <div class="modal-overlay" onclick={closeInterestedModal}>
+            <div class="modal-card modal-card--sm" onclick={stopModalPropagation}>
+                <div class="modal-header">
+                    <div>
+                        <h3>Confirm Interest</h3>
+                    </div>
+                    <button class="modal-close-btn" title="Close dialog" onclick={closeInterestedModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem;">
+                    <p>Are you sure you want to mark this project as interested? This will notify the sponsor.</p>
+                </div>
+                <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:8px;padding:0.75rem 1rem;">
+                    <button class="btn btn-light" onclick={closeInterestedModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={confirmInterested}>Confirm</button>
+                </div>
+            </div>
+        </div>
+    </template>
 </template>

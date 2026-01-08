@@ -2,3 +2,130 @@
 :host {
     display: block;
 }
+
+.qualifications-container {
+    padding: 1rem;
+}
+
+.qualifications-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+/* Qualification Card */
+.qualification-card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+/* Header Styles */
+.qualification-header {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+
+.facilities-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+}
+
+.therapeutic-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+}
+
+.innovation-header {
+    background: linear-gradient(135deg, #d69e2e 0%, #ecc94b 100%);
+    color: #1a202c;
+}
+
+.enduser-header {
+    background: linear-gradient(135deg, #d69e2e 0%, #ecc94b 100%);
+    color: #1a202c;
+}
+
+.qualification-title {
+    font-weight: 600;
+}
+
+/* Body Styles */
+.qualification-body {
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.therapeutic-body {
+    background: #e6f7ff;
+}
+
+.innovation-body {
+    background: #fffce4;
+}
+
+.enduser-body {
+    background: #fffce4;
+}
+
+/* Row Styles */
+.qualification-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: inherit;
+}
+
+.qualification-row:last-child {
+    border-bottom: none;
+}
+
+.qualification-label {
+    font-size: 0.875rem;
+    color: #333;
+    flex: 1;
+}
+
+/* Checkbox Styles */
+.qualification-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #0176d3;
+    cursor: default;
+}
+
+.qualification-checkbox:checked {
+    accent-color: #0176d3;
+}
+
+/* Scrollbar styling */
+.qualification-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.qualification-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.qualification-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .qualifications-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .qualifications-grid {
+        grid-template-columns: 1fr;
+    }
+}

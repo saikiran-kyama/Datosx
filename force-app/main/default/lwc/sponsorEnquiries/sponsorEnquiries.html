@@ -1,3 +1,87 @@
 <template>
-    
+    <lightning-card>
+        <div class="enquiries-container">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer enquiries-table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col" class="col-actions">
+                            <div class="slds-truncate">Actions</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="enquiryId" onclick={handleSort}>
+                            <div class="slds-truncate">Enquiry ID</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="status" onclick={handleSort}>
+                            <div class="slds-truncate">Enquiry Status</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="projectName" onclick={handleSort}>
+                            <div class="slds-truncate">Project Name</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="projectDetails" onclick={handleSort}>
+                            <div class="slds-truncate">Project Details</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">Project Scoping Doc</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="hsAllocated" onclick={handleSort}>
+                            <div class="slds-truncate">HS Allocated</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="dateCreated" onclick={handleSort}>
+                            <div class="slds-truncate">Date Created</div>
+                        </th>
+                        <th scope="col" class="sortable-header" data-field="lastUpdated" onclick={handleSort}>
+                            <div class="slds-truncate">Last Updated</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={enquiriesData} for:item="record">
+                        <tr key={record.id} class="slds-hint-parent">
+                            <td>
+                                <div class="action-buttons-cell">
+                                    <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                        title="Edit" variant="bare" class="edit-icon" data-id={record.id}
+                                        onclick={handleEdit}></lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                                        title="Delete" variant="bare" class="delete-icon" data-id={record.id}
+                                        onclick={handleDelete}></lightning-button-icon>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">
+                                    <a href="javascript:void(0);" class="enquiry-link"
+                                        data-id={record.id} onclick={handleEnquiryClick}>{record.enquiryId}</a>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class={record.statusClass}>{record.status}</span>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.projectName}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.projectDetails}</div>
+                            </td>
+                            <td style="text-align:center;">
+                                <template if:true={record.hasDocument}>
+                                    <span class="view-link">View</span>
+                                </template>
+                                <template if:false={record.hasDocument}>
+                                    <span class="no-document">-</span>
+                                </template>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.hsAllocated}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.dateCreated}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{record.lastUpdated}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
 </template>

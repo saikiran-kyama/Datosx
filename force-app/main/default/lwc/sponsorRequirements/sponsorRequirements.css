@@ -2,3 +2,77 @@
 :host {
     display: block;
 }
+
+.requirements-container {
+    padding: 1rem;
+}
+
+.capability-card {
+    border: 1px solid #cfcfcf;
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.capability-header {
+    font-weight: 700;
+    padding: 10px;
+}
+
+.capability-body {
+    background: #ffffff;
+    padding: 0;
+}
+
+.therapeutic-body {
+    background: #e6f7ff;
+}
+
+.innovation-body {
+    background: #fffce4;
+}
+
+.enduser-body {
+    background: #fffce4;
+}
+
+.capability-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.capability-table tr {
+    border-top: 1px solid #eee;
+}
+
+.capability-label {
+    padding: 8px;
+    color: #333;
+    font-size: 0.875rem;
+}
+
+.capability-checkbox {
+    padding: 8px 12px;
+    border-left: 1px solid #eee;
+    text-align: center;
+    width: 50px;
+}
+
+.capability-checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: #0176d3;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .slds-size_1-of-4 {
+        width: 50% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .slds-size_1-of-4 {
+        width: 100% !important;
+    }
+}

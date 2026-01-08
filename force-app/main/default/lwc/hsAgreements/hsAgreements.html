@@ -1,3 +1,98 @@
 <template>
-    
+    <lightning-card>
+        <div class="agreements-container">
+            <div class="agreements-layout">
+                <!-- Left: Agreement Types -->
+                <div class="agreements-sidebar">
+                    <div class="sidebar-box">
+                        <div class="sidebar-heading">Agreement Types</div>
+                        <div class="step-list">
+                            <template for:each={agreementTypes} for:item="type">
+                                <div key={type.name} data-type={type.name} 
+                                     class={type.className} 
+                                     onclick={handleTypeClick}>
+                                    <span class="step-title">{type.name}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Agreements Grid -->
+                <div class="agreements-content">
+                    <div class="agreements-header">
+                        <h4><strong>{selectedType}</strong></h4>
+                    </div>
+                    <div class="agreements-table-wrapper">
+                        <table class="agreements-table" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="col-actions">Actions</th>
+                                    <th scope="col">Version</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Initiated By</th>
+                                    <th scope="col">HS</th>
+                                    <th scope="col">Sponsor</th>
+                                    <th scope="col">DX</th>
+                                    <th scope="col">Execute</th>
+                                    <th scope="col">Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={currentRows} for:item="row">
+                                    <tr key={row.id}>
+                                        <td class="col-actions">
+                                            <div class="action-icons">
+                                                <lightning-button-icon icon-name="utility:edit"
+                                                    variant="bare" alternative-text="Edit" title="Edit"
+                                                    data-id={row.id} onclick={handleEdit}
+                                                    class="icon-edit"></lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:delete"
+                                                    variant="bare" alternative-text="Delete" title="Delete"
+                                                    data-id={row.id} onclick={handleDelete}
+                                                    class="icon-delete"></lightning-button-icon>
+                                            </div>
+                                        </td>
+                                        <td class="version-link">{row.version}</td>
+                                        <td>{row.status}</td>
+                                        <td>{row.initiatedBy}</td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <lightning-avatar src={row.hsAvatar}
+                                                    alternative-text={row.hsName} size="small"></lightning-avatar>
+                                                <span class="col-label">{row.hsName}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <lightning-avatar src={row.sponsorAvatar}
+                                                    alternative-text={row.sponsorName} size="small"></lightning-avatar>
+                                                <span class="col-label">{row.sponsorName}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <lightning-avatar src={row.dxAvatar}
+                                                    alternative-text={row.dxName} size="small"></lightning-avatar>
+                                                <span class="col-label">{row.dxName}</span>
+                                            </div>
+                                        </td>
+                                        <td class="execute-col">
+                                            <button class="execute-btn" data-id={row.id} title="Execute"
+                                                onclick={handleExecute}>
+                                                <lightning-icon icon-name="utility:chevronright"
+                                                    alternative-text="Execute"
+                                                    size="x-small"></lightning-icon>
+                                            </button>
+                                        </td>
+                                        <td>{row.dueDate}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
 </template>

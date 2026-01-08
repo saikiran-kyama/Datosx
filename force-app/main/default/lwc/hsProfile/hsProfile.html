@@ -1,3 +1,138 @@
 <template>
-    
+    <div class="profile-container">
+        <div class="slds-grid slds-grid_pull-padded profile-cards-container">
+            <!-- HS Details Card -->
+            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                <div class="profile-card">
+                    <div class="profile-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <lightning-icon icon-name="standard:record" size="small" class="profile-card-icon"></lightning-icon>
+                            <span class="profile-card-title">HS Details</span>
+                        </div>
+                    </div>
+                    <div class="profile-card-body">
+                        <!-- Row 1: HS ID -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">HS ID</div>
+                            <div class="profile-field-value">
+                                <span>{healthSystem.hsId}</span>
+                            </div>
+                        </div>
+                        <!-- Row 2: HS Name -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">HS Name</div>
+                            <div class="profile-field-value">
+                                <span>{healthSystem.hsName}</span>
+                            </div>
+                        </div>
+                        <!-- Row 3: Status -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">Status</div>
+                            <div class="profile-field-value">
+                                <span class="status-badge status-active">
+                                    <lightning-icon icon-name="utility:success" size="xx-small" class="status-icon"></lightning-icon>
+                                    {healthSystem.status}
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Row 4: Annual Patient Volume -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">Annual Patient Volume</div>
+                            <div class="profile-field-value">
+                                <span>{healthSystem.annualPatientVolume}</span>
+                            </div>
+                        </div>
+                        <!-- Row 5: State -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">State</div>
+                            <div class="profile-field-value">
+                                <span>{healthSystem.state}</span>
+                            </div>
+                        </div>
+                        <!-- Row 6: City -->
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">City</div>
+                            <div class="profile-field-value">
+                                <span>{healthSystem.city}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Details Card -->
+            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                <div class="profile-card">
+                    <div class="profile-card-header">
+                        <lightning-icon icon-name="standard:contact" size="small" class="profile-card-icon"></lightning-icon>
+                        <span class="profile-card-title">Contact Details</span>
+                        <button class="add-contact-btn" onclick={handleAddContact}>
+                            <lightning-icon icon-name="utility:add" size="xx-small"></lightning-icon>
+                            Add Contact
+                        </button>
+                    </div>
+                    <div class="profile-card-body">
+                        <!-- Contact Person Info -->
+                        <div class="contact-person-header">
+                            <div class="contact-person-info">
+                                <span class="contact-person-name">{healthSystem.contact}</span>
+                            </div>
+                            <div class="contact-person-actions">
+                                <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                    variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
+                                    data-field="contact" data-section="overview"></lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:delete" size="x-small"
+                                    variant="bare" alternative-text="Delete"></lightning-button-icon>
+                            </div>
+                        </div>
+                        <!-- Contact Details -->
+                        <div class="contact-detail-row">
+                            <lightning-icon icon-name="utility:company" size="xx-small" class="contact-icon"></lightning-icon>
+                            <span>Primary Contact</span>
+                        </div>
+                        <div class="contact-detail-row">
+                            <lightning-icon icon-name="utility:email" size="xx-small" class="contact-icon"></lightning-icon>
+                            <span>{healthSystem.email}</span>
+                        </div>
+                        <div class="contact-detail-row">
+                            <lightning-icon icon-name="utility:call" size="xx-small" class="contact-icon"></lightning-icon>
+                            <span>{healthSystem.phone}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CVP Team Card -->
+            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
+                <div class="profile-card">
+                    <div class="profile-card-header">
+                        <lightning-icon icon-name="standard:groups" size="small" class="profile-card-icon"></lightning-icon>
+                        <span class="profile-card-title">CVP Team</span>
+                        <lightning-button-icon icon-name="utility:edit" size="x-small"
+                            variant="bare" alternative-text="Edit CVP Team" onclick={handleEditDxTeam}
+                            class="dx-team-edit-btn"></lightning-button-icon>
+                    </div>
+                    <div class="profile-card-body">
+                        <!-- Coordinator Name Label -->
+                        <div class="dx-team-label">Coordinator Name</div>
+                        <!-- Coordinator Profile -->
+                        <div class="dx-team-profile">
+                            <div class="dx-team-avatar">
+                                <img src={cvpTeam.avatarUrl} alt="Coordinator Avatar" />
+                            </div>
+                            <div class="dx-team-info">
+                                <span class="dx-team-name">{cvpTeam.name}</span>
+                                <span class="dx-team-email">{cvpTeam.email}</span>
+                            </div>
+                        </div>
+                        <!-- Phone -->
+                        <div class="dx-team-contact-row">
+                            <lightning-icon icon-name="utility:call" size="xx-small" class="dx-team-icon"></lightning-icon>
+                            <span>{cvpTeam.phone}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

@@ -1,3 +1,135 @@
 <template>
-    
+    <lightning-card>
+        <div class="messaging-container">
+            <!-- Top Toolbar -->
+            <div class="outlook-toolbar">
+                <div class="tab-buttons">
+                    <button class={sponsorsTabClass} data-tab="sponsors" onclick={handleTabClick}>Sponsors ({sponsorsCount})</button>
+                    <button class={healthSystemsTabClass} data-tab="healthSystems" onclick={handleTabClick}>Health Systems ({healthSystemsCount})</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" class="search-input" placeholder="Search" />
+                    <button class="filter-btn">Filter</button>
+                </div>
+            </div>
+
+            <!-- Header Bar -->
+            <div class="outlook-header">
+                <div class="action-buttons">
+                    <button class="new-mail-btn">New mail</button>
+                    <button class="action-btn">Delete</button>
+                    <button class="action-btn">Archive</button>
+                    <button class="action-btn">Report</button>
+                    <button class="action-btn">Move to</button>
+                    <button class="action-btn">Reply all</button>
+                    <button class="action-btn">Read / Unread</button>
+                    <button class="action-btn">Flag / Unflag</button>
+                </div>
+                <div class="user-info">
+                    <div class="user-details">
+                        <span class="user-email">navin@optionmatrix.com</span>
+                        <span class="inbox-label">Focused Inbox</span>
+                    </div>
+                    <button class="action-btn">Undo</button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="outlook-main">
+                <!-- Left Sidebar - Folders -->
+                <aside class="outlook-folders">
+                    <div class="folder-section">
+                        <h5 class="folder-heading">Favorites</h5>
+                        <ul class="folder-list">
+                            <li class="folder-item active">
+                                <span>Inbox</span>
+                                <span class="count">{inboxCount}</span>
+                            </li>
+                            <li class="folder-item"><span>Sent Items</span><span class="count">48</span></li>
+                            <li class="folder-item"><span>Drafts</span><span class="count">3</span></li>
+                            <li class="folder-item"><span>Deleted Items</span><span class="count">16</span></li>
+                            <li class="folder-item"><span>Junk Email</span><span class="count">30</span></li>
+                            <li class="folder-item"><span>Archive</span><span class="count">5</span></li>
+                        </ul>
+                    </div>
+                    <div class="folder-section">
+                        <h5 class="folder-heading">Folders</h5>
+                        <div class="folder-links">
+                            <span>Conversation History</span>
+                            <span>Notes</span>
+                            <span>Go to Groups</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Message List -->
+                <section class="outlook-message-list">
+                    <div class="message-list-header">
+                        <div class="tabs">
+                            <button class="tab-btn active">Focused</button>
+                            <button class="tab-btn">Other</button>
+                        </div>
+                        <span class="sort-filter">Sort | Filter</span>
+                    </div>
+                    <div class="message-list-body">
+                        <template for:each={contacts} for:item="contact">
+                            <article key={contact.id} data-id={contact.id} onclick={handleContactClick} class={contact.itemClass}>
+                                <template if:true={contact.active}>
+                                    <span class="active-indicator"></span>
+                                </template>
+                                <span class="avatar">
+                                    <span class="initials">{contact.initials}</span>
+                                </span>
+                                <div class="contact-info">
+                                    <div class="contact-header">
+                                        <h6 class="contact-name">{contact.name}</h6>
+                                        <span class="contact-time">{contact.time}</span>
+                                    </div>
+                                    <p class="contact-subject">{contact.subject}</p>
+                                    <p class="contact-preview">{contact.preview}</p>
+                                </div>
+                                <template if:true={contact.unread}>
+                                    <span class="unread-badge">{contact.unread}</span>
+                                </template>
+                            </article>
+                        </template>
+                    </div>
+                </section>
+
+                <!-- Email Detail -->
+                <section class="outlook-detail">
+                    <div class="detail-header">
+                        <h2 class="detail-title">Project Intake Confirmation — {selectedContactName}</h2>
+                        <div class="detail-actions">
+                            <lightning-icon icon-name="utility:reply" size="small"></lightning-icon>
+                            <lightning-icon icon-name="utility:forward" size="small"></lightning-icon>
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="email-content">
+                            <div class="email-body-text">
+                                <p>Hello team,</p>
+                                <p>We received your most recent project intake package for the "Cerebro DX" collaboration and have started the internal alignment process.</p>
+                                <p>Regards,<br/>datosX Intake Desk</p>
+                            </div>
+                            <div class="quick-replies">
+                                <button class="quick-reply-btn">Appreciate the quick update.</button>
+                                <button class="quick-reply-btn">Please confirm target go-live.</button>
+                            </div>
+                            <div class="email-actions">
+                                <button class="email-action-btn">
+                                    <lightning-icon icon-name="utility:reply" size="x-small"></lightning-icon>
+                                    Reply
+                                </button>
+                                <button class="email-action-btn forward">
+                                    <lightning-icon icon-name="utility:forward" size="x-small"></lightning-icon>
+                                    Forward
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </lightning-card>
 </template>

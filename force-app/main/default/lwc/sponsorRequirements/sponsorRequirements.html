@@ -1,3 +1,31 @@
 <template>
-    
+    <lightning-card>
+        <div class="requirements-container">
+            <div class="slds-grid slds-grid_pull-padded">
+                <template for:each={displayCapabilityGroups} for:item="group">
+                    <div key={group.id} class="slds-col slds-size_1-of-4 slds-p-horizontal_small">
+                        <div class="capability-card">
+                            <div class="capability-header" style={group.headerStyle}>
+                                {group.title}
+                            </div>
+                            <div class={group.bodyClass}>
+                                <table class="capability-table">
+                                    <tbody>
+                                        <template for:each={group.items} for:item="item">
+                                            <tr key={item.id}>
+                                                <td class="capability-label">{item.label}</td>
+                                                <td class="capability-checkbox">
+                                                    <input type="checkbox" checked={item.projectNeeds} disabled>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
 </template>

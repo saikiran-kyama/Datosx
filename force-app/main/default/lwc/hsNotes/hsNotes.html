@@ -1,3 +1,176 @@
 <template>
-    
+    <lightning-card>
+        <div class="notes-container">
+            <!-- Add Note Section -->
+            <div class="add-note-card">
+                <h2 class="add-note-title">Add Note</h2>
+                <div class="add-note-form">
+                    <div class="note-input-wrapper">
+                        <lightning-input
+                            type="text"
+                            value={messageText}
+                            placeholder="Enter your text..."
+                            onchange={handleMessageChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="note-actions">
+                        <lightning-button-icon
+                            icon-name="utility:attach"
+                            variant="brand"
+                            alternative-text="Attach file"
+                            title="Attach file"
+                            onclick={handleAttach}
+                            size="large"
+                            class="action-btn">
+                        </lightning-button-icon>
+                        <lightning-button
+                            variant="brand"
+                            label="Send"
+                            icon-name="utility:send"
+                            onclick={handleSend}
+                            class="send-btn">
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Overview Section -->
+            <div class="ai-overview-card">
+                <div class="ai-overview-content">
+                    <div class="ai-header-section">
+                        <h3 class="ai-overview-title">AI Overview</h3>
+                    </div>
+                    <div class="ai-content-section">
+                        <div class="ai-summary-text">
+                            <p>
+                                Patient John Doe, 55 years old, presented for a routine check-up. He reports feeling well with no
+                                significant complaints. Physical exam is unremarkable. Blood pressure is slightly elevated at 140/90
+                                mmHg. Labs are within normal limits. Diagnosis: Mild hypertension. Treatment plan: Continue
+                                monitoring blood dietary modifications, and schedule a follow-up appointment in 3
+                                months to re-assess.
+                            </p>
+                            <template if:true={showMore}>
+                                <p>
+                                    Remember to always tailor the summary to the specific patient and their unique medical situation,
+                                    ensuring all maintaining clarity and conciseness. Additional details about the patient's medical
+                                    history include previous hospitalizations for minor procedures, regular medication compliance,
+                                    and family history of cardiovascular conditions. The patient has been cooperative throughout
+                                    the examination and understands the importance of lifestyle modifications for managing hypertension.
+                                </p>
+                            </template>
+                        </div>
+                        <div class="ai-action-section">
+                            <span class="ai-more-text" onclick={handleToggleShowMore}>{showMoreLabel}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter and Sort Controls -->
+            <div class="controls-section">
+                <lightning-button
+                    variant="neutral"
+                    label="SORT"
+                    icon-name="utility:sort"
+                    icon-position="left"
+                    onclick={toggleSort}>
+                </lightning-button>
+                <lightning-button
+                    variant="neutral"
+                    label="Filter"
+                    icon-name="utility:filterList"
+                    onclick={toggleFilter}>
+                </lightning-button>
+            </div>
+
+            <!-- Notes Table -->
+            <div class="notes-table-wrapper">
+                <table class="notes-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="table-header">DATE</th>
+                            <th scope="col" class="table-header">POSTED BY</th>
+                            <th scope="col" class="table-header">MESSAGE</th>
+                            <th scope="col" class="table-header">CONTEXT</th>
+                            <th scope="col" class="table-header">DOCUMENTS</th>
+                            <th scope="col" class="visibility-header">
+                                <div class="visibility-main-header">VISIBILITY</div>
+                                <div class="visibility-sub-headers">
+                                    <div class="visibility-sub-header">HS</div>
+                                    <div class="visibility-sub-header">SPONSOR</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="table-header">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={notes} for:item="note">
+                            <tr key={note.id} class="table-row">
+                                <td class="table-cell">
+                                    <strong>{note.dateFormatted}</strong>
+                                </td>
+                                <td class="table-cell">
+                                    <strong>{note.postedBy}</strong>
+                                </td>
+                                <td class="table-cell message-cell">
+                                    {note.message}
+                                </td>
+                                <td class="table-cell">
+                                    {note.context}
+                                </td>
+                                <td class="table-cell">
+                                    <template if:true={note.hasDocument}>
+                                        <a href="#" class="document-link" onclick={handleViewDocument} data-id={note.id}>
+                                            View
+                                        </a>
+                                    </template>
+                                    <template if:false={note.hasDocument}>
+                                        <span class="no-document">-</span>
+                                    </template>
+                                </td>
+                                <td class="visibility-cell">
+                                    <div class="visibility-checkboxes">
+                                        <div class="visibility-checkbox-wrapper">
+                                            <input type="checkbox" 
+                                                   class="visibility-checkbox"
+                                                   checked={note.hsVisible}
+                                                   onchange={handleHSVisibilityChange}
+                                                   data-id={note.id}>
+                                        </div>
+                                        <div class="visibility-checkbox-wrapper">
+                                            <input type="checkbox" 
+                                                   class="visibility-checkbox"
+                                                   checked={note.sponsorVisible}
+                                                   onchange={handleSponsorVisibilityChange}
+                                                   data-id={note.id}>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="table-cell actions-cell">
+                                    <div class="action-buttons">
+                                        <lightning-button-icon
+                                            icon-name="utility:edit"
+                                            alternative-text="Edit"
+                                            title="Edit"
+                                            onclick={handleEdit}
+                                            data-id={note.id}
+                                            class="edit-btn">
+                                        </lightning-button-icon>
+                                        <lightning-button-icon
+                                            icon-name="utility:delete"
+                                            alternative-text="Delete"
+                                            title="Delete"
+                                            onclick={handleDelete}
+                                            data-id={note.id}
+                                            class="delete-btn">
+                                        </lightning-button-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </lightning-card>
 </template>

@@ -1,4 +1,215 @@
-/* hsPossibilities component styles */
+/* hsPossibilities component styles - Consistent Table UI */
 :host {
     display: block;
+}
+
+.possibilities-container {
+    padding: 1rem;
+}
+
+/* ---- Modern Table Wrapper ---- */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* ---- Table Base Styles ---- */
+.possibilities-table,
+.slds-table.slds-table_bordered {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+/* Header Styling */
+.possibilities-table thead,
+.slds-table.slds-table_bordered thead {
+    background: #f9fafb;
+}
+
+.possibilities-table thead tr th,
+.slds-table.slds-table_bordered thead tr th {
+    border-bottom: 1px solid #d1d5db;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #000000;
+    text-transform: none;
+    white-space: nowrap;
+    background: transparent;
+}
+
+.possibilities-table thead tr th:first-child,
+.slds-table.slds-table_bordered thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.possibilities-table thead tr th:last-child,
+.slds-table.slds-table_bordered thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Body Row Styling */
+.possibilities-table tbody tr,
+.slds-table.slds-table_bordered tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.possibilities-table tbody tr:hover,
+.slds-table.slds-table_bordered tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.possibilities-table tbody tr td,
+.slds-table.slds-table_bordered tbody tr td {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 14px;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1e293b;
+}
+
+.possibilities-table tbody tr:last-child td,
+.slds-table.slds-table_bordered tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.possibilities-table tbody tr:last-child td:first-child,
+.slds-table.slds-table_bordered tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.possibilities-table tbody tr:last-child td:last-child,
+.slds-table.slds-table_bordered tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* ---- Action Icons ---- */
+.col-actions {
+    width: 80px;
+}
+
+.action-buttons-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-icon,
+.icon-edit {
+    --sds-c-icon-color-foreground-default: #0070d2;
+}
+
+.delete-icon,
+.icon-delete {
+    --sds-c-icon-color-foreground-default: #c23934;
+}
+
+/* ---- Links ---- */
+.possibility-link,
+.hyper {
+    color: #0176d3;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.possibility-link:hover,
+.hyper:hover {
+    text-decoration: underline;
+}
+
+/* ---- Status Badges ---- */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-completed {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* ---- View Link ---- */
+.view-link {
+    color: #0176d3;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.no-document {
+    color: #706e6b;
+}
+
+/* ---- Contact/Sponsor Cell ---- */
+.sponsor-cell,
+.contact-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sponsor-name,
+.contact-name {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* ---- Sortable Header ---- */
+.sortable-header {
+    cursor: pointer;
+}
+
+.sortable-header:hover {
+    background: #f1f5f9;
+}
+
+/* ---- Cell Alignment ---- */
+.center-text {
+    text-align: center;
+}
+
+.center-link-cell {
+    text-align: center;
+    color: #0176d3;
+    font-weight: 500;
+}
+
+/* ---- Checkbox ---- */
+.interested-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #0176d3;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .possibilities-table,
+    .slds-table {
+        font-size: 13px;
+    }
+    
+    .possibilities-table th,
+    .possibilities-table td,
+    .slds-table th,
+    .slds-table td {
+        padding: 10px 12px;
+    }
 }

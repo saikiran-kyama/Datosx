@@ -2,3 +2,528 @@
 :host {
     display: block;
 }
+
+.messaging-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 660px;
+    background: #f3f2f1;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid #d0d0d0;
+}
+
+/* Top Toolbar */
+.outlook-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab-btn {
+    border-radius: 999px;
+    padding: 0.45rem 1.25rem;
+    border: 1px solid #0078d4;
+    background: white;
+    color: #0078d4;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: #0078d4;
+    color: white;
+}
+
+.search-filter {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex: 1;
+    min-width: 260px;
+}
+
+.search-input {
+    flex: 1;
+    border-radius: 999px;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #c8c6c4;
+    background: #fff;
+    font-size: 0.9rem;
+}
+
+.filter-btn {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 0.45rem 1.25rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Header Bar */
+.outlook-header {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #d2d0ce;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.new-mail-btn {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 0.55rem 1.4rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.action-btn {
+    background: white;
+    border: 1px solid #c8c6c4;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    color: #323130;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.user-info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: #5a5a5a;
+}
+
+.inbox-label {
+    font-size: 0.8rem;
+    color: #8a8886;
+}
+
+/* Main Content Grid */
+.outlook-main {
+    display: grid;
+    grid-template-columns: 220px 360px 1fr;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Folders Sidebar */
+.outlook-folders {
+    background: #faf9f8;
+    border: 1px solid #d2d0ce;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.folder-heading {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #605e5c;
+}
+
+.folder-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.93rem;
+    color: #201f1e;
+}
+
+.folder-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0.45rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.folder-item.active {
+    background: #e3f2fd;
+    color: #0f6cbd;
+    font-weight: 600;
+}
+
+.folder-item:hover:not(.active) {
+    background: #f3f2f1;
+}
+
+.folder-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: #201f1e;
+}
+
+/* Message List */
+.outlook-message-list {
+    background: #fff;
+    border: 1px solid #d2d0ce;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.message-list-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #edebe9;
+    padding: 0.65rem 1rem;
+    align-items: center;
+}
+
+.tabs {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.tabs .tab-btn {
+    background: none;
+    border: none;
+    color: #605e5c;
+    font-size: 0.95rem;
+    padding: 0;
+    position: relative;
+}
+
+.tabs .tab-btn.active {
+    color: #0f6cbd;
+    font-weight: 600;
+    background: none;
+}
+
+.tabs .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100%;
+    height: 2px;
+    background: #0f6cbd;
+}
+
+.sort-filter {
+    color: #8a8886;
+    font-size: 0.8rem;
+}
+
+.message-list-body {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Message Item */
+.message-item {
+    position: relative;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #edebe9;
+    cursor: pointer;
+    background: #ffffff;
+    transition: background 0.15s ease;
+}
+
+.message-item:hover {
+    background: #f5f5f5;
+}
+
+.message-item.active {
+    background: #f0f8ff;
+}
+
+.active-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #0078d4;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 1px #edebe9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #cfe4ff;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.initials {
+    font-weight: 700;
+    color: #17427c;
+    font-size: 0.9rem;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #323130;
+}
+
+.contact-time {
+    font-size: 0.75rem;
+    color: #8a8886;
+}
+
+.contact-subject {
+    margin: 0;
+    color: #605e5c;
+    font-size: 0.82rem;
+}
+
+.contact-preview {
+    margin: 0.15rem 0 0;
+    color: #a19f9d;
+    font-size: 0.78rem;
+}
+
+.unread-badge {
+    background: #107c10;
+    color: white;
+    border-radius: 50%;
+    min-width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Email Detail */
+.outlook-detail {
+    background: #f5f6f8;
+    border: 1px solid #d2d0ce;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.detail-header {
+    background: #ffffff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom: 1px solid #edebe9;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #252423;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    color: #5c2d91;
+}
+
+.detail-body {
+    padding: 17px;
+    overflow: auto;
+    flex: 1;
+}
+
+.email-content {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #edebe9;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(28, 26, 25, 0.05);
+    max-width: 734px;
+    margin: 0 auto;
+}
+
+.email-header-info {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.sender-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #cfe4ff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sender-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sender-details {
+    flex: 1;
+}
+
+.sender-name {
+    margin: 0;
+    color: #252423;
+    font-weight: 600;
+}
+
+.sender-email {
+    margin: 0;
+    color: #605e5c;
+    font-size: 0.85rem;
+}
+
+.recipient {
+    margin: 0.35rem 0 0;
+    color: #8a8886;
+    font-size: 0.8rem;
+}
+
+.email-date {
+    color: #8a8886;
+    font-size: 0.8rem;
+}
+
+.email-body-text {
+    color: #2f2f2f;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.email-body-text p {
+    margin: 0 0 1rem;
+}
+
+.quick-replies {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.quick-reply-btn {
+    border: 1px solid #0078d4;
+    background: #ffffff;
+    color: #0078d4;
+    padding: 0.45rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.email-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.email-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid #d2d0ce;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0.45rem 1.25rem;
+    font-weight: 600;
+    color: #5c2d91;
+    cursor: pointer;
+}
+
+.email-action-btn.forward {
+    color: #0f6cbd;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .outlook-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .outlook-folders {
+        display: none;
+    }
+}

@@ -1,3 +1,67 @@
 <template>
-    
+    <lightning-card>
+        <div class="qualifications-container">
+            <div class="qualifications-grid">
+                <!-- Facilities Available -->
+                <div class="qualification-card">
+                    <div class="qualification-header facilities-header">
+                        <span class="qualification-title">Facilities Available</span>
+                    </div>
+                    <div class="qualification-body">
+                        <template for:each={facilitiesAvailable} for:item="item">
+                            <div key={item.id} class="qualification-row">
+                                <span class="qualification-label">{item.label}</span>
+                                <input type="checkbox" class="qualification-checkbox" checked={item.checked} disabled>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Therapeutic Area of Focus -->
+                <div class="qualification-card">
+                    <div class="qualification-header therapeutic-header">
+                        <span class="qualification-title">Therapeutic Area of Focus</span>
+                    </div>
+                    <div class="qualification-body therapeutic-body">
+                        <template for:each={therapeuticAreas} for:item="item">
+                            <div key={item.id} class="qualification-row">
+                                <span class="qualification-label">{item.label}</span>
+                                <input type="checkbox" class="qualification-checkbox" checked={item.checked} disabled>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Innovation Format Interest -->
+                <div class="qualification-card">
+                    <div class="qualification-header innovation-header">
+                        <span class="qualification-title">Innovation format interest</span>
+                    </div>
+                    <div class="qualification-body innovation-body">
+                        <template for:each={innovationFormats} for:item="item">
+                            <div key={item.id} class="qualification-row">
+                                <span class="qualification-label">{item.label}</span>
+                                <input type="checkbox" class="qualification-checkbox" checked={item.checked} disabled>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Innovation End User Focus -->
+                <div class="qualification-card">
+                    <div class="qualification-header enduser-header">
+                        <span class="qualification-title">Innovation end user focus</span>
+                    </div>
+                    <div class="qualification-body enduser-body">
+                        <template for:each={innovationEndUsers} for:item="item">
+                            <div key={item.id} class="qualification-row">
+                                <span class="qualification-label">{item.label}</span>
+                                <input type="checkbox" class="qualification-checkbox" checked={item.checked} disabled>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
 </template>

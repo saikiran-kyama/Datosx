@@ -1,4 +1,184 @@
-/* sponsorEnquiries component styles */
+/* sponsorEnquiries component styles - Consistent Table UI */
 :host {
     display: block;
+}
+
+.enquiries-container {
+    padding: 1rem;
+}
+
+/* ---- Modern Table Wrapper ---- */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* ---- Table Base Styles ---- */
+.enquiries-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+/* Header Styling */
+.enquiries-table thead {
+    background: #f9fafb;
+}
+
+.enquiries-table thead tr th {
+    border-bottom: 1px solid #d1d5db;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #000000;
+    text-transform: none;
+    white-space: nowrap;
+    background: transparent;
+}
+
+.enquiries-table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.enquiries-table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Body Row Styling */
+.enquiries-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.enquiries-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.enquiries-table tbody tr td {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 14px;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1e293b;
+}
+
+.enquiries-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.enquiries-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.enquiries-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* ---- Action Column ---- */
+.col-actions {
+    width: 100px;
+}
+
+.action-buttons-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-icon {
+    --sds-c-icon-color-foreground-default: #0070d2;
+}
+
+.delete-icon {
+    --sds-c-icon-color-foreground-default: #c23934;
+}
+
+/* ---- Sortable Header ---- */
+.sortable-header {
+    cursor: pointer;
+}
+
+.sortable-header:hover {
+    background: #f1f5f9;
+}
+
+/* ---- Links ---- */
+.enquiry-link {
+    color: #0176d3;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.enquiry-link:hover {
+    text-decoration: underline;
+}
+
+/* ---- Status Badges ---- */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-completed {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* ---- View Link ---- */
+.view-link {
+    color: #0176d3;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.no-document {
+    color: #706e6b;
+}
+
+/* ---- Sponsor Cell ---- */
+.sponsor-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sponsor-name {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* ---- Checkbox ---- */
+.interested-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #0176d3;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .enquiries-table {
+        font-size: 13px;
+    }
+    
+    .enquiries-table th,
+    .enquiries-table td {
+        padding: 10px 12px;
+    }
 }

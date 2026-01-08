@@ -2,3 +2,258 @@
 :host {
     display: block;
 }
+
+/* =========================
+   PROFILE TAB CARD STYLES
+   ========================= */
+.profile-cards-container {
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.profile-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.profile-card-icon {
+    color: #3b82f6;
+}
+
+.profile-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    flex: 1;
+}
+
+.profile-card-body {
+    padding: 16px 20px;
+}
+
+/* HS Details - Two column layout */
+.profile-field-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.profile-field-row:last-child {
+    border-bottom: none;
+}
+
+.profile-field-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+    flex: 0 0 45%;
+}
+
+.profile-field-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: #1f2937;
+    font-weight: 400;
+    flex: 0 0 55%;
+    text-align: right;
+}
+
+.profile-edit-icon {
+    color: #3b82f6;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.profile-edit-icon:hover {
+    opacity: 1;
+}
+
+/* Status badge in Profile card */
+.profile-field-value .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.profile-field-value .status-badge.status-active {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: none;
+}
+
+.profile-field-value .status-icon {
+    color: #059669;
+}
+
+/* City link styling */
+.city-link {
+    color: #0176d3;
+    font-weight: 500;
+}
+
+/* Contact Details Card */
+.add-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-left: auto;
+}
+
+.add-contact-btn:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.contact-person-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 12px;
+}
+
+.contact-person-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-person-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.contact-person-role {
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #e0f2fe;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #0369a1;
+}
+
+.contact-person-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.contact-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+}
+
+.contact-icon {
+    color: #6b7280;
+}
+
+/* DX Team Card */
+.dx-team-edit-btn {
+    margin-left: auto;
+    color: #3b82f6;
+}
+
+.dx-team-label {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.dx-team-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.dx-team-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+}
+
+.dx-team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dx-team-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dx-team-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.dx-team-email {
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.dx-team-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+}
+
+.dx-team-icon {
+    color: #6b7280;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .profile-cards-container {
+        flex-direction: column;
+    }
+    
+    .slds-size_1-of-3 {
+        width: 100% !important;
+    }
+}
