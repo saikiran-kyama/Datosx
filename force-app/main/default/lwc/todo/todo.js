@@ -13,11 +13,15 @@ export default class Todo extends LightningElement {
 	showFilters = false;
 	showAddModal = false;
 	showEditModal = false;
+	showDeleteModal = false;
 	searchKey = '';
+	deleteRecordId = '';
+	deleteRecordName = '';
 
 	// Add form fields
 	formSubject = '';
 	formDueDate = '';
+	formDueTime = '';
 	formProjectName = '';
 	formResponsibility = '';
 	formHsName = '';
@@ -53,26 +57,27 @@ export default class Todo extends LightningElement {
 
 	// Sample task data matching requested columns (20+ records)
 	data = [
-		{ id: '1', status: 'Upcoming', subject: 'Site initiation meeting', dueDate: '2026-01-10', completionDate: '', projectName: 'Heart Study A', responsibility: 'Dr. Patel', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-12-01', lastUpdated: '2025-12-15' },
-		{ id: '2', status: 'Overdue', subject: 'CRF finalisation', dueDate: '2025-12-01', completionDate: '', projectName: 'Diabetes Trial', responsibility: 'Meera Shah', hsName: 'Metro Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'BioHealth Ltd', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-11-10', lastUpdated: '2025-12-02' },
-		{ id: '3', status: 'Completed', subject: 'Regulatory submission', dueDate: '2025-11-20', completionDate: '2025-11-18', projectName: 'Neuro Study', responsibility: 'Rohan Gupta', hsName: 'Neuro Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-20', lastUpdated: '2025-11-18' },
-		{ id: '4', status: 'Upcoming', subject: 'Monitor visit 1', dueDate: '2026-01-20', completionDate: '', projectName: 'Heart Study A', responsibility: 'Aakash Reddy', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-12-05', lastUpdated: '2025-12-20' },
-		{ id: '5', status: 'Overdue', subject: 'Data cleaning', dueDate: '2025-12-05', completionDate: '', projectName: 'Cancer Trial', responsibility: 'Divya Pillai', hsName: 'Onco Clinic', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'Zenith Pharma', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-11-15', lastUpdated: '2025-12-06' },
-		{ id: '6', status: 'Upcoming', subject: 'Site training', dueDate: '2026-01-12', completionDate: '', projectName: 'Respiratory Study', responsibility: 'Dr. Kumar', hsName: 'Green Valley Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'NextGen Pharma', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-02', lastUpdated: '2025-12-16' },
-		{ id: '7', status: 'Completed', subject: 'Ethics approval', dueDate: '2025-10-28', completionDate: '2025-10-25', projectName: 'Pediatric Trial', responsibility: 'Dr. Sharma', hsName: 'Sunrise Hospital', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'Alpha Bio', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-09-30', lastUpdated: '2025-10-28' },
-		{ id: '8', status: 'Overdue', subject: 'Monitor report', dueDate: '2025-12-03', completionDate: '', projectName: 'Oncology Study', responsibility: 'Nisha Rai', hsName: 'Onco Clinic', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'TriCore Labs', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-11-01', lastUpdated: '2025-12-03' },
-		{ id: '9', status: 'Upcoming', subject: 'Data lock', dueDate: '2026-02-01', completionDate: '', projectName: 'Diabetes Trial', responsibility: 'Rahul Verma', hsName: 'Metro Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'BioHealth Ltd', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-10', lastUpdated: '2025-12-22' },
-		{ id: '10', status: 'Completed', subject: 'Final report', dueDate: '2025-11-30', completionDate: '2025-11-29', projectName: 'Cardio Pilot', responsibility: 'Dr. Singh', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-05', lastUpdated: '2025-11-29' },
-		{ id: '11', status: 'Upcoming', subject: 'Regulatory follow-up', dueDate: '2026-01-18', completionDate: '', projectName: 'Neurology Study', responsibility: 'Dr. Rao', hsName: 'Neuro Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'Global Trials', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-12-07', lastUpdated: '2025-12-21' },
-		{ id: '12', status: 'Overdue', subject: 'Budget approval', dueDate: '2025-11-20', completionDate: '', projectName: 'Vaccine Study', responsibility: 'Anita Desai', hsName: 'St. Mary Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'HealthWave', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-05', lastUpdated: '2025-11-20' },
-		{ id: '13', status: 'Completed', subject: 'Participant consent', dueDate: '2025-11-02', completionDate: '2025-11-01', projectName: 'Behavioral Study', responsibility: 'Rita Menon', hsName: 'Northside Medical Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'LifeCure', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-10-15', lastUpdated: '2025-11-01' },
-		{ id: '14', status: 'Upcoming', subject: 'Site closeout', dueDate: '2026-02-15', completionDate: '', projectName: 'Closure Study', responsibility: 'Vikram Das', hsName: 'Chicago General', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'BioAxis', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-12-12', lastUpdated: '2025-12-24' },
-		{ id: '15', status: 'Overdue', subject: 'Data query resolution', dueDate: '2025-12-08', completionDate: '', projectName: 'Quality Study', responsibility: 'Kavita Rao', hsName: 'Miami Medical Center', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'OptimaBio', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-18', lastUpdated: '2025-12-08' },
-		{ id: '16', status: 'Upcoming', subject: 'Training refresh', dueDate: '2026-01-25', completionDate: '', projectName: 'Training Program', responsibility: 'Suresh Iyer', hsName: 'Houston Health Center', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'NextGen Pharma', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-09', lastUpdated: '2025-12-23' },
-		{ id: '17', status: 'Completed', subject: 'Database freeze', dueDate: '2025-11-22', completionDate: '2025-11-22', projectName: 'DataStudy', responsibility: 'Priya Nair', hsName: 'St. Mary Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'BioVantage', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-30', lastUpdated: '2025-11-22' },
-		{ id: '18', status: 'Overdue', subject: 'Protocol amendment', dueDate: '2025-12-12', completionDate: '', projectName: 'Amendment Study', responsibility: 'Manish Patel', hsName: 'Orlando Care Center', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-20', lastUpdated: '2025-12-12' },
-		{ id: '19', status: 'Upcoming', subject: 'Monitoring schedule', dueDate: '2026-02-05', completionDate: '', projectName: 'MonitorStudy', responsibility: 'Rashmi Singh', hsName: 'San Diego Health', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Zenith Pharma', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-12-11', lastUpdated: '2025-12-25' },
-		{ id: '20', status: 'Overdue', subject: 'Site paperwork', dueDate: '2025-12-02', completionDate: '', projectName: 'Admin Study', responsibility: 'Arun Bose', hsName: 'Chicago General', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-11-02', lastUpdated: '2025-12-02' }
+		{ id: '1', status: 'Upcoming', subject: 'Site initiation meeting', timeDueDate: '10:00 AM 01-10-2026', completionDate: '', projectName: 'Heart Study A', responsibility: 'Dr. Patel', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-12-01', lastUpdated: '2025-12-15' },
+		{ id: '2', status: 'Overdue', subject: 'CRF finalisation', timeDueDate: '05:00 PM 12-01-2025', completionDate: '', projectName: 'Diabetes Trial', responsibility: 'Meera Shah', hsName: 'Metro Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'BioHealth Ltd', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-11-10', lastUpdated: '2025-12-02' },
+		{ id: '3', status: 'Completed', subject: 'Regulatory submission', timeDueDate: '11:30 AM 11-20-2025', completionDate: '2025-11-18', projectName: 'Neuro Study', responsibility: 'Rohan Gupta', hsName: 'Neuro Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-20', lastUpdated: '2025-11-18' },
+		{ id: '4', status: 'Upcoming', subject: 'Monitor visit', timeDueDate: '02:00 PM 01-20-2026', completionDate: '', projectName: 'Heart Study A', responsibility: 'Aakash Reddy', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-12-05', lastUpdated: '2025-12-20' },
+		{ id: '5', status: 'Overdue', subject: 'Data cleaning', timeDueDate: '04:00 PM 12-05-2025', completionDate: '', projectName: 'Cancer Trial', responsibility: 'Divya Pillai', hsName: 'Onco Clinic', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'Zenith Pharma', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-11-15', lastUpdated: '2025-12-06' },
+		{ id: '6', status: 'Upcoming', subject: 'Site training', timeDueDate: '09:30 AM 01-12-2026', completionDate: '', projectName: 'Respiratory Study', responsibility: 'Dr. Kumar', hsName: 'Green Valley Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'NextGen Pharma', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-02', lastUpdated: '2025-12-16' },
+		{ id: '7', status: 'Completed', subject: 'Ethics approval', timeDueDate: '01:00 PM 10-28-2025', completionDate: '2025-10-25', projectName: 'Pediatric Trial', responsibility: 'Dr. Sharma', hsName: 'Sunrise Hospital', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'Alpha Bio', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-09-30', lastUpdated: '2025-10-28' },
+		{ id: '8', status: 'Overdue', subject: 'Monitor report', timeDueDate: '03:30 PM 12-03-2025', completionDate: '', projectName: 'Oncology Study', responsibility: 'Nisha Rai', hsName: 'Onco Clinic', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'TriCore Labs', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-11-01', lastUpdated: '2025-12-03' },
+		{ id: '9', status: 'Upcoming', subject: 'Data lock', timeDueDate: '10:00 AM 02-01-2026', completionDate: '', projectName: 'Diabetes Trial', responsibility: 'Rahul Verma', hsName: 'Metro Clinic', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'BioHealth Ltd', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-10', lastUpdated: '2025-12-22' },
+		{ id: '10', status: 'Completed', subject: 'Final report', timeDueDate: '06:00 PM 11-30-2025', completionDate: '2025-11-29', projectName: 'Cardio Pilot', responsibility: 'Dr. Singh', hsName: 'City Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-05', lastUpdated: '2025-11-29' },
+		{ id: '11', status: 'Upcoming', subject: 'Regulatory follow-up', timeDueDate: '11:00 AM 01-18-2026', completionDate: '', projectName: 'Neurology Study', responsibility: 'Dr. Rao', hsName: 'Neuro Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'Global Trials', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-12-07', lastUpdated: '2025-12-21' },
+		{ id: '12', status: 'Overdue', subject: 'Budget approval', timeDueDate: '04:30 PM 11-20-2025', completionDate: '', projectName: 'Vaccine Study', responsibility: 'Anita Desai', hsName: 'St. Mary Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'HealthWave', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-05', lastUpdated: '2025-11-20' },
+		{ id: '13', status: 'Completed', subject: 'Participant consent', timeDueDate: '10:15 AM 11-02-2025', completionDate: '2025-11-01', projectName: 'Behavioral Study', responsibility: 'Rita Menon', hsName: 'Northside Medical Center', hsPhoto: `${AVATARS}/HS3.png`, sponsorName: 'LifeCure', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-10-15', lastUpdated: '2025-11-01' },
+		{ id: '14', status: 'Upcoming', subject: 'Site closeout', timeDueDate: '02:30 PM 02-15-2026', completionDate: '', projectName: 'Closure Study', responsibility: 'Vikram Das', hsName: 'Chicago General', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'BioAxis', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-12-12', lastUpdated: '2025-12-24' },
+		{ id: '15', status: 'Overdue', subject: 'Data query resolution', timeDueDate: '05:45 PM 12-08-2025', completionDate: '', projectName: 'Quality Study', responsibility: 'Kavita Rao', hsName: 'Miami Medical Center', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'OptimaBio', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-18', lastUpdated: '2025-12-08' },
+		{ id: '16', status: 'Upcoming', subject: 'Training refresh', timeDueDate: '09:00 AM 01-25-2026', completionDate: '', projectName: 'Training Program', responsibility: 'Suresh Iyer', hsName: 'Houston Health Center', hsPhoto: `${AVATARS}/HS2.png`, sponsorName: 'NextGen Pharma', sponsorPhoto: `${AVATARS}/ODF2.png`, dateCreated: '2025-12-09', lastUpdated: '2025-12-23' },
+		{ id: '17', status: 'Completed', subject: 'Database freeze', timeDueDate: '12:00 PM 11-22-2025', completionDate: '2025-11-22', projectName: 'DataStudy', responsibility: 'Priya Nair', hsName: 'St. Mary Hospital', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'BioVantage', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-10-30', lastUpdated: '2025-11-22' },
+		{ id: '18', status: 'Overdue', subject: 'Protocol amendment', timeDueDate: '03:15 PM 12-12-2025', completionDate: '', projectName: 'Amendment Study', responsibility: 'Manish Patel', hsName: 'Orlando Care Center', hsPhoto: `${AVATARS}/HS5.png`, sponsorName: 'Acme Pharma', sponsorPhoto: `${AVATARS}/ODF1.png`, dateCreated: '2025-11-20', lastUpdated: '2025-12-12' },
+		{ id: '19', status: 'Upcoming', subject: 'Monitoring schedule', timeDueDate: '11:45 AM 02-05-2026', completionDate: '', projectName: 'MonitorStudy', responsibility: 'Rashmi Singh', hsName: 'San Diego Health', hsPhoto: `${AVATARS}/HS1.png`, sponsorName: 'Zenith Pharma', sponsorPhoto: `${AVATARS}/ODF.png`, dateCreated: '2025-12-11', lastUpdated: '2025-12-25' },
+		{ id: '20', status: 'Overdue', subject: 'Site paperwork', timeDueDate: '01:30 PM 12-02-2025', completionDate: '', projectName: 'Admin Study', responsibility: 'Arun Bose', hsName: 'Chicago General', hsPhoto: `${AVATARS}/HS4.png`, sponsorName: 'MedSolutions', sponsorPhoto: `${AVATARS}/ODF3.png`, dateCreated: '2025-11-02', lastUpdated: '2025-12-02' }
+
 	];
 
 	// Pagination settings
@@ -87,10 +92,15 @@ export default class Todo extends LightningElement {
 			if (row.status === 'Completed') statusClass = 'badge-soft-success border border-success';
 			else if (row.status === 'Overdue') statusClass = 'badge-soft-danger border border-danger';
 			else if (row.status === 'Upcoming') statusClass = 'badge-soft-info border border-info';
+			const normalizedTimeDueDate = row.timeDueDate && this.parseTimeDueDate(row.timeDueDate)
+				? row.timeDueDate
+				: this.buildTimeDueDate(row.dueDate || '', this.getDefaultDueTime());
 
 			return {
 				...row,
-				statusClass
+				statusClass,
+				timeDueDate: normalizedTimeDueDate,
+				timeDueDateValue: this.getTimeDueDateMs(normalizedTimeDueDate)
 			};
 		});
 
@@ -216,6 +226,91 @@ export default class Todo extends LightningElement {
 		return [dateObj.getFullYear(), String(dateObj.getMonth() + 1).padStart(2, '0'), String(dateObj.getDate()).padStart(2, '0')].join('-');
 	}
 
+	getDefaultDueTime() {
+		return '09:00';
+	}
+
+	formatDateForDisplay(dateStr = '') {
+		if (!dateStr) return '';
+		const parts = dateStr.split('-');
+		if (parts.length !== 3) return '';
+		const [year, month, day] = parts;
+		return `${month.padStart(2, '0')}-${day.padStart(2, '0')}-${year}`;
+	}
+
+	formatTimeForDisplay(timeStr = '') {
+		const fallback = this.getDefaultDueTime();
+		const [hoursRaw, minutesRaw] = (timeStr && timeStr.includes(':') ? timeStr : fallback).split(':');
+		let hours = parseInt(hoursRaw, 10);
+		let minutes = parseInt(minutesRaw, 10);
+		if (isNaN(hours)) hours = parseInt(fallback.split(':')[0], 10);
+		if (isNaN(minutes)) minutes = parseInt(fallback.split(':')[1], 10);
+		const suffix = hours >= 12 ? 'PM' : 'AM';
+		let hour12 = hours % 12;
+		if (hour12 === 0) hour12 = 12;
+		return `${String(hour12).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${suffix}`;
+	}
+
+	buildTimeDueDate(dateStr = '', timeStr = '') {
+		if (!dateStr) return '';
+		const displayDate = this.formatDateForDisplay(dateStr);
+		const displayTime = this.formatTimeForDisplay(timeStr || this.getDefaultDueTime());
+		return `${displayTime} ${displayDate}`.trim();
+	}
+
+	formatDateObjToTimeLabel(dateObj) {
+		if (!(dateObj instanceof Date)) return '';
+		let hours = dateObj.getHours();
+		const minutes = dateObj.getMinutes();
+		const suffix = hours >= 12 ? 'PM' : 'AM';
+		let hour12 = hours % 12;
+		if (hour12 === 0) hour12 = 12;
+		return `${String(hour12).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${suffix}`;
+	}
+
+	parseTimeDueDate(value) {
+		if (!value || typeof value !== 'string') return null;
+		const match = value.trim().match(/^(\d{2}):(\d{2})\s(AM|PM)\s(\d{2})-(\d{2})-(\d{4})$/i);
+		if (!match) return null;
+		let hours = parseInt(match[1], 10);
+		const minutes = parseInt(match[2], 10);
+		const ampm = match[3].toUpperCase();
+		const month = parseInt(match[4], 10) - 1;
+		const day = parseInt(match[5], 10);
+		const year = parseInt(match[6], 10);
+		if (ampm === 'AM' && hours === 12) {
+			hours = 0;
+		} else if (ampm === 'PM' && hours !== 12) {
+			hours += 12;
+		}
+		if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day) || Number.isNaN(hours) || Number.isNaN(minutes)) {
+			return null;
+		}
+		return new Date(year, month, day, hours, minutes, 0, 0);
+	}
+
+	getTimeDueDateMs(value) {
+		const dateObj = this.parseTimeDueDate(value);
+		return dateObj ? dateObj.getTime() : 0;
+	}
+
+	getDateInputValueFromDisplay(value) {
+		const dateObj = this.parseTimeDueDate(value);
+		if (!dateObj) return '';
+		const year = dateObj.getFullYear();
+		const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+		const day = String(dateObj.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
+	getTimeInputValueFromDisplay(value) {
+		const dateObj = this.parseTimeDueDate(value);
+		if (!dateObj) return '';
+		const hours = String(dateObj.getHours()).padStart(2, '0');
+		const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+		return `${hours}:${minutes}`;
+	}
+
 	// Split a title into lines with a fixed number of words per line
 	splitTitleIntoLines(title = '', id = 'ln', wordsPerLine = 2) {
 		if (!title || typeof title !== 'string') return [];
@@ -230,18 +325,20 @@ export default class Todo extends LightningElement {
 
 	get eventsForCalendar() {
 		return this.filteredData
-			.filter(item => item.dueDate)
 			.map(item => {
-				const dateObj = new Date(item.dueDate);
+				const dateObj = this.parseTimeDueDate(item.timeDueDate);
+				if (!dateObj) return null;
 				return {
 					id: item.id,
 					title: item.subject || 'Event',
 					description: item.projectName || '',
 					status: item.status,
 					dateObj,
-					dateKey: this.formatDateKey(dateObj)
+					dateKey: this.formatDateKey(dateObj),
+					timeLabel: this.formatDateObjToTimeLabel(dateObj)
 				};
-			});
+			})
+			.filter(Boolean);
 	}
 
 	// assign css classes for events and allow demo/random events to appear
@@ -251,9 +348,11 @@ export default class Todo extends LightningElement {
 		if (evt.status === 'Completed') color = 'event-green';
 		else if (evt.status === 'Overdue') color = 'event-purple';
 		else if (evt.status === 'Upcoming') color = 'event-blue';
+		const timeLabel = evt.timeLabel || this.formatDateObjToTimeLabel(evt.dateObj) || '09:00 AM';
 		return {
 			...evt,
 			cssClass: `event-pill ${color}`,
+			timeLabel,
 			lines: this.splitTitleIntoLines(evt.title || '', evt.id || `e-${Date.now()}`, 2)
 		};
 	}
@@ -418,7 +517,8 @@ export default class Todo extends LightningElement {
 			const evts = (eventsMap[key] || []).map((e, idx) => {
 				const colors = ['event-green', 'event-blue', 'event-purple'];
 				const color = e && e._demoColor ? e._demoColor : colors[idx % colors.length];
-				return { ...e, cssClass: `event-pill ${color}` };
+				const timeLabel = e && e.timeLabel ? e.timeLabel : this.formatDateObjToTimeLabel(e.dateObj || dateObj) || '09:00 AM';
+				return { ...e, cssClass: `event-pill ${color}`, timeLabel };
 			});
 			cells.push({
 				key,
@@ -578,11 +678,19 @@ export default class Todo extends LightningElement {
 		}
 		if (this.dueDateFrom) {
 			const from = new Date(this.dueDateFrom);
-			temp = temp.filter(item => item.dueDate ? new Date(item.dueDate) >= from : false);
+			from.setHours(0, 0, 0, 0);
+			temp = temp.filter(item => {
+				const dateObj = this.parseTimeDueDate(item.timeDueDate);
+				return dateObj ? dateObj >= from : false;
+			});
 		}
 		if (this.dueDateTo) {
 			const to = new Date(this.dueDateTo);
-			temp = temp.filter(item => item.dueDate ? new Date(item.dueDate) <= to : false);
+			to.setHours(23, 59, 59, 999);
+			temp = temp.filter(item => {
+				const dateObj = this.parseTimeDueDate(item.timeDueDate);
+				return dateObj ? dateObj <= to : false;
+			});
 		}
 		if (this.searchKey && this.searchKey.trim() !== '') {
 			const key = this.searchKey.trim().toLowerCase();
@@ -597,6 +705,12 @@ export default class Todo extends LightningElement {
 		// Apply sorting
 		if (this.sortField) {
 			temp.sort((a, b) => {
+				if (this.sortField === 'timeDueDate') {
+					const valA = this.getTimeDueDateMs(a.timeDueDate);
+					const valB = this.getTimeDueDateMs(b.timeDueDate);
+					if (valA === valB) return 0;
+					return this.sortOrder === 'asc' ? valA - valB : valB - valA;
+				}
 				let valA = a[this.sortField] || '';
 				let valB = b[this.sortField] || '';
 				if (typeof valA === 'string') valA = valA.toLowerCase();
@@ -629,7 +743,31 @@ export default class Todo extends LightningElement {
 
 	// Action handlers
 	handleEdit(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('edit', { detail: { id } })); }
-	handleDelete(event) { const id = event.currentTarget.dataset.id; this.dispatchEvent(new CustomEvent('delete', { detail: { id } })); }
+	handleDelete(event) {
+		const id = event.currentTarget?.dataset?.id;
+		if (!id) return;
+		const rec = this.data.find(r => r.id === id);
+		this.deleteRecordId = id;
+		this.deleteRecordName = rec ? rec.subject : '';
+		this.showDeleteModal = true;
+	}
+
+	closeDeleteModal() {
+		this.showDeleteModal = false;
+		this.deleteRecordId = '';
+		this.deleteRecordName = '';
+	}
+
+	confirmDelete() {
+		const id = this.deleteRecordId;
+		if (!id) return this.closeDeleteModal();
+		const idx = this.data.findIndex(r => r.id === id);
+		if (idx !== -1) {
+			this.data = [...this.data.slice(0, idx), ...this.data.slice(idx + 1)];
+			this.dispatchEvent(new CustomEvent('delete', { detail: { id } }));
+		}
+		this.closeDeleteModal();
+	}
 
 	// Toggle filters panel
 	toggleFilters() {
@@ -647,6 +785,13 @@ export default class Todo extends LightningElement {
 	openAddModal() {
 		this.editRecordId = '';
 		this.formStatus = 'Upcoming';
+		this.formSubject = '';
+		this.formDueDate = '';
+		this.formDueTime = this.getDefaultDueTime();
+		this.formProjectName = '';
+		this.formResponsibility = '';
+		this.formHsName = '';
+		this.formSponsorName = '';
 		this.showAddModal = true;
 	}
 
@@ -672,11 +817,12 @@ export default class Todo extends LightningElement {
 	saveTodo() {
 		// create new todo record and close modal
 		const id = `tmp-${Date.now()}`;
+		const displayDueDate = this.buildTimeDueDate(this.formDueDate, this.formDueTime);
 		const newRec = {
 			id,
 			status: this.formStatus || 'Upcoming',
 			subject: this.formSubject,
-			dueDate: this.formDueDate,
+			timeDueDate: displayDueDate,
 			projectName: this.formProjectName,
 			responsibility: this.formResponsibility,
 			hsName: this.formHsName,
@@ -687,6 +833,7 @@ export default class Todo extends LightningElement {
 			lastUpdated: new Date().toISOString().slice(0,10)
 		};
 		newRec.statusClass = this.computeStatusClass(newRec.status);
+		newRec.timeDueDateValue = this.getTimeDueDateMs(newRec.timeDueDate);
 		this.data = [newRec, ...this.data];
 		this.closeAddModal();
 	}
@@ -707,7 +854,8 @@ export default class Todo extends LightningElement {
 		if (!rec) return;
 		this.editRecordId = id;
 		this.formSubject = rec.subject || '';
-		this.formDueDate = rec.dueDate || '';
+		this.formDueDate = this.getDateInputValueFromDisplay(rec.timeDueDate) || '';
+		this.formDueTime = this.getTimeInputValueFromDisplay(rec.timeDueDate) || this.getDefaultDueTime();
 		this.formProjectName = rec.projectName || '';
 		this.formResponsibility = rec.responsibility || '';
 		this.formHsName = rec.hsName || '';
@@ -725,7 +873,7 @@ export default class Todo extends LightningElement {
 		}
 		const updated = { ...this.data[idx] };
 		updated.subject = this.formSubject;
-		updated.dueDate = this.formDueDate;
+		updated.timeDueDate = this.buildTimeDueDate(this.formDueDate, this.formDueTime);
 		updated.projectName = this.formProjectName;
 		updated.responsibility = this.formResponsibility;
 		updated.hsName = this.formHsName;
@@ -733,6 +881,7 @@ export default class Todo extends LightningElement {
 		updated.status = this.formStatus;
 		updated.statusClass = this.computeStatusClass(updated.status);
 		updated.lastUpdated = new Date().toISOString().slice(0,10);
+		updated.timeDueDateValue = this.getTimeDueDateMs(updated.timeDueDate);
 		this.data = [...this.data.slice(0, idx), updated, ...this.data.slice(idx + 1)];
 		this.closeEditModal();
 	}
@@ -741,7 +890,7 @@ export default class Todo extends LightningElement {
 		return {
 			status: this.sortField === 'status',
 			subject: this.sortField === 'subject',
-			dueDate: this.sortField === 'dueDate',
+			timeDueDate: this.sortField === 'timeDueDate',
 			completionDate: this.sortField === 'completionDate',
 			projectName: this.sortField === 'projectName',
 			responsibility: this.sortField === 'responsibility',

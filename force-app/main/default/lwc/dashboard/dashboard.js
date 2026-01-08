@@ -26,6 +26,47 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
     TotalInitiatedCount = 60;
     TotalPendingCount = 40;
 
+    // To Do modal state (reused from todo LWC)
+    showAddModal = false;
+    formSubject = '';
+    formDueDate = '';
+    formDueTime = '09:00';
+    formProjectName = '';
+    formResponsibility = '';
+    formHsName = '';
+    formSponsorName = '';
+
+    hsOptions = [
+        { label: 'City Hospital', value: 'City Hospital' },
+        { label: 'Metro Clinic', value: 'Metro Clinic' },
+        { label: 'Neuro Center', value: 'Neuro Center' },
+        { label: 'Onco Clinic', value: 'Onco Clinic' },
+        { label: 'Sunrise Hospital', value: 'Sunrise Hospital' }
+    ];
+
+    sponsorOptions = [
+        { label: 'Acme Pharma', value: 'Acme Pharma' },
+        { label: 'BioHealth Ltd', value: 'BioHealth Ltd' },
+        { label: 'MedSolutions', value: 'MedSolutions' },
+        { label: 'Zenith Pharma', value: 'Zenith Pharma' },
+        { label: 'NextGen Pharma', value: 'NextGen Pharma' }
+    ];
+
+    // Task modal state (borrowed from projectTasks LWC)
+    isAddActivityOpen = false;
+    addFormMilestone = '';
+    addFormDescription = '';
+    addFormPlanStart = '';
+    addFormPlanFinish = '';
+    addFormActualStart = '';
+    addFormEta = '';
+
+    milestoneOptions = [
+        { label: 'Trial Preparation', value: 'Trial Preparation' },
+        { label: 'Trial Execution', value: 'Trial Execution' },
+        { label: 'Trial Close', value: 'Trial Close' }
+    ];
+
     // Background images from kpi static resource (bg-01.svg .. bg-04.svg)
     get bgImage01() {
         return KPI + '/bg-01.svg';
@@ -659,7 +700,7 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
             chart: { type: 'donut', height: 270, width: '100%', offsetY: -10 },
             // keep the numeric series but update labels to the requested geography names
             series: [214, 121, 150],
-            labels: ['California', 'Texas', 'New York'],
+            labels: ['Trial Preparation', 'Trial Execution', 'Trial Close'],
             colors: ['#6DA6F2', '#5C60CC', '#9B51B6'],
             legend: { show: false },
             dataLabels: { enabled: false },
@@ -773,4 +814,66 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
             }
         });
     }
+
+    // --- To Do modal handlers (borrowed from todo LWC) ---
+    getDefaultDueTime() { return '09:00'; }
+
+    formatDateForDisplay(dateStr = '') {
+        if (!dateStr || !dateStr.includes('-')) return dateStr;
+        const [year, month, day] = dateStr.split('-');
+        if (!year || !month || !day) return dateStr;
+        return `${month.padStart(2, '0')}-${day.padStart(2, '0')}-${year}`;
+    }
+
+    formatTimeForDisplay(timeStr = '') {
+        const fallback = this.getDefaultDueTime();
+        const [hRaw, mRaw] = (timeStr || fallback).split(':');
+        let h = parseInt(hRaw, 10);
+        const m = parseInt(mRaw, 10) || 0;
+        const suffix = h >= 12 ? 'PM' : 'AM';
+        let h12 = h % 12;
+        if (h12 === 0) h12 = 12;
+        return `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${suffix}`;
+    }
+
+    openAddModal() {
+        this.formSubject = '';
+        this.formDueDate = '';
+        this.formDueTime = this.getDefaultDueTime();
+        this.formProjectName = '';
+        this.formResponsibility = '';
+        this.formHsName = '';
+        this.formSponsorName = '';
+        this.showAddModal = true;
+    }
+
+    closeAddModal = () => {
+        this.showAddModal = false;
+    };
+
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+            this[name] = value;
+        }
+    };
+
+    saveTodo = () => {
+        const subject = this.formSubject && this.formSubject.trim() ? this.formSubject.trim() : 'New To Do';
+        const displayDate = this.formatDateForDisplay(this.formDueDate || '');
+        const displayTime = this.formatTimeForDisplay(this.formDueTime || this.getDefaultDueTime());
+        const dueDateCombined = displayDate ? `${displayTime} ${displayDate}` : displayTime;
+        const newItem = {
+            id: `todo-${Date.now()}`,
+            subject,
+            emphasis: 'standard',
+            dueDate: dueDateCombined,
+            projectName: this.formProjectName || '',
+            responsibilityName: this.formResponsibility || '',
+            responsibilityOrg: this.formSponsorName || this.formHsName || '',
+            responsibilityPhoto: ''
+        };
+        this.taskTodoRecords = [newItem, ...this.taskTodoRecords];
+        this.closeAddModal();
+    };
 }
