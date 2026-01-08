@@ -817,10 +817,23 @@
                                 <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
                             </template>
                             <template if:true={isEnquiries}>
-                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
-                                <div class="hs-form-group"><label>Project Name</label><lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input></div>
-                                <div class="hs-form-group hs-form-group--full"><label>Project Details</label><lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea></div>
-                                <div class="hs-form-group hs-form-group--full"><label>Project Scoping Doc</label><lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input><template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template></div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Sponsor Name</label>
+                                    <lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Project Name</label>
+                                    <lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 2;">
+                                    <label>Project Scoping Doc</label>
+                                    <lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input>
+                                    <template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Project Details</label>
+                                    <lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea>
+                                </div>
                             </template>
                         </div>
                     </div>
@@ -928,11 +941,27 @@
                                 <div class="hs-form-group"><label>Phone</label><lightning-input type="tel" name="formPhone" value={formPhone} onchange={handleInputChange} placeholder="Enter Phone"></lightning-input></div>
                             </template>
                             <template if:true={isEnquiries}>
-                                <div class="hs-form-group"><label>Status</label><lightning-combobox name="formEnquiryStatus" value={formEnquiryStatus} options={enquiryStatusOptions} onchange={handleInputChange}></lightning-combobox></div>
-                                <div class="hs-form-group"><label>Sponsor Name</label><lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input></div>
-                                <div class="hs-form-group"><label>Project Name</label><lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input></div>
-                                <div class="hs-form-group hs-form-group--full"><label>Project Details</label><lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea></div>
-                                <div class="hs-form-group hs-form-group--full"><label>Project Scoping Doc</label><lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input><template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template></div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Status</label>
+                                    <lightning-combobox name="formEnquiryStatus" value={formEnquiryStatus} options={enquiryStatusOptions} onchange={handleInputChange}></lightning-combobox>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Sponsor Name</label>
+                                    <lightning-input name="formEnquirySponsorName" value={formEnquirySponsorName} onchange={handleInputChange} placeholder="Enter Sponsor Name"></lightning-input>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Project Name</label>
+                                    <lightning-input name="formEnquiryProjectName" value={formEnquiryProjectName} onchange={handleInputChange} placeholder="Enter Project Name"></lightning-input>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 1;">
+                                    <label>Project Scoping Doc</label>
+                                    <lightning-input type="file" name="formEnquiryDoc" onchange={handleDocChange}></lightning-input>
+                                    <template if:true={formEnquiryDocName}><p class="file-name">{formEnquiryDocName}</p></template>
+                                </div>
+                                <div class="hs-form-group" style="grid-column: 2;">
+                                    <label>Project Details</label>
+                                    <lightning-textarea name="formEnquiryProjectDetails" value={formEnquiryProjectDetails} onchange={handleInputChange} placeholder="Enter Project Details"></lightning-textarea>
+                                </div>
                             </template>
                         </div>
                     </div>
