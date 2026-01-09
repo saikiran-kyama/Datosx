@@ -224,6 +224,30 @@
         </div>
     </div>
 
+    <!-- Full width area chart placed after Monthly Project Trend -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title fw-bold mb-0" style="font-size: 1.5em !important;">Monthly Tasks Completion Trend</h5>
+                    <div class="float-end">
+                        <select class="year-select" onchange={handleYearChange} value={selectedYear}>
+                            <template for:each={years} for:item="yr">
+                                <option key={yr} value={yr}>{yr}</option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart area-chart-container">
+                        <!-- ApexCharts Area Chart will render into this div -->
+                        <div data-id="apexAreaChart" style="width:100%;height:350px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Row below the column chart divided into three equal columns -->
     <div class="row three-column-row">
         <!-- Left: Status pie (Highcharts) -->

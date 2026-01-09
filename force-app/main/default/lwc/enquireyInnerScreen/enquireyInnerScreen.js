@@ -71,6 +71,31 @@ export default class EnquireyInnerScreen extends LightningElement {
         { label: 'Hyper Tension', value: 'hypertension' },
         { label: 'Disabled', value: 'disabled' }
     ];
+
+    // Intake tab state
+    statisticalAnalysisOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' }
+    ];
+    healthCareSystemOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' }
+    ];
+    statisticalAnalysisValue = '';
+    healthCareSystemValue = '';
+    
+    intakeQuestions = [
+        { id: 1, label: 'Please provide any available details about the trial you would like to execute (e.g., prospective vs. retrospective, randomized, placebo controlled, etc.)', value: '', type: 'textarea' },
+        { id: 2, label: 'What is the Primary Study Objective?', value: '', type: 'textarea' },
+        { id: 3, label: 'What is the secondary and/or tertiary study objective(s) if any?', value: '', type: 'textarea' },
+        { id: 4, label: 'What is the intended Study Population (inclusion criteria)?', value: '', type: 'textarea' },
+        { id: 5, label: 'What participants would be excluded from the study (exclusion criteria)?', value: '', type: 'textarea' },
+        { id: 6, label: 'How many participants are you seeking to enroll in the study?', value: '', type: 'input' },
+        { id: 7, label: 'How many sites would you like to use?', value: '', type: 'input' },
+        { id: 8, label: 'What type of information are you seeking to gather (e.g. survey data, labs, imaging)?', value: '', type: 'textarea' }
+    ];
     
     notesColumns = [
         {
@@ -211,6 +236,10 @@ export default class EnquireyInnerScreen extends LightningElement {
 
     // isOverview removed (Overview tab deleted)
 
+    get isIntake() {
+        return this.currentTab === 'Intake';
+    }
+
     get isDetails() {
         return this.currentTab === 'Details';
     }
@@ -243,6 +272,28 @@ export default class EnquireyInnerScreen extends LightningElement {
 
     get isNotes() {
         return this.currentTab === 'Related';
+    }
+
+    // Intake tab handlers
+    handleIntakeChange(event) {
+        const id = parseInt(event.target.dataset.id, 10);
+        const val = event.target.value;
+        this.intakeQuestions = this.intakeQuestions.map(q => {
+            if (q.id === id) {
+                return { ...q, value: val };
+            }
+            return q;
+        });
+    }
+
+    handleIntakeClear() {
+        this.intakeQuestions = this.intakeQuestions.map(q => ({ ...q, value: '' }));
+    }
+
+    handleIntakeSave() {
+        // eslint-disable-next-line no-console
+        console.log('Intake Saved:', JSON.stringify(this.intakeQuestions));
+        // Add toast or notification logic here if needed
     }
 
     // Getters for conditional values in Notes section

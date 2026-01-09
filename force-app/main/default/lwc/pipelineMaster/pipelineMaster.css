@@ -400,6 +400,71 @@ td.status-cell {
     border-color: #0176d3;
 }
 
+/* Add Project Intake modal (shared styling from projects component) */
+.modal-overlay { position: fixed; inset: 0; background: rgba(13, 26, 57, 0.55); display: flex; align-items: center; justify-content: center; z-index: 3000; padding: 1rem; }
+.modal-card { width: 646px; background: #fff; border-radius: 12px; box-shadow: 0 24px 54px rgba(8, 14, 39, 0.35); display: flex; flex-direction: column; max-height: 90vh; }
+.modal-card--xl { width: 960px; }
+.modal-header { padding: 20px 24px; border-bottom: 1px solid #e7ecf5; display: flex; justify-content: space-between; gap: 1rem; }
+.modal-header h3 { margin: 0; font-size: 1.25rem; color: #111b34; }
+.modal-header p { margin: 4px 0 0; color: #5e647a; font-size: 0.9rem; }
+.modal-body { padding: 20px 24px; overflow-y: auto; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid #e7ecf5; display: flex; justify-content: flex-end; gap: 0.75rem; }
+.modal-close-btn { background: transparent; border: none; cursor: pointer; color: #4f4f5e; padding: 0; }
+.modal-close-btn lightning-icon { --sds-c-icon-color-foreground-default: #4f4f5e; }
+.btn { border-radius: 6px; font-weight: 600; padding: 8px 18px; border: none; cursor: pointer; }
+.btn-light { background: #f4f6fb; color: #1f2a44; border: 1px solid #dbe2f2; }
+.btn-primary { background: #2e37a4; color: #fff; }
+.btn-primary:hover { background: #232b85; }
+.intake-layout { display: flex; gap: 1.5rem; }
+.intake-sidebar { width: 220px; border-right: 1px solid #edf0fb; padding-right: 1rem; display: flex; flex-direction: column; gap: 0.65rem; }
+.intake-nav-btn { border: 1px solid transparent; border-radius: 8px; background: #f4f5fb; color: #4c5875; font-weight: 600; padding: 0.75rem 1rem; text-align: left; cursor: pointer; transition: all 0.2s ease; }
+.intake-nav-btn:hover { border-color: #cfd5f4; }
+.intake-nav-btn.active { background: #2e37a4; color: #fff; box-shadow: 0 4px 14px rgba(46, 55, 164, 0.35); }
+.intake-content { flex: 1; overflow-y: auto; max-height: 70vh; padding-right: 0.5rem; }
+.intake-section { background: #fff; border: 1px solid #e5e9f5; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
+.intake-section + .intake-section { margin-top: 1rem; }
+.intake-section-header h4 { margin: 0; font-size: 1.1rem; color: #111b34; }
+.intake-section-header p { margin: 0.2rem 0 1.2rem; color: #6b738f; font-size: 0.9rem; }
+.intake-field { display: flex; flex-direction: column; }
+.intake-field label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em; color: #434b68; margin-bottom: 0.35rem; }
+.intake-field .required { color: #e02f2f; margin-left: 0.2rem; }
+.intake-field.span-2 { grid-column: 1 / -1; }
+.intake-control { width: 100%; }
+.intake-two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.left-col, .right-col { display: flex; flex-direction: column; gap: 0.75rem; }
+.lookup-row { display: flex; gap: 0.5rem; align-items: center; }
+.lookup-btn { background: transparent; border: 1px solid #d6dcec; border-radius: 6px; padding: 6px 8px; cursor: pointer; margin-top: 15px; }
+.owner-display { display: flex; align-items: center; gap: 0.6rem; padding: 6px 0; }
+.owner-name { color: #1a2035; font-weight: 600; }
+.history-textarea, lightning-textarea.history-textarea, .history-field lightning-textarea { min-height: 220px; }
+.requirements-two-column { grid-template-columns: 0fr 1fr; align-items: flex-start; }
+.requirements-card { border: 1px solid #e5e9f5; border-radius: 12px; padding: 1rem; background: #f9faff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); }
+.requirements-card__header h4 { margin: 0 0 0.25rem; color: #111b34; font-size: 1rem; }
+.requirements-card__header p { margin: 0 0 0.75rem; color: #6b738f; font-size: 0.85rem; }
+.requirements-list { max-height: calc(7 * 48px); overflow-y: auto; border: 1px solid #e0e6f7; border-radius: 10px; background: #fff; }
+.requirements-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.85rem; border-bottom: 1px solid #edf0fb; gap: 1rem; }
+.requirements-row:last-child { border-bottom: none; }
+.requirements-label { flex: 1; font-size: 0.9rem; color: #1f2a44; }
+.requirements-help-text { margin-top: 0.4rem; color: #6b738f; font-size: 0.8rem; }
+.requirements-row lightning-input { margin: 0; }
+.intake-modal-body { padding: 20px 24px; }
+/* Styled native inputs to visually match dropdown/button style in projects */
+.input-wrapper { width: 100%;}
+.filter-input {     height: 33px; width: 100%; padding: 8px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 13px; color: #495057; background: #fff; }
+.filter-input:focus { outline: none; border-color: #0d6efd; box-shadow: 0 0 0 0.125rem rgba(13,110,253,0.12); }
+
+
+@media (max-width: 1024px) {
+    .modal-card--xl { width: 100%; }
+    .intake-layout { flex-direction: column; }
+    .intake-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid #edf0fb; padding-bottom: 1rem; }
+    .intake-nav-btn { flex: 1 1 calc(50% - 0.5rem); }
+}
+
+@media (max-width: 720px) {
+    .intake-two-column { grid-template-columns: 1fr; }
+}
+
 .status-active {
     color: #0176d3;
     background-color: #d2e3fc;

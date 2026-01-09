@@ -17,6 +17,23 @@ export default class ProjectDetail extends LightningElement {
     legalStepsObjs = [];
     legalData = {};
     // Execute modal state for Legal grid
+    legalSteps = ['mNDA', 'LOI', 'ESA', 'MSA'];
+    isLegalAddModalOpen = false;
+    legalFormAgreementType = 'mNDA';
+    legalFormVersion = '';
+    legalFormInitiatedBy = '';
+    legalFormHs = '';
+    legalFormSponsor = '';
+    legalFormDx = '';
+    legalFormDueDate = '';
+    legalFormDocName = '';
+    legalFormStatus = 'In Process';
+    legalEditingRowId = null;
+    legalStatusOptions = [
+      { label: 'In Process', value: 'In Process' },
+      { label: 'Completed', value: 'Completed' },
+      { label: 'Rejected', value: 'Rejected' }
+    ];
     isExecuteOpen = false;
     selectedExecuteRowId = null;
     // Messaging state
@@ -983,6 +1000,96 @@ export default class ProjectDetail extends LightningElement {
         return this.legalData[this.selectedLegalStep] || [];
     }
 
+    get legalAgreementOptions() {
+        const steps = this.legalSteps && this.legalSteps.length ? this.legalSteps : ['mNDA', 'LOI', 'ESA', 'MSA'];
+        return steps.map((type) => ({ label: type, value: type }));
+    }
+
+    get legalModalTitle() {
+        return this.legalEditingRowId ? 'Edit Agreement' : 'Add Agreement';
+    }
+
+    get showLegalStatusField() {
+        return !!this.legalEditingRowId;
+    }
+
+    openLegalAddModal() {
+        if (!this.selectedLegalStep && this.legalSteps && this.legalSteps.length) {
+            this.selectedLegalStep = this.legalSteps[0];
+        }
+        this.resetLegalForm();
+        this.isLegalAddModalOpen = true;
+    }
+
+    closeLegalAddModal() {
+        this.isLegalAddModalOpen = false;
+        this.resetLegalForm();
+    }
+
+    resetLegalForm() {
+        const defaultAgreement = this.selectedLegalStep || (this.legalSteps && this.legalSteps[0]) || 'mNDA';
+        this.legalFormAgreementType = defaultAgreement;
+        this.legalFormVersion = '';
+        this.legalFormInitiatedBy = '';
+        this.legalFormHs = '';
+        this.legalFormSponsor = '';
+        this.legalFormDx = '';
+        this.legalFormDueDate = '';
+        this.legalFormDocName = '';
+        this.legalFormStatus = 'In Process';
+        this.legalEditingRowId = null;
+    }
+
+    handleLegalFormInputChange(event) {
+        const name = event?.target?.name;
+        const value = event?.detail?.value !== undefined ? event.detail.value : event?.target?.value;
+        if (name && Object.prototype.hasOwnProperty.call(this, name)) {
+            this[name] = value;
+        }
+    }
+
+    handleLegalDocChange(event) {
+        const fileList = event?.target?.files;
+        this.legalFormDocName = fileList && fileList.length ? fileList[0].name : '';
+    }
+
+    saveLegalAdd() {
+        const activeStep = this.selectedLegalStep || (this.legalSteps && this.legalSteps.length ? this.legalSteps[0] : null);
+        if (!activeStep) {
+            this.closeLegalAddModal();
+            return;
+        }
+        const baseRow = {
+            agreementType: this.legalFormAgreementType || activeStep,
+            version: this.legalFormVersion || 'Draft',
+            status: this.legalFormStatus || 'In Process',
+            initiatedBy: this.legalFormInitiatedBy || '—',
+            hsName: this.legalFormHs || '—',
+            sponsorName: this.legalFormSponsor || '—',
+            dxName: this.legalFormDx || '—',
+            projectScopingDoc: this.legalFormDocName || 'Uploaded Document',
+            dueDate: this.legalFormDueDate || new Date().toISOString().slice(0, 10)
+        };
+        const rows = this.legalData[activeStep] ? [...this.legalData[activeStep]] : [];
+        if (this.legalEditingRowId) {
+            const idx = rows.findIndex(r => r.id === this.legalEditingRowId);
+            if (idx >= 0) {
+                rows[idx] = { ...rows[idx], ...baseRow, id: this.legalEditingRowId };
+                this.legalData = { ...this.legalData, [activeStep]: rows };
+            }
+        } else {
+            const newRow = {
+                id: `legal-${Date.now()}`,
+                ...baseRow,
+                hsAvatar: '',
+                sponsorAvatar: '',
+                dxAvatar: ''
+            };
+            this.legalData = { ...this.legalData, [activeStep]: [newRow, ...rows] };
+        }
+        this.closeLegalAddModal();
+    }
+
     handleTabClick(event) {
         try {
             event.preventDefault();
@@ -1088,12 +1195,38 @@ export default class ProjectDetail extends LightningElement {
         this.closeExecutePopup();
     }
 
-      // Legal: edit a legal row (placeholder for future edit modal)
+      // Legal: edit a legal row — open the Add/Edit modal and populate fields
       handleLegalEdit(event) {
-        const id = event.currentTarget?.dataset?.id;
+        let id = null;
+        try {
+          const current = event.currentTarget;
+          if (current && current.dataset && current.dataset.id) {
+            id = current.dataset.id;
+          } else if (event.target && event.target.closest) {
+            const btn = event.target.closest('[data-id]');
+            if (btn && btn.dataset) id = btn.dataset.id;
+          }
+        } catch (e) {
+          // ignore lookup errors
+        }
         // eslint-disable-next-line no-console
         console.log('Legal Edit clicked for id=', id);
-        // TODO: open a modal or dispatch an event to edit the legal row
+        if (!id || !this.selectedLegalStep) return;
+        const rows = this.legalData[this.selectedLegalStep] || [];
+        const row = rows.find(r => r.id === id);
+        if (!row) return;
+        this.legalEditingRowId = id;
+        this.legalFormAgreementType = row.agreementType || this.selectedLegalStep;
+        this.legalFormVersion = row.version || '';
+        this.legalFormInitiatedBy = row.initiatedBy || '';
+        this.legalFormHs = row.hsName || '';
+        this.legalFormSponsor = row.sponsorName || '';
+        this.legalFormDx = row.dxName || '';
+        this.legalFormDueDate = row.dueDate || '';
+        this.legalFormDocName = row.projectScopingDoc || '';
+        const hasValidStatus = this.legalStatusOptions.some(option => option.value === row.status);
+        this.legalFormStatus = hasValidStatus ? row.status : 'In Process';
+        this.isLegalAddModalOpen = true;
       }
 
       // Legal: handle delete for a legal row
