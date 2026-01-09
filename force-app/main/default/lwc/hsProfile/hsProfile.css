@@ -217,6 +217,10 @@
     object-fit: cover;
 }
 
+.dx-team-avatar-icon {
+    --slds-c-avatar-radius-border: 50%;
+}
+
 .dx-team-info {
     display: flex;
     flex-direction: column;
@@ -245,6 +249,17 @@
 
 .dx-team-icon {
     color: #6b7280;
+}
+
+/* Action Icons */
+.icon-edit,
+lightning-button-icon.icon-edit {
+    --sds-c-icon-color-foreground-default: #0070d2;
+}
+
+.icon-delete,
+lightning-button-icon.icon-delete {
+    --sds-c-icon-color-foreground-default: #0070d2;
 }
 
 /* Responsive adjustments */

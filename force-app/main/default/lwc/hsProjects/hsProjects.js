@@ -9,9 +9,13 @@ export default class HsProjects extends LightningElement {
     searchKey = '';
     statusDropdownOpen = false;
     sponsorDropdownOpen = false;
+    stateDropdownOpen = false;
+    cityDropdownOpen = false;
 
     selectedStatus = [];
     selectedSponsor = [];
+    selectedState = [];
+    selectedCity = [];
 
     // Sorting
     sortField = '';
@@ -68,36 +72,52 @@ export default class HsProjects extends LightningElement {
     ].map(v => ({ label: v, value: v, checked: false }));
 
     sponsorOptions = [];
+    stateOptions = [];
+    cityOptions = [];
 
     get statusDropdownClass() { return this.statusDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
     get sponsorDropdownClass() { return this.sponsorDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get stateDropdownClass() { return this.stateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
+    get cityDropdownClass() { return this.cityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; }
 
     toggleStatusDropdown() { this.statusDropdownOpen = !this.statusDropdownOpen; this.closeOtherDropdowns('status'); }
     toggleSponsorDropdown() { this.sponsorDropdownOpen = !this.sponsorDropdownOpen; this.closeOtherDropdowns('sponsor'); }
+    toggleStateDropdown() { this.stateDropdownOpen = !this.stateDropdownOpen; this.closeOtherDropdowns('state'); }
+    toggleCityDropdown() { this.cityDropdownOpen = !this.cityDropdownOpen; this.closeOtherDropdowns('city'); }
 
     closeOtherDropdowns(except) {
         if (except !== 'status') this.statusDropdownOpen = false;
         if (except !== 'sponsor') this.sponsorDropdownOpen = false;
+        if (except !== 'state') this.stateDropdownOpen = false;
+        if (except !== 'city') this.cityDropdownOpen = false;
     }
 
     get statusDisplayText() { const count = this.statusOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
     get sponsorDisplayText() { const count = this.sponsorOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
+    get stateDisplayText() { const count = this.stateOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
+    get cityDisplayText() { const count = this.cityOptions.filter(o => o.checked).length; return count > 0 ? count + ' selected' : 'Select'; }
 
     toggleFilters() { this.showFilters = !this.showFilters; }
     closeFilter() { this.showFilters = false; this.closeOtherDropdowns(''); }
 
     handleStatusCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.statusOptions = this.statusOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
     handleSponsorCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.sponsorOptions = this.sponsorOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
+    handleStateCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.stateOptions = this.stateOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
+    handleCityCheckboxChange(event) { const value = event.target.value; const checked = event.target.checked; this.cityOptions = this.cityOptions.map(opt => opt.value === value ? { ...opt, checked } : opt); }
 
     handleSearchChange(event) { this.searchKey = event.target.value; this.pageIndex = 0; }
 
     resetStatusFilter() { this.statusOptions = this.statusOptions.map(opt => ({ ...opt, checked: false })); this.selectedStatus = []; }
     resetSponsorFilter() { this.sponsorOptions = this.sponsorOptions.map(opt => ({ ...opt, checked: false })); this.selectedSponsor = []; }
-    clearAllFilters() { this.resetStatusFilter(); this.resetSponsorFilter(); }
+    resetStateFilter() { this.stateOptions = this.stateOptions.map(opt => ({ ...opt, checked: false })); this.selectedState = []; }
+    resetCityFilter() { this.cityOptions = this.cityOptions.map(opt => ({ ...opt, checked: false })); this.selectedCity = []; }
+    clearAllFilters() { this.resetStatusFilter(); this.resetSponsorFilter(); this.resetStateFilter(); this.resetCityFilter(); }
 
     applyFilter() {
         this.selectedStatus = this.statusOptions.filter(o => o.checked).map(o => o.value);
         this.selectedSponsor = this.sponsorOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedState = this.stateOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedCity = this.cityOptions.filter(o => o.checked).map(o => o.value);
         this.closeOtherDropdowns('');
         this.pageIndex = 0;
     }
@@ -106,6 +126,8 @@ export default class HsProjects extends LightningElement {
         let temp = [...this.data];
         if (this.selectedStatus.length > 0) temp = temp.filter(i => this.selectedStatus.includes(i.status));
         if (this.selectedSponsor.length > 0) temp = temp.filter(i => this.selectedSponsor.includes(i.sponsorName));
+        if (this.selectedState.length > 0) temp = temp.filter(i => this.selectedState.includes(i.state));
+        if (this.selectedCity.length > 0) temp = temp.filter(i => this.selectedCity.includes(i.city));
         if (this.searchKey && this.searchKey.trim() !== '') {
             const key = this.searchKey.trim().toLowerCase();
             temp = temp.filter(i =>
@@ -137,6 +159,12 @@ export default class HsProjects extends LightningElement {
     connectedCallback() {
         const sponsors = Array.from(new Set(this.data.map(d => d.sponsorName))).map(s => ({ label: s, value: s, checked: false }));
         this.sponsorOptions = sponsors;
+
+        const states = Array.from(new Set(this.data.map(d => d.state))).sort().map(s => ({ label: s, value: s, checked: false }));
+        this.stateOptions = states;
+
+        const cities = Array.from(new Set(this.data.map(d => d.city))).sort().map(c => ({ label: c, value: c, checked: false }));
+        this.cityOptions = cities;
 
         this.data = this.data.map((row, idx) => {
             const sponsorInitials = (row.sponsorName || '').split(' ').map(n => n && n[0]).filter(Boolean).slice(0,2).join('').toUpperCase();

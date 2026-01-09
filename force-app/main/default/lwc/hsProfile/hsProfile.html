@@ -117,9 +117,12 @@
                         <div class="dx-team-label">Coordinator Name</div>
                         <!-- Coordinator Profile -->
                         <div class="dx-team-profile">
-                            <div class="dx-team-avatar">
-                                <img src={cvpTeam.avatarUrl} alt="Coordinator Avatar" />
-                            </div>
+                            <lightning-avatar 
+                                alternative-text="Coordinator Avatar"
+                                initials={cvpTeam.initials}
+                                size="medium"
+                                class="dx-team-avatar-icon">
+                            </lightning-avatar>
                             <div class="dx-team-info">
                                 <span class="dx-team-name">{cvpTeam.name}</span>
                                 <span class="dx-team-email">{cvpTeam.email}</span>

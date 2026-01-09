@@ -1,6 +1,32 @@
 import { LightningElement } from 'lwc';
 
 export default class HsPossibilities extends LightningElement {
+    // Filter state
+    showFilters = false;
+    searchKey = '';
+    sponsorDropdownOpen = false;
+    matchingDropdownOpen = false;
+    stateDropdownOpen = false;
+    cityDropdownOpen = false;
+
+    selectedSponsor = [];
+    selectedMatching = [];
+    selectedState = [];
+    selectedCity = [];
+
+    // Sponsor filter options
+    sponsorOptions = [];
+    stateOptions = [];
+    cityOptions = [];
+
+    // Matching percentage filter options
+    matchingOptions = [
+        { label: '90-100%', value: '90-100', checked: false },
+        { label: '80-89%', value: '80-89', checked: false },
+        { label: '70-79%', value: '70-79', checked: false },
+        { label: 'Below 70%', value: '0-69', checked: false }
+    ];
+
     // Possibilities data for HS view
     possibilitiesData = [
         {
@@ -13,7 +39,9 @@ export default class HsPossibilities extends LightningElement {
             productScopingDoc: 'View',
             requirements: 12,
             matchingPercentage: 85,
-            interested: false
+            interested: false,
+            state: 'California',
+            city: 'San Francisco'
         },
         {
             id: 'enq2',
@@ -25,7 +53,9 @@ export default class HsPossibilities extends LightningElement {
             productScopingDoc: 'View',
             requirements: 18,
             matchingPercentage: 92,
-            interested: false
+            interested: false,
+            state: 'New York',
+            city: 'New York'
         },
         {
             id: 'enq3',
@@ -37,7 +67,9 @@ export default class HsPossibilities extends LightningElement {
             productScopingDoc: 'View',
             requirements: 15,
             matchingPercentage: 78,
-            interested: true
+            interested: true,
+            state: 'Texas',
+            city: 'Houston'
         },
         {
             id: 'enq4',
@@ -49,9 +81,214 @@ export default class HsPossibilities extends LightningElement {
             productScopingDoc: 'View',
             requirements: 10,
             matchingPercentage: 88,
-            interested: false
+            interested: false,
+            state: 'Florida',
+            city: 'Miami'
         }
     ];
+
+    // Filter methods
+    get sponsorDropdownClass() { 
+        return this.sponsorDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+    
+    get matchingDropdownClass() { 
+        return this.matchingDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+
+    get stateDropdownClass() { 
+        return this.stateDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+
+    get cityDropdownClass() { 
+        return this.cityDropdownOpen ? 'dropdown-menu show' : 'dropdown-menu'; 
+    }
+
+    toggleSponsorDropdown() { 
+        this.sponsorDropdownOpen = !this.sponsorDropdownOpen; 
+        this.closeOtherDropdowns('sponsor'); 
+    }
+    
+    toggleMatchingDropdown() { 
+        this.matchingDropdownOpen = !this.matchingDropdownOpen; 
+        this.closeOtherDropdowns('matching'); 
+    }
+
+    toggleStateDropdown() { 
+        this.stateDropdownOpen = !this.stateDropdownOpen; 
+        this.closeOtherDropdowns('state'); 
+    }
+
+    toggleCityDropdown() { 
+        this.cityDropdownOpen = !this.cityDropdownOpen; 
+        this.closeOtherDropdowns('city'); 
+    }
+
+    closeOtherDropdowns(except) {
+        if (except !== 'sponsor') this.sponsorDropdownOpen = false;
+        if (except !== 'matching') this.matchingDropdownOpen = false;
+        if (except !== 'state') this.stateDropdownOpen = false;
+        if (except !== 'city') this.cityDropdownOpen = false;
+    }
+
+    get sponsorDisplayText() { 
+        const count = this.sponsorOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+    
+    get matchingDisplayText() { 
+        const count = this.matchingOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+
+    get stateDisplayText() { 
+        const count = this.stateOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+
+    get cityDisplayText() { 
+        const count = this.cityOptions.filter(o => o.checked).length; 
+        return count > 0 ? count + ' selected' : 'Select'; 
+    }
+
+    toggleFilters() { 
+        this.showFilters = !this.showFilters; 
+    }
+    
+    closeFilter() { 
+        this.showFilters = false; 
+        this.closeOtherDropdowns(''); 
+    }
+
+    handleSponsorCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.sponsorOptions = this.sponsorOptions.map(opt => 
+            opt.value === value ? { ...opt, checked } : opt
+        ); 
+    }
+    
+    handleMatchingCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.matchingOptions = this.matchingOptions.map(opt => 
+            opt.value === value ? { ...opt, checked } : opt
+        ); 
+    }
+
+    handleStateCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.stateOptions = this.stateOptions.map(opt => 
+            opt.value === value ? { ...opt, checked } : opt
+        ); 
+    }
+
+    handleCityCheckboxChange(event) { 
+        const value = event.target.value; 
+        const checked = event.target.checked; 
+        this.cityOptions = this.cityOptions.map(opt => 
+            opt.value === value ? { ...opt, checked } : opt
+        ); 
+    }
+
+    handleSearchChange(event) { 
+        this.searchKey = event.target.value; 
+    }
+
+    resetSponsorFilter() { 
+        this.sponsorOptions = this.sponsorOptions.map(opt => ({ ...opt, checked: false })); 
+        this.selectedSponsor = []; 
+    }
+    
+    resetMatchingFilter() { 
+        this.matchingOptions = this.matchingOptions.map(opt => ({ ...opt, checked: false })); 
+        this.selectedMatching = []; 
+    }
+
+    resetStateFilter() { 
+        this.stateOptions = this.stateOptions.map(opt => ({ ...opt, checked: false })); 
+        this.selectedState = []; 
+    }
+
+    resetCityFilter() { 
+        this.cityOptions = this.cityOptions.map(opt => ({ ...opt, checked: false })); 
+        this.selectedCity = []; 
+    }
+    
+    clearAllFilters() { 
+        this.resetSponsorFilter(); 
+        this.resetMatchingFilter(); 
+        this.resetStateFilter(); 
+        this.resetCityFilter(); 
+        this.searchKey = '';
+    }
+
+    applyFilter() {
+        this.selectedSponsor = this.sponsorOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedMatching = this.matchingOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedState = this.stateOptions.filter(o => o.checked).map(o => o.value);
+        this.selectedCity = this.cityOptions.filter(o => o.checked).map(o => o.value);
+        this.closeOtherDropdowns('');
+    }
+
+    connectedCallback() {
+        // Build sponsor options from data
+        const sponsors = Array.from(new Set(this.possibilitiesData.map(d => d.sponsorName)))
+            .map(s => ({ label: s, value: s, checked: false }));
+        this.sponsorOptions = sponsors;
+
+        const states = Array.from(new Set(this.possibilitiesData.map(d => d.state))).sort()
+            .map(s => ({ label: s, value: s, checked: false }));
+        this.stateOptions = states;
+
+        const cities = Array.from(new Set(this.possibilitiesData.map(d => d.city))).sort()
+            .map(c => ({ label: c, value: c, checked: false }));
+        this.cityOptions = cities;
+    }
+
+    get filteredData() {
+        let temp = [...this.possibilitiesData];
+        
+        // Filter by sponsor
+        if (this.selectedSponsor.length > 0) {
+            temp = temp.filter(row => this.selectedSponsor.includes(row.sponsorName));
+        }
+        
+        // Filter by matching percentage
+        if (this.selectedMatching.length > 0) {
+            temp = temp.filter(row => {
+                const matching = row.matchingPercentage;
+                return this.selectedMatching.some(range => {
+                    const [min, max] = range.split('-').map(Number);
+                    return matching >= min && matching <= max;
+                });
+            });
+        }
+
+        // Filter by state
+        if (this.selectedState.length > 0) {
+            temp = temp.filter(row => this.selectedState.includes(row.state));
+        }
+
+        // Filter by city
+        if (this.selectedCity.length > 0) {
+            temp = temp.filter(row => this.selectedCity.includes(row.city));
+        }
+        
+        // Filter by search key
+        if (this.searchKey && this.searchKey.trim() !== '') {
+            const key = this.searchKey.toLowerCase();
+            temp = temp.filter(row => 
+                (row.enquiryId && row.enquiryId.toLowerCase().includes(key)) ||
+                (row.sponsorName && row.sponsorName.toLowerCase().includes(key)) ||
+                (row.productName && row.productName.toLowerCase().includes(key)) ||
+                (row.productDetails && row.productDetails.toLowerCase().includes(key))
+            );
+        }
+        
+        return temp;
+    }
 
     // Confirmation modal state for Interested checkbox
     isInterestedConfirmOpen = false;

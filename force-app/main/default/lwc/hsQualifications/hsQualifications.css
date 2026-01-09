@@ -93,14 +93,38 @@
 
 /* Checkbox Styles */
 .qualification-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     width: 18px;
     height: 18px;
-    accent-color: #0176d3;
-    cursor: default;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.qualification-checkbox:hover {
+    border-color: #0176d3;
 }
 
 .qualification-checkbox:checked {
-    accent-color: #0176d3;
+    background-color: #0176d3;
+    border-color: #0176d3;
+}
+
+.qualification-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 /* Scrollbar styling */

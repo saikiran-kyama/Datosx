@@ -19,7 +19,7 @@ export default class HsProfile extends LightningElement {
         name: 'James Mitchell',
         email: 'jmitchell@dxhealth.com',
         phone: '+1 415-555-0208',
-        avatarUrl: 'https://orgfarm-4f811fcf7a-dev-ed.develop.lightning.force.com/resource/1766053176000/avatars/2.svg.jpg'
+        initials: 'JM'
     };
 
     // Handle add contact

@@ -210,6 +210,17 @@
     color: #6b7280;
 }
 
+/* Action Icons */
+.icon-edit,
+lightning-button-icon.icon-edit {
+    --sds-c-icon-color-foreground-default: #0070d2;
+}
+
+.icon-delete,
+lightning-button-icon.icon-delete {
+    --sds-c-icon-color-foreground-default: #0070d2;
+}
+
 @media (max-width: 992px) {
     .profile-cards-container {
         flex-direction: column;

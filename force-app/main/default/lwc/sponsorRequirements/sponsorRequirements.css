@@ -1,4 +1,4 @@
-/* sponsorRequirements component styles */
+﻿/* sponsorRequirements component styles - Matching hsQualifications */
 :host {
     display: block;
 }
@@ -7,72 +7,178 @@
     padding: 1rem;
 }
 
+/* Grid Layout - matching hsQualifications */
+.slds-grid.slds-grid_pull-padded {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.slds-col.slds-size_1-of-4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+    padding: 0 !important;
+}
+
+/* Capability Card - matching qualification-card */
 .capability-card {
-    border: 1px solid #cfcfcf;
-    border-radius: 0;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.capability-header {
-    font-weight: 700;
-    padding: 10px;
-}
-
-.capability-body {
     background: #ffffff;
-    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
 }
 
-.therapeutic-body {
+/* Header Styles - matching hsQualifications gradient headers */
+.capability-header {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Facilities Available - Blue gradient with white text */
+.capability-header[style*="background-color:#425b63"] {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Therapeutic Area of Focus - Blue gradient with white text */
+.capability-header:nth-of-type(2) {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+    color: #ffffff;
+}
+
+/* Innovation Format Interest - Yellow gradient with dark text */
+.capability-header[style*="background-color:#c6a317"] {
+    background: linear-gradient(135deg, #d69e2e 0%, #ecc94b 100%) !important;
+    color: #1a202c !important;
+}
+
+/* Innovation End User Focus - Yellow gradient with dark text */
+.capability-header:nth-of-type(4) {
+    background: linear-gradient(135deg, #d69e2e 0%, #ecc94b 100%);
+    color: #1a202c;
+}
+
+/* Body Styles */
+.capability-body {
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Therapeutic body - Blue themed */
+.capability-body.therapeutic-body {
     background: #e6f7ff;
 }
 
-.innovation-body {
+/* Innovation body - Yellow themed */
+.capability-body.innovation-body {
     background: #fffce4;
 }
 
-.enduser-body {
+/* End user body - Yellow themed */
+.capability-body.enduser-body {
     background: #fffce4;
 }
 
+/* Table Styles */
 .capability-table {
     width: 100%;
     border-collapse: collapse;
 }
 
 .capability-table tr {
-    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.capability-table tr:last-child {
+    border-bottom: none;
 }
 
 .capability-label {
-    padding: 8px;
-    color: #333;
     font-size: 0.875rem;
+    color: #333;
+    flex: 1;
 }
 
+/* Checkbox Styles - matching hsQualifications */
 .capability-checkbox {
-    padding: 8px 12px;
-    border-left: 1px solid #eee;
-    text-align: center;
-    width: 50px;
+    text-align: right;
 }
 
-.capability-checkbox input {
+.capability-checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     width: 18px;
     height: 18px;
-    accent-color: #0176d3;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.capability-checkbox input[type="checkbox"]:hover {
+    border-color: #0176d3;
+}
+
+.capability-checkbox input[type="checkbox"]:checked {
+    background-color: #0176d3;
+    border-color: #0176d3;
+}
+
+.capability-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Scrollbar styling */
+.capability-body::-webkit-scrollbar,
+.capability-body.therapeutic-body::-webkit-scrollbar,
+.capability-body.innovation-body::-webkit-scrollbar,
+.capability-body.enduser-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.capability-body::-webkit-scrollbar-track,
+.capability-body.therapeutic-body::-webkit-scrollbar-track,
+.capability-body.innovation-body::-webkit-scrollbar-track,
+.capability-body.enduser-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.capability-body::-webkit-scrollbar-thumb,
+.capability-body.therapeutic-body::-webkit-scrollbar-thumb,
+.capability-body.innovation-body::-webkit-scrollbar-thumb,
+.capability-body.enduser-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
-    .slds-size_1-of-4 {
-        width: 50% !important;
+    .slds-grid.slds-grid_pull-padded {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .slds-size_1-of-4 {
-        width: 100% !important;
+    .slds-grid.slds-grid_pull-padded {
+        grid-template-columns: 1fr;
     }
 }

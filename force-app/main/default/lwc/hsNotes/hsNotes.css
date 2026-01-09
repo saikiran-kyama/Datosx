@@ -39,7 +39,7 @@
 .note-actions {
     display: flex;
     gap: 8px;
-    align-items: center;
+    
 }
 
 .send-btn {
@@ -271,7 +271,7 @@
 }
 
 .delete-btn {
-    --sds-c-icon-color-foreground-default: #D73232;
+    --sds-c-icon-color-foreground-default: #0070D2;
 }
 
 /* Responsive */

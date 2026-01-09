@@ -1,53 +1,281 @@
-/* sponsorNotes component styles */
-:host { display: block; }
+﻿/* sponsorNotes component styles */
+:host {
+    display: block;
+}
 
-.notes-container { padding: 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.notes-container {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-.add-note-card { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; padding: 1.5rem; }
-.add-note-title { font-size: 1.1rem; font-weight: 600; color: #000000; margin: 0 0 1rem 0; }
-.add-note-form { display: flex; gap: 1rem; align-items: flex-end; }
-.note-input-wrapper { flex: 1; }
-.note-actions { display: flex; gap: 8px; align-items: center; }
-.send-btn { height: 48px; }
+/* Add Note Card */
+.add-note-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+}
 
-.ai-overview-card { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; padding: 1.5rem; }
-.ai-overview-content { display: flex; flex-direction: column; gap: 0.5rem; }
-.ai-header-section { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
-.ai-overview-title { font-weight: 400; font-size: 2rem; color: #000000; margin: 0; }
-.ai-content-section { display: flex; flex-direction: column; gap: 0.5rem; }
-.ai-summary-text { line-height: 1.7; color: #000000; font-size: 1rem; }
-.ai-summary-text p { margin-bottom: 1rem; text-align: justify; color: #000000; }
-.ai-action-section { display: flex; justify-content: flex-start; }
-.ai-more-text { color: #5C5C66; text-decoration: underline; cursor: pointer; font-weight: 600; padding: 0.5rem 0; }
+.add-note-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 1rem 0;
+}
 
-.controls-section { display: flex; justify-content: flex-end; gap: 0.5rem; }
+.add-note-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
 
-.notes-table-wrapper { overflow-x: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; }
-.notes-table { width: 100%; border-collapse: collapse; }
-.notes-table thead { background: #EBEBEB; }
-.table-header { padding: 1rem 0.75rem; text-align: left; font-weight: 600; font-size: 0.875rem; color: #666666; border-bottom: 1px solid #ddd; white-space: nowrap; }
-.visibility-header { padding: 0; text-align: center; min-width: 140px; background-color: #EBEBEB; border-bottom: 1px solid #ddd; }
-.visibility-main-header { font-weight: 600; padding: 0.75rem; color: #666666; border-bottom: 1px solid #ccc; font-size: 0.875rem; text-align: center; }
-.visibility-sub-headers { display: flex; }
-.visibility-sub-header { flex: 1; padding: 0.5rem; font-weight: 600; font-size: 0.8rem; background-color: #EBEBEB; color: #666666; border-right: 1px solid #ccc; text-align: center; }
-.visibility-sub-header:last-child { border-right: none; }
+.note-input-wrapper {
+    flex: 1;
+}
 
-.table-row { transition: all 0.2s ease; }
-.table-row:hover { background: #f8f9fa; }
-.table-cell { padding: 1rem 0.75rem; border-bottom: 1px solid #dee2e6; vertical-align: top; font-size: 0.9rem; color: #333; }
-.message-cell { max-width: 300px; white-space: normal; word-wrap: break-word; line-height: 1.5; }
-.document-link { color: #0176d3; text-decoration: none; font-weight: 600; }
-.no-document { color: #999; }
+.note-actions {
+    display: flex;
+    gap: 8px;
+    
+}
 
-.visibility-cell { padding: 0; border-bottom: 1px solid #dee2e6; }
-.visibility-checkboxes { display: flex; height: 100%; }
-.visibility-checkbox-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 1rem; border-right: 1px solid #dee2e6; min-height: 70px; background: white; }
-.visibility-checkbox-wrapper:last-child { border-right: none; }
-.visibility-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: #0176d3; }
+.send-btn {
+    height: 48px;
+}
 
-.actions-cell { text-align: center; }
-.action-buttons { display: flex; gap: 8px; justify-content: center; align-items: center; }
-.edit-btn { --sds-c-icon-color-foreground-default: #0070D2; }
-.delete-btn { --sds-c-icon-color-foreground-default: #D73232; }
+/* AI Overview Card */
+.ai-overview-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+}
 
-@media (max-width: 768px) { .add-note-form { flex-direction: column; align-items: stretch; } .note-actions { justify-content: flex-end; } }
+.ai-overview-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ai-header-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.ai-overview-title {
+    font-weight: 400;
+    font-size: 2rem;
+    color: #000000;
+    margin: 0;
+}
+
+.ai-content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ai-summary-text {
+    line-height: 1.7;
+    color: #000000;
+    font-size: 1rem;
+}
+
+.ai-summary-text p {
+    margin-bottom: 1rem;
+    text-align: justify;
+    color: #000000;
+}
+
+.ai-action-section {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.ai-more-text {
+    color: #5C5C66;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.5rem 0;
+}
+
+/* Controls Section */
+.controls-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Notes Table */
+.notes-table-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.notes-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.notes-table thead {
+    background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+}
+
+.table-header {
+    padding: 1rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #475569;
+    border-bottom: 1px solid #cbd5e1;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.visibility-header {
+    padding: 0;
+    text-align: center;
+    min-width: 140px;
+    background: transparent;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+.visibility-main-header {
+    font-weight: 600;
+    padding: 0.75rem;
+    color: #475569;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.875rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.visibility-sub-headers {
+    display: flex;
+}
+
+.visibility-sub-header {
+    flex: 1;
+    padding: 0.5rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    background: transparent;
+    color: #475569;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+.visibility-sub-header:last-child {
+    border-right: none;
+}
+
+/* Table Body */
+.table-row {
+    transition: all 0.2s ease;
+}
+
+.table-row:hover {
+    background: #f8fafc;
+}
+
+.table-cell {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+    font-size: 0.9rem;
+    color: #1e293b;
+}
+
+.message-cell {
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.document-link {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.no-document {
+    color: #999;
+}
+
+/* Visibility Checkboxes */
+.visibility-cell {
+    padding: 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.visibility-checkboxes {
+    display: flex;
+    height: 100%;
+}
+
+.visibility-checkbox-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-right: 1px solid #f1f5f9;
+    min-height: 70px;
+    background: white;
+}
+
+.visibility-checkbox-wrapper:last-child {
+    border-right: none;
+}
+
+.visibility-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+/* Action Buttons */
+.actions-cell {
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-btn {
+    --sds-c-icon-color-foreground-default: #3b82f6;
+}
+
+.delete-btn {
+    --sds-c-icon-color-foreground-default: #3b82f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .add-note-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .note-actions {
+        justify-content: flex-end;
+    }
+}
