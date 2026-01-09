@@ -39,6 +39,217 @@ export default class PipelineMaster extends LightningElement {
     @track formEnquiryProjectDetails = '';
     @track formEnquiryDocName = '';
 
+    // Enquiries intake modal (projects-style)
+    @track isAddProjectModalOpen = false;
+    @track activeAddModalTab = 'details';
+    addModalTabs = [
+        { id: 'details', label: 'Project Details' },
+        { id: 'history', label: 'Project History' },
+        { id: 'scoping', label: 'Project Scoping Questionnaire' },
+        { id: 'requirements', label: 'Project Requirements' },
+        { id: 'documents', label: 'Document/Agreement Status' }
+    ];
+
+    addModalStatusOptions = [
+        { label: 'NA', value: 'NA' },
+        { label: 'Discovery', value: 'Discovery' },
+        { label: 'Deep Dive Call', value: 'Deep Dive Call' },
+        { label: 'Protocol Draft', value: 'Protocol Draft' },
+        { label: 'Study Ongoing', value: 'Study Ongoing' },
+        { label: 'Project Scoping Questionnaire Sent', value: 'Project Scoping Questionnaire Sent' },
+        { label: 'Project Scoping Questionnaire Received', value: 'Project Scoping Questionnaire Received' },
+        { label: 'Draft Protocol Synopsis', value: 'Draft Protocol Synopsis' },
+        { label: 'Protocol Synopsis Ready', value: 'Protocol Synopsis Ready' },
+        { label: 'Health System Matching', value: 'Health System Matching' },
+        { label: 'Protocol Draft 1 creation', value: 'Protocol Draft 1 creation' },
+        { label: 'Protocol Draft 1 review', value: 'Protocol Draft 1 review' },
+        { label: 'Protocol Draft 2 creation', value: 'Protocol Draft 2 creation' },
+        { label: 'Protocol Draft 2 review', value: 'Protocol Draft 2 review' },
+        { label: 'Protocol Draft 3 creation', value: 'Protocol Draft 3 creation' },
+        { label: 'Final Protocol Review', value: 'Final Protocol Review' },
+        { label: 'Final Protocol provided', value: 'Final Protocol provided' },
+        { label: 'Agreements Finalization', value: 'Agreements Finalization' },
+        { label: 'Project Management Setup', value: 'Project Management Setup' },
+        { label: 'Alignment on long-term data storage', value: 'Alignment on long-term data storage' },
+        { label: 'NPS Shared', value: 'NPS Shared' },
+        { label: 'Project Wrap Up', value: 'Project Wrap Up' },
+        { label: 'Project Closed', value: 'Project Closed' },
+        { label: 'Project On Hold', value: 'Project On Hold' },
+        { label: 'Project Cancelled', value: 'Project Cancelled' }
+    ];
+
+    statAnalysisOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'Yes' },
+        { label: 'No', value: 'No' }
+    ];
+
+    isHealthSystemOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Yes', value: 'Yes' },
+        { label: 'No', value: 'No' }
+    ];
+
+    documentOptions = [
+        { label: '--None--', value: '' },
+        { label: 'Draft', value: 'Draft' },
+        { label: 'Under Review', value: 'Under Review' },
+        { label: 'Approved', value: 'Approved' },
+        { label: 'Author Engaged', value: 'Author Engaged' },
+        { label: 'Awaiting datosX Approval', value: 'Awaiting datosX Approval' },
+        { label: 'Cancelled', value: 'Cancelled' },
+        { label: 'datosX Approved', value: 'datosX Approved' },
+        { label: 'datosX Complete', value: 'datosX Complete' },
+        { label: 'datosX In Progress', value: 'datosX In Progress' },
+        { label: 'datosX On Hold', value: 'datosX On Hold' },
+        { label: 'datosX Pending', value: 'datosX Pending' },
+        { label: 'datosX Rejected', value: 'datosX Rejected' },
+        { label: 'datosX Review', value: 'datosX Review' },
+        { label: 'Health System Approved', value: 'Health System Approved' },
+        { label: 'Health System Rejected', value: 'Health System Rejected' },
+        { label: 'Health System Review', value: 'Health System Review' },
+        { label: 'Health System Submitted', value: 'Health System Submitted' },
+        { label: 'Ready', value: 'Ready' },
+        { label: 'Scheduled', value: 'Scheduled' },
+        { label: 'Sponsor Approved', value: 'Sponsor Approved' },
+        { label: 'Sponsor Rejected', value: 'Sponsor Rejected' },
+        { label: 'Sponsor Review', value: 'Sponsor Review' },
+        { label: 'Sponsor Submitted', value: 'Sponsor Submitted' },
+        { label: 'Vendor Approved', value: 'Vendor Approved' },
+        { label: 'Vendor Engaged', value: 'Vendor Engaged' },
+        { label: 'Vendor Rejected', value: 'Vendor Rejected' },
+        { label: 'Vendor Review', value: 'Vendor Review' },
+        { label: 'Vendor Submitted', value: 'Vendor Submitted' },
+        { label: 'N/A', value: 'N/A' }
+    ];
+
+    requirementGroups = [
+        {
+            id: 'facilities',
+            title: 'Facilities Available',
+            items: [
+                { id: 'fa1', label: 'Academic Medical Center', defaultChecked: true },
+                { id: 'fa2', label: 'Ambulatory Surgical Center', defaultChecked: true },
+                { id: 'fa3', label: 'Center of Excellence', defaultChecked: true },
+                { id: 'fa4', label: 'Community Health Clinic', defaultChecked: true },
+                { id: 'fa5', label: 'Diagnostic Imaging Center', defaultChecked: true },
+                { id: 'fa6', label: 'Emergency Room / Urgent Care', defaultChecked: true },
+                { id: 'fa7', label: 'Hospice', defaultChecked: true },
+                { id: 'fa8', label: 'Nursing Home', defaultChecked: true },
+                { id: 'fa9', label: 'Outpatient Clinic', defaultChecked: true },
+                { id: 'fa10', label: 'Rehab Center', defaultChecked: true },
+                { id: 'fa11', label: 'Research Institution', defaultChecked: true },
+                { id: 'fa12', label: 'Other', defaultChecked: true }
+            ]
+        },
+        {
+            id: 'therapeuticArea',
+            title: 'Therapeutic Area of Focus',
+            items: [
+                { id: 'ta1', label: 'Allergy and Immunology', defaultChecked: true },
+                { id: 'ta2', label: 'Cardiovascular', defaultChecked: true },
+                { id: 'ta3', label: 'Chronic Diseases', defaultChecked: true },
+                { id: 'ta4', label: 'Dental', defaultChecked: true },
+                { id: 'ta5', label: 'Dermatology', defaultChecked: true },
+                { id: 'ta6', label: 'Diagnostic Radiology', defaultChecked: true },
+                { id: 'ta7', label: 'Emergency Department (ER / ED)', defaultChecked: true },
+                { id: 'ta8', label: 'Endocrinology (Diabetes, Thyroid)', defaultChecked: true },
+                { id: 'ta9', label: 'ENT / Otolaryngology (Ear, Nose, Throat)', defaultChecked: true },
+                { id: 'ta10', label: 'Gastroenterology', defaultChecked: true },
+                { id: 'ta11', label: 'Genetic Medicine', defaultChecked: true },
+                { id: 'ta12', label: 'Hematology', defaultChecked: true },
+                { id: 'ta13', label: 'Infectious Disease', defaultChecked: true },
+                { id: 'ta14', label: "Men's Health", defaultChecked: true },
+                { id: 'ta15', label: 'Musculoskeletal', defaultChecked: true },
+                { id: 'ta16', label: 'Nephrology', defaultChecked: true },
+                { id: 'ta17', label: 'Neuroscience', defaultChecked: true },
+                { id: 'ta18', label: 'Oncology', defaultChecked: true },
+                { id: 'ta19', label: 'Ophthalmology', defaultChecked: true },
+                { id: 'ta20', label: 'Pathology', defaultChecked: true },
+                { id: 'ta21', label: 'Pediatrics', defaultChecked: true },
+                { id: 'ta22', label: 'Physical medicine and rehab', defaultChecked: true },
+                { id: 'ta23', label: 'Population Health', defaultChecked: true },
+                { id: 'ta24', label: 'Preventative', defaultChecked: true },
+                { id: 'ta25', label: 'Primary Care', defaultChecked: true },
+                { id: 'ta26', label: 'Psychiatry', defaultChecked: true },
+                { id: 'ta27', label: 'Pulmonary', defaultChecked: true },
+                { id: 'ta28', label: 'Respiratory', defaultChecked: true },
+                { id: 'ta29', label: 'Rheumatology', defaultChecked: true },
+                { id: 'ta30', label: 'Surgery', defaultChecked: true },
+                { id: 'ta31', label: 'Urology', defaultChecked: true },
+                { id: 'ta32', label: "Women's Health", defaultChecked: true },
+                { id: 'ta33', label: 'Other', defaultChecked: true }
+            ]
+        },
+        {
+            id: 'innovationFormat',
+            title: 'Innovation format interest',
+            items: [
+                { id: 'if1', label: 'HCP efficacy', defaultChecked: true },
+                { id: 'if2', label: 'Mobile health app', defaultChecked: true },
+                { id: 'if3', label: 'AI algorithm', defaultChecked: true },
+                { id: 'if4', label: 'Wearable device', defaultChecked: true },
+                { id: 'if5', label: 'Web application', defaultChecked: true },
+                { id: 'if6', label: 'Digital diagnostics', defaultChecked: true },
+                { id: 'if7', label: 'Other', defaultChecked: true }
+            ]
+        },
+        {
+            id: 'innovationEndUser',
+            title: 'Innovation end user focus',
+            items: [
+                { id: 'eu1', label: 'Providers', defaultChecked: true },
+                { id: 'eu2', label: 'Patients/Consumers', defaultChecked: true },
+                { id: 'eu3', label: 'Health Systems', defaultChecked: true },
+                { id: 'eu4', label: 'Researchers', defaultChecked: true },
+                { id: 'eu5', label: 'Administrators', defaultChecked: true },
+                { id: 'eu6', label: 'Payers', defaultChecked: true },
+                { id: 'eu7', label: 'Pharma', defaultChecked: false },
+                { id: 'eu8', label: 'Other', defaultChecked: true }
+            ]
+        }
+    ];
+
+    @track requirementSelections = {};
+    @track selectedRequirementType = '';
+
+    @track newProjectForm = {
+        projectId: '',
+        projectName: '',
+        trialDetails: '',
+        plannedSiteCount: '',
+        primaryObjective: '',
+        informationType: '',
+        studyObjectives: '',
+        statAnalysis: '',
+        populationCriteria: '',
+        timeline: '',
+        exclusions: '',
+        enrollmentTarget: '',
+        submittedBy: '',
+        projectPlanningOverview: '',
+        projectScopingTwoPager: '',
+        sponsor: '',
+        healthSystem: '',
+        status: '',
+        owner: '',
+        ownerDisplay: 'Navin Malik',
+        primaryContact: '',
+        intakeContact: '',
+        intakeEmail: '',
+        intakePhone: '',
+        notes: '',
+        historyNotes: '',
+        questionnaireSummary: '',
+        questionnaireRisks: '',
+        documentUrl: '',
+        documentNotes: '',
+        publishProject: false,
+        hsMatchingCompleted: false,
+        regulatoryFlag: false,
+        requirements: {}
+    };
+
     enquiryStatusOptions = [
         { label: 'Active', value: 'Active' },
         { label: 'Inactive', value: 'Inactive' },
@@ -195,10 +406,6 @@ export default class PipelineMaster extends LightningElement {
         { id: 'ENQ014', enquiryId: 'PX-1014', status: 'Inactive', statusClass: 'status-badge status-inactive', sponsorName: 'BioAxis', sponsorInitial: 'BA', projectName: 'Xi Research', projectDetails: 'Genetic disorder study', hasDocument: false, hsAllocated: '-', dateCreated: '2025-10-02', lastUpdated: '2025-11-02' },
         { id: 'ENQ015', enquiryId: 'PX-1015', status: 'Active', statusClass: 'status-badge status-active', sponsorName: 'MedCore', sponsorInitial: 'MC', projectName: 'Omicron Trial', projectDetails: 'Dermatology clinical study', hasDocument: true, hsAllocated: 'Tampa General', dateCreated: '2025-09-28', lastUpdated: '2025-10-28' },
         { id: 'ENQ016', enquiryId: 'PX-1016', status: 'Active', statusClass: 'status-badge status-active', sponsorName: 'NextStep Labs', sponsorInitial: 'NS', projectName: 'Rho Clinical', projectDetails: 'Ophthalmology research', hasDocument: false, hsAllocated: 'Albany Medical', dateCreated: '2025-10-04', lastUpdated: '2025-11-04' },
-        { id: 'ENQ017', enquiryId: 'PX-1017', enquiryName: 'Tau Study', status: 'Study Ongoing', completion: 65, sponsorName: 'GenMed', lastUpdated: '2025-11-07', state: 'California', city: 'Sacramento', contact: 'Dr. Daniel Carter', email: 'daniel.carter@stmary.com', phone: '+1-916-555-7500' },
-        { id: 'ENQ018', enquiryId: 'PX-1018', enquiryName: 'Chi Research', status: 'Protocol Review', completion: 55, sponsorName: 'BioNova', lastUpdated: '2025-10-31', state: 'Illinois', city: 'Springfield', contact: 'Dr. Megan Scott', email: 'megan.scott@cggeneral.com', phone: '+1-217-555-7600' },
-        { id: 'ENQ019', enquiryId: 'PX-1019', enquiryName: 'Psi Pilot', status: 'Initial Review', completion: 18, sponsorName: 'MedPrime', lastUpdated: '2025-10-29', state: 'Florida', city: 'St. Petersburg', contact: 'Dr. Nina Harris', email: 'nina.harris@orlandohealth.com', phone: '+1-727-555-7700' },
-        { id: 'ENQ020', enquiryId: 'PX-1020', enquiryName: 'Omega-2 Trial', status: 'Study Ongoing', completion: 80, sponsorName: 'NextGen Bio', lastUpdated: '2025-11-14', state: 'Texas', city: 'Houston', contact: 'Dr. Paul Rivera', email: 'paul.rivera@houstonhealth.com', phone: '+1-713-555-7800' }
     ];
 
     @track projectsData = [
@@ -211,6 +418,8 @@ export default class PipelineMaster extends LightningElement {
     connectedCallback() {
         // Initialize filter options
         this.initializeFilterOptions();
+        // Prime requirement selections for the intake modal
+        this.initializeRequirementState();
         
         // Load initial data - can be replaced with Apex calls
         console.log('PipelineMaster component loaded');
@@ -582,7 +791,198 @@ export default class PipelineMaster extends LightningElement {
         this.formEnquiryProjectName = '';
         this.formEnquiryProjectDetails = '';
         this.formEnquiryDocName = '';
+        this.showAddModal = false;
+        this.isAddProjectModalOpen = false;
+
+        if (this.isEnquiries) {
+            this.resetAddProjectForm();
+            this.isAddProjectModalOpen = true;
+            return;
+        }
+
         this.showAddModal = true;
+    }
+
+    resetAddProjectForm() {
+        this.initializeRequirementState();
+        this.newProjectForm = {
+            projectId: '',
+            projectName: '',
+            trialDetails: '',
+            plannedSiteCount: '',
+            primaryObjective: '',
+            informationType: '',
+            studyObjectives: '',
+            statAnalysis: '',
+            populationCriteria: '',
+            timeline: '',
+            exclusions: '',
+            enrollmentTarget: '',
+            submittedBy: '',
+            projectPlanningOverview: '',
+            projectScopingTwoPager: '',
+            sponsor: '',
+            healthSystem: '',
+            status: '',
+            owner: '',
+            ownerDisplay: 'Navin Malik',
+            primaryContact: '',
+            intakeContact: '',
+            intakeEmail: '',
+            intakePhone: '',
+            notes: '',
+            historyNotes: '',
+            questionnaireSummary: '',
+            questionnaireRisks: '',
+            documentUrl: '',
+            documentNotes: '',
+            publishProject: false,
+            hsMatchingCompleted: false,
+            regulatoryFlag: false,
+            requirements: JSON.parse(JSON.stringify(this.requirementSelections))
+        };
+        this.activeAddModalTab = 'details';
+    }
+
+    initializeRequirementState() {
+        const selections = {};
+        this.requirementGroups.forEach(group => {
+            selections[group.id] = {};
+            group.items.forEach(item => {
+                selections[group.id][item.id] = !!item.defaultChecked;
+            });
+        });
+        this.requirementSelections = selections;
+        if (!this.selectedRequirementType && this.requirementGroups.length > 0) {
+            this.selectedRequirementType = this.requirementGroups[0].id;
+        }
+        this.syncRequirementSelectionsToForm();
+    }
+
+    syncRequirementSelectionsToForm() {
+        this.newProjectForm = {
+            ...this.newProjectForm,
+            requirements: JSON.parse(JSON.stringify(this.requirementSelections))
+        };
+    }
+
+    handleAddProjectOverlayClick(event) {
+        if (event.target.classList && event.target.classList.contains('modal-overlay')) {
+            this.closeAddProjectModal();
+        }
+    }
+
+    stopAddProjectModalPropagation(event) {
+        event.stopPropagation();
+    }
+
+    closeAddProjectModal() {
+        this.isAddProjectModalOpen = false;
+    }
+
+    handleAddProjectTabClick(event) {
+        const tab = event.currentTarget?.dataset?.tab;
+        if (tab) {
+            this.activeAddModalTab = tab;
+        }
+    }
+
+    get addModalTabsWithState() {
+        return this.addModalTabs.map(tab => ({
+            ...tab,
+            className: tab.id === this.activeAddModalTab ? 'intake-nav-btn active' : 'intake-nav-btn'
+        }));
+    }
+
+    handleAddProjectInputChange(event) {
+        const target = event.target || event.currentTarget;
+        const field = target?.name;
+        if (!field) return;
+        let value;
+        if (event.detail && typeof event.detail.value !== 'undefined') {
+            value = event.detail.value;
+        } else if (target.type === 'checkbox') {
+            value = target.checked;
+        } else {
+            value = target.value;
+        }
+        this.newProjectForm = { ...this.newProjectForm, [field]: value };
+    }
+
+    handleAddProjectSaveNext() {
+        const currentIndex = this.addModalTabs.findIndex(tab => tab.id === this.activeAddModalTab);
+        const isLast = currentIndex === this.addModalTabs.length - 1;
+        if (isLast) {
+            this.closeAddProjectModal();
+            return;
+        }
+        const nextTab = this.addModalTabs[currentIndex + 1];
+        this.activeAddModalTab = nextTab ? nextTab.id : this.addModalTabs[0].id;
+    }
+
+    get isAddTabDetails() { return this.activeAddModalTab === 'details'; }
+    get isAddTabHistory() { return this.activeAddModalTab === 'history'; }
+    get isAddTabScoping() { return this.activeAddModalTab === 'scoping'; }
+    get isAddTabRequirements() { return this.activeAddModalTab === 'requirements'; }
+    get isAddTabDocuments() { return this.activeAddModalTab === 'documents'; }
+
+    get isAddTabLast() {
+        const idx = this.addModalTabs.findIndex(tab => tab.id === this.activeAddModalTab);
+        return idx === this.addModalTabs.length - 1;
+    }
+
+    get addProjectSaveButtonLabel() {
+        return this.isAddTabLast ? 'Submit' : 'Save & Next';
+    }
+
+    get requirementTypeOptions() {
+        return this.requirementGroups.map(group => ({ label: group.title, value: group.id }));
+    }
+
+    get activeRequirementGroup() {
+        if (!this.requirementGroups.length) {
+            return null;
+        }
+        return this.requirementGroups.find(group => group.id === this.selectedRequirementType) || this.requirementGroups[0];
+    }
+
+    get activeRequirementItems() {
+        const group = this.activeRequirementGroup;
+        if (!group) {
+            return [];
+        }
+        const selections = this.requirementSelections[group.id] || {};
+        return group.items.map(item => ({
+            ...item,
+            groupId: group.id,
+            checked: selections[item.id] || false
+        }));
+    }
+
+    handleRequirementTypeChange(event) {
+        const value = event.detail?.value || event.target?.value;
+        if (!value) {
+            return;
+        }
+        this.selectedRequirementType = value;
+    }
+
+    handleRequirementCheckboxChange(event) {
+        const groupId = event.currentTarget?.dataset?.groupId;
+        const itemId = event.currentTarget?.dataset?.itemId;
+        if (!groupId || !itemId) {
+            return;
+        }
+        const checked = event.target?.checked || false;
+        const groupSelections = {
+            ...(this.requirementSelections[groupId] || {})
+        };
+        groupSelections[itemId] = checked;
+        this.requirementSelections = {
+            ...this.requirementSelections,
+            [groupId]: groupSelections
+        };
+        this.syncRequirementSelectionsToForm();
     }
 
     handleFilter() {

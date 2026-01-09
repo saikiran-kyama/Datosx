@@ -6,7 +6,7 @@
                 
                 <div class="slds-media__body">
                     <h1>
-                        <div class="entityNameTitle slds-line-height--reset">Project ID: {project.projectId}</div>
+                        <div class="entityNameTitle slds-line-height--reset">Enquiry ID: {project.projectId}</div>
                         <span
                             class="slds-page-header__title slds-m-right--small slds-align-middle slds-line-clamp clip-text">{project.projectId}</span>
                     </h1>
@@ -27,6 +27,7 @@
                         <span class={project.statusClass}>{project.status}</span>
                     </p>
                 </div>
+                
                 <div class="slds-page-header__detail-block">
                     <p class="slds-text-title slds-truncate">Project Name</p>
                     <p class="fieldComponent slds-text-body--regular slds-show_inline-block slds-truncate">
@@ -64,6 +65,13 @@
                     <a aria-selected="true" role="tab" tabindex="0" title="Details" class="tabHeader"
                         href="javascript:void(0);" data-tab="Details" onclick={handleTabClick} style="padding: 8px 12px;">
                         <span class="title">Profile</span>
+                    </a>
+                </li>
+
+                <li role="presentation" class="record-home-intake record-home-tab tabs__item uiTabItem" style="padding: 0; margin: 0;">
+                    <a aria-selected="false" role="tab" tabindex="-1" title="Intake" class="tabHeader"
+                        href="javascript:void(0);" data-tab="Intake" onclick={handleTabClick} style="padding: 8px 12px;">
+                        <span class="title">Intake</span>
                     </a>
                 </li>
 
@@ -126,7 +134,85 @@
 
         <!-- Study tab removed -->
 
+        <!-- Intake Tab -->
+        <template if:true={isIntake}>
+            <section role="tabpanel" aria-expanded="true" class="record-home-intake record-home-tab tabs__content active uiTab">
+                <div class="slds-card slds-m-top_small">
+                    <div class="slds-card__body slds-card__body_inner intake-form-container" style="padding: 32px 48px; max-width: 900px;">
+                        <h2 class="intake-form-title">Project Scoping Questionnaire Form</h2>
+                        
+                        
+                        
+                        <div class="questions-list">
+                            <template for:each={intakeQuestions} for:item="question">
+                                <div key={question.id} class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                    <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                        <span style="color: #ef4444;">*</span> {question.label}
+                                    </p>
+                                    <template if:true={question.type}>
+                                        <template if:false={question.type}>
+                                            <!-- This won't render, just for template structure -->
+                                        </template>
+                                    </template>
+                                    <lightning-textarea 
+                                         value={question.value} 
+                                         onchange={handleIntakeChange}
+                                         data-id={question.id}
+                                         variant="label-hidden"
+                                         class="intake-textarea"
+                                         style="--slds-c-textarea-sizing-min-height: 100px;"
+                                    ></lightning-textarea>
+                                </div>
+                            </template>
+                            
+                            <!-- Dropdown Questions -->
+                            <div class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                    <span style="color: #ef4444;">*</span> In addition to data collection, will statistical analysis of the data be required?
+                                </p>
+                                <lightning-combobox 
+                                    options={statisticalAnalysisOptions}
+                                    value={statisticalAnalysisValue}
+                                    variant="label-hidden"
+                                    placeholder="--None--"
+                                    class="intake-combobox"
+                                ></lightning-combobox>
+                            </div>
+                            
+                            <div class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                    <span style="color: #ef4444;">*</span> Is there an already selected health care system?
+                                </p>
+                                <lightning-combobox 
+                                    options={healthCareSystemOptions}
+                                    value={healthCareSystemValue}
+                                    variant="label-hidden"
+                                    placeholder="--None--"
+                                    class="intake-combobox"
+                                ></lightning-combobox>
+                            </div>
+                            
+                            <!-- Anticipated Timeline - LAST question -->
+                            <div class="question-item" style="margin-bottom: 28px; text-align: left;">
+                                <p class="question-label" style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b;">
+                                    <span style="color: #ef4444;">*</span> What is the anticipated timeline for the study?
+                                </p>
+                                <lightning-textarea 
+                                     variant="label-hidden"
+                                     class="intake-textarea"
+                                     style="--slds-c-textarea-sizing-min-height: 100px;"
+                                ></lightning-textarea>
+                            </div>
+                        </div>
 
+                            <div class="form-actions">
+                                <button onclick={handleIntakeClear} class="btn btn-light" style="min-width: 100px;">Clear</button>
+                                <button onclick={handleIntakeSave} class="btn btn-primary" style="min-width: 100px;">Save</button>
+                            </div>
+                    </div>
+                </div>
+            </section>
+        </template>
 
             <template if:true={isDetails}>
                 <section role="tabpanel" aria-expanded="true"
@@ -155,10 +241,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.projectId}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-field="projectId"
-                                                                data-section="overview"></lightning-button-icon>
+                                                                data-section="overview"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -168,10 +254,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.status}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-field="projectStatus"
-                                                                data-section="overview"></lightning-button-icon>
+                                                                data-section="overview"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -209,10 +295,10 @@
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span><input type="checkbox" disabled
                                                                     checked={project.hsMatchingCompleted} /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-field="hsMatchingCompleted"
-                                                                data-section="overview"></lightning-button-icon>
+                                                                data-section="overview"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -222,10 +308,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#333;">
                                                             <span>{project.sponsorName}</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-field="sponsorName"
-                                                                data-section="overview"></lightning-button-icon>
+                                                                data-section="overview"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -321,10 +407,10 @@
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Phase II clinical trial evaluating retinal
                                                                 biomarkers</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="trialDetails"></lightning-button-icon>
+                                                                data-field="trialDetails"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -334,10 +420,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>12</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="plannedSiteCount"></lightning-button-icon>
+                                                                data-field="plannedSiteCount"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -348,10 +434,10 @@
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Evaluate safety and efficacy of retinal AI
                                                                 assessment</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="primaryObjective"></lightning-button-icon>
+                                                                data-field="primaryObjective"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -361,10 +447,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Clinical Imaging</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="informationType"></lightning-button-icon>
+                                                                data-field="informationType"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -375,10 +461,10 @@
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Secondary: biomarker correlation; Tertiary: longitudinal
                                                                 progression</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="secondaryObjectives"></lightning-button-icon>
+                                                                data-field="secondaryObjectives"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -388,10 +474,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span><input type="checkbox" disabled checked /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="statisticalAnalysis"></lightning-button-icon>
+                                                                data-field="statisticalAnalysis"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -401,10 +487,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Adults 50-85 with early Alzheimer's diagnosis</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="populationCriteria"></lightning-button-icon>
+                                                                data-field="populationCriteria"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -414,10 +500,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Q3 2026 - Q2 2027</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="expectedTimeline"></lightning-button-icon>
+                                                                data-field="expectedTimeline"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -428,10 +514,10 @@
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>Concurrent severe ocular disease or uncontrolled
                                                                 diabetes</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="studyExclusions"></lightning-button-icon>
+                                                                data-field="studyExclusions"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -441,10 +527,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span><input type="checkbox" disabled /></span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="healthSystemChosen"></lightning-button-icon>
+                                                                data-field="healthSystemChosen"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -454,10 +540,10 @@
                                                         <td class="value-cell"
                                                             style="padding:8px 12px;border-top:1px solid #eee;border-left:1px solid #eee;color:#0b4a6f;">
                                                             <span>200</span>
-                                                            <lightning-button-icon icon-name="utility:edit" size="x-small"
+                                                            <!-- <lightning-button-icon icon-name="utility:edit" size="x-small"
                                                                 variant="bare" alternative-text="Edit" onclick={handleInlineEdit}
                                                                 data-section="scoping"
-                                                                data-field="enrollmentTarget"></lightning-button-icon>
+                                                                data-field="enrollmentTarget"></lightning-button-icon> -->
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -474,7 +560,6 @@
                                             </table>
                                         </div>
                                     </div>
-            
                                 </div>
                                 <div class="slds-col slds-size_1-of-3 slds-p-horizontal_small">
                                     <div class="slds-card" style="border:1px solid #cfcfcf; border-radius: 0px">
