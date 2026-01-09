@@ -372,17 +372,17 @@ export default class DxPlatform extends LightningElement {
 
     get currentPageIconName() {
         const iconMap = {
-            'projects': 'standard:task2',
-            'possibilities': 'standard:opportunity',
-            'profile': 'standard:user',
-            'qualifications': 'standard:education',
-            'messaging': 'standard:email',
-            'agreements': 'standard:contract',
-            'notes': 'standard:note',
-            'enquiries': 'standard:question_feed',
-            'requirements': 'standard:record'
+            'projects': 'standard:work_order',
+            'possibilities': 'standard:insights',
+            'profile': 'standard:avatar',
+            'qualifications': 'standard:skill_entity',
+            'messaging': 'standard:live_chat',
+            'agreements': 'standard:contract_line_item',
+            'notes': 'standard:news',
+            'enquiries': 'standard:question_best',
+            'requirements': 'standard:entitlement'
         };
-        return iconMap[this.currentPage] || 'standard:default';
+        return iconMap[this.currentPage] || 'standard:home';
     }
 
     get currentPageContent() {

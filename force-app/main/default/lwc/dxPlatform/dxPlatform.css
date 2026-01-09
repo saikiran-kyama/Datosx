@@ -671,7 +671,6 @@ a:hover {
 .breadcrumb-section {
     background: var(--light);
     padding: 16px 30px;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .breadcrumb-container {
@@ -686,7 +685,7 @@ a:hover {
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: var(--primary);
+    
     border-radius: 8px;
     color: var(--white);
 }

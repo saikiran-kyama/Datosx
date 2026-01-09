@@ -48,9 +48,24 @@
                                         <td class="version-link">{row.version}</td>
                                         <td>{row.status}</td>
                                         <td>{row.initiatedBy}</td>
-                                        <td><span class="col-label">{row.hsName}</span></td>
-                                        <td><span class="col-label">{row.sponsorName}</span></td>
-                                        <td><span class="col-label">{row.dxName}</span></td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <div class="initials-circle">HS</div>
+                                                <span class="col-label">{row.hsName}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <div class="initials-circle">SP</div>
+                                                <span class="col-label">{row.sponsorName}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-cell">
+                                                <div class="initials-circle">DX</div>
+                                                <span class="col-label">{row.dxName}</span>
+                                            </div>
+                                        </td>
                                         <td class="execute-col">
                                             <button class="execute-btn" data-id={row.id} title="Execute" onclick={handleExecute}>
                                                 <lightning-icon icon-name="utility:chevronright" alternative-text="Execute" size="x-small"></lightning-icon>

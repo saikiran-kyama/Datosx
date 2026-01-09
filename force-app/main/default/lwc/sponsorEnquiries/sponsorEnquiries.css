@@ -134,20 +134,22 @@
 }
 
 .slds-table.slds-table_bordered thead {
-    background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+    background: #F3F3F3;
 }
 
 .slds-table.slds-table_bordered thead tr th {
     border-bottom: 1px solid #cbd5e1;
     padding: 10px 12px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.8125rem;
-    color: #475569;
+    color: #5C5C5C;
     text-transform: uppercase;
     letter-spacing: 0.025em;
     white-space: nowrap;
     background: transparent;
 }
+
+
 
 .slds-table.slds-table_bordered thead tr th:first-child {
     border-top-left-radius: 8px;

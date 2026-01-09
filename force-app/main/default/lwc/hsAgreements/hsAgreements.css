@@ -154,6 +154,22 @@
     white-space: nowrap;
 }
 
+/* Initials Circle */
+.initials-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
 /* Execute column */
 .execute-col {
     text-align: center;

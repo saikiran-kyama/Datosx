@@ -7,8 +7,8 @@
    PROFILE TAB CARD STYLES
    ========================= */
 .profile-cards-container {
-    gap: 12px;
-    padding: 10px 0;
+    gap: 0px;
+    padding: 0px;
 }
 
 .profile-card {
