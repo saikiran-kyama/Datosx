@@ -667,9 +667,46 @@ a:hover {
     white-space: nowrap;
 }
 
+/* Breadcrumb Section - Preclinic Theme */
+.breadcrumb-section {
+    background: var(--light);
+    padding: 16px 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumb-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.breadcrumb-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    border-radius: 8px;
+    color: var(--white);
+}
+
+.breadcrumb-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: var(--white);
+    --slds-c-icon-color-foreground: var(--white);
+}
+
+.breadcrumb-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
 /* Content Area - Preclinic Theme */
 .dashboard-content {
-    padding: 30px;
+    padding: 0px;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 .content-area {

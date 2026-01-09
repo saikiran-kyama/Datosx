@@ -362,6 +362,29 @@ export default class DxPlatform extends LightningElement {
         return this.currentRole === 'sponsor';
     }
 
+    // Breadcrumb getters
+    get currentPageLabel() {
+        const navKey = this.currentRole === 'health-system' ? 'healthsystem' : this.currentRole;
+        const items = NAVIGATION[navKey] || NAVIGATION['healthsystem'] || [];
+        const currentItem = items.find(item => item.id === this.currentPage);
+        return currentItem ? currentItem.label : 'Dashboard';
+    }
+
+    get currentPageIconName() {
+        const iconMap = {
+            'projects': 'standard:task2',
+            'possibilities': 'standard:opportunity',
+            'profile': 'standard:user',
+            'qualifications': 'standard:education',
+            'messaging': 'standard:email',
+            'agreements': 'standard:contract',
+            'notes': 'standard:note',
+            'enquiries': 'standard:question_feed',
+            'requirements': 'standard:record'
+        };
+        return iconMap[this.currentPage] || 'standard:default';
+    }
+
     get currentPageContent() {
         const navKey = this.currentRole === 'health-system' ? 'healthsystem' : this.currentRole;
         return PAGE_CONTENT[navKey]?.[this.currentPage];
