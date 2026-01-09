@@ -16,6 +16,7 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
     apexChart = null;
     apexHeatmap = null;
     apexDonut = null;
+    apexAreaChart = null;
     // Highcharts state
     highchartsLoaded = false;
     highchartsChart = null;
@@ -194,6 +195,13 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
                 this.apexDonut = null;
             }
         } catch (e) { /* ignore */ }
+
+        try {
+            if (this.apexAreaChart && this.apexAreaChart.destroy) {
+                this.apexAreaChart.destroy();
+                this.apexAreaChart = null;
+            }
+        } catch (e) { /* ignore */ }
     }
 
     // Column chart state
@@ -208,6 +216,8 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
         // If ApexCharts is loaded, reinitialize/update Apex chart, otherwise fallback to canvas chart
         if (this.apexLoaded && this.apexChart) {
             this.initializeApexChart();
+            // also refresh area chart if present
+            if (this.apexAreaChart) this.initializeAreaChart();
             // also refresh heatmap if present
             if (this.apexLoaded) this.initializeHeatmap();
         } else {
@@ -391,6 +401,8 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
             this.initializeKpiSparklines();
                 // initialize donut
                 this.initializeDonut();
+                // initialize area chart
+                this.initializeAreaChart();
         });
     }
 
@@ -545,6 +557,58 @@ export default class Dashboard extends NavigationMixin(LightningElement) {
         // eslint-disable-next-line no-undef
         this.apexChart = new ApexCharts(container, options);
         this.apexChart.render();
+    }
+
+    // Initialize the ApexCharts area chart
+    initializeAreaChart() {
+        if (!this.apexLoaded) return;
+        const container = this.template.querySelector('div[data-id="apexAreaChart"]');
+        if (!container) return;
+
+        // Build area chart data (similar to column chart pattern)
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const data = this.getColumnDataForYear(this.selectedYear);
+        
+        const options = {
+            series: [
+                { name: 'No of Tasks', data: data.seriesA },
+                // { name: 'Completed Projects', data: data.seriesB }
+            ],
+            chart: {
+                type: 'area',
+                height: 350,
+                zoom: { enabled: false },
+                toolbar: { show: true }
+            },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 2 },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.5,
+                    opacityTo: 0.1,
+                    stops: [0, 90, 100]
+                }
+            },
+            xaxis: { categories: months },
+            yaxis: { title: { text: 'Number of Tasks' } },
+            tooltip: {
+                x: { format: 'MMM' }
+            },
+            colors: ['#2E37A4', '#00E396'],
+            legend: { position: 'top', horizontalAlign: 'right' }
+        };
+
+        // Destroy existing chart first
+        if (this.apexAreaChart && typeof this.apexAreaChart.destroy === 'function') {
+            try { this.apexAreaChart.destroy(); } catch (e) { /* ignore */ }
+            this.apexAreaChart = null;
+        }
+
+        // eslint-disable-next-line no-undef
+        this.apexAreaChart = new ApexCharts(container, options);
+        this.apexAreaChart.render();
     }
 
     // Initialize the small KPI sparklines in the top KPI cards

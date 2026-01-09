@@ -94,114 +94,369 @@
                     </div>
                 </div>
         
-                <!-- Filter Section (collapsible) -->
+                <!-- Filter Section - Health Systems -->
                 <template if:true={showFilters}>
-                    <div class="custom-filter-panel">
-                        <div class="filter-header">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <h4>Filter</h4>
-                                <a onclick={clearAllFilters}>Clear All</a>
+                    <template if:true={isHealthSystems}>
+                        <div class="custom-filter-panel">
+                            <div class="filter-header">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h4>Filter</h4>
+                                    <a onclick={clearAllFilters}>Clear All</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="filter-body">
-                            <div class="filter-grid">
-                                
-                                <!-- Search Filter -->
-                                <!-- <div class="filter-item">
-                                    <div class="filter-item-header">
-                                        <label class="form-label">Search</label>
-                                    </div>
-                                    <lightning-input type="search" placeholder="Search..." variant="label-hidden"></lightning-input>
-                                </div> -->
-
-                                <!-- Status Filter -->
-                                <div class="filter-item">
-                                    <div class="filter-item-header">
-                                        <label class="form-label">Status</label>
-                                    </div>
-                                    <div class="dropdown-container">
-                                        <button class="dropdown-btn" onclick={toggleStatusDropdown}>
-                                            <span>{statusDisplayText}</span>
-                                            <span class="chevron">▼</span>
-                                        </button>
-                                        <div class={statusDropdownClass}>
-                                            <ul class="dropdown-options">
-                                                <template for:each={statusOptions} for:item="opt">
-                                                    <li key={opt.value}>
-                                                        <label>
-                                                            <input type="checkbox" value={opt.value} checked={opt.checked}
-                                                                onchange={handleStatusCheckboxChange}>
-                                                            {opt.label}
-                                                        </label>
-                                                    </li>
-                                                </template>
-                                            </ul>
+                            <div class="filter-body">
+                                <div class="filter-grid">
+                                    
+                                    <!-- Status Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">Status</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                                <span>{statusDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={statusDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={statusOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStatusCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- City Filter -->
-                                <div class="filter-item">
-                                    <div class="filter-item-header">
-                                        <label class="form-label">City</label>
-                                    </div>
-                                    <div class="dropdown-container">
-                                        <button class="dropdown-btn" onclick={toggleCityDropdown}>
-                                            <span>{cityDisplayText}</span>
-                                            <span class="chevron">▼</span>
-                                        </button>
-                                        <div class={cityDropdownClass}>
-                                            <ul class="dropdown-options">
-                                                <template for:each={cityOptions} for:item="opt">
-                                                    <li key={opt.value}>
-                                                        <label>
-                                                            <input type="checkbox" value={opt.value} checked={opt.checked}
-                                                                onchange={handleCityCheckboxChange}>
-                                                            {opt.label}
-                                                        </label>
-                                                    </li>
-                                                </template>
-                                            </ul>
+                                    <!-- City Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">City</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleCityDropdown}>
+                                                <span>{cityDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={cityDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={cityOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleCityCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- State Filter -->
-                                <div class="filter-item">
-                                    <div class="filter-item-header">
-                                        <label class="form-label">State</label>
-                                    </div>
-                                    <div class="dropdown-container">
-                                        <button class="dropdown-btn" onclick={toggleStateDropdown}>
-                                            <span>{stateDisplayText}</span>
-                                            <span class="chevron">▼</span>
-                                        </button>
-                                        <div class={stateDropdownClass}>
-                                            <ul class="dropdown-options">
-                                                <template for:each={stateOptions} for:item="opt">
-                                                    <li key={opt.value}>
-                                                        <label>
-                                                            <input type="checkbox" value={opt.value} checked={opt.checked}
-                                                                onchange={handleStateCheckboxChange}>
-                                                            {opt.label}
-                                                        </label>
-                                                    </li>
-                                                </template>
-                                            </ul>
+                                    <!-- State Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">State</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStateDropdown}>
+                                                <span>{stateDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={stateDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={stateOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStateCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">From Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="fromDate" class="filter-input" type="date" value={filterFromDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div> -->
+
+                                    <!-- To Date -->
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">To Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div> -->
+
                                 </div>
+                            </div>
 
+                            <div class="filter-footer">
+                                <div class="footer-actions">
+                                    <a class="btn-close" onclick={closeFilter}>Close</a>
+                                    <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                                </div>
                             </div>
                         </div>
+                    </template>
 
-                        <div class="filter-footer">
-                            <div class="footer-actions">
-                                <a class="btn-close" onclick={closeFilter}>Close</a>
-                                <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                    <!-- Filter Section - Sponsors -->
+                    <template if:true={isSponsors}>
+                        <div class="custom-filter-panel">
+                            <div class="filter-header">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h4>Filter</h4>
+                                    <a onclick={clearAllFilters}>Clear All</a>
+                                </div>
+                            </div>
+                            <div class="filter-body">
+                                <div class="filter-grid">
+                                    
+                                    <!-- Status Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">Status</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                                <span>{statusDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={statusDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={statusOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStatusCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- City Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">City</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleCityDropdown}>
+                                                <span>{cityDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={cityDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={cityOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleCityCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- State Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">State</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStateDropdown}>
+                                                <span>{stateDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={stateDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={stateOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStateCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">From Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="fromDate" class="filter-input" type="date" value={filterFromDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div> -->
+
+                                    <!-- To Date -->
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">To Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div> -->
+
+                                </div>
+                            </div>
+
+                            <div class="filter-footer">
+                                <div class="footer-actions">
+                                    <a class="btn-close" onclick={closeFilter}>Close</a>
+                                    <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </template>
+
+                    <!-- Filter Section - Enquiries -->
+                    <template if:true={isEnquiries}>
+                        <div class="custom-filter-panel">
+                            <div class="filter-header">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h4>Filter</h4>
+                                    <a onclick={clearAllFilters}>Clear All</a>
+                                </div>
+                            </div>
+                            <div class="filter-body">
+                                <div class="filter-grid">
+                                    
+                                    <!-- Status Filter -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">Status</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                                <span>{statusDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={statusDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={statusOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStatusCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- City Filter -->
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">City</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleCityDropdown}>
+                                                <span>{cityDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={cityDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={cityOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleCityCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <!-- State Filter -->
+                                    <!-- <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">State</label>
+                                        </div>
+                                        <div class="dropdown-container">
+                                            <button class="dropdown-btn" onclick={toggleStateDropdown}>
+                                                <span>{stateDisplayText}</span>
+                                                <span class="chevron">▼</span>
+                                            </button>
+                                            <div class={stateDropdownClass}>
+                                                <ul class="dropdown-options">
+                                                    <template for:each={stateOptions} for:item="opt">
+                                                        <li key={opt.value}>
+                                                            <label>
+                                                                <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                    onchange={handleStateCheckboxChange}>
+                                                                {opt.label}
+                                                            </label>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">From Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="fromDate" class="filter-input" type="date" value={filterFromDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div>
+
+                                    <!-- To Date -->
+                                    <div class="filter-item">
+                                        <div class="filter-item-header">
+                                            <label class="form-label">To Date</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="filter-footer">
+                                <div class="footer-actions">
+                                    <a class="btn-close" onclick={closeFilter}>Close</a>
+                                    <button class="btn-filter" onclick={applyFilter}>Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </template>
         
                 <!-- Table Content -->
@@ -720,6 +975,336 @@
             </div>
         </div>
         
+        </template>
+
+        <!-- Enquiries Intake Modal (project-style) -->
+        <template if:true={isAddProjectModalOpen}>
+            <div class="modal-overlay" onclick={handleAddProjectOverlayClick}>
+                <div class="modal-card modal-card--xl" onclick={stopAddProjectModalPropagation}>
+                    <div class="modal-header intake-modal-header">
+                        <div>
+                            <h3>New Enquiry Intake</h3>
+                        </div>
+                        <button class="modal-close-btn" title="Close dialog" onclick={closeAddProjectModal}>
+                            <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                        </button>
+                    </div>
+                    <div class="modal-body intake-modal-body" style="overflow: hidden;">
+                        <div class="intake-layout">
+                            <div class="intake-sidebar">
+                                <template for:each={addModalTabsWithState} for:item="tab">
+                                    <button key={tab.id} class={tab.className} data-tab={tab.id}
+                                        onclick={handleAddProjectTabClick}>
+                                        <span>{tab.label}</span>
+                                    </button>
+                                </template>
+                            </div>
+                            <div class="intake-content">
+                                <template if:true={isAddTabDetails}>
+                                    <div class="intake-section">
+                                        <!-- <div class="intake-section-header">
+                                            <h4>Project Details</h4>
+                                            <p>Match sponsor context, owners, and enrollment targets.</p>
+                                        </div> -->
+                                        <div class="intake-two-column">
+                                            <div class="left-col">
+                                                <div class="intake-field">
+                                                    <label>Project ID <span class="required">*</span></label>
+                                                    <lightning-input name="projectId" value={newProjectForm.projectId}
+                                                        onchange={handleAddProjectInputChange}
+                                                        placeholder="Enter project id"></lightning-input>
+
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Project Status</label>
+                                                    <lightning-combobox name="status" options={addModalStatusOptions}
+                                                        value={newProjectForm.status} placeholder="--None--"
+                                                        onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Project Name <span class="required">*</span></label>
+                                                    <lightning-input name="projectName" value={newProjectForm.projectName}
+                                                        onchange={handleAddProjectInputChange}
+                                                        placeholder="Enter project name"></lightning-input>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Publish Project</label>
+                                                    <lightning-input type="checkbox" name="publishProject"
+                                                        checked={newProjectForm.publishProject}
+                                                        onchange={handleAddProjectInputChange}></lightning-input>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>HS Matching Completed</label>
+                                                    <lightning-input type="checkbox" name="hsMatchingCompleted"
+                                                        checked={newProjectForm.hsMatchingCompleted}
+                                                        onchange={handleAddProjectInputChange}></lightning-input>
+                                                </div>
+                                            </div>
+
+                                            <div class="right-col">
+                                                <div class="intake-field">
+                                                    <label>Sponsor Company Account</label>
+                                                    <div class="lookup-row">
+                                                        <lightning-input name="sponsor" type="search"
+                                                            placeholder="Search Network Partners..."
+                                                            value={newProjectForm.sponsor}
+                                                            onchange={handleAddProjectInputChange}
+                                                            style="width: 86%;"></lightning-input>
+                                                        <button class="lookup-btn" title="Search"><lightning-icon
+                                                                icon-name="utility:search"
+                                                                size="x-small"></lightning-icon></button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>datosX primary contact</label>
+                                                    <div class="lookup-row">
+                                                        <lightning-input name="primaryContact" type="search"
+                                                            placeholder="Search People..."
+                                                            value={newProjectForm.primaryContact}
+                                                            onchange={handleAddProjectInputChange}
+                                                            style="width: 86%;"></lightning-input>
+                                                        <button class="lookup-btn" title="Search"><lightning-icon
+                                                                icon-name="utility:search"
+                                                                size="x-small"></lightning-icon></button>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="intake-field">
+                                                    <label>Project Document Url</label>
+                                                    <lightning-input type="url" name="documentUrl" placeholder="https://..."
+                                                        value={newProjectForm.documentUrl}
+                                                        onchange={handleAddProjectInputChange}></lightning-input>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Project Description</label>
+                                                    <lightning-textarea name="notes" value={newProjectForm.notes}
+                                                        placeholder=""
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+
+
+                                                <!-- <div class="intake-field">
+                                                    <label>Owner</label>
+                                                    <div class="owner-display"> 
+                                                        <lightning-avatar initials="NM" size="small"></lightning-avatar>
+                                                        <span class="owner-name">{newProjectForm.ownerDisplay}</span>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template if:true={isAddTabHistory}>
+                                    <div class="intake-section">
+                                        <div class="intake-field span-2 history-field">
+
+                                            <lightning-textarea class="intake-control history-textarea" name="historyNotes"
+                                                label="Project History" placeholder="Enter project history or notes"
+                                                value={newProjectForm.historyNotes} rows="8"
+                                                onchange={handleAddProjectInputChange}></lightning-textarea>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template if:true={isAddTabScoping}>
+                                    <div class="intake-section">
+                                        <div class="intake-two-column">
+                                            <div class="left-col">
+                                                <div class="intake-field">
+                                                    <label>Trial Details</label>
+                                                    <lightning-textarea class="intake-control" name="trialDetails"
+                                                        value={newProjectForm.trialDetails} placeholder="Trial details"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Primary study objective</label>
+                                                    <lightning-textarea class="intake-control" name="primaryObjective"
+                                                        value={newProjectForm.primaryObjective}
+                                                        placeholder="Primary objectives"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Study Objectives (Secondary/Tertiary)</label>
+                                                    <lightning-textarea class="intake-control" name="studyObjectives"
+                                                        value={newProjectForm.studyObjectives}
+                                                        placeholder="Secondary objectives"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Study Population Criteria</label>
+                                                    <lightning-textarea class="intake-control" name="populationCriteria"
+                                                        value={newProjectForm.populationCriteria}
+                                                        placeholder="Population criteria"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Statistical Analysis Required?</label>
+                                                    <lightning-combobox class="intake-control" name="statAnalysis"
+                                                        options={statAnalysisOptions} value={newProjectForm.statAnalysis}
+                                                        placeholder="--None--"
+                                                        onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Participant Enrollment Target</label>
+                                                    <lightning-textarea class="intake-control" name="enrollmentTarget"
+                                                        value={newProjectForm.enrollmentTarget}
+                                                        placeholder="Enrollment target"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div class="right-col">
+                                                <div class="intake-field">
+                                                    <label>Planned Site Count</label>
+                                                    <lightning-textarea class="intake-control" name="plannedSiteCount"
+                                                        value={newProjectForm.plannedSiteCount}
+                                                        placeholder="Planned site count"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Information Type</label>
+                                                    <lightning-textarea class="intake-control" name="informationType"
+                                                        value={newProjectForm.informationType}
+                                                        placeholder="Information type"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Study Exclusions</label>
+                                                    <lightning-textarea class="intake-control" name="exclusions"
+                                                        value={newProjectForm.exclusions} placeholder="Exclusions"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+
+                                                <div class="intake-field">
+                                                    <label>Expected Timeline</label>
+                                                    <lightning-textarea class="intake-control" name="timeline"
+                                                        value={newProjectForm.timeline} placeholder="Expected timeline"
+                                                        onchange={handleAddProjectInputChange}></lightning-textarea>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Is Health System Chosen?</label>
+                                                    <lightning-combobox class="intake-control" name="isHealthSystemChosen"
+                                                        options={isHealthSystemOptions}
+                                                        value={newProjectForm.isHealthSystemChosen} placeholder="--None--"
+                                                        onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                </div>
+
+                                                <div class="intake-field">
+                                                    <label>Submitted by</label>
+                                                    <div class="lookup-row">
+                                                        <lightning-input class="intake-control" name="submittedBy"
+                                                            type="search" placeholder="Search People..."
+                                                            value={newProjectForm.submittedBy}
+                                                            onchange={handleAddProjectInputChange}></lightning-input>
+                                                        <button class="lookup-btn" title="Search"><lightning-icon
+                                                                icon-name="utility:search"
+                                                                size="x-small"></lightning-icon></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template if:true={isAddTabRequirements}>
+                                    <div class="intake-section">
+                                        <div class="intake-two-column requirements-two-column">
+                                            <div class="right-col">
+                                                <div class="intake-field">
+                                                    <label>Requirement Type</label>
+                                                    <div style="width: 192.475px;">
+                                                        <lightning-combobox value={selectedRequirementType}
+                                                            options={requirementTypeOptions}
+                                                            placeholder="Select requirement type"
+                                                            onchange={handleRequirementTypeChange}
+                                                            style="width:100%;"></lightning-combobox>
+                                                    </div>
+                                                    <p class="requirements-help-text">Choose a Requirement Type to edit its
+                                                        checklist.</p>
+                                                </div>
+                                            </div>
+                                            <div class="left-col">
+                                                <template if:true={activeRequirementGroup}>
+                                                    <div class="requirements-card">
+                                                        <div class="requirements-card__header">
+                                                            <h4>{activeRequirementGroup.title}</h4>
+                                                            <p>Toggle the capability needs that apply to this project.</p>
+                                                        </div>
+                                                        <div class="requirements-list">
+                                                            <template for:each={activeRequirementItems} for:item="req">
+                                                                <div key={req.id} class="requirements-row">
+                                                                    <span class="requirements-label">{req.label}</span>
+                                                                    <lightning-input data-group-id={req.groupId}
+                                                                        data-item-id={req.id} type="checkbox"
+                                                                        checked={req.checked}
+                                                                        onchange={handleRequirementCheckboxChange}></lightning-input>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template if:true={isAddTabDocuments}>
+                                    <div class="intake-section">
+                                        <div class="intake-two-column">
+                                            <div class="left-col">
+                                                <div class="intake-field">
+                                                    <label>Project Planning Overview</label>
+                                                    <lightning-combobox class="intake-control"
+                                                        name="projectPlanningOverview" options={documentOptions}
+                                                        value={newProjectForm.projectPlanningOverview}
+                                                        placeholder="--None--"
+                                                        onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                </div>
+                                            </div>
+                                            <div class="right-col">
+                                                <div class="intake-field">
+                                                    <label>Project Scoping Two-pager</label>
+                                                    <lightning-combobox class="intake-control" name="projectScopingTwoPager"
+                                                        options={documentOptions}
+                                                        value={newProjectForm.projectScopingTwoPager} placeholder="--None--"
+                                                        onchange={handleAddProjectInputChange}></lightning-combobox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer intake-modal-footer">
+                        <button class="btn btn-light" onclick={closeAddProjectModal}>Close</button>
+                        <button class="btn btn-primary" onclick={handleAddProjectSaveNext}>{addProjectSaveButtonLabel}</button>
+                    </div>
+                </div>
+            </div>
         </template>
 
         <!-- Add Modal (tab-aware) -->

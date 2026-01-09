@@ -515,9 +515,8 @@
             <section role="tabpanel" aria-expanded="true"
                 class="record-home-legal record-home-tab tabs__content active uiTab">
                 <div class="slds-card slds-m-top_small legal-card">
-                    <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-card__body slds-card__body_inner">                            
                         <div class="protocol-container">
-                            <!-- Left: Agreement Types -->
                             <div class="protocol-left">
                                 <div class="milestone-box" style="width: 228px;">
                                     <div class="milestone-heading">Agreement Types</div>
@@ -533,8 +532,14 @@
 
                             <!-- Right: Grid for selected Agreement Type -->
                             <div class="protocol-right">
-                                <div class="protocol-grid-header">
-                                    <h4><strong>{selectedLegalStep}</strong></h4>
+                                <div class="protocol-grid-header" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+                                    <h4 style="margin:0;"><strong>{selectedLegalStep}</strong></h4>
+                                    <div class="legal-header-actions">
+                                        <button class="legal-add-btn" title="Add Agreement" onclick={openLegalAddModal}>
+                                            <span class="legal-add-btn__plus"><b>+</b></span>
+                                            <span class="legal-add-btn__label"><b>Add</b></span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="protocol-grid-table">
                                     <table class="protocol-table legal-table" role="grid">
@@ -547,8 +552,9 @@
                                                 <th scope="col">HS</th>
                                                 <th scope="col">Sponsor</th>
                                                 <th scope="col">DX</th>
-                                                <th scope="col">Execute</th>
+                                                <th scope="col">Document</th>
                                                 <th scope="col">Due Date</th>
+                                                <th scope="col">Execute</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -589,6 +595,12 @@
                                                             style="margin-right:8px;"></lightning-avatar>
                                                         <span class="col-label">{lrow.dxName}</span>
                                                     </td>
+                                                    <td>
+                                                        <div class="slds-truncate" style="text-align:center">
+                                                            <span class="link-blue">{lrow.projectScopingDoc}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align:left">{lrow.dueDate}</td>
                                                     <td class="execute-col">
                                                         <button class="execute-btn" data-id={lrow.id} title="Execute"
                                                             onclick={handleExecuteClick}>
@@ -597,7 +609,7 @@
                                                                 size="x-small"></lightning-icon>
                                                         </button>
                                                     </td>
-                                                    <td style="text-align:left">{lrow.dueDate}</td>
+                                                    
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -712,90 +724,101 @@
                         <!-- Filter and Sort Controls -->
                         <div class="slds-grid slds-wrap slds-m-bottom_medium">
                             <div class="slds-col slds-size_12-of-12">
-                                <div class="slds-grid slds-grid_align-end">
-                                    <!-- Sort Button -->
-                                    <div class="slds-col slds-no-flex slds-m-right_x-small">
-                                        <lightning-button
-                                            variant="neutral"
-                                            label="SORT"
-                                            icon-name={sortIconName}
-                                            icon-position="left"
-                                            onclick={toggleSort}>
-                                        </lightning-button>
+                                <!-- Right aligned container -->
+                                <div class="slds-grid slds-grid_align-end slds-gutters_small">
+
+                                    <!-- Search Bar -->
+                                    <div class="slds-col">
+                                        <lightning-input
+                                            type="search"
+                                            value={searchKey}
+                                            onchange={handleSearchChange}
+                                            placeholder="Search"
+                                            class="search-bar">
+                                        </lightning-input>
                                     </div>
+
                                     <!-- Filter Button -->
-                                    <div class="slds-col slds-no-flex">
-                                        <lightning-button
-                                            variant="neutral"
-                                            label="Filter"
-                                            icon-name="utility:filterList"
-                                            onclick={toggleFilter}>
-                                        </lightning-button>
+                                    <div class="slds-col">
+                                        <button
+                                            class="btn-filter-toggle control-button"
+                                            onclick={toggleFilter}
+                                            title="Filter">
+                                            <lightning-icon
+                                                icon-name="utility:filterList"
+                                                size="x-small">
+                                            </lightning-icon>
+                                            <span style="margin-left:6px;">Filter</span>
+                                        </button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Filter Panel (when expanded) -->
+
+                        <!-- Filter Panel (documents-style) -->
                         <template if:true={filterToggle}>
-                            <div class="slds-card slds-m-bottom_medium filter-panel">
-                                <div class="slds-card__body slds-card__body_inner">
-                                    <div class="slds-grid slds-gutters slds-wrap">
-                                        <!-- Keyword Search -->
-                                        <div class="slds-col slds-size_4-of-12">
-                                            <lightning-input
-                                                type="text"
-                                                label="Keyword"
-                                                placeholder="Search by Keyword">
-                                            </lightning-input>
+                            <div class="custom-filter-panel">
+                                <div class="filter-header">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <h4>Filter</h4>
+                                        <a onclick={clearAllFilters}>Clear All</a>
+                                    </div>
+                                </div>
+                                <div class="filter-body">
+                                    <div class="filter-grid">
+
+                                        <!-- From Date -->
+                                        <div class="filter-item">
+                                            <div class="filter-item-header">
+                                                <label class="form-label">From Date</label>
+                                            </div>
+                                            <div class="input-wrapper">
+                                                <input class="filter-input" type="date" value={filterFromDate} onchange={handleDueDateFromChange} aria-label="Due date from" />
+                                            </div>
                                         </div>
 
-                                        
-
-                                        <!-- Date Range -->
-                                        <div class="slds-col slds-size_4-of-12">
-                                            <lightning-input
-                                                type="date"
-                                                label="From Date">
-                                            </lightning-input>
+                                        <!-- To Date -->
+                                        <div class="filter-item">
+                                            <div class="filter-item-header">
+                                                <label class="form-label">To Date</label>
+                                            </div>
+                                            <div class="input-wrapper">
+                                                <input name="toDate" class="filter-input" type="date" value={filterToDate} onchange={handleFilterChange} />
+                                            </div>
                                         </div>
-
-                                        <div class="slds-col slds-size_4-of-12">
-                                            <lightning-input
-                                                type="date"
-                                                label="To Date">
-                                            </lightning-input>
-                                        </div>
-
-                                        <!-- Filter Actions -->
-                                        <div class="slds-col slds-size_12-of-12">
-                                            <div class="slds-grid slds-grid_align-end slds-m-top_medium">
-                                                <div class="slds-button-group" role="group">
-                                                    <lightning-button-icon
-                                                        icon-name="utility:search"
-                                                        variant="brand"
-                                                        alternative-text="Search"
-                                                        title="Search"
-                                                        class="filter-action-btn">
-                                                    </lightning-button-icon>
-                                                    <lightning-button-icon
-                                                        icon-name="utility:refresh"
-                                                        variant="neutral"
-                                                        alternative-text="Clear"
-                                                        title="Clear"
-                                                        class="filter-action-btn">
-                                                    </lightning-button-icon>
-                                                    <lightning-button-icon
-                                                        icon-name="utility:close"
-                                                        variant="neutral"
-                                                        alternative-text="Close"
-                                                        title="Close"
-                                                        onclick={toggleFilter}
-                                                        class="filter-action-btn">
-                                                    </lightning-button-icon>
+                                        <div class="filter-item">
+                                            <div class="filter-item-header">
+                                                <label class="form-label">Visibility</label>
+                                            </div>
+                                            <div class="dropdown-container">
+                                                <button class="dropdown-btn" onclick={toggleStatusDropdown}>
+                                                    <span>{statusDisplayText}</span>
+                                                    <span class="chevron">▼</span>
+                                                </button>
+                                                <div class={statusDropdownClass}>
+                                                    <ul class="dropdown-list">
+                                                        <template for:each={statusOptions} for:item="opt">
+                                                            <li key={opt.value}>
+                                                                <label>
+                                                                    <input type="checkbox" value={opt.value} checked={opt.checked}
+                                                                        onchange={handleStatusCheckboxChange}>
+                                                                    {opt.label}
+                                                                </label>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-footer">
+                                    <div class="footer-actions">
+                                        <a class="btn-close" onclick={toggleFilter}>Close</a>
+                                        <button class="btn-filter" onclick={applyFilter}>Filter</button>
                                     </div>
                                 </div>
                             </div>
@@ -808,24 +831,49 @@
                                     <table class="slds-table slds-table_cell-buffer slds-table_bordered notes-table">
                                         <thead>
                                             <tr class="slds-line-height_reset">
+                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Actions</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Date</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Posted By</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Message</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Context</th>
                                                 <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Documents</th>
-                                                <th scope="col" class="slds-text-title_caps visibility-header" style="background-color: #EBEBEB;">
+                                                <!-- <th scope="col" class="slds-text-title_caps visibility-header" style="background-color: #EBEBEB;">
                                                     <div class="visibility-main-header" style="background-color: #EBEBEB; color: #666666;text-align:center">Visibility</div>
                                                     <div class="visibility-sub-headers">
                                                         <div class="visibility-sub-header" style="background-color: #EBEBEB; color: #666666;">HS</div>
                                                         <div class="visibility-sub-header" style="background-color: #EBEBEB; color: #666666;">SPONSER</div>
                                                     </div>
-                                                </th>
-                                                <th scope="col" class="slds-text-title_caps table-header" style="background-color: #EBEBEB; color: #666666;">Actions</th>
+                                                </th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <template for:each={chatMessages} for:item="msg">
                                                 <tr key={msg.id} class="slds-hint-parent table-row">
+                                                    <td data-label="Actions" class="table-cell" style="text-align:center;">
+                                                        <div style="display:flex;gap:8px;justify-content:center;align-items:center;">
+                                                            <lightning-button-icon
+                                                                icon-name="utility:edit"
+                                                                alternative-text="Edit"
+                                                                variant="bare"
+                                                                title="Edit"
+                                                                onclick={handleEditMessage}
+                                                                data-id={msg.id}
+                                                                class="action-btn edit-btn"
+                                                                style="background: none; border: none; color: #0070D2;">
+                                                            </lightning-button-icon>
+                                                            <lightning-button-icon
+                                                                icon-name="utility:delete"
+                                                                alternative-text="Delete"
+                                                                variant="bare"
+                                                                title="Delete"
+                                                                onclick={handleDeleteMessage}
+                                                                data-id={msg.id}
+                                                                class="action-btn delete-btn"
+                                                                style="background: none; border: none; color: #D73232;">
+                                                            </lightning-button-icon>
+                                                        </div>
+                                                    </td>
+                                                    
                                                     <td data-label="Date" class="table-cell">
                                                         <strong>
                                                             <lightning-formatted-date-time 
@@ -857,7 +905,7 @@
                                                             <span class="no-document">-</span>
                                                         </template>
                                                     </td>
-                                                    <td data-label="Visibility" class="visibility-cell">
+                                                    <!-- <td data-label="Visibility" class="visibility-cell">
                                                         <div class="visibility-checkboxes">
                                                             <div class="visibility-checkbox-wrapper">
                                                                 <input type="checkbox" 
@@ -876,29 +924,8 @@
                                                                        data-id={msg.id}>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td data-label="Actions" class="table-cell" style="text-align: center;">
-                                                        <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                                            <lightning-button-icon
-                                                                icon-name="utility:edit"
-                                                                alternative-text="Edit"
-                                                                title="Edit"
-                                                                onclick={handleEditMessage}
-                                                                data-id={msg.id}
-                                                                class="action-btn edit-btn"
-                                                                style="background: none; border: none; color: #0070D2;">
-                                                            </lightning-button-icon>
-                                                            <lightning-button-icon
-                                                                icon-name="utility:delete"
-                                                                alternative-text="Delete"
-                                                                title="Delete"
-                                                                onclick={handleDeleteMessage}
-                                                                data-id={msg.id}
-                                                                class="action-btn delete-btn"
-                                                                style="background: none; border: none; color: #D73232;">
-                                                            </lightning-button-icon>
-                                                        </div>
-                                                    </td>
+                                                    </td> -->
+                                                    
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -1450,6 +1477,69 @@
             </section>
         </template>
     </div>
+    <!-- Legal Add Modal -->
+    <template if:true={isLegalAddModalOpen}>
+        <section role="dialog" aria-modal="true" class="hs-modal-backdrop">
+            <div class="hs-modal">
+                <div class="hs-modal__header">
+                    <div class="hs-modal__title">{legalModalTitle}</div>
+                    <button class="hs-modal__close" title="Close" onclick={closeLegalAddModal} aria-label="Close">✕</button>
+                </div>
+                <div class="hs-modal__body">
+                    <div class="hs-modal__grid">
+                        <div class="hs-form-group">
+                            <label>Agreement Type</label>
+                            <lightning-combobox name="legalFormAgreementType" value={legalFormAgreementType} options={legalAgreementOptions} onchange={handleLegalFormInputChange} placeholder="Select agreement type"></lightning-combobox>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>Version</label>
+                            <lightning-input name="legalFormVersion" value={legalFormVersion} onchange={handleLegalFormInputChange} placeholder="Enter version"></lightning-input>
+                        </div>
+                        <template if:true={showLegalStatusField}>
+                            <div class="hs-form-group">
+                                <label>Status</label>
+                                <lightning-combobox name="legalFormStatus" value={legalFormStatus} options={legalStatusOptions} onchange={handleLegalFormInputChange} placeholder="Select status"></lightning-combobox>
+                            </div>
+                        </template>
+                        <div class="hs-form-group">
+                            <label>Initiated By</label>
+                            <lightning-input name="legalFormInitiatedBy" value={legalFormInitiatedBy} onchange={handleLegalFormInputChange} placeholder="Enter initiator"></lightning-input>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>HS</label>
+                            <lightning-input name="legalFormHs" value={legalFormHs} onchange={handleLegalFormInputChange} placeholder="Enter health system"></lightning-input>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>Sponsor</label>
+                            <lightning-input name="legalFormSponsor" value={legalFormSponsor} onchange={handleLegalFormInputChange} placeholder="Enter sponsor"></lightning-input>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>CVP Contact</label>
+                            <lightning-input name="legalFormDx" value={legalFormDx} onchange={handleLegalFormInputChange} placeholder="Enter CVP contact"></lightning-input>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>Due Date</label>
+                            <lightning-input type="date" name="legalFormDueDate" value={legalFormDueDate} onchange={handleLegalFormInputChange}></lightning-input>
+                        </div>
+                        <div class="hs-form-group">
+                            <label>Document</label>
+                            <input
+                                type="file"
+                                class="file-input"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
+                                onchange={handleLegalDocChange}
+                                style="width: 100%; padding: 4px 11px; border: 1px solid #32363a; border-radius: 8px; font-size: 14px; color: #495057; background: #fff; margin-top: 19px;"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-modal__footer">
+                    <button class="hs-btn-outline" onclick={closeLegalAddModal}>Cancel</button>
+                    <button class="hs-btn-primary" onclick={saveLegalAdd}>Save</button>
+                </div>
+            </div>
+        </section>
+    </template>
 
     <!-- Global Execute Confirmation Modal (always present so it opens regardless of active tab) -->
     <template if:true={isExecuteOpen}>

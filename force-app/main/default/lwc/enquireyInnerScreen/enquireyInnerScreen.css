@@ -400,6 +400,71 @@
     padding-right: 0.75rem;
 }
 
+/* =========================
+   INTAKE SCROLL FORM
+   ========================= */
+.intake-form-container {
+    padding: 32px 48px;
+    background: #fff;
+    border-radius: 8px; 
+}
+
+.intake-form-title {
+    font-size: 27px;
+    font-weight: 400;
+    color: #1e293b;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.questions-list {
+    margin-top: 0;
+    max-width: 100%;
+}
+
+.question-item {
+    margin-bottom: 28px;
+}
+
+.question-label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.intake-textarea {
+    min-height: 100px; 
+    --slds-c-textarea-sizing-min-height: 100px;
+}
+
+.intake-combobox {
+    max-width: 400px;
+}
+
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    
+}
+
+.form-actions .slds-button_neutral {
+    background: #1e293b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.form-actions .slds-button_neutral:hover {
+    background: #0f172a;
+}
+
 .slds-wrap {
     flex-wrap: wrap;
 }
